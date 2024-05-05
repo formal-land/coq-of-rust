@@ -29,7 +29,7 @@ Enum LangError
 Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -42,15 +42,15 @@ End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Definition Self : Ty.t := Ty.path "call_builder_delegate::CallBuilderDelegateTest".
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter delegate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter delegate : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
   
-  Parameter invoke : (list Ty.t) -> (list Value.t) -> M.
+  Parameter invoke : (list Ty.t) -> (list A.t) -> M.
   
   Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

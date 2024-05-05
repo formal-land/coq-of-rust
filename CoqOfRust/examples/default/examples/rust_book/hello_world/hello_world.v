@@ -9,7 +9,7 @@ fn main() {
     println!("Hello World!");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -24,16 +24,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "Hello World!
-" |) ] |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Hello World!
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

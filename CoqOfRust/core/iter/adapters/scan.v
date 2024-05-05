@@ -16,49 +16,54 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::scan::Scan") [ I; St; F ].
         
         (* Clone *)
-        Definition clone (I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I St F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::scan::Scan"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("f",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "f"
-                        |)
-                      ]
-                    |));
-                  ("state",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", St, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::scan::Scan",
-                          "state"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::scan::Scan"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::scan::Scan",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("f",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::scan::Scan",
+                              "f"
+                            |)
+                          ]
+                        |)));
+                    ("state",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", St, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::scan::Scan",
+                              "state"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -80,7 +85,7 @@ Module iter.
                 Scan { iter, state, f }
             }
         *)
-        Definition new (I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I St F in
           match τ, α with
           | [], [ iter; state; f ] =>
@@ -88,10 +93,15 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               let state := M.alloc (| state |) in
               let f := M.alloc (| f |) in
-              Value.StructRecord
-                "core::iter::adapters::scan::Scan"
-                [ ("iter", M.read (| iter |)); ("state", M.read (| state |)); ("f", M.read (| f |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::scan::Scan"
+                  [
+                    ("iter", A.to_value (M.read (| iter |)));
+                    ("state", A.to_value (M.read (| state |)));
+                    ("f", A.to_value (M.read (| f |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -109,7 +119,7 @@ Module iter.
                 f.debug_struct("Scan").field("iter", &self.iter).field("state", &self.state).finish()
             }
         *)
-        Definition fmt (I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I St F in
           match τ, α with
           | [], [ self; f ] =>
@@ -144,27 +154,29 @@ Module iter.
                                 "debug_struct",
                                 []
                               |),
-                              [ M.read (| f |); M.read (| Value.String "Scan" |) ]
+                              [ M.read (| f |); M.read (| M.of_value (| Value.String "Scan" |) |) ]
                             |)
                           |);
-                          M.read (| Value.String "iter" |);
+                          M.read (| M.of_value (| Value.String "iter" |) |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
+                          M.pointer_coercion (|
+                            M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::scan::Scan",
                               "iter"
-                            |))
+                            |)
+                          |)
                         ]
                       |);
-                      M.read (| Value.String "state" |);
+                      M.read (| M.of_value (| Value.String "state" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::scan::Scan",
                           "state"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -194,7 +206,7 @@ Module iter.
                 (self.f)(&mut self.state, a)
             }
         *)
-        Definition next (B I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (B I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I St F in
           match τ, α with
           | [], [ self ] =>
@@ -295,15 +307,18 @@ Module iter.
                             "core::iter::adapters::scan::Scan",
                             "f"
                           |);
-                          Value.Tuple
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::adapters::scan::Scan",
-                                "state"
-                              |);
-                              M.read (| a |)
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::adapters::scan::Scan",
+                                    "state"
+                                  |));
+                                A.to_value (M.read (| a |))
+                              ]
+                          |)
                         ]
                       |)
                     |)
@@ -318,7 +333,7 @@ Module iter.
                 (0, upper) // can't know a lower bound, due to the scan function
             }
         *)
-        Definition size_hint (B I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (B I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I St F in
           match τ, α with
           | [], [ self ] =>
@@ -351,7 +366,13 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
-                          Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.of_value (| Value.Integer 0 |));
+                                A.to_value (M.read (| upper |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -382,7 +403,7 @@ Module iter.
                 self.iter.try_fold(init, scan(state, f, fold)).into_try()
             }
         *)
-        Definition try_fold (B I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (B I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I St F in
           match τ, α with
           | [ Acc; Fold; R ], [ self; init; fold ] =>
@@ -459,7 +480,7 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition fold (B I St F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (B I St F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self B I St F in
           match τ, α with
           | [ AAA; FFF ], [ self; init; fold ] =>
@@ -532,7 +553,7 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (St F I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (St F I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self St F I in
           match τ, α with
           | [], [ self ] =>
@@ -572,7 +593,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (St F I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY (St F I : Ty.t) : A.t :=
           let Self : Ty.t := Self St F I in
           M.run
             ltac:(M.monadic
@@ -582,7 +603,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (St F I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY (St F I : Ty.t) : A.t :=
           let Self : Ty.t := Self St F I in
           M.run
             ltac:(M.monadic

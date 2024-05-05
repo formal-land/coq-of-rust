@@ -42,7 +42,7 @@ Module future.
               }
           }
       *)
-      Definition take_output (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take_output (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self ] =>
@@ -69,7 +69,9 @@ Module future.
                             |),
                             [
                               M.read (| self |);
-                              Value.StructTuple "core::future::join::MaybeDone::Taken" []
+                              M.of_value (|
+                                Value.StructTuple "core::future::join::MaybeDone::Taken" []
+                              |)
                             ]
                           |)
                         |),
@@ -84,7 +86,11 @@ Module future.
                                 |) in
                               let val := M.copy (| γ0_0 |) in
                               M.alloc (|
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [ A.to_value (M.read (| val |)) ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -94,7 +100,9 @@ Module future.
                                     M.get_function (| "core::panicking::panic", [] |),
                                     [
                                       M.read (|
-                                        Value.String "internal error: entered unreachable code"
+                                        M.of_value (|
+                                          Value.String "internal error: entered unreachable code"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -104,7 +112,9 @@ Module future.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -140,7 +150,7 @@ Module future.
               Poll::Ready(())
           }
       *)
-      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; cx ] =>
@@ -235,9 +245,11 @@ Module future.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                Value.StructTuple
-                                                  "core::task::poll::Poll::Pending"
-                                                  []
+                                                M.of_value (|
+                                                  Value.StructTuple
+                                                    "core::task::poll::Poll::Pending"
+                                                    []
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -262,13 +274,15 @@ Module future.
                                   |),
                                   [
                                     self;
-                                    Value.StructTuple
-                                      "core::future::join::MaybeDone::Done"
-                                      [ M.read (| val |) ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::future::join::MaybeDone::Done"
+                                        [ A.to_value (M.read (| val |)) ]
+                                    |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
@@ -277,7 +291,7 @@ Module future.
                                 "core::future::join::MaybeDone::Done",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
@@ -286,7 +300,9 @@ Module future.
                                   M.get_function (| "core::panicking::panic", [] |),
                                   [
                                     M.read (|
-                                      Value.String "internal error: entered unreachable code"
+                                      M.of_value (|
+                                        Value.String "internal error: entered unreachable code"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -294,7 +310,13 @@ Module future.
                             |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::task::poll::Poll::Ready" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::task::poll::Poll::Ready"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible

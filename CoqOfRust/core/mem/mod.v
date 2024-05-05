@@ -7,7 +7,7 @@ Module mem.
       let _ = ManuallyDrop::new(t);
   }
   *)
-  Definition forget (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition forget (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ t ] =>
       ltac:(M.monadic
@@ -24,7 +24,7 @@ Module mem.
                 [ M.read (| t |) ]
               |)
             |),
-            [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+            [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -35,7 +35,7 @@ Module mem.
       intrinsics::forget(t)
   }
   *)
-  Definition forget_unsized (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition forget_unsized (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ t ] =>
       ltac:(M.monadic
@@ -52,7 +52,7 @@ Module mem.
       intrinsics::size_of::<T>()
   }
   *)
-  Definition size_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition size_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -66,7 +66,7 @@ Module mem.
       unsafe { intrinsics::size_of_val(val) }
   }
   *)
-  Definition size_of_val (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition size_of_val (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ val ] =>
       ltac:(M.monadic
@@ -84,7 +84,7 @@ Module mem.
       unsafe { intrinsics::size_of_val(val) }
   }
   *)
-  Definition size_of_val_raw (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition size_of_val_raw (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ val ] =>
       ltac:(M.monadic
@@ -101,7 +101,7 @@ Module mem.
       intrinsics::min_align_of::<T>()
   }
   *)
-  Definition min_align_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition min_align_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -115,7 +115,7 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition min_align_of_val (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition min_align_of_val (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ val ] =>
       ltac:(M.monadic
@@ -132,7 +132,7 @@ Module mem.
       intrinsics::min_align_of::<T>()
   }
   *)
-  Definition align_of (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition align_of (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -146,7 +146,7 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition align_of_val (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition align_of_val (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ val ] =>
       ltac:(M.monadic
@@ -164,7 +164,7 @@ Module mem.
       unsafe { intrinsics::min_align_of_val(val) }
   }
   *)
-  Definition align_of_val_raw (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition align_of_val_raw (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ val ] =>
       ltac:(M.monadic
@@ -181,7 +181,7 @@ Module mem.
       intrinsics::needs_drop::<T>()
   }
   *)
-  Definition needs_drop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition needs_drop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -198,7 +198,7 @@ Module mem.
       }
   }
   *)
-  Definition zeroed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition zeroed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -250,7 +250,7 @@ Module mem.
       }
   }
   *)
-  Definition uninitialized (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition uninitialized (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -275,11 +275,12 @@ Module mem.
             |) in
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                    (let γ :=
+                      M.use (M.alloc (| UnOp.Pure.not (| M.of_value (| Value.Bool false |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.alloc (|
@@ -298,13 +299,13 @@ Module mem.
                               |),
                               [ val ]
                             |);
-                            Value.Integer Integer.U8 1;
-                            Value.Integer Integer.Usize 1
+                            M.of_value (| Value.Integer 1 |);
+                            M.of_value (| Value.Integer 1 |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -350,7 +351,7 @@ Module mem.
       swap_simple(x, y);
   }
   *)
-  Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition swap (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ x; y ] =>
       ltac:(M.monadic
@@ -361,15 +362,16 @@ Module mem.
             (M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (BinOp.Panic.div (|
+                              BinOp.Pure.gt (|
+                                BinOp.Panic.div (|
+                                  Integer.Usize,
                                   M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ T ] |),
                                     []
@@ -378,8 +380,9 @@ Module mem.
                                     M.get_function (| "core::mem::align_of", [ T ] |),
                                     []
                                   |)
-                                |))
-                                (Value.Integer Integer.Usize 4)
+                                |),
+                                M.of_value (| Value.Integer 4 |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -389,13 +392,14 @@ Module mem.
                               M.return_ (|
                                 M.call_closure (|
                                   M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
-                                  [ M.read (| x |); M.read (| y |); Value.Integer Integer.Usize 1 ]
+                                  [ M.read (| x |); M.read (| y |); M.of_value (| Value.Integer 1 |)
+                                  ]
                                 |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -405,7 +409,7 @@ Module mem.
                     [ M.read (| x |); M.read (| y |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -439,7 +443,7 @@ Module mem.
       }
   }
   *)
-  Definition swap_simple (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition swap_simple (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ x; y ] =>
       ltac:(M.monadic
@@ -468,7 +472,7 @@ Module mem.
                 [ M.read (| y |); M.read (| a |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -478,7 +482,7 @@ Module mem.
       replace(dest, T::default())
   }
   *)
-  Definition take (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition take (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ dest ] =>
       ltac:(M.monadic
@@ -512,7 +516,7 @@ Module mem.
       }
   }
   *)
-  Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition replace (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ dest; src ] =>
       ltac:(M.monadic
@@ -539,12 +543,12 @@ Module mem.
     end.
   
   (* pub fn drop<T>(_x: T) {} *)
-  Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition drop (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ _x ] =>
       ltac:(M.monadic
         (let _x := M.alloc (| _x |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -553,7 +557,7 @@ Module mem.
       *x
   }
   *)
-  Definition copy (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition copy (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ x ] =>
       ltac:(M.monadic
@@ -582,7 +586,7 @@ Module mem.
       }
   }
   *)
-  Definition transmute_copy (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transmute_copy (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ Src; Dst ], [ src ] =>
       ltac:(M.monadic
@@ -590,23 +594,25 @@ Module mem.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.ge
-                              (M.call_closure (|
+                          UnOp.Pure.not (|
+                            BinOp.Pure.ge (|
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Src ] |),
                                 []
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Dst ] |),
                                 []
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -622,48 +628,55 @@ Module mem.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "cannot transmute_copy if Dst is larger than Src"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "cannot transmute_copy if Dst is larger than Src"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.gt
-                          (M.call_closure (|
+                        BinOp.Pure.gt (|
+                          M.call_closure (|
                             M.get_function (| "core::mem::align_of", [ Dst ] |),
                             []
-                          |))
-                          (M.call_closure (|
+                          |),
+                          M.call_closure (|
                             M.get_function (| "core::mem::align_of", [ Src ] |),
                             []
-                          |))
+                          |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::read_unaligned", [ Dst ] |),
-                      [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
+                      [ M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| src |) |)) |) |) ]
                     |)
                   |)));
               fun γ =>
@@ -671,7 +684,7 @@ Module mem.
                   (M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::read", [ Dst ] |),
-                      [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| src |) |)) |)) ]
+                      [ M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| src |) |)) |) |) ]
                     |)
                   |)))
             ]
@@ -707,7 +720,7 @@ Module mem.
             *self
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -734,7 +747,7 @@ Module mem.
             self.0 == rhs.0
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; rhs ] =>
@@ -790,7 +803,7 @@ Module mem.
             self.0.hash(state);
         }
     *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ H ], [ self; state ] =>
@@ -812,7 +825,7 @@ Module mem.
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -834,7 +847,7 @@ Module mem.
             fmt.debug_tuple("Discriminant").field(&self.0).finish()
         }
     *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; fmt ] =>
@@ -858,16 +871,18 @@ Module mem.
                         "debug_tuple",
                         []
                       |),
-                      [ M.read (| fmt |); M.read (| Value.String "Discriminant" |) ]
+                      [ M.read (| fmt |); M.read (| M.of_value (| Value.String "Discriminant" |) |)
+                      ]
                     |)
                   |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_tuple_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::mem::Discriminant",
                       0
-                    |))
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -889,19 +904,22 @@ Module mem.
       Discriminant(intrinsics::discriminant_value(v))
   }
   *)
-  Definition discriminant (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition discriminant (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ v ] =>
       ltac:(M.monadic
         (let v := M.alloc (| v |) in
-        Value.StructTuple
-          "core::mem::Discriminant"
-          [
-            M.call_closure (|
-              M.get_function (| "core::intrinsics::discriminant_value", [ T ] |),
-              [ M.read (| v |) ]
-            |)
-          ]))
+        M.of_value (|
+          Value.StructTuple
+            "core::mem::Discriminant"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_function (| "core::intrinsics::discriminant_value", [ T ] |),
+                  [ M.read (| v |) ]
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -910,7 +928,7 @@ Module mem.
       intrinsics::variant_count::<T>()
   }
   *)
-  Definition variant_count (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition variant_count (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic

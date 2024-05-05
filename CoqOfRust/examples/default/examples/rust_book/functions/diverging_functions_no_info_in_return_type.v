@@ -6,8 +6,11 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition some_fn (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -15,7 +18,7 @@ fn main() {
     println!("This function returns and you can see this line.")
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -36,22 +39,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "This function returns and you can see this line.
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.of_value (|
+                                    Value.String "This function returns and you can see this line.
 "
-                            |)
-                          ]
-                      |))
+                                  |)
+                                |))
+                            ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

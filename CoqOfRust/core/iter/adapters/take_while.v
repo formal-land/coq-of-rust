@@ -16,55 +16,60 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::take_while::TakeWhile") [ I; P ].
         
         (* Clone *)
-        Definition clone (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::take_while::TakeWhile"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take_while::TakeWhile",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("flag",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "bool",
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take_while::TakeWhile",
-                          "flag"
-                        |)
-                      ]
-                    |));
-                  ("predicate",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::take_while::TakeWhile",
-                          "predicate"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::take_while::TakeWhile"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take_while::TakeWhile",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("flag",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "bool",
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take_while::TakeWhile",
+                              "flag"
+                            |)
+                          ]
+                        |)));
+                    ("predicate",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::take_while::TakeWhile",
+                              "predicate"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -86,20 +91,22 @@ Module iter.
                 TakeWhile { iter, flag: false, predicate }
             }
         *)
-        Definition new (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [], [ iter; predicate ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let predicate := M.alloc (| predicate |) in
-              Value.StructRecord
-                "core::iter::adapters::take_while::TakeWhile"
-                [
-                  ("iter", M.read (| iter |));
-                  ("flag", Value.Bool false);
-                  ("predicate", M.read (| predicate |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::take_while::TakeWhile"
+                  [
+                    ("iter", A.to_value (M.read (| iter |)));
+                    ("flag", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("predicate", A.to_value (M.read (| predicate |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -117,7 +124,7 @@ Module iter.
                 f.debug_struct("TakeWhile").field("iter", &self.iter).field("flag", &self.flag).finish()
             }
         *)
-        Definition fmt (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [], [ self; f ] =>
@@ -152,27 +159,32 @@ Module iter.
                                 "debug_struct",
                                 []
                               |),
-                              [ M.read (| f |); M.read (| Value.String "TakeWhile" |) ]
+                              [
+                                M.read (| f |);
+                                M.read (| M.of_value (| Value.String "TakeWhile" |) |)
+                              ]
                             |)
                           |);
-                          M.read (| Value.String "iter" |);
+                          M.read (| M.of_value (| Value.String "iter" |) |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
+                          M.pointer_coercion (|
+                            M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::take_while::TakeWhile",
                               "iter"
-                            |))
+                            |)
+                          |)
                         ]
                       |);
-                      M.read (| Value.String "flag" |);
+                      M.read (| M.of_value (| Value.String "flag" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::take_while::TakeWhile",
                           "flag"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -211,7 +223,7 @@ Module iter.
                 }
             }
         *)
-        Definition next (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [], [ self ] =>
@@ -221,7 +233,7 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -234,7 +246,9 @@ Module iter.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                            M.alloc (|
+                              M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let x :=
@@ -317,7 +331,7 @@ Module iter.
                                 |)
                               |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -341,7 +355,7 @@ Module iter.
                                                 "core::iter::adapters::take_while::TakeWhile",
                                                 "predicate"
                                               |);
-                                              Value.Tuple [ x ]
+                                              M.of_value (| Value.Tuple [ A.to_value x ] |)
                                             ]
                                           |)
                                         |)) in
@@ -351,9 +365,11 @@ Module iter.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      Value.StructTuple
-                                        "core::option::Option::Some"
-                                        [ M.read (| x |) ]
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "core::option::Option::Some"
+                                          [ A.to_value (M.read (| x |)) ]
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -364,10 +380,12 @@ Module iter.
                                           "core::iter::adapters::take_while::TakeWhile",
                                           "flag"
                                         |),
-                                        Value.Bool true
+                                        M.of_value (| Value.Bool true |)
                                       |) in
                                     M.alloc (|
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -388,7 +406,7 @@ Module iter.
                 }
             }
         *)
-        Definition size_hint (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [], [ self ] =>
@@ -396,7 +414,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -410,13 +428,18 @@ Module iter.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.of_value (| Value.Integer 0 |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -446,7 +469,13 @@ Module iter.
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let upper := M.copy (| γ0_1 |) in
                                 M.alloc (|
-                                  Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.read (| upper |))
+                                      ]
+                                  |)
                                 |)))
                           ]
                         |)))
@@ -487,7 +516,7 @@ Module iter.
                 }
             }
         *)
-        Definition try_fold (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [ Acc; Fold; R ], [ self; init; fold ] =>
@@ -497,7 +526,7 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -596,7 +625,7 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition fold (I P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I P in
           match τ, α with
           | [ AAA; FFF ], [ self; init; fold ] =>
@@ -695,7 +724,7 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (P I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (P I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self P I in
           match τ, α with
           | [], [ self ] =>
@@ -735,7 +764,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY (I F : Ty.t) : A.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
@@ -745,7 +774,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
+        Definition value_MERGE_BY (I F : Ty.t) : A.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic

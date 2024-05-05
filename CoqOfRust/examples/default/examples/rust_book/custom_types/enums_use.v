@@ -61,13 +61,15 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let status := M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
-        let work := M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
+        let status :=
+          M.alloc (| M.of_value (| Value.StructTuple "enums_use::Status::Poor" [] |) |) in
+        let work :=
+          M.alloc (| M.of_value (| Value.StructTuple "enums_use::Work::Civilian" [] |) |) in
         let _ :=
           M.match_operator (|
             status,
@@ -87,18 +89,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "The rich have lots of money!
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (|
+                                              Value.String "The rich have lots of money!
+"
+                                            |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
@@ -114,18 +126,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "The poor have no money...
-" |) ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.read (|
+                                            M.of_value (|
+                                              Value.String "The poor have no money...
+"
+                                            |)
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |) in
         M.match_operator (|
@@ -146,17 +168,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Civilians work!
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "Civilians work!
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
@@ -172,17 +203,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Soldiers fight!
-" |) ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "Soldiers fight!
+" |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

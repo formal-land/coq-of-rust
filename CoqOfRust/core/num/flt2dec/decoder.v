@@ -33,24 +33,24 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
+                          M.of_value (| Value.DeclaredButUndefined |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Value.DeclaredButUndefined,
+                                  M.of_value (| Value.DeclaredButUndefined |),
                                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                                 |)))
                           ]
@@ -73,7 +73,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; f ] =>
             ltac:(M.monadic
@@ -87,49 +87,54 @@ Module num.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Decoded" |);
-                  M.read (| Value.String "mant" |);
+                  M.read (| M.of_value (| Value.String "Decoded" |) |);
+                  M.read (| M.of_value (| Value.String "mant" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::flt2dec::decoder::Decoded",
                       "mant"
-                    |));
-                  M.read (| Value.String "minus" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "minus" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::flt2dec::decoder::Decoded",
                       "minus"
-                    |));
-                  M.read (| Value.String "plus" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "plus" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::flt2dec::decoder::Decoded",
                       "plus"
-                    |));
-                  M.read (| Value.String "exp" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "exp" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::flt2dec::decoder::Decoded",
                       "exp"
-                    |));
-                  M.read (| Value.String "inclusive" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "inclusive" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -158,7 +163,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
@@ -168,88 +173,93 @@ Module num.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     LogicalOp.and (|
-                      BinOp.Pure.eq
-                        (M.read (|
+                      BinOp.Pure.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::flt2dec::decoder::Decoded",
                             "mant"
                           |)
-                        |)),
+                        |)
+                      |),
                       ltac:(M.monadic
-                        (BinOp.Pure.eq
-                          (M.read (|
+                        (BinOp.Pure.eq (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| other |),
                               "core::num::flt2dec::decoder::Decoded",
                               "minus"
                             |)
-                          |))))
+                          |)
+                        |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.Pure.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::flt2dec::decoder::Decoded",
                             "plus"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::flt2dec::decoder::Decoded",
                           "exp"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::flt2dec::decoder::Decoded",
                         "inclusive"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
           | _, _ => M.impossible
           end.
@@ -277,25 +287,29 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::Decoded".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
+                          M.of_value (| Value.DeclaredButUndefined |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                  M.of_value (| Value.DeclaredButUndefined |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -359,14 +373,14 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                 |)
               |)))
@@ -385,7 +399,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; f ] =>
             ltac:(M.monadic
@@ -405,7 +419,7 @@ Module num.
                               "write_str",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Nan" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "Nan" |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -418,7 +432,8 @@ Module num.
                               "write_str",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Infinite" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "Infinite" |) |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -431,7 +446,7 @@ Module num.
                               "write_str",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Zero" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "Zero" |) |) ]
                           |)
                         |)));
                     fun γ =>
@@ -453,8 +468,8 @@ Module num.
                             |),
                             [
                               M.read (| f |);
-                              M.read (| Value.String "Finite" |);
-                              (* Unsize *) M.pointer_coercion __self_0
+                              M.read (| M.of_value (| Value.String "Finite" |) |);
+                              (* Unsize *) M.pointer_coercion (| __self_0 |)
                             ]
                           |)
                         |)))
@@ -487,7 +502,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
@@ -516,11 +531,16 @@ Module num.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                    BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Tuple
+                                [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                            |)
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -554,7 +574,8 @@ Module num.
                                     [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                           ]
                         |)
                       |)))
@@ -587,15 +608,15 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                  M.of_value (| Value.DeclaredButUndefined |),
+                  [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                 |)
               |)))
           | _, _ => M.impossible
@@ -621,7 +642,7 @@ Module num.
                 f32::MIN_POSITIVE
             }
         *)
-        Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition min_pos_norm_value (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f32::MIN_POSITIVE" |) |)))
           | _, _ => M.impossible
@@ -643,7 +664,7 @@ Module num.
                 f64::MIN_POSITIVE
             }
         *)
-        Definition min_pos_norm_value (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition min_pos_norm_value (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [] => ltac:(M.monadic (M.read (| M.get_constant (| "core::f64::MIN_POSITIVE" |) |)))
           | _, _ => M.impossible
@@ -698,7 +719,7 @@ Module num.
           (sign < 0, decoded)
       }
       *)
-      Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition decode (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ v ] =>
           ltac:(M.monadic
@@ -728,9 +749,13 @@ Module num.
                       let sign := M.copy (| γ0_2 |) in
                       let even :=
                         M.alloc (|
-                          BinOp.Pure.eq
-                            (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer Integer.U64 1))
-                            (Value.Integer Integer.U64 0)
+                          BinOp.Pure.eq (|
+                            BinOp.Pure.bit_and (|
+                              M.read (| mant |),
+                              M.of_value (| Value.Integer 1 |)
+                            |),
+                            M.of_value (| Value.Integer 0 |)
+                          |)
                         |) in
                       let decoded :=
                         M.copy (|
@@ -751,40 +776,53 @@ Module num.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Nan"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::num::flt2dec::decoder::FullDecoded::Nan"
+                                        []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Infinite"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                                        []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Zero"
-                                      []
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::num::flt2dec::decoder::FullDecoded::Zero"
+                                        []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Finite"
-                                      [
-                                        Value.StructRecord
-                                          "core::num::flt2dec::decoder::Decoded"
-                                          [
-                                            ("mant", M.read (| mant |));
-                                            ("minus", Value.Integer Integer.U64 1);
-                                            ("plus", Value.Integer Integer.U64 1);
-                                            ("exp", M.read (| exp |));
-                                            ("inclusive", M.read (| even |))
-                                          ]
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                        [
+                                          A.to_value
+                                            (M.of_value (|
+                                              Value.StructRecord
+                                                "core::num::flt2dec::decoder::Decoded"
+                                                [
+                                                  ("mant", A.to_value (M.read (| mant |)));
+                                                  ("minus",
+                                                    A.to_value (M.of_value (| Value.Integer 1 |)));
+                                                  ("plus",
+                                                    A.to_value (M.of_value (| Value.Integer 1 |)));
+                                                  ("exp", A.to_value (M.read (| exp |)));
+                                                  ("inclusive", A.to_value (M.read (| even |)))
+                                                ]
+                                            |))
+                                        ]
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -813,18 +851,19 @@ Module num.
                                       |)
                                     |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| mant |))
-                                                  (M.read (|
+                                                BinOp.Pure.eq (|
+                                                  M.read (| mant |),
+                                                  M.read (|
                                                     M.SubPointer.get_tuple_field (| minnorm, 0 |)
-                                                  |))
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -832,52 +871,78 @@ Module num.
                                               Value.Bool true
                                             |) in
                                           M.alloc (|
-                                            Value.StructTuple
-                                              "core::num::flt2dec::decoder::FullDecoded::Finite"
-                                              [
-                                                Value.StructRecord
-                                                  "core::num::flt2dec::decoder::Decoded"
-                                                  [
-                                                    ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer Integer.I32 2
-                                                      |));
-                                                    ("minus", Value.Integer Integer.U64 1);
-                                                    ("plus", Value.Integer Integer.U64 2);
-                                                    ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        M.read (| exp |),
-                                                        Value.Integer Integer.I16 2
-                                                      |));
-                                                    ("inclusive", M.read (| even |))
-                                                  ]
-                                              ]
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                                [
+                                                  A.to_value
+                                                    (M.of_value (|
+                                                      Value.StructRecord
+                                                        "core::num::flt2dec::decoder::Decoded"
+                                                        [
+                                                          ("mant",
+                                                            A.to_value
+                                                              (BinOp.Panic.shl (|
+                                                                M.read (| mant |),
+                                                                M.of_value (| Value.Integer 2 |)
+                                                              |)));
+                                                          ("minus",
+                                                            A.to_value
+                                                              (M.of_value (| Value.Integer 1 |)));
+                                                          ("plus",
+                                                            A.to_value
+                                                              (M.of_value (| Value.Integer 2 |)));
+                                                          ("exp",
+                                                            A.to_value
+                                                              (BinOp.Panic.sub (|
+                                                                Integer.I16,
+                                                                M.read (| exp |),
+                                                                M.of_value (| Value.Integer 2 |)
+                                                              |)));
+                                                          ("inclusive",
+                                                            A.to_value (M.read (| even |)))
+                                                        ]
+                                                    |))
+                                                ]
+                                            |)
                                           |)));
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.alloc (|
-                                            Value.StructTuple
-                                              "core::num::flt2dec::decoder::FullDecoded::Finite"
-                                              [
-                                                Value.StructRecord
-                                                  "core::num::flt2dec::decoder::Decoded"
-                                                  [
-                                                    ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer Integer.I32 1
-                                                      |));
-                                                    ("minus", Value.Integer Integer.U64 1);
-                                                    ("plus", Value.Integer Integer.U64 1);
-                                                    ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        M.read (| exp |),
-                                                        Value.Integer Integer.I16 1
-                                                      |));
-                                                    ("inclusive", M.read (| even |))
-                                                  ]
-                                              ]
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                                [
+                                                  A.to_value
+                                                    (M.of_value (|
+                                                      Value.StructRecord
+                                                        "core::num::flt2dec::decoder::Decoded"
+                                                        [
+                                                          ("mant",
+                                                            A.to_value
+                                                              (BinOp.Panic.shl (|
+                                                                M.read (| mant |),
+                                                                M.of_value (| Value.Integer 1 |)
+                                                              |)));
+                                                          ("minus",
+                                                            A.to_value
+                                                              (M.of_value (| Value.Integer 1 |)));
+                                                          ("plus",
+                                                            A.to_value
+                                                              (M.of_value (| Value.Integer 1 |)));
+                                                          ("exp",
+                                                            A.to_value
+                                                              (BinOp.Panic.sub (|
+                                                                Integer.I16,
+                                                                M.read (| exp |),
+                                                                M.of_value (| Value.Integer 1 |)
+                                                              |)));
+                                                          ("inclusive",
+                                                            A.to_value (M.read (| even |)))
+                                                        ]
+                                                    |))
+                                                ]
+                                            |)
                                           |)))
                                     ]
                                   |)))
@@ -885,11 +950,17 @@ Module num.
                           |)
                         |) in
                       M.alloc (|
-                        Value.Tuple
-                          [
-                            BinOp.Pure.lt (M.read (| sign |)) (Value.Integer Integer.I8 0);
-                            M.read (| decoded |)
-                          ]
+                        M.of_value (|
+                          Value.Tuple
+                            [
+                              A.to_value
+                                (BinOp.Pure.lt (|
+                                  M.read (| sign |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |));
+                              A.to_value (M.read (| decoded |))
+                            ]
+                        |)
                       |)))
                 ]
               |)

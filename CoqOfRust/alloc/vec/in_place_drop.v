@@ -20,7 +20,7 @@ Module vec.
               unsafe { self.dst.sub_ptr(self.inner) }
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -37,14 +37,15 @@ Module vec.
                   |)
                 |);
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.read (|
+                M.pointer_coercion (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "alloc::vec::in_place_drop::InPlaceDrop",
                       "inner"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -66,7 +67,7 @@ Module vec.
               }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -104,7 +105,7 @@ Module vec.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -139,7 +140,7 @@ Module vec.
               unsafe { super::Vec::from_raw_parts(self.ptr, self.len, self.cap) };
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -179,7 +180,7 @@ Module vec.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.

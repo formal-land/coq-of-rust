@@ -6,7 +6,7 @@ Module iter.
     Module exact_size.
       (* Trait *)
       Module ExactSizeIterator.
-        Definition len (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -35,15 +35,20 @@ Module iter.
                         let _ :=
                           M.match_operator (|
                             M.alloc (|
-                              Value.Tuple
-                                [
-                                  upper;
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| lower |) ]
-                                  |)
-                                ]
+                              M.of_value (|
+                                Value.Tuple
+                                  [
+                                    A.to_value upper;
+                                    A.to_value
+                                      (M.alloc (|
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| lower |)) ]
+                                        |)
+                                      |))
+                                  ]
+                              |)
                             |),
                             [
                               fun γ =>
@@ -53,15 +58,15 @@ Module iter.
                                   let left_val := M.copy (| γ0_0 |) in
                                   let right_val := M.copy (| γ0_1 |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                UnOp.Pure.not
-                                                  (M.call_closure (|
+                                                UnOp.Pure.not (|
+                                                  M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -77,7 +82,8 @@ Module iter.
                                                     |),
                                                     [ M.read (| left_val |); M.read (| right_val |)
                                                     ]
-                                                  |))
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -89,9 +95,11 @@ Module iter.
                                               M.read (|
                                                 let kind :=
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::panicking::AssertKind::Eq"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::panicking::AssertKind::Eq"
+                                                        []
+                                                    |)
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -110,16 +118,20 @@ Module iter.
                                                       M.read (| kind |);
                                                       M.read (| left_val |);
                                                       M.read (| right_val |);
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
                                               |)
                                             |)
                                           |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                     ]
                                   |)))
                             ]
@@ -133,13 +145,13 @@ Module iter.
         
         Axiom ProvidedMethod_len :
           M.IsProvidedMethod "core::iter::traits::exact_size::ExactSizeIterator" "len" len.
-        Definition is_empty (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.Pure.eq (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Self,
@@ -148,8 +160,9 @@ Module iter.
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (Value.Integer Integer.Usize 0)))
+                |),
+                M.of_value (| Value.Integer 0 |)
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -168,7 +181,7 @@ Module iter.
                 ( **self).len()
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -192,7 +205,7 @@ Module iter.
                 ( **self).is_empty()
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>

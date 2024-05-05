@@ -16,7 +16,7 @@ Module slice.
         }
     }
     *)
-    Definition from_raw_parts (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_parts (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ data; len ] =>
         ltac:(M.monadic
@@ -25,11 +25,11 @@ Module slice.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.alloc (|
@@ -48,14 +48,17 @@ Module slice.
                               ]
                             |),
                             [
-                              Value.Tuple [ M.read (| data |); M.read (| len |) ];
+                              M.of_value (|
+                                Value.Tuple
+                                  [ A.to_value (M.read (| data |)); A.to_value (M.read (| len |)) ]
+                              |);
                               M.get_function (| "core::slice::raw::from_raw_parts.comptime", [] |);
                               M.get_function (| "core::slice::raw::from_raw_parts.runtime", [] |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
@@ -81,7 +84,7 @@ Module slice.
         }
     }
     *)
-    Definition from_raw_parts_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_parts_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ data; len ] =>
         ltac:(M.monadic
@@ -90,11 +93,11 @@ Module slice.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.alloc (|
@@ -113,7 +116,10 @@ Module slice.
                               ]
                             |),
                             [
-                              Value.Tuple [ M.read (| data |); M.read (| len |) ];
+                              M.of_value (|
+                                Value.Tuple
+                                  [ A.to_value (M.read (| data |)); A.to_value (M.read (| len |)) ]
+                              |);
                               M.get_function (|
                                 "core::slice::raw::from_raw_parts_mut.comptime",
                                 []
@@ -125,8 +131,8 @@ Module slice.
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
@@ -144,17 +150,18 @@ Module slice.
         array::from_ref(s)
     }
     *)
-    Definition from_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
+          M.pointer_coercion (|
+            M.call_closure (|
               M.get_function (| "core::array::from_ref", [ T ] |),
               [ M.read (| s |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -163,17 +170,18 @@ Module slice.
         array::from_mut(s)
     }
     *)
-    Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
+          M.pointer_coercion (|
+            M.call_closure (|
               M.get_function (| "core::array::from_mut", [ T ] |),
               [ M.read (| s |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -183,7 +191,7 @@ Module slice.
         unsafe { from_raw_parts(range.start, range.end.sub_ptr(range.start)) }
     }
     *)
-    Definition from_ptr_range (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_ptr_range (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ range ] =>
         ltac:(M.monadic
@@ -224,7 +232,7 @@ Module slice.
         unsafe { from_raw_parts_mut(range.start, range.end.sub_ptr(range.start)) }
     }
     *)
-    Definition from_mut_ptr_range (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_mut_ptr_range (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ range ] =>
         ltac:(M.monadic
@@ -246,14 +254,15 @@ Module slice.
                     |)
                   |);
                   (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.read (|
+                  M.pointer_coercion (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         range,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)
             ]

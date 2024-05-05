@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self : Ty.t := Ty.path "structures::Person".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -50,4 +50,4 @@ End Impl_core_fmt_Debug_for_structures_Person.
       [ ("top_left", Ty.path "structures::Point"); ("bottom_right", Ty.path "structures::Point") ];
   } *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

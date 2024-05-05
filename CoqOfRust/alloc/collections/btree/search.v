@@ -47,7 +47,7 @@ Module collections.
                 }
             }
         *)
-        Definition from_range (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_range (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ range_bound ] =>
@@ -67,9 +67,11 @@ Module collections.
                           |) in
                         let t := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::search::SearchBound::Included"
-                            [ M.read (| t |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::search::SearchBound::Included"
+                              [ A.to_value (M.read (| t |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -81,16 +83,20 @@ Module collections.
                           |) in
                         let t := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::search::SearchBound::Excluded"
-                            [ M.read (| t |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::search::SearchBound::Excluded"
+                              [ A.to_value (M.read (| t |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::search::SearchBound::AllIncluded"
-                            []
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::search::SearchBound::AllIncluded"
+                              []
+                          |)
                         |)))
                   ]
                 |)
@@ -191,7 +197,7 @@ Module collections.
                 }
             }
         *)
-        Definition search_tree (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition search_tree (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self BorrowType K V in
           match τ, α with
           | [ Q ], [ self; key ] =>
@@ -240,9 +246,11 @@ Module collections.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple
-                                                "alloc::collections::btree::search::SearchResult::Found"
-                                                [ M.read (| handle |) ]
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "alloc::collections::btree::search::SearchResult::Found"
+                                                  [ A.to_value (M.read (| handle |)) ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -296,9 +304,11 @@ Module collections.
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
-                                                      Value.StructTuple
-                                                        "alloc::collections::btree::search::SearchResult::GoDown"
-                                                        [ M.read (| leaf |) ]
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "alloc::collections::btree::search::SearchResult::GoDown"
+                                                          [ A.to_value (M.read (| leaf |)) ]
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -430,7 +440,7 @@ Module collections.
         Definition search_tree_for_bifurcation
             (BorrowType K V : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
           match τ, α with
@@ -456,29 +466,33 @@ Module collections.
                       |) in
                     M.match_operator (|
                       M.alloc (|
-                        Value.Tuple
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::range::RangeBounds",
-                                R,
-                                [ Q ],
-                                "start_bound",
-                                []
-                              |),
-                              [ M.read (| range |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::range::RangeBounds",
-                                R,
-                                [ Q ],
-                                "end_bound",
-                                []
-                              |),
-                              [ M.read (| range |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.Tuple
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::range::RangeBounds",
+                                    R,
+                                    [ Q ],
+                                    "start_bound",
+                                    []
+                                  |),
+                                  [ M.read (| range |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::range::RangeBounds",
+                                    R,
+                                    [ Q ],
+                                    "end_bound",
+                                    []
+                                  |),
+                                  [ M.read (| range |) ]
+                                |))
+                            ]
+                        |)
                       |),
                       [
                         fun γ =>
@@ -489,7 +503,15 @@ Module collections.
                             let end_ := M.copy (| γ0_1 |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [ M.read (| start |); M.read (| end_ |) ] |),
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| start |));
+                                        A.to_value (M.read (| end_ |))
+                                      ]
+                                  |)
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -528,7 +550,7 @@ Module collections.
                                           Value.Bool true
                                         |) in
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
@@ -554,16 +576,22 @@ Module collections.
                                                         |),
                                                         [
                                                           (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeSet"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.pointer_coercion (|
+                                                            M.alloc (|
+                                                              M.of_value (|
+                                                                Value.Array
+                                                                  [
+                                                                    A.to_value
+                                                                      (M.read (|
+                                                                        M.of_value (|
+                                                                          Value.String
+                                                                            "range start and end are equal and excluded in BTreeSet"
+                                                                        |)
+                                                                      |))
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -588,16 +616,22 @@ Module collections.
                                                         |),
                                                         [
                                                           (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeMap"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.pointer_coercion (|
+                                                            M.alloc (|
+                                                              M.of_value (|
+                                                                Value.Array
+                                                                  [
+                                                                    A.to_value
+                                                                      (M.read (|
+                                                                        M.of_value (|
+                                                                          Value.String
+                                                                            "range start and end are equal and excluded in BTreeMap"
+                                                                        |)
+                                                                      |))
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -622,7 +656,7 @@ Module collections.
                                                   0
                                                 |) in
                                               let s := M.copy (| γ0_0 |) in
-                                              Value.Tuple [ s ]));
+                                              M.of_value (| Value.Tuple [ A.to_value s ] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
@@ -632,10 +666,10 @@ Module collections.
                                                   0
                                                 |) in
                                               let s := M.copy (| γ0_0 |) in
-                                              Value.Tuple [ s ]))
+                                              M.of_value (| Value.Tuple [ A.to_value s ] |)))
                                         ],
-                                        M.closure
-                                          (fun γ =>
+                                        M.closure (|
+                                          fun γ =>
                                             ltac:(M.monadic
                                               match γ with
                                               | [ s ] =>
@@ -651,7 +685,9 @@ Module collections.
                                                             0
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]));
+                                                        M.of_value (|
+                                                          Value.Tuple [ A.to_value e ]
+                                                        |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
@@ -661,10 +697,12 @@ Module collections.
                                                             0
                                                           |) in
                                                         let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]))
+                                                        M.of_value (|
+                                                          Value.Tuple [ A.to_value e ]
+                                                        |)))
                                                   ],
-                                                  M.closure
-                                                    (fun γ =>
+                                                  M.closure (|
+                                                    fun γ =>
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ e ] =>
@@ -687,7 +725,9 @@ Module collections.
                                                               Value.Bool true
                                                             |) in
                                                           M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
@@ -714,16 +754,22 @@ Module collections.
                                                                             |),
                                                                             [
                                                                               (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeSet"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.pointer_coercion (|
+                                                                                M.alloc (|
+                                                                                  M.of_value (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        A.to_value
+                                                                                          (M.read (|
+                                                                                            M.of_value (|
+                                                                                              Value.String
+                                                                                                "range start is greater than range end in BTreeSet"
+                                                                                            |)
+                                                                                          |))
+                                                                                      ]
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -749,16 +795,22 @@ Module collections.
                                                                             |),
                                                                             [
                                                                               (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeMap"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.pointer_coercion (|
+                                                                                M.alloc (|
+                                                                                  M.of_value (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        A.to_value
+                                                                                          (M.read (|
+                                                                                            M.of_value (|
+                                                                                              Value.String
+                                                                                                "range start is greater than range end in BTreeMap"
+                                                                                            |)
+                                                                                          |))
+                                                                                      ]
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -768,12 +820,15 @@ Module collections.
                                                             ]
                                                           |)
                                                         | _ => M.impossible (||)
-                                                        end))
+                                                        end)
+                                                  |)
                                                 |)
                                               | _ => M.impossible (||)
-                                              end))
+                                              end)
+                                        |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             let lower_bound :=
@@ -869,20 +924,19 @@ Module collections.
                                                       let upper_child_bound := M.copy (| γ0_1 |) in
                                                       let _ :=
                                                         M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.lt
-                                                                        (M.read (|
-                                                                          lower_edge_idx
-                                                                        |))
-                                                                        (M.read (|
-                                                                          upper_edge_idx
-                                                                        |))
+                                                                      BinOp.Pure.lt (|
+                                                                        M.read (| lower_edge_idx |),
+                                                                        M.read (| upper_edge_idx |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -893,45 +947,63 @@ Module collections.
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       M.return_ (|
-                                                                        Value.StructTuple
-                                                                          "core::result::Result::Ok"
-                                                                          [
-                                                                            Value.Tuple
-                                                                              [
-                                                                                M.read (| self |);
-                                                                                M.read (|
-                                                                                  lower_edge_idx
-                                                                                |);
-                                                                                M.read (|
-                                                                                  upper_edge_idx
-                                                                                |);
-                                                                                M.read (|
-                                                                                  lower_child_bound
-                                                                                |);
-                                                                                M.read (|
-                                                                                  upper_child_bound
-                                                                                |)
-                                                                              ]
-                                                                          ]
+                                                                        M.of_value (|
+                                                                          Value.StructTuple
+                                                                            "core::result::Result::Ok"
+                                                                            [
+                                                                              A.to_value
+                                                                                (M.of_value (|
+                                                                                  Value.Tuple
+                                                                                    [
+                                                                                      A.to_value
+                                                                                        (M.read (|
+                                                                                          self
+                                                                                        |));
+                                                                                      A.to_value
+                                                                                        (M.read (|
+                                                                                          lower_edge_idx
+                                                                                        |));
+                                                                                      A.to_value
+                                                                                        (M.read (|
+                                                                                          upper_edge_idx
+                                                                                        |));
+                                                                                      A.to_value
+                                                                                        (M.read (|
+                                                                                          lower_child_bound
+                                                                                        |));
+                                                                                      A.to_value
+                                                                                        (M.read (|
+                                                                                          upper_child_bound
+                                                                                        |))
+                                                                                    ]
+                                                                                |))
+                                                                            ]
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)))
                                                           ]
                                                         |) in
                                                       let _ :=
                                                         M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      Value.Bool true
+                                                                      M.of_value (|
+                                                                        Value.Bool true
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -941,11 +1013,15 @@ Module collections.
                                                                 let _ :=
                                                                   M.match_operator (|
                                                                     M.alloc (|
-                                                                      Value.Tuple
-                                                                        [
-                                                                          lower_edge_idx;
-                                                                          upper_edge_idx
-                                                                        ]
+                                                                      M.of_value (|
+                                                                        Value.Tuple
+                                                                          [
+                                                                            A.to_value
+                                                                              lower_edge_idx;
+                                                                            A.to_value
+                                                                              upper_edge_idx
+                                                                          ]
+                                                                      |)
                                                                     |),
                                                                     [
                                                                       fun γ =>
@@ -966,7 +1042,9 @@ Module collections.
                                                                             M.copy (| γ0_1 |) in
                                                                           M.match_operator (|
                                                                             M.alloc (|
-                                                                              Value.Tuple []
+                                                                              M.of_value (|
+                                                                                Value.Tuple []
+                                                                              |)
                                                                             |),
                                                                             [
                                                                               fun γ =>
@@ -974,18 +1052,20 @@ Module collections.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        UnOp.Pure.not
-                                                                                          (BinOp.Pure.eq
-                                                                                            (M.read (|
+                                                                                        UnOp.Pure.not (|
+                                                                                          BinOp.Pure.eq (|
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 left_val
                                                                                               |)
-                                                                                            |))
-                                                                                            (M.read (|
+                                                                                            |),
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 right_val
                                                                                               |)
-                                                                                            |)))
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
                                                                                       |)) in
                                                                                   let _ :=
                                                                                     M.is_constant_or_break_match (|
@@ -1000,9 +1080,11 @@ Module collections.
                                                                                       M.read (|
                                                                                         let kind :=
                                                                                           M.alloc (|
-                                                                                            Value.StructTuple
-                                                                                              "core::panicking::AssertKind::Eq"
-                                                                                              []
+                                                                                            M.of_value (|
+                                                                                              Value.StructTuple
+                                                                                                "core::panicking::AssertKind::Eq"
+                                                                                                []
+                                                                                            |)
                                                                                           |) in
                                                                                         M.alloc (|
                                                                                           M.call_closure (|
@@ -1025,9 +1107,11 @@ Module collections.
                                                                                               M.read (|
                                                                                                 right_val
                                                                                               |);
-                                                                                              Value.StructTuple
-                                                                                                "core::option::Option::None"
-                                                                                                []
+                                                                                              M.of_value (|
+                                                                                                Value.StructTuple
+                                                                                                  "core::option::Option::None"
+                                                                                                  []
+                                                                                              |)
                                                                                             ]
                                                                                           |)
                                                                                         |)
@@ -1037,16 +1121,22 @@ Module collections.
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
-                                                                                    Value.Tuple []
+                                                                                    M.of_value (|
+                                                                                      Value.Tuple []
+                                                                                    |)
                                                                                   |)))
                                                                             ]
                                                                           |)))
                                                                     ]
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)));
+                                                                M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)))
                                                           ]
                                                         |) in
                                                       let common_edge :=
@@ -1121,9 +1211,16 @@ Module collections.
                                                                 M.never_to_any (|
                                                                   M.read (|
                                                                     M.return_ (|
-                                                                      Value.StructTuple
-                                                                        "core::result::Result::Err"
-                                                                        [ M.read (| common_edge |) ]
+                                                                      M.of_value (|
+                                                                        Value.StructTuple
+                                                                          "core::result::Result::Err"
+                                                                          [
+                                                                            A.to_value
+                                                                              (M.read (|
+                                                                                common_edge
+                                                                              |))
+                                                                          ]
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)
@@ -1176,7 +1273,9 @@ Module collections.
                                                                   upper_bound,
                                                                   M.read (| upper_child_bound |)
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)))
+                                                              M.alloc (|
+                                                                M.of_value (| Value.Tuple [] |)
+                                                              |)))
                                                         ]
                                                       |)))
                                                 ]
@@ -1218,7 +1317,7 @@ Module collections.
         Definition find_lower_bound_edge
             (BorrowType K V : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
           match τ, α with
@@ -1276,7 +1375,12 @@ Module collections.
                               [ M.read (| self |); M.read (| edge_idx |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [ M.read (| edge |); M.read (| bound |) ] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| edge |)); A.to_value (M.read (| bound |)) ]
+                          |)
+                        |)))
                   ]
                 |)
               |)))
@@ -1307,7 +1411,7 @@ Module collections.
         Definition find_upper_bound_edge
             (BorrowType K V : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
           match τ, α with
@@ -1331,7 +1435,7 @@ Module collections.
                         "find_upper_bound_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| bound |); Value.Integer Integer.Usize 0 ]
+                      [ self; M.read (| bound |); M.of_value (| Value.Integer 0 |) ]
                     |)
                   |),
                   [
@@ -1365,7 +1469,12 @@ Module collections.
                               [ M.read (| self |); M.read (| edge_idx |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [ M.read (| edge |); M.read (| bound |) ] |)))
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| edge |)); A.to_value (M.read (| bound |)) ]
+                          |)
+                        |)))
                   ]
                 |)
               |)))
@@ -1396,11 +1505,7 @@ Module collections.
                 }
             }
         *)
-        Definition search_node
-            (BorrowType K V Type_ : Ty.t)
-            (τ : list Ty.t)
-            (α : list Value.t)
-            : M :=
+        Definition search_node (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
           match τ, α with
           | [ Q ], [ self; key ] =>
@@ -1418,7 +1523,7 @@ Module collections.
                         "find_key_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| key |); Value.Integer Integer.Usize 0 ]
+                      [ self; M.read (| key |); M.of_value (| Value.Integer 0 |) ]
                     |)
                   |),
                   [
@@ -1432,25 +1537,28 @@ Module collections.
                           |) in
                         let idx := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::search::SearchResult::Found"
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::Handle")
-                                    [
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::search::SearchResult::Found"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        [ BorrowType; K; V; Type_ ];
-                                      Ty.path "alloc::collections::btree::node::marker::KV"
-                                    ],
-                                  "new_kv",
-                                  []
-                                |),
-                                [ M.read (| self |); M.read (| idx |) ]
-                              |)
-                            ]
+                                        (Ty.path "alloc::collections::btree::node::Handle")
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            [ BorrowType; K; V; Type_ ];
+                                          Ty.path "alloc::collections::btree::node::marker::KV"
+                                        ],
+                                      "new_kv",
+                                      []
+                                    |),
+                                    [ M.read (| self |); M.read (| idx |) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1462,25 +1570,28 @@ Module collections.
                           |) in
                         let idx := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::search::SearchResult::GoDown"
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::Handle")
-                                    [
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::search::SearchResult::GoDown"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "alloc::collections::btree::node::NodeRef")
-                                        [ BorrowType; K; V; Type_ ];
-                                      Ty.path "alloc::collections::btree::node::marker::Edge"
-                                    ],
-                                  "new_edge",
-                                  []
-                                |),
-                                [ M.read (| self |); M.read (| idx |) ]
-                              |)
-                            ]
+                                        (Ty.path "alloc::collections::btree::node::Handle")
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            [ BorrowType; K; V; Type_ ];
+                                          Ty.path "alloc::collections::btree::node::marker::Edge"
+                                        ],
+                                      "new_edge",
+                                      []
+                                    |),
+                                    [ M.read (| self |); M.read (| idx |) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -1517,7 +1628,7 @@ Module collections.
         Definition find_key_index
             (BorrowType K V Type_ : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
           match τ, α with
@@ -1562,11 +1673,11 @@ Module collections.
                       |) in
                     let _ :=
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                              (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1574,24 +1685,26 @@ Module collections.
                                 |) in
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              UnOp.Pure.not
-                                                (BinOp.Pure.le
-                                                  (M.read (| start_index |))
-                                                  (M.call_closure (|
+                                              UnOp.Pure.not (|
+                                                BinOp.Pure.le (|
+                                                  M.read (| start_index |),
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ K ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| keys |) ]
-                                                  |)))
+                                                  |)
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -1604,18 +1717,22 @@ Module collections.
                                               M.get_function (| "core::panicking::panic", [] |),
                                               [
                                                 M.read (|
-                                                  Value.String
-                                                    "assertion failed: start_index <= keys.len()"
+                                                  M.of_value (|
+                                                    Value.String
+                                                      "assertion failed: start_index <= keys.len()"
+                                                  |)
                                                 |)
                                               ]
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         ]
                       |) in
                     let _ :=
@@ -1661,9 +1778,11 @@ Module collections.
                                           |),
                                           [
                                             M.read (| keys |);
-                                            Value.StructRecord
-                                              "core::ops::range::RangeFrom"
-                                              [ ("start", M.read (| start_index |)) ]
+                                            M.of_value (|
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                [ ("start", A.to_value (M.read (| start_index |))) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -1744,21 +1863,28 @@ Module collections.
                                                 |),
                                                 [
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)));
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
-                                                              Value.StructTuple
-                                                                "alloc::collections::btree::search::IndexResult::KV"
-                                                                [
-                                                                  BinOp.Panic.add (|
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
-                                                                  |)
-                                                                ]
+                                                              M.of_value (|
+                                                                Value.StructTuple
+                                                                  "alloc::collections::btree::search::IndexResult::KV"
+                                                                  [
+                                                                    A.to_value
+                                                                      (BinOp.Panic.add (|
+                                                                        Integer.Usize,
+                                                                        M.read (| start_index |),
+                                                                        M.read (| offset |)
+                                                                      |))
+                                                                  ]
+                                                              |)
                                                             |)
                                                           |)
                                                         |)
@@ -1769,14 +1895,18 @@ Module collections.
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
-                                                              Value.StructTuple
-                                                                "alloc::collections::btree::search::IndexResult::Edge"
-                                                                [
-                                                                  BinOp.Panic.add (|
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
-                                                                  |)
-                                                                ]
+                                                              M.of_value (|
+                                                                Value.StructTuple
+                                                                  "alloc::collections::btree::search::IndexResult::Edge"
+                                                                  [
+                                                                    A.to_value
+                                                                      (BinOp.Panic.add (|
+                                                                        Integer.Usize,
+                                                                        M.read (| start_index |),
+                                                                        M.read (| offset |)
+                                                                      |))
+                                                                  ]
+                                                              |)
                                                             |)
                                                           |)
                                                         |)
@@ -1785,23 +1915,26 @@ Module collections.
                                               |)))
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 |)))
                           ]
                         |)) in
                     M.alloc (|
-                      Value.StructTuple
-                        "alloc::collections::btree::search::IndexResult::Edge"
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ K ],
-                              "len",
-                              []
-                            |),
-                            [ M.read (| keys |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "alloc::collections::btree::search::IndexResult::Edge"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [ K ],
+                                  "len",
+                                  []
+                                |),
+                                [ M.read (| keys |) ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -1841,7 +1974,7 @@ Module collections.
         Definition find_lower_bound_index
             (BorrowType K V Type_ : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
           match τ, α with
@@ -1872,7 +2005,11 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer Integer.Usize 0 ]
+                              [
+                                M.read (| self |);
+                                M.read (| key |);
+                                M.of_value (| Value.Integer 0 |)
+                              ]
                             |)
                           |),
                           [
@@ -1886,13 +2023,18 @@ Module collections.
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  Value.Tuple
-                                    [
-                                      M.read (| idx |);
-                                      Value.StructTuple
-                                        "alloc::collections::btree::search::SearchBound::AllExcluded"
-                                        []
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::collections::btree::search::SearchBound::AllExcluded"
+                                              []
+                                          |))
+                                      ]
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -1903,7 +2045,15 @@ Module collections.
                                     0
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
-                                M.alloc (| Value.Tuple [ M.read (| idx |); M.read (| bound |) ] |)))
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value (M.read (| bound |))
+                                      ]
+                                  |)
+                                |)))
                           ]
                         |)));
                     fun γ =>
@@ -1925,7 +2075,11 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer Integer.Usize 0 ]
+                              [
+                                M.read (| self |);
+                                M.read (| key |);
+                                M.of_value (| Value.Integer 0 |)
+                              ]
                             |)
                           |),
                           [
@@ -1939,16 +2093,23 @@ Module collections.
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  Value.Tuple
-                                    [
-                                      BinOp.Panic.add (|
-                                        M.read (| idx |),
-                                        Value.Integer Integer.Usize 1
-                                      |);
-                                      Value.StructTuple
-                                        "alloc::collections::btree::search::SearchBound::AllIncluded"
-                                        []
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value
+                                          (BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| idx |),
+                                            M.of_value (| Value.Integer 1 |)
+                                          |));
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::collections::btree::search::SearchBound::AllIncluded"
+                                              []
+                                          |))
+                                      ]
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -1959,39 +2120,58 @@ Module collections.
                                     0
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
-                                M.alloc (| Value.Tuple [ M.read (| idx |); M.read (| bound |) ] |)))
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value (M.read (| bound |))
+                                      ]
+                                  |)
+                                |)))
                           ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "alloc::collections::btree::search::SearchBound::AllIncluded"
-                                []
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.of_value (| Value.Integer 0 |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "alloc::collections::btree::search::SearchBound::AllIncluded"
+                                      []
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    [ BorrowType; K; V; Type_ ],
-                                  "len",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |);
-                              Value.StructTuple
-                                "alloc::collections::btree::search::SearchBound::AllExcluded"
-                                []
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        [ BorrowType; K; V; Type_ ],
+                                      "len",
+                                      []
+                                    |),
+                                    [ M.read (| self |) ]
+                                  |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "alloc::collections::btree::search::SearchBound::AllExcluded"
+                                      []
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -2033,7 +2213,7 @@ Module collections.
         Definition find_upper_bound_index
             (BorrowType K V Type_ : Ty.t)
             (τ : list Ty.t)
-            (α : list Value.t)
+            (α : list A.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
           match τ, α with
@@ -2079,16 +2259,23 @@ Module collections.
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  Value.Tuple
-                                    [
-                                      BinOp.Panic.add (|
-                                        M.read (| idx |),
-                                        Value.Integer Integer.Usize 1
-                                      |);
-                                      Value.StructTuple
-                                        "alloc::collections::btree::search::SearchBound::AllExcluded"
-                                        []
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value
+                                          (BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| idx |),
+                                            M.of_value (| Value.Integer 1 |)
+                                          |));
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::collections::btree::search::SearchBound::AllExcluded"
+                                              []
+                                          |))
+                                      ]
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -2099,7 +2286,15 @@ Module collections.
                                     0
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
-                                M.alloc (| Value.Tuple [ M.read (| idx |); M.read (| bound |) ] |)))
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value (M.read (| bound |))
+                                      ]
+                                  |)
+                                |)))
                           ]
                         |)));
                     fun γ =>
@@ -2135,13 +2330,18 @@ Module collections.
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  Value.Tuple
-                                    [
-                                      M.read (| idx |);
-                                      Value.StructTuple
-                                        "alloc::collections::btree::search::SearchBound::AllIncluded"
-                                        []
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value
+                                          (M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::collections::btree::search::SearchBound::AllIncluded"
+                                              []
+                                          |))
+                                      ]
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -2152,39 +2352,58 @@ Module collections.
                                     0
                                   |) in
                                 let idx := M.copy (| γ0_0 |) in
-                                M.alloc (| Value.Tuple [ M.read (| idx |); M.read (| bound |) ] |)))
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value (M.read (| idx |));
+                                        A.to_value (M.read (| bound |))
+                                      ]
+                                  |)
+                                |)))
                           ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::node::NodeRef")
-                                    [ BorrowType; K; V; Type_ ],
-                                  "len",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |);
-                              Value.StructTuple
-                                "alloc::collections::btree::search::SearchBound::AllIncluded"
-                                []
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        [ BorrowType; K; V; Type_ ],
+                                      "len",
+                                      []
+                                    |),
+                                    [ M.read (| self |) ]
+                                  |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "alloc::collections::btree::search::SearchBound::AllIncluded"
+                                      []
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              M.read (| start_index |);
-                              Value.StructTuple
-                                "alloc::collections::btree::search::SearchBound::AllExcluded"
-                                []
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.read (| start_index |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "alloc::collections::btree::search::SearchBound::AllExcluded"
+                                      []
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)

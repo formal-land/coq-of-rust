@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
     Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
   
   (* Debug *)
-  Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self; f ] =>
@@ -28,16 +28,17 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
           |),
           [
             M.read (| f |);
-            M.read (| Value.String "Ref" |);
+            M.read (| M.of_value (| Value.String "Ref" |) |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
+            M.pointer_coercion (|
+              M.alloc (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "scoping_rules_lifetimes_bounds::Ref",
                   0
                 |)
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -60,7 +61,7 @@ where
     println!("`print`: t is {:?}", t);
 }
 *)
-Definition print (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ T ], [ t ] =>
     ltac:(M.monadic
@@ -76,37 +77,45 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print`: t is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "`print`: t is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ T ]
-                                |),
-                                [ t ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ T ]
+                                    |),
+                                    [ t ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -119,7 +128,7 @@ where
     println!("`print_ref`: t is {:?}", t);
 }
 *)
-Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
+Definition print_ref (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ T ], [ t ] =>
     ltac:(M.monadic
@@ -135,37 +144,45 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_ref`: t is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "`print_ref`: t is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.apply (Ty.path "&") [ T ] ]
-                                |),
-                                [ t ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.apply (Ty.path "&") [ T ] ]
+                                    |),
+                                    [ t ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -179,13 +196,18 @@ fn main() {
     print(ref_x);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 7 |) in
-        let ref_x := M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
+        let x := M.alloc (| M.of_value (| Value.Integer 7 |) |) in
+        let ref_x :=
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ A.to_value x ]
+            |)
+          |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -206,7 +228,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| ref_x |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

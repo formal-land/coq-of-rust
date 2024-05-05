@@ -15,7 +15,7 @@ Module str.
         }
     }
     *)
-    Definition from_utf8 (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_utf8 (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
@@ -34,14 +34,17 @@ Module str.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
-                            [ M.read (| v |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
+                                [ M.read (| v |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -49,7 +52,11 @@ Module str.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| err |)) ]
+                      |)
                     |)))
               ]
             |)
@@ -69,7 +76,7 @@ Module str.
         }
     }
     *)
-    Definition from_utf8_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_utf8_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
@@ -88,14 +95,20 @@ Module str.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-                            [ M.read (| v |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_function (|
+                                  "core::str::converts::from_utf8_unchecked_mut",
+                                  []
+                                |),
+                                [ M.read (| v |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -103,7 +116,11 @@ Module str.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let err := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| err |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| err |)) ]
+                      |)
                     |)))
               ]
             |)
@@ -118,7 +135,7 @@ Module str.
         unsafe { mem::transmute(v) }
     }
     *)
-    Definition from_utf8_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_utf8_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
@@ -145,12 +162,12 @@ Module str.
         unsafe { &mut *(v as *mut [u8] as *mut str) }
     }
     *)
-    Definition from_utf8_unchecked_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_utf8_unchecked_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)))
       | _, _ => M.impossible
       end.
   End converts.

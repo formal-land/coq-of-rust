@@ -13,12 +13,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "bool".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -38,12 +38,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -63,12 +63,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -88,12 +88,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -113,12 +113,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -138,12 +138,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -163,12 +163,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -188,12 +188,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -213,12 +213,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -238,12 +238,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -263,12 +263,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -288,12 +288,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -313,12 +313,12 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn not(self) -> $t { !self } *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not (M.read (| self |))))
+            UnOp.Pure.not (| M.read (| self |) |)))
         | _, _ => M.impossible
         end.
       
@@ -342,7 +342,7 @@ Module ops.
               match self {}
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -370,13 +370,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "bool".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -396,13 +396,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -422,13 +422,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -448,13 +448,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -474,13 +474,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -500,13 +500,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -526,13 +526,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -552,13 +552,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -578,13 +578,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -604,13 +604,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -630,13 +630,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -656,13 +656,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -682,13 +682,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn bitand(self, rhs: $t) -> $t { self & rhs } *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_and (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_and (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -711,13 +711,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "bool".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -737,13 +737,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -763,13 +763,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -789,13 +789,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -815,13 +815,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -841,13 +841,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -867,13 +867,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -893,13 +893,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -919,13 +919,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -945,13 +945,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -971,13 +971,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -997,13 +997,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1023,13 +1023,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn bitor(self, rhs: $t) -> $t { self | rhs } *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
-            BinOp.Pure.bit_or (M.read (| self |)) (M.read (| rhs |))))
+            BinOp.Pure.bit_or (| M.read (| self |), M.read (| rhs |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1052,13 +1052,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "bool".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1078,13 +1078,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "usize".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1104,13 +1104,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u8".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1130,13 +1130,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u16".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1156,13 +1156,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u32".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1182,13 +1182,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u64".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1208,13 +1208,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "u128".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1234,13 +1234,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "isize".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1260,13 +1260,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i8".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1286,13 +1286,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i16".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1312,13 +1312,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i32".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1338,13 +1338,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i64".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1364,13 +1364,13 @@ Module ops.
       Definition _Output : Ty.t := Ty.path "i128".
       
       (*             fn bitxor(self, other: $t) -> $t { self ^ other } *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.bit_xor (M.read (| self |)) (M.read (| other |))))
+            BinOp.Pure.bit_xor (| M.read (| self |), M.read (| other |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1397,7 +1397,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1427,7 +1427,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1457,7 +1457,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1487,7 +1487,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1517,7 +1517,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1547,7 +1547,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1577,7 +1577,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1607,7 +1607,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1637,7 +1637,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1667,7 +1667,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1697,7 +1697,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1727,7 +1727,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1757,7 +1757,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1787,7 +1787,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1817,7 +1817,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1847,7 +1847,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1877,7 +1877,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1907,7 +1907,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1937,7 +1937,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1967,7 +1967,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1997,7 +1997,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2027,7 +2027,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2057,7 +2057,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2087,7 +2087,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2117,7 +2117,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2147,7 +2147,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2177,7 +2177,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2207,7 +2207,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2237,7 +2237,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2267,7 +2267,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2297,7 +2297,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2327,7 +2327,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2357,7 +2357,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2387,7 +2387,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2417,7 +2417,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2447,7 +2447,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2477,7 +2477,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2507,7 +2507,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2537,7 +2537,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2567,7 +2567,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2597,7 +2597,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2627,7 +2627,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2657,7 +2657,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2687,7 +2687,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2717,7 +2717,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2747,7 +2747,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2777,7 +2777,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2807,7 +2807,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2837,7 +2837,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2867,7 +2867,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2897,7 +2897,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2927,7 +2927,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2957,7 +2957,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2987,7 +2987,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3017,7 +3017,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3047,7 +3047,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3077,7 +3077,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3107,7 +3107,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3137,7 +3137,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3167,7 +3167,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3197,7 +3197,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3227,7 +3227,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3257,7 +3257,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3287,7 +3287,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3317,7 +3317,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3347,7 +3347,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3377,7 +3377,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3407,7 +3407,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3437,7 +3437,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3467,7 +3467,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3497,7 +3497,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3527,7 +3527,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3557,7 +3557,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3587,7 +3587,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3617,7 +3617,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3647,7 +3647,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3677,7 +3677,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3707,7 +3707,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3737,7 +3737,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3767,7 +3767,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3797,7 +3797,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3827,7 +3827,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3857,7 +3857,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3887,7 +3887,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3917,7 +3917,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3947,7 +3947,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3977,7 +3977,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4007,7 +4007,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4037,7 +4037,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4067,7 +4067,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4097,7 +4097,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4127,7 +4127,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4157,7 +4157,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4187,7 +4187,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4217,7 +4217,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4247,7 +4247,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4277,7 +4277,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4307,7 +4307,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4337,7 +4337,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4367,7 +4367,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4397,7 +4397,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4427,7 +4427,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4457,7 +4457,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4487,7 +4487,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4517,7 +4517,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4547,7 +4547,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4577,7 +4577,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4607,7 +4607,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4637,7 +4637,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4667,7 +4667,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4697,7 +4697,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4727,7 +4727,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4757,7 +4757,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4787,7 +4787,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4817,7 +4817,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4847,7 +4847,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4877,7 +4877,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4907,7 +4907,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4937,7 +4937,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4967,7 +4967,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4997,7 +4997,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5027,7 +5027,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5057,7 +5057,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5087,7 +5087,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5117,7 +5117,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5147,7 +5147,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5177,7 +5177,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5207,7 +5207,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5237,7 +5237,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5267,7 +5267,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5297,7 +5297,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5327,7 +5327,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5357,7 +5357,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5387,7 +5387,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5417,7 +5417,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5447,7 +5447,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5477,7 +5477,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5507,7 +5507,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5537,7 +5537,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5567,7 +5567,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5597,7 +5597,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5627,7 +5627,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5657,7 +5657,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5687,7 +5687,7 @@ Module ops.
                       self << other
                   }
       *)
-      Definition shl (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5720,7 +5720,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5750,7 +5750,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5780,7 +5780,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5810,7 +5810,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5840,7 +5840,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5870,7 +5870,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5900,7 +5900,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5930,7 +5930,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5960,7 +5960,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5990,7 +5990,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6020,7 +6020,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6050,7 +6050,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6080,7 +6080,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6110,7 +6110,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6140,7 +6140,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6170,7 +6170,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6200,7 +6200,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6230,7 +6230,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6260,7 +6260,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6290,7 +6290,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6320,7 +6320,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6350,7 +6350,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6380,7 +6380,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6410,7 +6410,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6440,7 +6440,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6470,7 +6470,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6500,7 +6500,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6530,7 +6530,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6560,7 +6560,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6590,7 +6590,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6620,7 +6620,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6650,7 +6650,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6680,7 +6680,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6710,7 +6710,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6740,7 +6740,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6770,7 +6770,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6800,7 +6800,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6830,7 +6830,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6860,7 +6860,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6890,7 +6890,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6920,7 +6920,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6950,7 +6950,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6980,7 +6980,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7010,7 +7010,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7040,7 +7040,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7070,7 +7070,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7100,7 +7100,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7130,7 +7130,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7160,7 +7160,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7190,7 +7190,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7220,7 +7220,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7250,7 +7250,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7280,7 +7280,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7310,7 +7310,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7340,7 +7340,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7370,7 +7370,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7400,7 +7400,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7430,7 +7430,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7460,7 +7460,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7490,7 +7490,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7520,7 +7520,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7550,7 +7550,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7580,7 +7580,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7610,7 +7610,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7640,7 +7640,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7670,7 +7670,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7700,7 +7700,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7730,7 +7730,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7760,7 +7760,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7790,7 +7790,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7820,7 +7820,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7850,7 +7850,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7880,7 +7880,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7910,7 +7910,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7940,7 +7940,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7970,7 +7970,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8000,7 +8000,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8030,7 +8030,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8060,7 +8060,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8090,7 +8090,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8120,7 +8120,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8150,7 +8150,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8180,7 +8180,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8210,7 +8210,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8240,7 +8240,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8270,7 +8270,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8300,7 +8300,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8330,7 +8330,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8360,7 +8360,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8390,7 +8390,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8420,7 +8420,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8450,7 +8450,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8480,7 +8480,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8510,7 +8510,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8540,7 +8540,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8570,7 +8570,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8600,7 +8600,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8630,7 +8630,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8660,7 +8660,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8690,7 +8690,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8720,7 +8720,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8750,7 +8750,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8780,7 +8780,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8810,7 +8810,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8840,7 +8840,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8870,7 +8870,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8900,7 +8900,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8930,7 +8930,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8960,7 +8960,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8990,7 +8990,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9020,7 +9020,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9050,7 +9050,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9080,7 +9080,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9110,7 +9110,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9140,7 +9140,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9170,7 +9170,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9200,7 +9200,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9230,7 +9230,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9260,7 +9260,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9290,7 +9290,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9320,7 +9320,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9350,7 +9350,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9380,7 +9380,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9410,7 +9410,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9440,7 +9440,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9470,7 +9470,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9500,7 +9500,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9530,7 +9530,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9560,7 +9560,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9590,7 +9590,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9620,7 +9620,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9650,7 +9650,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9680,7 +9680,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9710,7 +9710,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9740,7 +9740,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9770,7 +9770,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9800,7 +9800,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9830,7 +9830,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9860,7 +9860,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9890,7 +9890,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9920,7 +9920,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9950,7 +9950,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9980,7 +9980,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10010,7 +10010,7 @@ Module ops.
                       self >> other
                   }
       *)
-      Definition shr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10036,7 +10036,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10044,7 +10044,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10061,7 +10061,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10069,7 +10069,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10086,7 +10086,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10094,7 +10094,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10111,7 +10111,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10119,7 +10119,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10136,7 +10136,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10144,7 +10144,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10161,7 +10161,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10169,7 +10169,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10186,7 +10186,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10194,7 +10194,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10211,7 +10211,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10219,7 +10219,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10236,7 +10236,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10244,7 +10244,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10261,7 +10261,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10269,7 +10269,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10286,7 +10286,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10294,7 +10294,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10311,7 +10311,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10319,7 +10319,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10336,7 +10336,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10344,7 +10344,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_and (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10364,7 +10364,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10372,7 +10372,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10389,7 +10389,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10397,7 +10397,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10414,7 +10414,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10422,7 +10422,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10439,7 +10439,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10447,7 +10447,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10464,7 +10464,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10472,7 +10472,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10489,7 +10489,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10497,7 +10497,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10514,7 +10514,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10522,7 +10522,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10539,7 +10539,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10547,7 +10547,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10564,7 +10564,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10572,7 +10572,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10589,7 +10589,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10597,7 +10597,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10614,7 +10614,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10622,7 +10622,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10639,7 +10639,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10647,7 +10647,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10664,7 +10664,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10672,7 +10672,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_or (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_or (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10692,7 +10692,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10700,7 +10700,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10717,7 +10717,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10725,7 +10725,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10742,7 +10742,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10750,7 +10750,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10767,7 +10767,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10775,7 +10775,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10792,7 +10792,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10800,7 +10800,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10817,7 +10817,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10825,7 +10825,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10842,7 +10842,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10850,7 +10850,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10867,7 +10867,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10875,7 +10875,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10892,7 +10892,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10900,7 +10900,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10917,7 +10917,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10925,7 +10925,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10942,7 +10942,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10950,7 +10950,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10967,7 +10967,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10975,7 +10975,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10992,7 +10992,7 @@ Module ops.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11000,7 +11000,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| other |)) |)
+              M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| other |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11024,7 +11024,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11053,7 +11053,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11082,7 +11082,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11111,7 +11111,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11140,7 +11140,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11169,7 +11169,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11198,7 +11198,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11227,7 +11227,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11256,7 +11256,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11285,7 +11285,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11314,7 +11314,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11343,7 +11343,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11372,7 +11372,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11401,7 +11401,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11430,7 +11430,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11459,7 +11459,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11488,7 +11488,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11517,7 +11517,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11546,7 +11546,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11575,7 +11575,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11604,7 +11604,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11633,7 +11633,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11662,7 +11662,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11691,7 +11691,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11720,7 +11720,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11749,7 +11749,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11778,7 +11778,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11807,7 +11807,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11836,7 +11836,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11865,7 +11865,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11894,7 +11894,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11923,7 +11923,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11952,7 +11952,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11981,7 +11981,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12010,7 +12010,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12039,7 +12039,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12068,7 +12068,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12097,7 +12097,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12126,7 +12126,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12155,7 +12155,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12184,7 +12184,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12213,7 +12213,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12242,7 +12242,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12271,7 +12271,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12300,7 +12300,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12329,7 +12329,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12358,7 +12358,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12387,7 +12387,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12416,7 +12416,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12445,7 +12445,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12474,7 +12474,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12503,7 +12503,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12532,7 +12532,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12561,7 +12561,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12590,7 +12590,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12619,7 +12619,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12648,7 +12648,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12677,7 +12677,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12706,7 +12706,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12735,7 +12735,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12764,7 +12764,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12793,7 +12793,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12822,7 +12822,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12851,7 +12851,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12880,7 +12880,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12909,7 +12909,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12938,7 +12938,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12967,7 +12967,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12996,7 +12996,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13025,7 +13025,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13054,7 +13054,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13083,7 +13083,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13112,7 +13112,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13141,7 +13141,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13170,7 +13170,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13199,7 +13199,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13228,7 +13228,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13257,7 +13257,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13286,7 +13286,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13315,7 +13315,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13344,7 +13344,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13373,7 +13373,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13402,7 +13402,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13431,7 +13431,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13460,7 +13460,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13489,7 +13489,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13518,7 +13518,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13547,7 +13547,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13576,7 +13576,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13605,7 +13605,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13634,7 +13634,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13663,7 +13663,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13692,7 +13692,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13721,7 +13721,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13750,7 +13750,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13779,7 +13779,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13808,7 +13808,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13837,7 +13837,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13866,7 +13866,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13895,7 +13895,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13924,7 +13924,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13953,7 +13953,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13982,7 +13982,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14011,7 +14011,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14040,7 +14040,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14069,7 +14069,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14098,7 +14098,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14127,7 +14127,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14156,7 +14156,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14185,7 +14185,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14214,7 +14214,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14243,7 +14243,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14272,7 +14272,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14301,7 +14301,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14330,7 +14330,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14359,7 +14359,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14388,7 +14388,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14417,7 +14417,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14446,7 +14446,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14475,7 +14475,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14504,7 +14504,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14533,7 +14533,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14562,7 +14562,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14591,7 +14591,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14620,7 +14620,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14649,7 +14649,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14678,7 +14678,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14707,7 +14707,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14736,7 +14736,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14765,7 +14765,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14794,7 +14794,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14823,7 +14823,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14852,7 +14852,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14881,7 +14881,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14910,7 +14910,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14939,7 +14939,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14968,7 +14968,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14997,7 +14997,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15026,7 +15026,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15055,7 +15055,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15084,7 +15084,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15113,7 +15113,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15142,7 +15142,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15171,7 +15171,7 @@ Module ops.
                       *self <<= other
                   }
       *)
-      Definition shl_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shl_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15203,7 +15203,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15232,7 +15232,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15261,7 +15261,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15290,7 +15290,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15319,7 +15319,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15348,7 +15348,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15377,7 +15377,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15406,7 +15406,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15435,7 +15435,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15464,7 +15464,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15493,7 +15493,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15522,7 +15522,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15551,7 +15551,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15580,7 +15580,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15609,7 +15609,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15638,7 +15638,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15667,7 +15667,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15696,7 +15696,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15725,7 +15725,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15754,7 +15754,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15783,7 +15783,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15812,7 +15812,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15841,7 +15841,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15870,7 +15870,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15899,7 +15899,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15928,7 +15928,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15957,7 +15957,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -15986,7 +15986,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16015,7 +16015,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16044,7 +16044,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16073,7 +16073,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16102,7 +16102,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16131,7 +16131,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16160,7 +16160,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16189,7 +16189,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16218,7 +16218,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16247,7 +16247,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16276,7 +16276,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16305,7 +16305,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16334,7 +16334,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16363,7 +16363,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16392,7 +16392,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16421,7 +16421,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16450,7 +16450,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16479,7 +16479,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16508,7 +16508,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16537,7 +16537,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16566,7 +16566,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16595,7 +16595,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16624,7 +16624,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16653,7 +16653,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16682,7 +16682,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16711,7 +16711,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16740,7 +16740,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16769,7 +16769,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16798,7 +16798,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16827,7 +16827,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16856,7 +16856,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16885,7 +16885,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16914,7 +16914,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16943,7 +16943,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -16972,7 +16972,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17001,7 +17001,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17030,7 +17030,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17059,7 +17059,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17088,7 +17088,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17117,7 +17117,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17146,7 +17146,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17175,7 +17175,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17204,7 +17204,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17233,7 +17233,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17262,7 +17262,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17291,7 +17291,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17320,7 +17320,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17349,7 +17349,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17378,7 +17378,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17407,7 +17407,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17436,7 +17436,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17465,7 +17465,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17494,7 +17494,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17523,7 +17523,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17552,7 +17552,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17581,7 +17581,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17610,7 +17610,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17639,7 +17639,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17668,7 +17668,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17697,7 +17697,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17726,7 +17726,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17755,7 +17755,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17784,7 +17784,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17813,7 +17813,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17842,7 +17842,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17871,7 +17871,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17900,7 +17900,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17929,7 +17929,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17958,7 +17958,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -17987,7 +17987,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18016,7 +18016,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18045,7 +18045,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18074,7 +18074,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18103,7 +18103,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18132,7 +18132,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18161,7 +18161,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18190,7 +18190,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18219,7 +18219,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18248,7 +18248,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18277,7 +18277,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18306,7 +18306,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18335,7 +18335,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18364,7 +18364,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18393,7 +18393,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18422,7 +18422,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18451,7 +18451,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18480,7 +18480,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18509,7 +18509,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18538,7 +18538,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18567,7 +18567,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18596,7 +18596,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18625,7 +18625,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18654,7 +18654,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18683,7 +18683,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18712,7 +18712,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18741,7 +18741,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18770,7 +18770,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18799,7 +18799,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18828,7 +18828,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18857,7 +18857,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18886,7 +18886,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18915,7 +18915,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18944,7 +18944,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -18973,7 +18973,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19002,7 +19002,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19031,7 +19031,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19060,7 +19060,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19089,7 +19089,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19118,7 +19118,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19147,7 +19147,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19176,7 +19176,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19205,7 +19205,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19234,7 +19234,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19263,7 +19263,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19292,7 +19292,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19321,7 +19321,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -19350,7 +19350,7 @@ Module ops.
                       *self >>= other
                   }
       *)
-      Definition shr_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shr_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic

@@ -1,0 +1,10 @@
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/std_library_types/result.rs:19:16
+   |
+19 |             Ok(x / y)
+   |                ^^^^^
+   |
+   = note: Please report 🙏
+
+warning: 1 warning emitted
+

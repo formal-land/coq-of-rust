@@ -1,15 +1,116 @@
 Require Import CoqOfRust.CoqOfRust.
 
-Class ToValue (A : Set) : Set := {
+Class ToTy (A : Set) : Set := {
   Φ : Ty.t;
-  φ : A -> Value.t;
 }.
 Arguments Φ _ {_}.
 
-(** For tuples we provide a canonical way to convert to values. *)
+Class ToValue (A : Set) : Set := {
+  φ : A -> Value.t;
+}.
+
+Module A.
+  Definition make {A : Set} `{ToValue A} (value : A): A.t :=
+    A.Make (to_value := φ) value.
+End A.
+
+Module Immediate.
+  Inductive t (A : Set) `{ToValue A} : Set :=
+  | Make : A -> t A.
+  Arguments Make {_ _}.
+
+  Global Instance IsToValue {A : Set} `{ToValue A} : ToValue (t A) := {
+    φ '(Make x) := Value.Pointer (Pointer.Immediate (φ x));
+  }.
+
+  Definition of_value {A : Set} `{ToValue A} (x : A) :
+      Value.Pointer (Pointer.Immediate (A.to_value (A.make x))) =
+      φ (Make x) :=
+    eq_refl.
+End Immediate.
+
+Global Instance ZIsToValue : ToValue Z := {
+  φ z := Value.Integer z;
+}.
+
+Module TupleIsToTy.
+  Global Instance I0 : ToTy unit := {
+    Φ := Ty.tuple [];
+  }.
+
+  Global Instance I2 (A1 A2 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2) :
+      ToTy (A1 * A2) := {
+    Φ := Ty.tuple [Φ A1; Φ A2];
+  }.
+
+  Global Instance I3 (A1 A2 A3 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3) :
+      ToTy (A1 * A2 * A3) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3];
+  }.
+
+  Global Instance I4 (A1 A2 A3 A4 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3)
+      (_ : ToTy A4) :
+      ToTy (A1 * A2 * A3 * A4) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4];
+  }.
+
+  Global Instance I5 (A1 A2 A3 A4 A5 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3)
+      (_ : ToTy A4)
+      (_ : ToTy A5) :
+      ToTy (A1 * A2 * A3 * A4 * A5) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5];
+  }.
+
+  Global Instance I6 (A1 A2 A3 A4 A5 A6 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3)
+      (_ : ToTy A4)
+      (_ : ToTy A5)
+      (_ : ToTy A6) :
+      ToTy (A1 * A2 * A3 * A4 * A5 * A6) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6];
+  }.
+
+  Global Instance I7 (A1 A2 A3 A4 A5 A6 A7 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3)
+      (_ : ToTy A4)
+      (_ : ToTy A5)
+      (_ : ToTy A6)
+      (_ : ToTy A7) :
+      ToTy (A1 * A2 * A3 * A4 * A5 * A6 * A7) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7];
+  }.
+
+  Global Instance I8 (A1 A2 A3 A4 A5 A6 A7 A8 : Set)
+      (_ : ToTy A1)
+      (_ : ToTy A2)
+      (_ : ToTy A3)
+      (_ : ToTy A4)
+      (_ : ToTy A5)
+      (_ : ToTy A6)
+      (_ : ToTy A7)
+      (_ : ToTy A8) :
+      ToTy (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8) := {
+    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7; Φ A8];
+  }.
+End TupleIsToTy.
+
 Module TupleIsToValue.
   Global Instance I0 : ToValue unit := {
-    Φ := Ty.tuple [];
     φ 'tt := Value.Tuple [];
   }.
 
@@ -17,7 +118,6 @@ Module TupleIsToValue.
       (_ : ToValue A1)
       (_ : ToValue A2) :
       ToValue (A1 * A2) := {
-    Φ := Ty.tuple [Φ A1; Φ A2];
     φ '(x1, x2) := Value.Tuple [φ x1; φ x2];
   }.
 
@@ -26,7 +126,6 @@ Module TupleIsToValue.
       (_ : ToValue A2)
       (_ : ToValue A3) :
       ToValue (A1 * A2 * A3) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3];
     φ '(x1, x2, x3) :=
       Value.Tuple [φ x1; φ x2; φ x3];
   }.
@@ -37,7 +136,6 @@ Module TupleIsToValue.
       (_ : ToValue A3)
       (_ : ToValue A4) :
       ToValue (A1 * A2 * A3 * A4) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4];
     φ '(x1, x2, x3, x4) :=
       Value.Tuple [φ x1; φ x2; φ x3; φ x4];
   }.
@@ -49,7 +147,6 @@ Module TupleIsToValue.
       (_ : ToValue A4)
       (_ : ToValue A5) :
       ToValue (A1 * A2 * A3 * A4 * A5) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5];
     φ '(x1, x2, x3, x4, x5) :=
       Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5];
   }.
@@ -62,7 +159,6 @@ Module TupleIsToValue.
       (_ : ToValue A5)
       (_ : ToValue A6) :
       ToValue (A1 * A2 * A3 * A4 * A5 * A6) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6];
     φ '(x1, x2, x3, x4, x5, x6) :=
       Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6];
   }.
@@ -76,7 +172,6 @@ Module TupleIsToValue.
       (_ : ToValue A6)
       (_ : ToValue A7) :
       ToValue (A1 * A2 * A3 * A4 * A5 * A6 * A7) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7];
     φ '(x1, x2, x3, x4, x5, x6, x7) :=
       Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6; φ x7];
   }.
@@ -91,7 +186,6 @@ Module TupleIsToValue.
       (_ : ToValue A7)
       (_ : ToValue A8) :
       ToValue (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8) := {
-    Φ := Ty.tuple [Φ A1; Φ A2; Φ A3; Φ A4; Φ A5; Φ A6; Φ A7; Φ A8];
     φ '(x1, x2, x3, x4, x5, x6, x7, x8) :=
       Value.Tuple [φ x1; φ x2; φ x3; φ x4; φ x5; φ x6; φ x7; φ x8];
   }.

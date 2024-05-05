@@ -15,7 +15,7 @@ Module future.
     Definition Self : Ty.t := Ty.path "core::future::ResumeTy".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -29,16 +29,17 @@ Module future.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "ResumeTy" |);
+              M.read (| M.of_value (| Value.String "ResumeTy" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "core::future::ResumeTy",
                     0
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -67,14 +68,14 @@ Module future.
     Definition Self : Ty.t := Ty.path "core::future::ResumeTy".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
@@ -118,7 +119,7 @@ Module future.
       unsafe { &mut *cx.0.as_ptr().cast() }
   }
   *)
-  Definition get_context (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_context (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ cx ] =>
       ltac:(M.monadic

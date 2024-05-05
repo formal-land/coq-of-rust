@@ -39,7 +39,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -60,19 +60,24 @@ Module task.
                         |) in
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                              [ M.read (| __self_0 |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                  [ M.read (| __self_0 |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -92,7 +97,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -122,8 +127,8 @@ Module task.
                           |),
                           [
                             M.read (| f |);
-                            M.read (| Value.String "Ready" |);
-                            (* Unsize *) M.pointer_coercion __self_0
+                            M.read (| M.of_value (| Value.String "Ready" |) |);
+                            (* Unsize *) M.pointer_coercion (| __self_0 |)
                           ]
                         |)
                       |)));
@@ -137,7 +142,7 @@ Module task.
                             "write_str",
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Pending" |) ]
+                          [ M.read (| f |); M.read (| M.of_value (| Value.String "Pending" |) |) ]
                         |)
                       |)))
                 ]
@@ -171,7 +176,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -179,8 +184,8 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -212,7 +217,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -242,11 +247,16 @@ Module task.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -280,7 +290,7 @@ Module task.
                                   [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)))
                         ]
                       |)
                     |)))
@@ -303,7 +313,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -342,7 +352,12 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -372,7 +387,9 @@ Module task.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)))
                         ]
                       |)));
                   fun γ =>
@@ -398,7 +415,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -427,7 +444,11 @@ Module task.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -494,7 +515,7 @@ Module task.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -544,7 +565,7 @@ Module task.
                           [ M.read (| __self_0 |); M.read (| state |) ]
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -574,7 +595,7 @@ Module task.
               }
           }
       *)
-      Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -595,24 +616,32 @@ Module task.
                         |) in
                       let t := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                F,
-                                [ Ty.tuple [ T ] ],
-                                "call_once",
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::function::FnOnce",
+                                    F,
+                                    [ Ty.tuple [ T ] ],
+                                    "call_once",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| f |);
+                                    M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                                  ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -628,7 +657,7 @@ Module task.
               matches!( *self, Poll::Ready(_))
           }
       *)
-      Definition is_ready (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ready (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -646,8 +675,8 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -663,21 +692,22 @@ Module task.
               !self.is_ready()
           }
       *)
-      Definition is_pending (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pending (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.Pure.not (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [ T ],
                   "is_ready",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -704,7 +734,7 @@ Module task.
               }
           }
       *)
-      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -731,24 +761,35 @@ Module task.
                         |) in
                       let t := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnOnce",
-                                    F,
-                                    [ Ty.tuple [ T ] ],
-                                    "call_once",
-                                    []
-                                  |),
-                                  [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                                |)
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnOnce",
+                                            F,
+                                            [ Ty.tuple [ T ] ],
+                                            "call_once",
+                                            []
+                                          |),
+                                          [
+                                            M.read (| f |);
+                                            M.of_value (|
+                                              Value.Tuple [ A.to_value (M.read (| t |)) ]
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -766,13 +807,24 @@ Module task.
                         |) in
                       let e := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ A.to_value (M.read (| e |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -795,7 +847,7 @@ Module task.
               }
           }
       *)
-      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -822,9 +874,18 @@ Module task.
                         |) in
                       let t := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    [ A.to_value (M.read (| t |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -842,28 +903,41 @@ Module task.
                         |) in
                       let e := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnOnce",
-                                    F,
-                                    [ Ty.tuple [ E ] ],
-                                    "call_once",
-                                    []
-                                  |),
-                                  [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
-                                |)
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnOnce",
+                                            F,
+                                            [ Ty.tuple [ E ] ],
+                                            "call_once",
+                                            []
+                                          |),
+                                          [
+                                            M.read (| f |);
+                                            M.of_value (|
+                                              Value.Tuple [ A.to_value (M.read (| e |)) ]
+                                            |)
+                                          ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -898,7 +972,7 @@ Module task.
               }
           }
       *)
-      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -931,28 +1005,42 @@ Module task.
                         |) in
                       let t := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                Value.StructTuple
-                                  "core::result::Result::Ok"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        F,
-                                        [ Ty.tuple [ T ] ],
-                                        "call_once",
-                                        []
-                                      |),
-                                      [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                                    |)
-                                  ]
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Ok"
+                                            [
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnOnce",
+                                                    F,
+                                                    [ Ty.tuple [ T ] ],
+                                                    "call_once",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| f |);
+                                                    M.of_value (|
+                                                      Value.Tuple [ A.to_value (M.read (| t |)) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -976,13 +1064,25 @@ Module task.
                         |) in
                       let e := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [ A.to_value (M.read (| e |)) ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -993,13 +1093,20 @@ Module task.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::option::Option::None" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1023,7 +1130,7 @@ Module task.
               }
           }
       *)
-      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [ U; F ], [ self; f ] =>
@@ -1056,13 +1163,25 @@ Module task.
                         |) in
                       let t := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Ok"
+                                            [ A.to_value (M.read (| t |)) ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1086,28 +1205,42 @@ Module task.
                         |) in
                       let e := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        F,
-                                        [ Ty.tuple [ E ] ],
-                                        "call_once",
-                                        []
-                                      |),
-                                      [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
-                                    |)
-                                  ]
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnOnce",
+                                                    F,
+                                                    [ Ty.tuple [ E ] ],
+                                                    "call_once",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (| f |);
+                                                    M.of_value (|
+                                                      Value.Tuple [ A.to_value (M.read (| e |)) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1118,13 +1251,20 @@ Module task.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [ Value.StructTuple "core::option::Option::None" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1144,13 +1284,15 @@ Module task.
               Poll::Ready(t)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
-            Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| t |) ]))
+            M.of_value (|
+              Value.StructTuple "core::task::poll::Poll::Ready" [ A.to_value (M.read (| t |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1181,7 +1323,7 @@ Module task.
               c.map(Ok)
           }
       *)
-      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [], [ c ] =>
@@ -1196,7 +1338,7 @@ Module task.
                   Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [ T; E ])
                 ]
               |),
-              [ M.read (| c |); M.constructor_as_closure "core::result::Result::Ok" ]
+              [ M.read (| c |); M.constructor_as_closure (| "core::result::Result::Ok" |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1210,7 +1352,7 @@ Module task.
               }
           }
       *)
-      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [], [ self ] =>
@@ -1236,9 +1378,18 @@ Module task.
                         |) in
                       let x := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| x |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::task::poll::Poll::Ready"
+                                    [ A.to_value (M.read (| x |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1256,16 +1407,32 @@ Module task.
                         |) in
                       let e := M.copy (| γ1_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Break"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ A.to_value (M.read (| e |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::task::poll::Poll::Pending" []
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1301,7 +1468,7 @@ Module task.
               }
           }
       *)
-      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E F in
         match τ, α with
         | [], [ x ] =>
@@ -1321,24 +1488,30 @@ Module task.
                         |) in
                       let e := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    F,
-                                    [ E ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| e |) ]
-                                |)
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            F,
+                                            [ E ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| e |) ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1384,7 +1557,7 @@ Module task.
               c.map(|x| x.map(Ok))
           }
       *)
-      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [], [ c ] =>
@@ -1409,8 +1582,8 @@ Module task.
               |),
               [
                 M.read (| c |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1433,13 +1606,14 @@ Module task.
                                   |),
                                   [
                                     M.read (| x |);
-                                    M.constructor_as_closure "core::result::Result::Ok"
+                                    M.constructor_as_closure (| "core::result::Result::Ok" |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1455,7 +1629,7 @@ Module task.
               }
           }
       *)
-      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E in
         match τ, α with
         | [], [ self ] =>
@@ -1487,13 +1661,25 @@ Module task.
                         |) in
                       let x := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [
-                            Value.StructTuple
-                              "core::task::poll::Poll::Ready"
-                              [ Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::task::poll::Poll::Ready"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [ A.to_value (M.read (| x |)) ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1517,9 +1703,18 @@ Module task.
                         |) in
                       let e := M.copy (| γ2_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Break"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ A.to_value (M.read (| e |)) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1530,20 +1725,37 @@ Module task.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [
-                            Value.StructTuple
-                              "core::task::poll::Poll::Ready"
-                              [ Value.StructTuple "core::option::Option::None" [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::task::poll::Poll::Ready"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::task::poll::Poll::Pending" []
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1583,7 +1795,7 @@ Module task.
               }
           }
       *)
-      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T E F in
         match τ, α with
         | [], [ x ] =>
@@ -1603,28 +1815,37 @@ Module task.
                         |) in
                       let e := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        F,
-                                        [ E ],
-                                        "from",
-                                        []
-                                      |),
-                                      [ M.read (| e |) ]
-                                    |)
-                                  ]
-                              ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::task::poll::Poll::Ready"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [
+                                              A.to_value
+                                                (M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    F,
+                                                    [ E ],
+                                                    "from",
+                                                    []
+                                                  |),
+                                                  [ M.read (| e |) ]
+                                                |))
+                                            ]
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)

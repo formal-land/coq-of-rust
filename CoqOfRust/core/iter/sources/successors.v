@@ -15,15 +15,20 @@ Module iter.
           Successors { next: first, succ }
       }
       *)
-      Definition successors (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition successors (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; F ], [ first; succ ] =>
           ltac:(M.monadic
             (let first := M.alloc (| first |) in
             let succ := M.alloc (| succ |) in
-            Value.StructRecord
-              "core::iter::sources::successors::Successors"
-              [ ("next", M.read (| first |)); ("succ", M.read (| succ |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::iter::sources::successors::Successors"
+                [
+                  ("next", A.to_value (M.read (| first |)));
+                  ("succ", A.to_value (M.read (| succ |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -39,44 +44,48 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::successors::Successors") [ T; F ].
         
         (* Clone *)
-        Definition clone (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T F in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::sources::successors::Successors"
-                [
-                  ("next",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::Option") [ T ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "next"
-                        |)
-                      ]
-                    |));
-                  ("succ",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "succ"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::sources::successors::Successors"
+                  [
+                    ("next",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::successors::Successors",
+                              "next"
+                            |)
+                          ]
+                        |)));
+                    ("succ",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", F, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::successors::Successors",
+                              "succ"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -103,7 +112,7 @@ Module iter.
                 Some(item)
             }
         *)
-        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T F in
           match τ, α with
           | [], [ self ] =>
@@ -208,12 +217,16 @@ Module iter.
                               "core::iter::sources::successors::Successors",
                               "succ"
                             |);
-                            Value.Tuple [ item ]
+                            M.of_value (| Value.Tuple [ A.to_value item ] |)
                           ]
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| item |)) ]
+                      |)
                     |)
                   |)))
               |)))
@@ -225,7 +238,7 @@ Module iter.
                 if self.next.is_some() { (1, None) } else { (0, Some(0)) }
             }
         *)
-        Definition size_hint (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T F in
           match τ, α with
           | [], [ self ] =>
@@ -233,7 +246,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -258,22 +271,32 @@ Module iter.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 1;
-                              Value.StructTuple "core::option::Option::None" []
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.of_value (| Value.Integer 1 |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple "core::option::Option::None" []
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              Value.Integer Integer.Usize 0;
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ Value.Integer Integer.Usize 0 ]
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value (M.of_value (| Value.Integer 0 |));
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -317,7 +340,7 @@ Module iter.
                 f.debug_struct("Successors").field("next", &self.next).finish()
             }
         *)
-        Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T F in
           match τ, α with
           | [], [ self; f ] =>
@@ -345,17 +368,19 @@ Module iter.
                             "debug_struct",
                             []
                           |),
-                          [ M.read (| f |); M.read (| Value.String "Successors" |) ]
+                          [ M.read (| f |); M.read (| M.of_value (| Value.String "Successors" |) |)
+                          ]
                         |)
                       |);
-                      M.read (| Value.String "next" |);
+                      M.read (| M.of_value (| Value.String "next" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::sources::successors::Successors",
                           "next"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]

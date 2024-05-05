@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_the_ref_pattern::Point".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -28,4 +28,4 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

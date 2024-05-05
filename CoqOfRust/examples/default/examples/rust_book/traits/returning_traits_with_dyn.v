@@ -26,12 +26,12 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
           "baaaaah!"
       }
   *)
-  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition noise (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| Value.String "baaaaah!" |)))
+        M.read (| M.of_value (| Value.String "baaaaah!" |) |)))
     | _, _ => M.impossible
     end.
   
@@ -51,12 +51,12 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
           "moooooo!"
       }
   *)
-  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition noise (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| Value.String "moooooo!" |)))
+        M.read (| M.of_value (| Value.String "moooooo!" |) |)))
     | _, _ => M.impossible
     end.
   
@@ -77,35 +77,36 @@ fn random_animal(random_number: f64) -> Box<dyn Animal> {
     }
 }
 *)
-Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
+Definition random_animal (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ random_number ] =>
     ltac:(M.monadic
       (let random_number := M.alloc (| random_number |) in
       (* Unsize *)
-      M.pointer_coercion
+      M.pointer_coercion (|
         (* Unsize *)
-        (M.pointer_coercion
-          (M.read (|
+        M.pointer_coercion (|
+          M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.read (| random_number |))
-                            (M.read (| UnsupportedLiteral |))
+                          BinOp.Pure.lt (|
+                            M.read (| random_number |),
+                            M.read (| M.of_value (| UnsupportedLiteral |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       (* Unsize *)
-                      M.pointer_coercion
+                      M.pointer_coercion (|
                         (* Unsize *)
-                        (M.pointer_coercion
-                          (M.call_closure (|
+                        M.pointer_coercion (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -116,15 +117,21 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                               "new",
                               []
                             |),
-                            [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] ]
-                          |)))
+                            [
+                              M.of_value (|
+                                Value.StructTuple "returning_traits_with_dyn::Sheep" []
+                              |)
+                            ]
+                          |)
+                        |)
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.call_closure (|
+                      M.pointer_coercion (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -135,12 +142,15 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
                             "new",
                             []
                           |),
-                          [ Value.StructTuple "returning_traits_with_dyn::Cow" [] ]
-                        |))
+                          [ M.of_value (| Value.StructTuple "returning_traits_with_dyn::Cow" [] |) ]
+                        |)
+                      |)
                     |)))
               ]
             |)
-          |)))))
+          |)
+        |)
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -154,12 +164,12 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let random_number := M.copy (| UnsupportedLiteral |) in
+        let random_number := M.copy (| M.of_value (| UnsupportedLiteral |) |) in
         let animal :=
           M.alloc (|
             M.call_closure (|
@@ -177,52 +187,63 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String "You've randomly chosen an animal, and it says "
-                              |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "returning_traits_with_dyn::Animal",
-                                        Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ],
-                                        [],
-                                        "noise",
-                                        []
-                                      |),
-                                      [ M.read (| animal |) ]
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String "You've randomly chosen an animal, and it says "
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "returning_traits_with_dyn::Animal",
+                                            Ty.dyn
+                                              [ ("returning_traits_with_dyn::Animal::Trait", []) ],
+                                            [],
+                                            "noise",
+                                            []
+                                          |),
+                                          [ M.read (| animal |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

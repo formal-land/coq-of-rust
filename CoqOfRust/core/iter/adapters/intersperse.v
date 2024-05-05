@@ -21,7 +21,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -36,33 +36,36 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Intersperse" |);
-                  M.read (| Value.String "separator" |);
+                  M.read (| M.of_value (| Value.String "Intersperse" |) |);
+                  M.read (| M.of_value (| Value.String "separator" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::intersperse::Intersperse",
                       "separator"
-                    |));
-                  M.read (| Value.String "iter" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "iter" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::intersperse::Intersperse",
                       "iter"
-                    |));
-                  M.read (| Value.String "needs_sep" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "needs_sep" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::adapters::intersperse::Intersperse",
                         "needs_sep"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -82,61 +85,72 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::intersperse::Intersperse"
-                [
-                  ("separator",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", Ty.associated, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "separator"
-                        |)
-                      ]
-                    |));
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("needs_sep",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "bool",
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::Intersperse",
-                          "needs_sep"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::intersperse::Intersperse"
+                  [
+                    ("separator",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.associated,
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "separator"
+                            |)
+                          ]
+                        |)));
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("needs_sep",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "bool",
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::Intersperse",
+                              "needs_sep"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -158,30 +172,33 @@ Module iter.
                 Self { iter: iter.peekable(), separator, needs_sep: false }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ iter; separator ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let separator := M.alloc (| separator |) in
-              Value.StructRecord
-                "core::iter::adapters::intersperse::Intersperse"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        "peekable",
-                        []
-                      |),
-                      [ M.read (| iter |) ]
-                    |));
-                  ("separator", M.read (| separator |));
-                  ("needs_sep", Value.Bool false)
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::intersperse::Intersperse"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            I,
+                            [],
+                            "peekable",
+                            []
+                          |),
+                          [ M.read (| iter |) ]
+                        |)));
+                    ("separator", A.to_value (M.read (| separator |)));
+                    ("needs_sep", A.to_value (M.of_value (| Value.Bool false |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -208,7 +225,7 @@ Module iter.
                 }
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -216,7 +233,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -272,29 +289,32 @@ Module iter.
                               "core::iter::adapters::intersperse::Intersperse",
                               "needs_sep"
                             |),
-                            Value.Bool false
+                            M.of_value (| Value.Bool false |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated,
-                                  [],
-                                  "clone",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::Intersperse",
-                                    "separator"
-                                  |)
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      Ty.associated,
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::intersperse::Intersperse",
+                                        "separator"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -305,7 +325,7 @@ Module iter.
                               "core::iter::adapters::intersperse::Intersperse",
                               "needs_sep"
                             |),
-                            Value.Bool true
+                            M.of_value (| Value.Bool true |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -341,7 +361,7 @@ Module iter.
                 intersperse_fold(self.iter, init, f, move || separator.clone(), self.needs_sep)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -379,8 +399,8 @@ Module iter.
                       |);
                       M.read (| init |);
                       M.read (| f |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -402,7 +422,8 @@ Module iter.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end));
+                            end)
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -422,7 +443,7 @@ Module iter.
                 intersperse_size_hint(&self.iter, self.needs_sep)
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -491,7 +512,7 @@ Module iter.
                     .finish()
             }
         *)
-        Definition fmt (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [], [ self; f ] =>
@@ -533,37 +554,43 @@ Module iter.
                                     "debug_struct",
                                     []
                                   |),
-                                  [ M.read (| f |); M.read (| Value.String "IntersperseWith" |) ]
+                                  [
+                                    M.read (| f |);
+                                    M.read (| M.of_value (| Value.String "IntersperseWith" |) |)
+                                  ]
                                 |)
                               |);
-                              M.read (| Value.String "separator" |);
+                              M.read (| M.of_value (| Value.String "separator" |) |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
+                              M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::intersperse::IntersperseWith",
                                   "separator"
-                                |))
+                                |)
+                              |)
                             ]
                           |);
-                          M.read (| Value.String "iter" |);
+                          M.read (| M.of_value (| Value.String "iter" |) |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
+                          M.pointer_coercion (|
+                            M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "iter"
-                            |))
+                            |)
+                          |)
                         ]
                       |);
-                      M.read (| Value.String "needs_sep" |);
+                      M.read (| M.of_value (| Value.String "needs_sep" |) |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::intersperse::IntersperseWith",
                           "needs_sep"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -593,61 +620,66 @@ Module iter.
                 }
             }
         *)
-        Definition clone (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::intersperse::IntersperseWith"
-                [
-                  ("separator",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "separator"
-                        |)
-                      ]
-                    |));
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("needs_sep",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "bool",
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::intersperse::IntersperseWith",
-                          "needs_sep"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::intersperse::IntersperseWith"
+                  [
+                    ("separator",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "separator"
+                            |)
+                          ]
+                        |)));
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ I ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("needs_sep",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "bool",
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::intersperse::IntersperseWith",
+                              "needs_sep"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -669,30 +701,33 @@ Module iter.
                 Self { iter: iter.peekable(), separator, needs_sep: false }
             }
         *)
-        Definition new (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [], [ iter; separator ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               let separator := M.alloc (| separator |) in
-              Value.StructRecord
-                "core::iter::adapters::intersperse::IntersperseWith"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        "peekable",
-                        []
-                      |),
-                      [ M.read (| iter |) ]
-                    |));
-                  ("separator", M.read (| separator |));
-                  ("needs_sep", Value.Bool false)
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::intersperse::IntersperseWith"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            I,
+                            [],
+                            "peekable",
+                            []
+                          |),
+                          [ M.read (| iter |) ]
+                        |)));
+                    ("separator", A.to_value (M.read (| separator |)));
+                    ("needs_sep", A.to_value (M.of_value (| Value.Bool false |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -719,7 +754,7 @@ Module iter.
                 }
             }
         *)
-        Definition next (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [], [ self ] =>
@@ -727,7 +762,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -783,30 +818,33 @@ Module iter.
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "needs_sep"
                             |),
-                            Value.Bool false
+                            M.of_value (| Value.Bool false |)
                           |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::function::FnMut",
-                                  G,
-                                  [ Ty.tuple [] ],
-                                  "call_mut",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::intersperse::IntersperseWith",
-                                    "separator"
-                                  |);
-                                  Value.Tuple []
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::FnMut",
+                                      G,
+                                      [ Ty.tuple [] ],
+                                      "call_mut",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::adapters::intersperse::IntersperseWith",
+                                        "separator"
+                                      |);
+                                      M.of_value (| Value.Tuple [] |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -817,7 +855,7 @@ Module iter.
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "needs_sep"
                             |),
-                            Value.Bool true
+                            M.of_value (| Value.Bool true |)
                           |) in
                         M.alloc (|
                           M.call_closure (|
@@ -852,7 +890,7 @@ Module iter.
                 intersperse_fold(self.iter, init, f, self.separator, self.needs_sep)
             }
         *)
-        Definition fold (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -899,7 +937,7 @@ Module iter.
                 intersperse_size_hint(&self.iter, self.needs_sep)
             }
         *)
-        Definition size_hint (I G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I G in
           match τ, α with
           | [], [ self ] =>
@@ -956,7 +994,7 @@ Module iter.
           )
       }
       *)
-      Definition intersperse_size_hint (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition intersperse_size_hint (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ _ as I ], [ iter; needs_sep ] =>
           ltac:(M.monadic
@@ -983,76 +1021,91 @@ Module iter.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo := M.copy (| γ0_0 |) in
                       let hi := M.copy (| γ0_1 |) in
-                      let next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
+                      let next_is_elem :=
+                        M.alloc (| UnOp.Pure.not (| M.read (| needs_sep |) |) |) in
                       M.alloc (|
-                        Value.Tuple
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
-                              [
-                                M.call_closure (|
+                        M.of_value (|
+                          Value.Tuple
+                            [
+                              A.to_value
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
-                                    "saturating_sub",
+                                    "saturating_add",
                                     []
                                   |),
-                                  [ M.read (| lo |); M.rust_cast (M.read (| next_is_elem |)) ]
-                                |);
-                                M.read (| lo |)
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
-                                "and_then",
-                                [
-                                  Ty.path "usize";
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ])
-                                ]
-                              |),
-                              [
-                                M.read (| hi |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let hi := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "usize",
-                                                    "checked_add",
-                                                    []
-                                                  |),
-                                                  [
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "saturating_sub",
+                                        []
+                                      |),
+                                      [ M.read (| lo |); M.rust_cast (| M.read (| next_is_elem |) |)
+                                      ]
+                                    |);
+                                    M.read (| lo |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                    "and_then",
+                                    [
+                                      Ty.path "usize";
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "usize" ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          [ Ty.path "usize" ])
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| hi |);
+                                    M.closure (|
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let hi := M.copy (| γ |) in
                                                     M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.path "usize",
-                                                        "saturating_sub",
+                                                        "checked_add",
                                                         []
                                                       |),
                                                       [
-                                                        M.read (| hi |);
-                                                        M.rust_cast (M.read (| next_is_elem |))
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "usize",
+                                                            "saturating_sub",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| hi |);
+                                                            M.rust_cast (|
+                                                              M.read (| next_is_elem |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.read (| hi |)
                                                       ]
-                                                    |);
-                                                    M.read (| hi |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
-                                      end))
-                              ]
-                            |)
-                          ]
+                                                    |)))
+                                              ]
+                                            |)
+                                          | _ => M.impossible (||)
+                                          end)
+                                    |)
+                                  ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1090,7 +1143,7 @@ Module iter.
           })
       }
       *)
-      Definition intersperse_fold (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition intersperse_fold (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ _ as I; B; F; G ], [ iter; init; f; separator; needs_sep ] =>
           ltac:(M.monadic
@@ -1105,16 +1158,16 @@ Module iter.
                   let accum := M.copy (| init |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |)) in
+                              M.use (M.alloc (| UnOp.Pure.not (| M.read (| needs_sep |) |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1149,10 +1202,19 @@ Module iter.
                                             "call_mut",
                                             []
                                           |),
-                                          [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                          [
+                                            f;
+                                            M.of_value (|
+                                              Value.Tuple
+                                                [
+                                                  A.to_value (M.read (| accum |));
+                                                  A.to_value (M.read (| x |))
+                                                ]
+                                            |)
+                                          ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
@@ -1162,7 +1224,7 @@ Module iter.
                                     |)))
                               ]
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.alloc (|
@@ -1177,8 +1239,8 @@ Module iter.
                       [
                         M.read (| iter |);
                         M.read (| accum |);
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
@@ -1208,20 +1270,28 @@ Module iter.
                                                         |),
                                                         [
                                                           f;
-                                                          Value.Tuple
-                                                            [
-                                                              M.read (| accum |);
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::function::FnMut",
-                                                                  G,
-                                                                  [ Ty.tuple [] ],
-                                                                  "call_mut",
-                                                                  []
-                                                                |),
-                                                                [ separator; Value.Tuple [] ]
-                                                              |)
-                                                            ]
+                                                          M.of_value (|
+                                                            Value.Tuple
+                                                              [
+                                                                A.to_value (M.read (| accum |));
+                                                                A.to_value
+                                                                  (M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::function::FnMut",
+                                                                      G,
+                                                                      [ Ty.tuple [] ],
+                                                                      "call_mut",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      separator;
+                                                                      M.of_value (|
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1238,8 +1308,13 @@ Module iter.
                                                         |),
                                                         [
                                                           f;
-                                                          Value.Tuple
-                                                            [ M.read (| accum |); M.read (| x |) ]
+                                                          M.of_value (|
+                                                            Value.Tuple
+                                                              [
+                                                                A.to_value (M.read (| accum |));
+                                                                A.to_value (M.read (| x |))
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     |) in
@@ -1250,7 +1325,8 @@ Module iter.
                                   ]
                                 |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       ]
                     |)
                   |)

@@ -28,27 +28,30 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::mem::manually_drop::ManuallyDrop"
-              [
-                ("value",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::mem::manually_drop::ManuallyDrop",
-                        "value"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::mem::manually_drop::ManuallyDrop"
+                [
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::mem::manually_drop::ManuallyDrop",
+                            "value"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -66,7 +69,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -81,17 +84,18 @@ Module mem.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "ManuallyDrop" |);
-                M.read (| Value.String "value" |);
+                M.read (| M.of_value (| Value.String "ManuallyDrop" |) |);
+                M.read (| M.of_value (| Value.String "value" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::mem::manually_drop::ManuallyDrop",
                       "value"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -111,20 +115,23 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::mem::manually_drop::ManuallyDrop"
-              [
-                ("value",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::mem::manually_drop::ManuallyDrop"
+                [
+                  ("value",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -155,7 +162,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -207,7 +214,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -215,8 +222,8 @@ Module mem.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -237,7 +244,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -276,7 +283,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -315,7 +322,7 @@ Module mem.
         Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -354,15 +361,17 @@ Module mem.
               ManuallyDrop { value }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructRecord
-              "core::mem::manually_drop::ManuallyDrop"
-              [ ("value", M.read (| value |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::mem::manually_drop::ManuallyDrop"
+                [ ("value", A.to_value (M.read (| value |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -375,7 +384,7 @@ Module mem.
               slot.value
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ slot ] =>
@@ -402,7 +411,7 @@ Module mem.
               unsafe { ptr::read(&slot.value) }
           }
       *)
-      Definition take (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ slot ] =>
@@ -432,7 +441,7 @@ Module mem.
               unsafe { ptr::drop_in_place(&mut slot.value) }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ slot ] =>
@@ -469,7 +478,7 @@ Module mem.
               &self.value
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -502,7 +511,7 @@ Module mem.
               &mut self.value
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>

@@ -32,18 +32,20 @@ fn main() {
     let x = Operations::Add;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let x :=
           M.alloc (|
-            Value.StructTuple
-              "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-              []
+            M.of_value (|
+              Value.StructTuple
+                "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+                []
+            |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

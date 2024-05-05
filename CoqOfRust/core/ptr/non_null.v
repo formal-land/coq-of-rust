@@ -48,7 +48,7 @@ Module ptr.
               }
           }
       *)
-      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -86,7 +86,7 @@ Module ptr.
               unsafe { &*self.cast().as_ptr() }
           }
       *)
-      Definition as_uninit_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -125,7 +125,7 @@ Module ptr.
               unsafe { &mut *self.cast().as_ptr() }
           }
       *)
-      Definition as_uninit_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -165,7 +165,7 @@ Module ptr.
               }
           }
       *)
-      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ ptr ] =>
@@ -174,11 +174,11 @@ Module ptr.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
@@ -194,23 +194,28 @@ Module ptr.
                                 ]
                               |),
                               [
-                                Value.Tuple [ M.read (| ptr |) ];
+                                M.of_value (| Value.Tuple [ A.to_value (M.read (| ptr |)) ] |);
                                 M.get_associated_function (| Self, "comptime.new_unchecked", [] |);
                                 M.get_associated_function (| Self, "runtime.new_unchecked", [] |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::ptr::non_null::NonNull"
-                  [
-                    ("pointer",
-                      M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| ptr |))))
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ptr::non_null::NonNull"
+                    [
+                      ("pointer",
+                        A.to_value
+                          (M.rust_cast (|
+                            (* MutToConstPointer *) M.pointer_coercion (| M.read (| ptr |) |)
+                          |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -230,7 +235,7 @@ Module ptr.
               }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ ptr ] =>
@@ -238,41 +243,47 @@ Module ptr.
             (let ptr := M.alloc (| ptr |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [ T ],
                                   "is_null",
                                   []
                                 |),
                                 [ M.read (| ptr |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                                "new_unchecked",
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    "new_unchecked",
+                                    []
+                                  |),
+                                  [ M.read (| ptr |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -294,7 +305,7 @@ Module ptr.
               }
           }
       *)
-      Definition from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ data_address; metadata ] =>
@@ -336,38 +347,43 @@ Module ptr.
               (self.cast(), super::metadata(self.as_ptr()))
           }
       *)
-      Definition to_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                    "cast",
-                    [ Ty.tuple [] ]
-                  |),
-                  [ M.read (| self |) ]
-                |);
-                M.call_closure (|
-                  M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
-                  [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                          "as_ptr",
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |))
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        "cast",
+                        [ Ty.tuple [] ]
+                      |),
+                      [ M.read (| self |) ]
+                    |));
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
+                      [
+                        (* MutToConstPointer *)
+                        M.pointer_coercion (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                              "as_ptr",
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -382,7 +398,7 @@ Module ptr.
               unsafe { NonZeroUsize::new_unchecked(self.pointer.addr()) }
           }
       *)
-      Definition addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition addr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -422,7 +438,7 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.pointer.with_addr(addr.get()) as *mut _) }
           }
       *)
-      Definition with_addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_addr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; addr ] =>
@@ -436,8 +452,8 @@ Module ptr.
                 []
               |),
               [
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [ T ],
                       "with_addr",
@@ -460,7 +476,8 @@ Module ptr.
                         [ M.read (| addr |) ]
                       |)
                     ]
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -475,7 +492,7 @@ Module ptr.
               self.with_addr(f(self.addr()))
           }
       *)
-      Definition map_addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_addr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ impl_FnOnce_NonZeroUsize__arrow_NonZeroUsize ], [ self; f ] =>
@@ -500,17 +517,20 @@ Module ptr.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                            "addr",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                "addr",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -527,20 +547,21 @@ Module ptr.
               self.pointer as *mut T
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.read (|
+            M.rust_cast (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   self,
                   "core::ptr::non_null::NonNull",
                   "pointer"
                 |)
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -556,7 +577,7 @@ Module ptr.
               unsafe { &*self.as_ptr().cast_const() }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -589,7 +610,7 @@ Module ptr.
               unsafe { &mut *self.as_ptr() }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -616,7 +637,7 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr() as *mut U) }
           }
       *)
-      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ U ], [ self ] =>
@@ -629,15 +650,16 @@ Module ptr.
                 []
               |),
               [
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
                       "as_ptr",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -659,34 +681,37 @@ Module ptr.
               unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
           }
       *)
-      Definition offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition offset (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::offset",
-                      [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "isize" ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::offset",
+                          [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "isize" ]
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ptr::non_null::NonNull",
+                              "pointer"
+                            |)
+                          |);
+                          M.read (| count |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -704,35 +729,38 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_offset(count) } }
           }
       *)
-      Definition byte_offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_offset (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
-                      "byte_offset",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [ T ],
+                          "byte_offset",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ptr::non_null::NonNull",
+                              "pointer"
+                            |)
+                          |);
+                          M.read (| count |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -752,34 +780,37 @@ Module ptr.
               unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
           }
       *)
-      Definition add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::offset",
-                      [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::offset",
+                          [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ]
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ptr::non_null::NonNull",
+                              "pointer"
+                            |)
+                          |);
+                          M.read (| count |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -797,35 +828,38 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_add(count) } }
           }
       *)
-      Definition byte_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_add (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
-                      "byte_add",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [ T ],
+                          "byte_add",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ptr::non_null::NonNull",
+                              "pointer"
+                            |)
+                          |);
+                          M.read (| count |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -849,7 +883,7 @@ Module ptr.
               }
           }
       *)
-      Definition sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
@@ -858,7 +892,7 @@ Module ptr.
             let count := M.alloc (| count |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -882,7 +916,10 @@ Module ptr.
                                 "core::intrinsics::unchecked_sub",
                                 [ Ty.path "isize" ]
                               |),
-                              [ Value.Integer Integer.Isize 0; M.rust_cast (M.read (| count |)) ]
+                              [
+                                M.of_value (| Value.Integer 0 |);
+                                M.rust_cast (| M.read (| count |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -907,35 +944,38 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_sub(count) } }
           }
       *)
-      Definition byte_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_sub (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
-                      "byte_sub",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [ T ],
+                          "byte_sub",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ptr::non_null::NonNull",
+                              "pointer"
+                            |)
+                          |);
+                          M.read (| count |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -952,7 +992,7 @@ Module ptr.
               unsafe { self.pointer.offset_from(origin.pointer) }
           }
       *)
-      Definition offset_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition offset_from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; origin ] =>
@@ -991,7 +1031,7 @@ Module ptr.
               unsafe { self.pointer.byte_offset_from(origin.pointer) }
           }
       *)
-      Definition byte_offset_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_offset_from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ U ], [ self; origin ] =>
@@ -1037,7 +1077,7 @@ Module ptr.
               unsafe { self.pointer.sub_ptr(subtracted.pointer) }
           }
       *)
-      Definition sub_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; subtracted ] =>
@@ -1079,7 +1119,7 @@ Module ptr.
               unsafe { ptr::read(self.pointer) }
           }
       *)
-      Definition read (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1113,7 +1153,7 @@ Module ptr.
               unsafe { ptr::read_volatile(self.pointer) }
           }
       *)
-      Definition read_volatile (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_volatile (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1147,7 +1187,7 @@ Module ptr.
               unsafe { ptr::read_unaligned(self.pointer) }
           }
       *)
-      Definition read_unaligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_unaligned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1181,7 +1221,7 @@ Module ptr.
               unsafe { ptr::copy(self.pointer, dest.as_ptr(), count) }
           }
       *)
-      Definition copy_to (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_to (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; dest; count ] =>
@@ -1226,7 +1266,7 @@ Module ptr.
               unsafe { ptr::copy_nonoverlapping(self.pointer, dest.as_ptr(), count) }
           }
       *)
-      Definition copy_to_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_to_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; dest; count ] =>
@@ -1271,7 +1311,7 @@ Module ptr.
               unsafe { ptr::copy(src.pointer, self.as_ptr(), count) }
           }
       *)
-      Definition copy_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; src; count ] =>
@@ -1316,7 +1356,7 @@ Module ptr.
               unsafe { ptr::copy_nonoverlapping(src.pointer, self.as_ptr(), count) }
           }
       *)
-      Definition copy_from_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_from_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; src; count ] =>
@@ -1358,7 +1398,7 @@ Module ptr.
               unsafe { ptr::drop_in_place(self.as_ptr()) }
           }
       *)
-      Definition drop_in_place (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop_in_place (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1393,7 +1433,7 @@ Module ptr.
               unsafe { ptr::write(self.as_ptr(), val) }
           }
       *)
-      Definition write (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val ] =>
@@ -1430,7 +1470,7 @@ Module ptr.
               unsafe { ptr::write_bytes(self.as_ptr(), val, count) }
           }
       *)
-      Definition write_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_bytes (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; count ] =>
@@ -1469,7 +1509,7 @@ Module ptr.
               unsafe { ptr::write_volatile(self.as_ptr(), val) }
           }
       *)
-      Definition write_volatile (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_volatile (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val ] =>
@@ -1506,7 +1546,7 @@ Module ptr.
               unsafe { ptr::write_unaligned(self.as_ptr(), val) }
           }
       *)
-      Definition write_unaligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_unaligned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val ] =>
@@ -1543,7 +1583,7 @@ Module ptr.
               unsafe { ptr::replace(self.as_ptr(), src) }
           }
       *)
-      Definition replace (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition replace (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; src ] =>
@@ -1580,7 +1620,7 @@ Module ptr.
               unsafe { ptr::swap(self.as_ptr(), with.as_ptr()) }
           }
       *)
-      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; with_ ] =>
@@ -1630,7 +1670,7 @@ Module ptr.
               }
           }
       *)
-      Definition align_offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition align_offset (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; align ] =>
@@ -1640,22 +1680,23 @@ Module ptr.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
                                     []
                                   |),
                                   [ M.read (| align |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1672,23 +1713,29 @@ Module ptr.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "align_offset: align is not a power-of-two"
-                                            |)
-                                          ]
-                                      |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (|
+                                                  M.of_value (|
+                                                    Value.String
+                                                      "align_offset: align is not a power-of-two"
+                                                  |)
+                                                |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -1722,7 +1769,7 @@ Module ptr.
               self.pointer.is_aligned()
           }
       *)
-      Definition is_aligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_aligned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1752,7 +1799,7 @@ Module ptr.
               self.pointer.is_aligned_to(align)
           }
       *)
-      Definition is_aligned_to (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_aligned_to (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; align ] =>
@@ -1795,7 +1842,7 @@ Module ptr.
               unsafe { Self::new_unchecked(super::slice_from_raw_parts_mut(data.as_ptr(), len)) }
           }
       *)
-      Definition slice_from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ data; len ] =>
@@ -1839,7 +1886,7 @@ Module ptr.
               self.as_ptr().len()
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1877,7 +1924,7 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr().as_mut_ptr()) }
           }
       *)
-      Definition as_non_null_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_non_null_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1923,7 +1970,7 @@ Module ptr.
               self.as_non_null_ptr().as_ptr()
           }
       *)
-      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1961,7 +2008,7 @@ Module ptr.
               unsafe { slice::from_raw_parts(self.cast().as_ptr(), self.len()) }
           }
       *)
-      Definition as_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1974,8 +2021,8 @@ Module ptr.
               |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
@@ -1995,7 +2042,8 @@ Module ptr.
                         [ M.read (| self |) ]
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -2021,7 +2069,7 @@ Module ptr.
               unsafe { slice::from_raw_parts_mut(self.cast().as_ptr(), self.len()) }
           }
       *)
-      Definition as_uninit_slice_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_slice_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -2083,7 +2131,7 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr().get_unchecked_mut(index)) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ _ as I ], [ self; index ] =>
@@ -2135,7 +2183,7 @@ Module ptr.
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -2202,7 +2250,7 @@ Module ptr.
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -2251,7 +2299,7 @@ Module ptr.
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -2312,30 +2360,31 @@ Module ptr.
               self.as_ptr() == other.as_ptr()
           }
       *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| M.read (| self |) |) ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| M.read (| other |) |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2356,7 +2405,7 @@ Module ptr.
               self.as_ptr().cmp(&other.as_ptr())
           }
       *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -2414,7 +2463,7 @@ Module ptr.
               self.as_ptr().partial_cmp(&other.as_ptr())
           }
       *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -2472,7 +2521,7 @@ Module ptr.
               self.as_ptr().hash(state)
           }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -2523,7 +2572,7 @@ Module ptr.
               unsafe { NonNull::new_unchecked(unique.as_ptr()) }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ unique ] =>
@@ -2568,19 +2617,24 @@ Module ptr.
               unsafe { NonNull { pointer: reference as *mut T } }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ reference ] =>
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  (* MutToConstPointer *)
-                  M.pointer_coercion (M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value
+                      (* MutToConstPointer *)
+                      (M.pointer_coercion (|
+                        M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2603,15 +2657,20 @@ Module ptr.
               unsafe { NonNull { pointer: reference as *const T } }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ reference ] =>
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [ ("pointer", M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::ptr::non_null::NonNull"
+                [
+                  ("pointer",
+                    A.to_value (M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

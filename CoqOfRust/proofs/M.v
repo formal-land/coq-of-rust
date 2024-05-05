@@ -46,7 +46,7 @@ Definition IsTraitMethod
     (self_ty : Ty.t)
     (trait_tys : list Ty.t)
     (method_name : string)
-    (method : list Ty.t -> list Value.t -> M) :
+    (method : list Ty.t -> list A.t -> M) :
     Prop :=
   exists (instance : Instance.t),
   M.IsTraitInstance
@@ -57,47 +57,50 @@ Definition IsTraitMethod
   List.assoc instance method_name = Some (InstanceField.Method method).
 
 Module Run.
-  Reserved Notation "{{ env , env_to_value , state | e ⇓ result | state' }}".
+  Reserved Notation "{{ env  , state | e ⇓ result | state' }}".
 
-  Inductive t `{State.Trait} {Env : Set} (env : Env) (env_to_value : Env -> Value.t)
+  Inductive t `{State.Trait} {Env : Set} `{ToValue Env} (env : Env)
       (* Be aware of the order of parameters: the result and final state are at
          the beginning. This is due to the way polymorphic types for inductive
          work in Coq, and the fact that the result is always the same as we are
          in continuation passing style. *)
-      (result : Value.t + Exception.t) (state' : State) :
+      (result : A.t + Exception.t) (state' : State) :
       M -> State -> Prop :=
   | Pure :
-    {{ env, env_to_value, state' | LowM.Pure result ⇓ result | state' }}
+    {{ env, state' | LowM.Pure result ⇓ result | state' }}
   | CallPrimitiveStateAllocImmediate
-      (state : State) (v : Value.t)
-      (k : Value.t -> M) :
-    {{ env, env_to_value, state |
-      k (Value.Pointer (Pointer.Immediate v)) ⇓ result
+      (state : State) (value : A.t)
+      {B : Set} (next_to_value : B -> Value.t) (next : B)
+      (k : A.t -> M) :
+    Value.Pointer (Pointer.Immediate (A.to_value value)) = next_to_value next ->
+    {{ env, state |
+      k (A.Make (to_value := next_to_value) next) ⇓ result
     | state' }} ->
-    {{ env, env_to_value, state |
-      LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ result
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateAlloc value) k ⇓ result
     | state' }}
   | CallPrimitiveStateAllocMutable
       (address : Address)
-      (value : State.get_Set address)
-      (value' : Value.t)
+      (value : State.get_Set address) `{ToValue (State.get_Set address)}
       (to_value : State.get_Set address -> Value.t)
       (state : State)
-      (k : Value.t -> M) :
-    let r := Value.Pointer (Pointer.mutable address to_value) in
-    value' = to_value value ->
+      {B : Set} `{ToValue B} (next : B)
+      (k : A.t -> M) :
+    Value.Pointer (Pointer.mutable address to_value) = φ next ->
     State.read address state = None ->
     State.alloc_write address state value = Some state' ->
-    {{ env, env_to_value, state | k r ⇓ result | state' }} ->
-    {{ env, env_to_value, state |
-      LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ result
+    {{ env, state |
+      k (A.make next) ⇓ result
+    | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateAlloc (A.make value)) k ⇓ result
     | state' }}
   | CallPrimitiveStateRead
       {A : Set} {to_value : A -> Value.t} address path big_to_value projection injection
       (value : State.get_Set address)
       (sub_value : A)
       (state : State)
-      (k : Value.t -> M) :
+      (k : A.t -> M) :
     let mutable :=
       Pointer.Mutable.Make
         (Value := Value.t) (A := A) (to_value := to_value) (Address := Address)
@@ -109,20 +112,20 @@ Module Run.
         injection in
     State.read address state = Some value ->
     projection value = Some sub_value ->
-    {{ env, env_to_value, state |
-      k (to_value sub_value) ⇓
+    {{ env, state |
+      k (A.Make (to_value := to_value) sub_value) ⇓
       result
     | state' }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.StateRead mutable) k ⇓
       result
     | state' }}
   | CallPrimitiveStateWrite
       {A : Set} {to_value : A -> Value.t} address path big_to_value projection injection
-      (value : A) (value' : Value.t)
+      (value : A)
       (big_value new_big_value : State.get_Set address)
       (state state_inter : State)
-      (k : Value.t -> M) :
+      (k : A.t -> M) :
     let mutable :=
       Pointer.Mutable.Make
         (Value := Value.t) (A := A) (to_value := to_value) (Address := Address)
@@ -132,20 +135,23 @@ Module Run.
         big_to_value
         projection
         injection in
-    value' = to_value value ->
     State.read address state = Some big_value ->
     injection big_value value = Some new_big_value ->
     State.alloc_write address state new_big_value = Some state_inter ->
-    {{ env, env_to_value, state_inter | k (Value.Tuple []) ⇓ result | state' }} ->
-    {{ env, env_to_value, state |
-      LowM.CallPrimitive (Primitive.StateWrite mutable value') k ⇓
+    {{ env, state_inter |
+      k (A.make tt) ⇓
+      result
+    | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateWrite mutable (A.Make (to_value := to_value) value)) k ⇓
       result
     | state' }}
   | CallPrimitiveGetSubPointer {A Sub_A : Set} {to_value : A -> Value.t}
       (mutable : Pointer.Mutable.t Value.t to_value)
       index sub_projection sub_injection sub_to_value
       (state : State)
-      (k : Value.t -> M) :
+      {B : Set} `{ToValue B} (next : B)
+      (k : A.t -> M) :
     (* Communtativity of the read *)
     (forall (a : A),
       Option.map (sub_projection a) sub_to_value =
@@ -156,47 +162,61 @@ Module Run.
       Option.map (sub_injection a sub_a) to_value =
       Value.write_value (to_value a) [index] (sub_to_value sub_a)
     ) ->
-    {{ env, env_to_value, state |
-      k (Value.Pointer (Pointer.Mutable (Pointer.Mutable.get_sub
-        mutable index sub_projection sub_injection sub_to_value
-      ))) ⇓
+    Value.Pointer (Pointer.Mutable (Pointer.Mutable.get_sub
+      mutable index sub_projection sub_injection sub_to_value
+    )) = φ next ->
+    {{ env, state |
+      k (A.make next) ⇓
       result
     | state' }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓
       result
     | state' }}
   | CallPrimitiveEnvRead
-      (state : State) (k : Value.t -> M) :
-    {{ env, env_to_value, state | k (env_to_value env) ⇓ result | state' }} ->
-    {{ env, env_to_value, state |
-      LowM.CallPrimitive Primitive.EnvRead k ⇓ result
+      (state : State) (k : A.t -> M) :
+    {{ env, state |
+      k (A.make env) ⇓
+      result
+    | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive Primitive.EnvRead k ⇓
+      result
     | state' }}
   | CallPrimitiveGetAssociatedFunction
       (state : State)
       (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
-      (associated_function : list Ty.t -> list Value.t -> M)
-      (k : Value.t -> M) :
+      (associated_function : list Ty.t -> list A.t -> M)
+      {B : Set} `{ToValue B} (next : B)
+      (k : A.t -> M) :
     let closure :=
-      Value.Closure (existS (Value.t, M) (associated_function generic_tys)) in
+      Value.Closure (existS (A.t, M) (associated_function generic_tys)) in
     M.IsAssociatedFunction ty name associated_function ->
-    {{ env, env_to_value, state | k closure ⇓ result | state' }} ->
-    {{ env, env_to_value, state |
-      LowM.CallPrimitive
-        (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
-        result
+    closure = φ next ->
+    {{ env, state |
+      k (A.make next) ⇓
+      result
+    | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
+      result
     | state' }}
   | CallPrimitiveGetTraitMethod
       (state : State)
       (trait_name : string) (self_ty : Ty.t) (trait_tys : list Ty.t)
       (method_name : string) (generic_tys : list Ty.t)
-      (method : list Ty.t -> list Value.t -> M)
-      (k : Value.t -> M) :
+      (method : list Ty.t -> list A.t -> M)
+      {B : Set} `{ToValue B} (next : B)
+      (k : A.t -> M) :
     let closure :=
-      Value.Closure (existS (Value.t, M) (method generic_tys)) in
+      Value.Closure (existS (A.t, M) (method generic_tys)) in
     IsTraitMethod trait_name self_ty trait_tys method_name method ->
-    {{ env, env_to_value, state | k closure ⇓ result | state' }} ->
-    {{ env, env_to_value, state |
+    closure = φ next ->
+    {{ env, state |
+      k (A.make next) ⇓
+      result
+    | state' }} ->
+    {{ env, state |
       LowM.CallPrimitive
         (Primitive.GetTraitMethod
           trait_name
@@ -209,23 +229,28 @@ Module Run.
     | state' }}
   | CallClosure
       (state state_inter : State)
-      (f : list Value.t -> M) (args : list Value.t)
-      (value : Value.t + Exception.t)
-      (k : Value.t + Exception.t -> M) :
-    let closure := Value.Closure (existS (Value.t, M) f) in
-    {{ env, env_to_value, state | f args ⇓ value | state_inter }} ->
-    {{ env, env_to_value, state_inter | k value ⇓ result | state' }} ->
-    {{ env, env_to_value, state | LowM.CallClosure closure args k ⇓ result | state' }}
+      (f : list A.t -> M) (args : list A.t)
+      (value : A.t + Exception.t)
+      {B : Set} `{ToValue B} (closure' : B)
+      (k : A.t + Exception.t -> M) :
+    let closure := Value.Closure (existS (A.t, M) f) in
+    closure = φ closure' ->
+    {{ env, state | f args ⇓ value | state_inter }} ->
+    {{ env, state_inter | k value ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallClosure (A.Make (to_value := φ) closure') args k ⇓
+      result
+    | state' }}
 
-  where "{{ env , env_to_value , state | e ⇓ result | state' }}" :=
-    (t env env_to_value result state' e state).
+  where "{{ env , state | e ⇓ result | state' }}" :=
+    (t env result state' e state).
 
-  Definition pure (e : M) (result : Value.t + Exception.t) : Prop :=
+  Definition pure (e : M) (result : A.t + Exception.t) : Prop :=
     forall
       (State Address : Set) `(State.Trait State Address)
-      (Env : Set) (env : Env) (env_to_value : Env -> Value.t)
+      (Env : Set) `(ToValue Env) (env : Env)
       (state : State),
-    {{ env, env_to_value, state | e ⇓ result | state }}.
+    {{ env, state | e ⇓ result | state }}.
 End Run.
 
 Module SubPointer.
@@ -262,15 +287,17 @@ Module SubPointer.
       {runner : SubPointer.Runner.t A Sub_A}
       (H_runner : Runner.Valid.t runner)
       (mutable : Pointer.Mutable.t (A := A) Value.t φ)
-      `{State.Trait} {Env : Set} (env : Env) (env_to_value : Env -> Value.t)
-      (result : Value.t + Exception.t) (state state' : State) (k : Value.t -> M)
+      `{State.Trait} {Env : Set} `{ToValue Env} (env : Env)
+      (result : A.t + Exception.t) (state state' : State) (k : A.t -> M)
+      {B : Set} `{ToValue B} (next : B)
       (index : Pointer.Index.t) :
     index = runner.(SubPointer.Runner.index) ->
-    {{ env, env_to_value, state |
-      k (Value.Pointer (Pointer.Mutable (SubPointer.get_sub mutable runner))) ⇓
+    Value.Pointer (Pointer.Mutable (SubPointer.get_sub mutable runner)) = φ next ->
+    {{ env, state |
+      k (A.make next) ⇓
       result
     | state' }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓
       result
     | state' }}.
@@ -280,14 +307,6 @@ Module SubPointer.
     eapply Run.CallPrimitiveGetSubPointer; sfirstorder.
   Qed.
 End SubPointer.
-
-(** Simplify the usual case of read of immediate value. *)
-Lemma read_of_immediate (v : Value.t) :
-  M.read (Value.Pointer (Pointer.Immediate v)) =
-  M.pure v.
-Proof.
-  reflexivity.
-Qed.
 
 Ltac run_symbolic_state_read :=
   match goal with

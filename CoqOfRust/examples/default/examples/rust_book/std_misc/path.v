@@ -27,7 +27,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -36,7 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
-              [ M.read (| Value.String "." |) ]
+              [ M.read (| M.of_value (| Value.String "." |) |) ]
             |)
           |) in
         let _display :=
@@ -71,12 +71,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           "join",
                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| path |); M.read (| Value.String "a" |) ]
+                        [ M.read (| path |); M.read (| M.of_value (| Value.String "a" |) |) ]
                       |)
                     |)
                   ]
                 |);
-                M.read (| Value.String "b" |)
+                M.read (| M.of_value (| Value.String "b" |) |)
               ]
             |)
           |) in
@@ -88,7 +88,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "c" |) ]
+              [ new_path; M.read (| M.of_value (| Value.String "c" |) |) ]
             |)
           |) in
         let _ :=
@@ -99,7 +99,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "push",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
+              [ new_path; M.read (| M.of_value (| Value.String "myfile.tar.gz" |) |) ]
             |)
           |) in
         let _ :=
@@ -110,7 +110,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "set_file_name",
                 [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
               |),
-              [ new_path; M.read (| Value.String "package.tgz" |) ]
+              [ new_path; M.read (| M.of_value (| Value.String "package.tgz" |) |) ]
             |)
           |) in
         M.match_operator (|
@@ -141,7 +141,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "std::panicking::begin_panic",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "new path is not a valid UTF-8 sequence" |) ]
+                      [
+                        M.read (|
+                          M.of_value (| Value.String "new path is not a valid UTF-8 sequence" |)
+                        |)
+                      ]
                     |)
                   |)
                 |)));
@@ -163,36 +167,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "new path is " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "new path is " |) |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [ s ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          |),
+                                          [ s ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

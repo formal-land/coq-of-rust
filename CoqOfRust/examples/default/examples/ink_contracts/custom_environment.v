@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "custom_environment::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "custom_environment::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
   Definition Self : Ty.t := Ty.path "custom_environment::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -88,9 +97,10 @@ Module Impl_core_default_Default_for_custom_environment_Topics.
   Definition Self : Ty.t := Ty.path "custom_environment::Topics".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "custom_environment::Topics" []))
+    | [], [] =>
+      ltac:(M.monadic (M.of_value (| Value.StructTuple "custom_environment::Topics" [] |)))
     | _, _ => M.impossible
     end.
   
@@ -120,69 +130,76 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
   Definition Self : Ty.t := Ty.path "custom_environment::EventWithTopics".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "custom_environment::EventWithTopics"
-          [
-            ("first_topic",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("second_topic",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("third_topic",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("fourth_topic",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("fifth_topic",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "u128",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "custom_environment::EventWithTopics"
+            [
+              ("first_topic",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("second_topic",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("third_topic",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("fourth_topic",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("fifth_topic",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u128",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -217,7 +234,7 @@ Module Impl_custom_environment_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -239,7 +256,20 @@ Module Impl_custom_environment_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_custom_environment_Env.
@@ -252,7 +282,18 @@ Module Impl_custom_environment_Topics.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -261,7 +302,7 @@ Module Impl_custom_environment_Topics.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -280,7 +321,7 @@ Module Impl_custom_environment_Topics.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -305,7 +346,7 @@ Module Impl_custom_environment_Topics.
               .emit_event(Event::EventWithTopics(EventWithTopics::default()));
       }
   *)
-  Definition trigger (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition trigger (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -326,24 +367,27 @@ Module Impl_custom_environment_Topics.
                       [ M.read (| self |) ]
                     |)
                   |);
-                  Value.StructTuple
-                    "custom_environment::Event::EventWithTopics"
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::default::Default",
-                          Ty.path "custom_environment::EventWithTopics",
-                          [],
-                          "default",
-                          []
-                        |),
-                        []
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "custom_environment::Event::EventWithTopics"
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (|
+                              "core::default::Default",
+                              Ty.path "custom_environment::EventWithTopics",
+                              [],
+                              "default",
+                              []
+                            |),
+                            []
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

@@ -8,18 +8,21 @@ Require CoqOfRust.core.simulations.option.
 Import Run.
 
 Module Impl_Option_T.
-  Lemma run_unwrap_or_default {T : Set}
+  Lemma run_unwrap_or_default {T : Set} {T_ty : Ty.t}
     {_ : ToValue T}
     {_ : core.simulations.default.Default.Trait T}
     (self : option T) :
-    core.proofs.default.Default.TraitHasRun T ->
+    core.proofs.default.Default.TraitHasRun T T_ty ->
     Run.pure
-      (core.option.option.Impl_core_option_Option_T.unwrap_or_default (Φ T) [] [φ self])
-      (inl (φ (core.simulations.option.Impl_Option_T.unwrap_or_default self))).
+      (core.option.option.Impl_core_option_Option_T.unwrap_or_default T_ty [] [A.make self])
+      (inl (A.make (core.simulations.option.Impl_Option_T.unwrap_or_default self))).
   Proof.
     intros H_Default.
     destruct H_Default as [[default [H_default H_run_default]]].
     unfold Run.pure; intros.
+    run_symbolic.
+    eapply Run.CallPrimitiveStateAllocImmediate.
+    apply Immediate.of_value.
     run_symbolic.
     destruct self; cbn.
     { run_symbolic. }

@@ -22,12 +22,16 @@ Module Impl_trait_incrementer_Incrementer.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "trait_incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "trait_incrementer::Incrementer"
+            [ ("value", A.to_value (M.read (| init_value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -38,7 +42,7 @@ Module Impl_trait_incrementer_Incrementer.
           self.value += delta;
       }
   *)
-  Definition inc_by (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inc_by (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; delta ] =>
       ltac:(M.monadic
@@ -52,8 +56,11 @@ Module Impl_trait_incrementer_Incrementer.
                 "trait_incrementer::Incrementer",
                 "value"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
-          M.alloc (| Value.Tuple [] |)
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| delta |) |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -69,14 +76,14 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.inc_by(1)
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inc (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
-          [ M.read (| self |); Value.Integer Integer.U64 1 ]
+          [ M.read (| self |); M.of_value (| Value.Integer 1 |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -86,7 +93,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -117,7 +124,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
           self.value = 0;
       }
   *)
-  Definition reset (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition reset (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -130,9 +137,9 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
                 "trait_incrementer::Incrementer",
                 "value"
               |),
-              Value.Integer Integer.U64 0
+              M.of_value (| Value.Integer 0 |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

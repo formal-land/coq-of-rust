@@ -16,12 +16,12 @@ fn main() {
     assert_eq!(result, 20);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let counter := M.alloc (| Value.Integer Integer.I32 0 |) in
+        let counter := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
         let result :=
           M.copy (|
             M.loop (|
@@ -30,29 +30,42 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let β := counter in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |)
+                    BinOp.Panic.add (|
+                      Integer.I32,
+                      M.read (| β |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
                   |) in
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| counter |)) (Value.Integer Integer.I32 10)
+                              BinOp.Pure.eq (|
+                                M.read (| counter |),
+                                M.of_value (| Value.Integer 10 |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |)))
             |)
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer Integer.I32 20 |) ] |),
+            M.alloc (|
+              M.of_value (|
+                Value.Tuple
+                  [ A.to_value result; A.to_value (M.alloc (| M.of_value (| Value.Integer 20 |) |))
+                  ]
+              |)
+            |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -61,17 +74,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.Pure.not (|
+                                  BinOp.Pure.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -80,7 +95,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.read (|
                                 let kind :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -92,19 +109,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| kind |);
                                       M.read (| left_val |);
                                       M.read (| right_val |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     ]
                                   |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

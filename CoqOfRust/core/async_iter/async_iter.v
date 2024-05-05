@@ -5,13 +5,18 @@ Module async_iter.
   Module async_iter.
     (* Trait *)
     Module AsyncIterator.
-      Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [ Value.Integer Integer.Usize 0; Value.StructTuple "core::option::Option::None" [] ]))
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 0 |));
+                  A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -30,7 +35,7 @@ Module async_iter.
               S::poll_next(Pin::new(&mut **self), cx)
           }
       *)
-      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self; cx ] =>
@@ -80,7 +85,7 @@ Module async_iter.
               ( **self).size_hint()
           }
       *)
-      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self ] =>
@@ -124,7 +129,7 @@ Module async_iter.
               <P::Target as AsyncIterator>::poll_next(self.as_deref_mut(), cx)
           }
       *)
-      Definition poll_next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self P in
         match τ, α with
         | [], [ self; cx ] =>
@@ -161,7 +166,7 @@ Module async_iter.
               ( **self).size_hint()
           }
       *)
-      Definition size_hint (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self P in
         match τ, α with
         | [], [ self ] =>
@@ -216,15 +221,22 @@ Module async_iter.
               Poll::Ready(Some(t))
           }
       *)
-      Definition async_gen_ready (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition async_gen_ready (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
-            Value.StructTuple
-              "core::task::poll::Poll::Ready"
-              [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::task::poll::Poll::Ready"
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple "core::option::Option::Some" [ A.to_value (M.read (| t |)) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -236,10 +248,13 @@ Module async_iter.
       (* Ty.apply
         (Ty.path "core::task::poll::Poll")
         [ Ty.apply (Ty.path "core::option::Option") [ T ] ] *)
-      Definition value_PENDING (T : Ty.t) : Value.t :=
+      Definition value_PENDING (T : Ty.t) : A.t :=
         let Self : Ty.t := Self T in
         M.run
-          ltac:(M.monadic (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |))).
+          ltac:(M.monadic
+            (M.alloc (|
+              M.of_value (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)
+            |))).
       
       Axiom AssociatedConstant_value_PENDING :
         forall (T : Ty.t),
@@ -249,14 +264,17 @@ Module async_iter.
       (* Ty.apply
         (Ty.path "core::task::poll::Poll")
         [ Ty.apply (Ty.path "core::option::Option") [ T ] ] *)
-      Definition value_FINISHED (T : Ty.t) : Value.t :=
+      Definition value_FINISHED (T : Ty.t) : A.t :=
         let Self : Ty.t := Self T in
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::task::poll::Poll::Ready"
-                [ Value.StructTuple "core::option::Option::None" [] ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::task::poll::Poll::Ready"
+                  [ A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                  ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_FINISHED :

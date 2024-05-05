@@ -16,19 +16,19 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::PhoneNumber".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    Value.DeclaredButUndefined,
+                    M.of_value (| Value.DeclaredButUndefined |),
                     [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                   |)))
             ]
@@ -69,14 +69,14 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self : Ty.t := Ty.path "unpacking_options_via_question_mark::Job".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -122,7 +122,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
           self.job?.phone_number?.area_code
       }
   *)
-  Definition work_phone_area_code (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition work_phone_area_code (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -292,60 +292,94 @@ fn main() {
     assert_eq!(p.work_phone_area_code(), Some(61));
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let p :=
           M.alloc (|
-            Value.StructRecord
-              "unpacking_options_via_question_mark::Person"
-              [
-                ("job",
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    [
-                      Value.StructRecord
-                        "unpacking_options_via_question_mark::Job"
-                        [
-                          ("phone_number",
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
+            M.of_value (|
+              Value.StructRecord
+                "unpacking_options_via_question_mark::Person"
+                [
+                  ("job",
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
                                 Value.StructRecord
-                                  "unpacking_options_via_question_mark::PhoneNumber"
+                                  "unpacking_options_via_question_mark::Job"
                                   [
-                                    ("area_code",
-                                      Value.StructTuple
-                                        "core::option::Option::Some"
-                                        [ Value.Integer Integer.U8 61 ]);
-                                    ("number", Value.Integer Integer.U32 439222222)
+                                    ("phone_number",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            [
+                                              A.to_value
+                                                (M.of_value (|
+                                                  Value.StructRecord
+                                                    "unpacking_options_via_question_mark::PhoneNumber"
+                                                    [
+                                                      ("area_code",
+                                                        A.to_value
+                                                          (M.of_value (|
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [
+                                                                A.to_value
+                                                                  (M.of_value (|
+                                                                    Value.Integer 61
+                                                                  |))
+                                                              ]
+                                                          |)));
+                                                      ("number",
+                                                        A.to_value
+                                                          (M.of_value (|
+                                                            Value.Integer 439222222
+                                                          |)))
+                                                    ]
+                                                |))
+                                            ]
+                                        |)))
                                   ]
-                              ])
-                        ]
-                    ])
-              ]
+                              |))
+                          ]
+                      |)))
+                ]
+            |)
           |) in
         let _ :=
           M.match_operator (|
             M.alloc (|
-              Value.Tuple
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "unpacking_options_via_question_mark::Person",
-                        "work_phone_area_code",
-                        []
-                      |),
-                      [ p ]
-                    |)
-                  |);
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.U8 61 ]
-                  |)
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "unpacking_options_via_question_mark::Person",
+                            "work_phone_area_code",
+                            []
+                          |),
+                          [ p ]
+                        |)
+                      |));
+                    A.to_value
+                      (M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.of_value (| Value.Integer 61 |)) ]
+                        |)
+                      |))
+                  ]
+              |)
             |),
             [
               fun γ =>
@@ -355,15 +389,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "core::option::Option") [ Ty.path "u8" ],
@@ -373,7 +407,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -382,7 +417,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.read (|
                                 let kind :=
                                   M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::panicking::AssertKind::Eq" []
+                                    |)
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -397,19 +434,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| kind |);
                                       M.read (| left_val |);
                                       M.read (| right_val |);
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     ]
                                   |)
                                 |)
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

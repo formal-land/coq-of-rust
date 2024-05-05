@@ -26,7 +26,7 @@ Module panicking.
       unsafe { panic_impl(&pi) }
   }
   *)
-  Definition panic_fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ fmt ] =>
       ltac:(M.monadic
@@ -34,18 +34,18 @@ Module panicking.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           let pi :=
@@ -57,7 +57,9 @@ Module panicking.
                   []
                 |),
                 [
-                  Value.StructTuple "core::option::Option::Some" [ fmt ];
+                  M.of_value (|
+                    Value.StructTuple "core::option::Option::Some" [ A.to_value fmt ]
+                  |);
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::panic::location::Location",
@@ -66,8 +68,8 @@ Module panicking.
                     |),
                     []
                   |);
-                  Value.Bool true;
-                  Value.Bool false
+                  M.of_value (| Value.Bool true |);
+                  M.of_value (| Value.Bool false |)
                 ]
               |)
             |) in
@@ -126,7 +128,7 @@ Module panicking.
       }
   }
   *)
-  Definition panic_nounwind_fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_nounwind_fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ fmt; force_no_backtrace ] =>
       ltac:(M.monadic
@@ -143,7 +145,10 @@ Module panicking.
             ]
           |),
           [
-            Value.Tuple [ M.read (| fmt |); M.read (| force_no_backtrace |) ];
+            M.of_value (|
+              Value.Tuple
+                [ A.to_value (M.read (| fmt |)); A.to_value (M.read (| force_no_backtrace |)) ]
+            |);
             M.get_function (| "core::panicking::panic_nounwind_fmt.comptime", [] |);
             M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [] |)
           ]
@@ -177,7 +182,7 @@ Module panicking.
             unsafe { panic_impl(&pi) }
         }
     *)
-    Definition runtime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition runtime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt; force_no_backtrace ] =>
         ltac:(M.monadic
@@ -186,11 +191,11 @@ Module panicking.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -200,7 +205,7 @@ Module panicking.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let pi :=
@@ -212,7 +217,9 @@ Module panicking.
                     []
                   |),
                   [
-                    Value.StructTuple "core::option::Option::Some" [ fmt ];
+                    M.of_value (|
+                      Value.StructTuple "core::option::Option::Some" [ A.to_value fmt ]
+                    |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::panic::location::Location",
@@ -221,7 +228,7 @@ Module panicking.
                       |),
                       []
                     |);
-                    Value.Bool false;
+                    M.of_value (| Value.Bool false |);
                     M.read (| force_no_backtrace |)
                   ]
                 |)
@@ -246,7 +253,7 @@ Module panicking.
             panic_fmt(fmt);
         }
     *)
-    Definition comptime (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition comptime (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt; _force_no_backtrace ] =>
         ltac:(M.monadic
@@ -271,7 +278,7 @@ Module panicking.
       panic_fmt(fmt::Arguments::new_const(&[expr]));
   }
   *)
-  Definition panic (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ expr ] =>
       ltac:(M.monadic
@@ -281,7 +288,12 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [
+                (* Unsize *)
+                M.pointer_coercion (|
+                  M.alloc (| M.of_value (| Value.Array [ A.to_value (M.read (| expr |)) ] |) |)
+                |)
+              ]
             |)
           ]
         |)))
@@ -293,7 +305,7 @@ Module panicking.
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ false);
   }
   *)
-  Definition panic_nounwind (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_nounwind (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ expr ] =>
       ltac:(M.monadic
@@ -303,9 +315,14 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [
+                (* Unsize *)
+                M.pointer_coercion (|
+                  M.alloc (| M.of_value (| Value.Array [ A.to_value (M.read (| expr |)) ] |) |)
+                |)
+              ]
             |);
-            Value.Bool false
+            M.of_value (| Value.Bool false |)
           ]
         |)))
     | _, _ => M.impossible
@@ -316,7 +333,7 @@ Module panicking.
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ true);
   }
   *)
-  Definition panic_nounwind_nobacktrace (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_nounwind_nobacktrace (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ expr ] =>
       ltac:(M.monadic
@@ -326,9 +343,14 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [
+                (* Unsize *)
+                M.pointer_coercion (|
+                  M.alloc (| M.of_value (| Value.Array [ A.to_value (M.read (| expr |)) ] |) |)
+                |)
+              ]
             |);
-            Value.Bool true
+            M.of_value (| Value.Bool true |)
           ]
         |)))
     | _, _ => M.impossible
@@ -339,7 +361,7 @@ Module panicking.
       panic_display(&expr);
   }
   *)
-  Definition panic_str (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_str (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ expr ] =>
       ltac:(M.monadic
@@ -359,7 +381,7 @@ Module panicking.
       panic_display(&"explicit panic");
   }
   *)
-  Definition panic_explicit (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_explicit (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -368,7 +390,7 @@ Module panicking.
             "core::panicking::panic_display",
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           |),
-          [ Value.String "explicit panic" ]
+          [ M.of_value (| Value.String "explicit panic" |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -378,7 +400,7 @@ Module panicking.
       panic_fmt(format_args!("internal error: entered unreachable code: {}", *x));
   }
   *)
-  Definition unreachable_display (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unreachable_display (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ x ] =>
       ltac:(M.monadic
@@ -390,26 +412,40 @@ Module panicking.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [ M.read (| Value.String "internal error: entered unreachable code: " |) ]
-                  |));
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.of_value (|
+                                Value.String "internal error: entered unreachable code: "
+                              |)
+                            |))
+                        ]
+                    |)
+                  |)
+                |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ T ]
-                          |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ T ]
+                              |),
+                              [ M.read (| x |) ]
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -422,7 +458,7 @@ Module panicking.
       panic_fmt(format_args!("{}", *x));
   }
   *)
-  Definition panic_display (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_display (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ x ] =>
       ltac:(M.monadic
@@ -434,22 +470,32 @@ Module panicking.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array [ A.to_value (M.read (| M.of_value (| Value.String "" |) |)) ]
+                    |)
+                  |)
+                |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ T ]
-                          |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ T ]
+                              |),
+                              [ M.read (| x |) ]
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -466,7 +512,7 @@ Module panicking.
       panic!("index out of bounds: the len is {len} but the index is {index}")
   }
   *)
-  Definition panic_bounds_check (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_bounds_check (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ index; len ] =>
       ltac:(M.monadic
@@ -475,18 +521,18 @@ Module panicking.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -497,37 +543,49 @@ Module panicking.
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "index out of bounds: the len is " |);
-                            M.read (| Value.String " but the index is " |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.of_value (| Value.String "index out of bounds: the len is " |)
+                                |));
+                              A.to_value
+                                (M.read (| M.of_value (| Value.String " but the index is " |) |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ len ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ index ]
-                            |)
-                          ]
-                      |))
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ len ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ index ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -551,7 +609,7 @@ Module panicking.
       )
   }
   *)
-  Definition panic_misaligned_pointer_dereference (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_misaligned_pointer_dereference (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ required; found ] =>
       ltac:(M.monadic
@@ -560,18 +618,18 @@ Module panicking.
         M.read (|
           let _ :=
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                    (let γ := M.use (M.alloc (| M.of_value (| Value.Bool false |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
               ]
             |) in
           M.alloc (|
@@ -586,84 +644,112 @@ Module panicking.
                   |),
                   [
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String
-                                "misaligned pointer dereference: address must be a multiple of "
-                            |);
-                            M.read (| Value.String " but is " |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.of_value (|
+                                    Value.String
+                                      "misaligned pointer dereference: address must be a multiple of "
+                                  |)
+                                |));
+                              A.to_value (M.read (| M.of_value (| Value.String " but is " |) |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_lower_hex",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ required ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_lower_hex",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ found ]
-                            |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_lower_hex",
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ required ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_lower_hex",
+                                    [ Ty.path "usize" ]
+                                  |),
+                                  [ found ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer Integer.Usize 0;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer Integer.U32 4;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer Integer.Usize 1;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer Integer.U32 4;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |)
-                          ]
-                      |));
+                    M.pointer_coercion (|
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Placeholder",
+                                    "new",
+                                    []
+                                  |),
+                                  [
+                                    M.of_value (| Value.Integer 0 |);
+                                    M.of_value (| Value.UnicodeChar 32 |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" []
+                                    |);
+                                    M.of_value (| Value.Integer 4 |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    |)
+                                  ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Placeholder",
+                                    "new",
+                                    []
+                                  |),
+                                  [
+                                    M.of_value (| Value.Integer 1 |);
+                                    M.of_value (| Value.UnicodeChar 32 |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" []
+                                    |);
+                                    M.of_value (| Value.Integer 4 |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    |);
+                                    M.of_value (|
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    |)
+                                  ]
+                                |))
+                            ]
+                        |)
+                      |)
+                    |);
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
                       []
                     |)
                   ]
                 |);
-                Value.Bool false
+                M.of_value (| Value.Bool false |)
               ]
             |)
           |)
@@ -677,13 +763,13 @@ Module panicking.
       panic_nounwind("panic in a function that cannot unwind")
   }
   *)
-  Definition panic_cannot_unwind (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_cannot_unwind (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (| "core::panicking::panic_nounwind", [] |),
-          [ M.read (| Value.String "panic in a function that cannot unwind" |) ]
+          [ M.read (| M.of_value (| Value.String "panic in a function that cannot unwind" |) |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -694,13 +780,13 @@ Module panicking.
       panic_nounwind_nobacktrace("panic in a destructor during cleanup")
   }
   *)
-  Definition panic_in_cleanup (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_in_cleanup (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (| "core::panicking::panic_nounwind_nobacktrace", [] |),
-          [ M.read (| Value.String "panic in a destructor during cleanup" |) ]
+          [ M.read (| M.of_value (| Value.String "panic in a destructor during cleanup" |) |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -718,14 +804,14 @@ Module panicking.
       }
   }
   *)
-  Definition const_panic_fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition const_panic_fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -763,7 +849,7 @@ Module panicking.
                         |)
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -799,7 +885,7 @@ Module panicking.
     Definition Self : Ty.t := Ty.path "core::panicking::AssertKind".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -816,15 +902,15 @@ Module panicking.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Eq" |) |)));
+                        M.alloc (| M.read (| M.of_value (| Value.String "Eq" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Ne" |) |)));
+                        M.alloc (| M.read (| M.of_value (| Value.String "Ne" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "Match" |) |)))
+                        M.alloc (| M.read (| M.of_value (| Value.String "Match" |) |) |)))
                   ]
                 |)
               |)
@@ -855,7 +941,7 @@ Module panicking.
       assert_failed_inner(kind, &left, &right, args)
   }
   *)
-  Definition assert_failed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_failed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T; U ], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
@@ -867,8 +953,8 @@ Module panicking.
           M.get_function (| "core::panicking::assert_failed_inner", [] |),
           [
             M.read (| kind |);
-            (* Unsize *) M.pointer_coercion left;
-            (* Unsize *) M.pointer_coercion right;
+            (* Unsize *) M.pointer_coercion (| left |);
+            (* Unsize *) M.pointer_coercion (| right |);
             M.read (| args |)
           ]
         |)))
@@ -891,7 +977,7 @@ Module panicking.
       assert_failed_inner(AssertKind::Match, &left, &Pattern(right), args);
   }
   *)
-  Definition assert_matches_failed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_matches_failed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ _ as left; _ as right; args ] =>
       ltac:(M.monadic
@@ -901,15 +987,18 @@ Module panicking.
         M.call_closure (|
           M.get_function (| "core::panicking::assert_failed_inner", [] |),
           [
-            Value.StructTuple "core::panicking::AssertKind::Match" [];
-            (* Unsize *) M.pointer_coercion left;
+            M.of_value (| Value.StructTuple "core::panicking::AssertKind::Match" [] |);
+            (* Unsize *) M.pointer_coercion (| left |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                Value.StructTuple
-                  "core::panicking::assert_matches_failed::Pattern"
-                  [ M.read (| right |) ]
-              |));
+            M.pointer_coercion (|
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::panicking::assert_matches_failed::Pattern"
+                    [ A.to_value (M.read (| right |)) ]
+                |)
+              |)
+            |);
             M.read (| args |)
           ]
         |)))
@@ -932,7 +1021,7 @@ Module panicking.
                   f.write_str(self.0)
               }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -990,7 +1079,7 @@ Module panicking.
       }
   }
   *)
-  Definition assert_failed_inner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_failed_inner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
@@ -1004,9 +1093,13 @@ Module panicking.
               M.match_operator (|
                 kind,
                 [
-                  fun γ => ltac:(M.monadic (Value.String "=="));
-                  fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "!=" |) |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "matches" |) |)))
+                  fun γ => ltac:(M.monadic (M.of_value (| Value.String "==" |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| M.read (| M.of_value (| Value.String "!=" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| M.read (| M.of_value (| Value.String "matches" |) |) |)))
                 ]
               |)
             |) in
@@ -1030,65 +1123,83 @@ Module panicking.
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "assertion `left " |);
-                                    M.read (| Value.String " right` failed: " |);
-                                    M.read (| Value.String "
-  left: " |);
-                                    M.read (| Value.String "
- right: " |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "assertion `left " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String " right` failed: " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "
+  left: " |) |));
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "
+ right: " |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [ op ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "core::fmt::Arguments" ]
-                                      |),
-                                      [ args ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ left ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ right ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          |),
+                                          [ op ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "core::fmt::Arguments" ]
+                                          |),
+                                          [ args ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                            ]
+                                          |),
+                                          [ left ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                            ]
+                                          |),
+                                          [ right ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -1108,56 +1219,72 @@ Module panicking.
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "assertion `left " |);
-                                    M.read (| Value.String " right` failed
-  left: " |);
-                                    M.read (| Value.String "
- right: " |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "assertion `left " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String " right` failed
+  left: " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "
+ right: " |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                      |),
-                                      [ op ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ left ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ right ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                          |),
+                                          [ op ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                            ]
+                                          |),
+                                          [ left ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                            ]
+                                          |),
+                                          [ right ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]

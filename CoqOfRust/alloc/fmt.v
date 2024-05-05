@@ -14,7 +14,7 @@ Module fmt.
       args.as_str().map_or_else(|| format_inner(args), crate::borrow::ToOwned::to_owned)
   }
   *)
-  Definition format (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition format (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ args ] =>
       ltac:(M.monadic
@@ -34,8 +34,8 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
               [ args ]
             |);
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
@@ -51,7 +51,8 @@ Module fmt.
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end));
+                  end)
+            |);
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
           ]
         |)))
@@ -67,7 +68,7 @@ Module fmt.
             output
         }
     *)
-    Definition format_inner (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition format_inner (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ args ] =>
         ltac:(M.monadic
@@ -116,7 +117,11 @@ Module fmt.
                       |),
                       [ output; M.read (| args |) ]
                     |);
-                    M.read (| Value.String "a formatting trait implementation returned an error" |)
+                    M.read (|
+                      M.of_value (|
+                        Value.String "a formatting trait implementation returned an error"
+                      |)
+                    |)
                   ]
                 |)
               |) in

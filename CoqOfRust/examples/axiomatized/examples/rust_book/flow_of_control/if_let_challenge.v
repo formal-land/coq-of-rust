@@ -16,4 +16,4 @@ Enum Foo
 }
 *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

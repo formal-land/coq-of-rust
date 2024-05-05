@@ -16,14 +16,15 @@ Module Impl_example05_Foo.
           self.0 + 1
       }
   *)
-  Definition plus1 (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition plus1 (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.add (|
+          Integer.U32,
           M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
-          Value.Integer Integer.U32 1
+          M.of_value (| Value.Integer 1 |)
         |)))
     | _, _ => M.impossible
     end.
@@ -37,13 +38,17 @@ fn main() {
     foo.plus1();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let foo :=
-          M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer Integer.U32 0 ] |) in
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple "example05::Foo" [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+            |)
+          |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -51,7 +56,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| foo |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

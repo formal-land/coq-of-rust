@@ -20,17 +20,17 @@ fn main() {
     _mutable_integer = 3;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _mutable_integer := M.alloc (| Value.Integer Integer.I32 7 |) in
+        let _mutable_integer := M.alloc (| M.of_value (| Value.Integer 7 |) |) in
         let _ :=
           let _mutable_integer := M.copy (| _mutable_integer |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ := M.write (| _mutable_integer, Value.Integer Integer.I32 3 |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ := M.write (| _mutable_integer, M.of_value (| Value.Integer 3 |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

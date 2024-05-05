@@ -23,7 +23,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -38,25 +38,27 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "ArrayChunks" |);
-                  M.read (| Value.String "iter" |);
+                  M.read (| M.of_value (| Value.String "ArrayChunks" |) |);
+                  M.read (| M.of_value (| Value.String "iter" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::array_chunks::ArrayChunks",
                       "iter"
-                    |));
-                  M.read (| Value.String "remainder" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "remainder" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::adapters::array_chunks::ArrayChunks",
                         "remainder"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -76,46 +78,51 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::array_chunks::ArrayChunks"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("remainder",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ] ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::array_chunks::ArrayChunks",
-                          "remainder"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::array_chunks::ArrayChunks"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::array_chunks::ArrayChunks",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("remainder",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Ty.associated ]
+                              ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::array_chunks::ArrayChunks",
+                              "remainder"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -138,7 +145,7 @@ Module iter.
                 Self { iter, remainder: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ iter ] =>
@@ -147,19 +154,21 @@ Module iter.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.ne
-                                    (M.read (|
+                                UnOp.Pure.not (|
+                                  BinOp.Pure.ne (|
+                                    M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                    |))
-                                    (Value.Integer Integer.Usize 0))
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -176,31 +185,41 @@ Module iter.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (|
+                                                      Value.String "chunk size must be non-zero"
+                                                    |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 M.alloc (|
-                  Value.StructRecord
-                    "core::iter::adapters::array_chunks::ArrayChunks"
-                    [
-                      ("iter", M.read (| iter |));
-                      ("remainder", Value.StructTuple "core::option::Option::None" [])
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::iter::adapters::array_chunks::ArrayChunks"
+                      [
+                        ("iter", A.to_value (M.read (| iter |)));
+                        ("remainder",
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -215,7 +234,7 @@ Module iter.
                 self.remainder
             }
         *)
-        Definition into_remainder (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_remainder (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -256,7 +275,7 @@ Module iter.
                 self.remainder = Some(remainder);
             }
         *)
-        Definition next_back_remainder (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back_remainder (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -267,7 +286,7 @@ Module iter.
                   (M.read (|
                     let _ :=
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -301,14 +320,17 @@ Module iter.
                                   Value.Bool true
                                 |) in
                               M.alloc (|
-                                M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                                M.never_to_any (|
+                                  M.read (| M.return_ (| M.of_value (| Value.Tuple [] |) |) |)
+                                |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         ]
                       |) in
                     let rem :=
                       M.alloc (|
                         BinOp.Panic.rem (|
+                          Integer.Usize,
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::exact_size::ExactSizeIterator",
@@ -432,9 +454,13 @@ Module iter.
                           "core::iter::adapters::array_chunks::ArrayChunks",
                           "remainder"
                         |),
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| remainder |) ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| remainder |)) ]
+                        |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                   |)))
               |)))
           | _, _ => M.impossible
@@ -457,7 +483,7 @@ Module iter.
                 self.try_for_each(ControlFlow::Break).break_value()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -491,7 +517,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      M.constructor_as_closure "core::ops::control_flow::ControlFlow::Break"
+                      M.constructor_as_closure (| "core::ops::control_flow::ControlFlow::Break" |)
                     ]
                   |)
                 ]
@@ -506,7 +532,7 @@ Module iter.
                 (lower / N, upper.map(|n| n / N))
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -540,51 +566,60 @@ Module iter.
                         let lower := M.copy (| γ0_0 |) in
                         let upper := M.copy (| γ0_1 |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              BinOp.Panic.div (|
-                                M.read (| lower |),
-                                M.read (|
-                                  M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                |)
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
-                                  "map",
-                                  [
-                                    Ty.path "usize";
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                  ]
-                                |),
-                                [
-                                  M.read (| upper |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let n := M.copy (| γ |) in
-                                                  BinOp.Panic.div (|
-                                                    M.read (| n |),
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "core::iter::adapters::array_chunks::N"
-                                                      |)
-                                                    |)
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (BinOp.Panic.div (|
+                                    Integer.Usize,
+                                    M.read (| lower |),
+                                    M.read (|
+                                      M.get_constant (| "core::iter::adapters::array_chunks::N" |)
+                                    |)
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                      "map",
+                                      [
+                                        Ty.path "usize";
+                                        Ty.function
+                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                          (Ty.path "usize")
+                                      ]
+                                    |),
+                                    [
+                                      M.read (| upper |);
+                                      M.closure (|
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let n := M.copy (| γ |) in
+                                                      BinOp.Panic.div (|
+                                                        Integer.Usize,
+                                                        M.read (| n |),
+                                                        M.read (|
+                                                          M.get_constant (|
+                                                            "core::iter::adapters::array_chunks::N"
+                                                          |)
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)
+                                            | _ => M.impossible (||)
+                                            end)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -597,13 +632,14 @@ Module iter.
                 self.iter.count() / N
             }
         *)
-        Definition count (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Panic.div (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
@@ -649,7 +685,7 @@ Module iter.
                 }
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -722,7 +758,13 @@ Module iter.
                                               |),
                                               [
                                                 f;
-                                                Value.Tuple [ M.read (| acc |); M.read (| chunk |) ]
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [
+                                                      A.to_value (M.read (| acc |));
+                                                      A.to_value (M.read (| chunk |))
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -827,7 +869,7 @@ Module iter.
                 <Self as SpecFold>::fold(self, init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -874,7 +916,7 @@ Module iter.
                 self.try_rfold((), |(), x| ControlFlow::Break(x)).break_value()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -909,9 +951,9 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Tuple [];
-                      M.closure
-                        (fun γ =>
+                      M.of_value (| Value.Tuple [] |);
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0; α1 ] =>
@@ -926,15 +968,18 @@ Module iter.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let x := M.copy (| γ |) in
-                                              Value.StructTuple
-                                                "core::ops::control_flow::ControlFlow::Break"
-                                                [ M.read (| x |) ]))
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "core::ops::control_flow::ControlFlow::Break"
+                                                  [ A.to_value (M.read (| x |)) ]
+                                              |)))
                                         ]
                                       |)))
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 ]
@@ -968,7 +1013,7 @@ Module iter.
                 try { acc }
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -1006,15 +1051,18 @@ Module iter.
                             []
                           |),
                           [
-                            Value.StructTuple
-                              "core::iter::adapters::by_ref_sized::ByRefSized"
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::iter::adapters::array_chunks::ArrayChunks",
-                                  "iter"
-                                |)
-                              ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::iter::adapters::by_ref_sized::ByRefSized"
+                                [
+                                  A.to_value
+                                    (M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::iter::adapters::array_chunks::ArrayChunks",
+                                      "iter"
+                                    |))
+                                ]
+                            |)
                           ]
                         |)
                       |) in
@@ -1022,7 +1070,7 @@ Module iter.
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1061,7 +1109,7 @@ Module iter.
                                           "reverse",
                                           []
                                         |),
-                                        [ (* Unsize *) M.pointer_coercion chunk ]
+                                        [ (* Unsize *) M.pointer_coercion (| chunk |) ]
                                       |)
                                     |) in
                                   M.write (|
@@ -1094,8 +1142,13 @@ Module iter.
                                                 |),
                                                 [
                                                   f;
-                                                  Value.Tuple
-                                                    [ M.read (| acc |); M.read (| chunk |) ]
+                                                  M.of_value (|
+                                                    Value.Tuple
+                                                      [
+                                                        A.to_value (M.read (| acc |));
+                                                        A.to_value (M.read (| chunk |))
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -1152,7 +1205,7 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                       |)
                                     |)
                                   |)))
@@ -1186,7 +1239,7 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ AAA; FFF ], [ self; init; fold ] =>
@@ -1280,13 +1333,14 @@ Module iter.
                 self.iter.len() / N
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Panic.div (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
@@ -1313,14 +1367,14 @@ Module iter.
                 self.iter.len() < N
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.lt
-                (M.call_closure (|
+              BinOp.Pure.lt (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     I,
@@ -1335,8 +1389,9 @@ Module iter.
                       "iter"
                     |)
                   ]
-                |))
-                (M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |))))
+                |),
+                M.read (| M.get_constant (| "core::iter::adapters::array_chunks::N" |) |)
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -1367,7 +1422,7 @@ Module iter.
                 self.try_fold(init, NeverShortCircuit::wrap_mut_2(f)).0
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -1453,7 +1508,7 @@ Module iter.
                 accum
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -1482,23 +1537,28 @@ Module iter.
                       ]
                     |)
                   |) in
-                let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                let i := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                 let _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge
-                                      (BinOp.Panic.sub (| M.read (| inner_len |), M.read (| i |) |))
-                                      (M.read (|
+                                    BinOp.Pure.ge (|
+                                      BinOp.Panic.sub (|
+                                        Integer.Usize,
+                                        M.read (| inner_len |),
+                                        M.read (| i |)
+                                      |),
+                                      M.read (|
                                         M.get_constant (| "core::iter::adapters::array_chunks::N" |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1516,8 +1576,8 @@ Module iter.
                                       ]
                                     |),
                                     [
-                                      M.closure
-                                        (fun γ =>
+                                      M.closure (|
+                                        fun γ =>
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
@@ -1531,6 +1591,7 @@ Module iter.
                                                         let idx :=
                                                           M.alloc (|
                                                             BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               M.read (| i |),
                                                               M.read (| local |)
                                                             |)
@@ -1558,7 +1619,8 @@ Module iter.
                                                 ]
                                               |)
                                             | _ => M.impossible (||)
-                                            end))
+                                            end)
+                                      |)
                                     ]
                                   |)
                                 |) in
@@ -1574,7 +1636,16 @@ Module iter.
                                       "call_mut",
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| chunk |) ] ]
+                                    [
+                                      f;
+                                      M.of_value (|
+                                        Value.Tuple
+                                          [
+                                            A.to_value (M.read (| accum |));
+                                            A.to_value (M.read (| chunk |))
+                                          ]
+                                      |)
+                                    ]
                                   |)
                                 |) in
                               let _ :=
@@ -1582,13 +1653,14 @@ Module iter.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
                                     M.read (|
                                       M.get_constant (| "core::iter::adapters::array_chunks::N" |)
                                     |)
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -1598,7 +1670,7 @@ Module iter.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -1632,7 +1704,7 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -1672,7 +1744,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
@@ -1689,7 +1761,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic

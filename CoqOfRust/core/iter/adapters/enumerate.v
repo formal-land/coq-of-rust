@@ -16,44 +16,48 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::enumerate::Enumerate"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "iter"
-                        |)
-                      ]
-                    |));
-                  ("count",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "usize",
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "count"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::enumerate::Enumerate"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
+                            |)
+                          ]
+                        |)));
+                    ("count",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "usize",
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "count"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -71,7 +75,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -86,25 +90,27 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Enumerate" |);
-                  M.read (| Value.String "iter" |);
+                  M.read (| M.of_value (| Value.String "Enumerate" |) |);
+                  M.read (| M.of_value (| Value.String "iter" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::enumerate::Enumerate",
                       "iter"
-                    |));
-                  M.read (| Value.String "count" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "count" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::adapters::enumerate::Enumerate",
                         "count"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -128,15 +134,20 @@ Module iter.
                 Enumerate { iter, count: 0 }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
-              Value.StructRecord
-                "core::iter::adapters::enumerate::Enumerate"
-                [ ("iter", M.read (| iter |)); ("count", Value.Integer Integer.Usize 0) ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::enumerate::Enumerate"
+                  [
+                    ("iter", A.to_value (M.read (| iter |)));
+                    ("count", A.to_value (M.of_value (| Value.Integer 0 |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -160,7 +171,7 @@ Module iter.
                 Some((i, a))
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -265,12 +276,24 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (|
+                          Integer.Usize,
+                          M.read (| β |),
+                          M.of_value (| Value.Integer 1 |)
+                        |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| i |); M.read (| a |) ] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.Tuple
+                                  [ A.to_value (M.read (| i |)); A.to_value (M.read (| a |)) ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -282,7 +305,7 @@ Module iter.
                 self.iter.size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -315,7 +338,7 @@ Module iter.
                 Some((i, a))
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -408,6 +431,7 @@ Module iter.
                     let i :=
                       M.alloc (|
                         BinOp.Panic.add (|
+                          Integer.Usize,
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -425,12 +449,24 @@ Module iter.
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
-                        BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 1 |)
+                        BinOp.Panic.add (|
+                          Integer.Usize,
+                          M.read (| i |),
+                          M.of_value (| Value.Integer 1 |)
+                        |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ Value.Tuple [ M.read (| i |); M.read (| a |) ] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.Tuple
+                                  [ A.to_value (M.read (| i |)); A.to_value (M.read (| a |)) ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -442,7 +478,7 @@ Module iter.
                 self.iter.count()
             }
         *)
-        Definition count (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -492,7 +528,7 @@ Module iter.
                 self.iter.try_fold(init, enumerate(&mut self.count, fold))
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; Fold; R ], [ self; init; fold ] =>
@@ -552,7 +588,7 @@ Module iter.
                 self.iter.fold(init, enumerate(self.count, fold))
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; Fold ], [ self; init; fold ] =>
@@ -606,7 +642,7 @@ Module iter.
                 remaining
             }
         *)
-        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -659,6 +695,7 @@ Module iter.
                             let rem := M.copy (| γ0_0 |) in
                             M.alloc (|
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.read (| n |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -680,7 +717,10 @@ Module iter.
                       "core::iter::adapters::enumerate::Enumerate",
                       "count"
                     |) in
-                  M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| advanced |) |) |) in
+                  M.write (|
+                    β,
+                    BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| advanced |) |)
+                  |) in
                 remaining
               |)))
           | _, _ => M.impossible
@@ -697,7 +737,7 @@ Module iter.
                 (self.count + idx, value)
             }
         *)
-        Definition __iterator_get_unchecked (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; idx ] =>
@@ -720,20 +760,24 @@ Module iter.
                     |)
                   |) in
                 M.alloc (|
-                  Value.Tuple
-                    [
-                      BinOp.Panic.add (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::enumerate::Enumerate",
-                            "count"
-                          |)
-                        |),
-                        M.read (| idx |)
-                      |);
-                      M.read (| value |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value
+                          (BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::iter::adapters::enumerate::Enumerate",
+                                "count"
+                              |)
+                            |),
+                            M.read (| idx |)
+                          |));
+                        A.to_value (M.read (| value |))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -772,7 +816,7 @@ Module iter.
                 Some((self.count + len, a))
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -880,24 +924,31 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          Value.Tuple
-                            [
-                              BinOp.Panic.add (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::enumerate::Enumerate",
-                                    "count"
-                                  |)
-                                |),
-                                M.read (| len |)
-                              |);
-                              M.read (| a |)
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.Tuple
+                                  [
+                                    A.to_value
+                                      (BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::enumerate::Enumerate",
+                                            "count"
+                                          |)
+                                        |),
+                                        M.read (| len |)
+                                      |));
+                                    A.to_value (M.read (| a |))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -913,7 +964,7 @@ Module iter.
                 Some((self.count + len, a))
             }
         *)
-        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -1023,24 +1074,31 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          Value.Tuple
-                            [
-                              BinOp.Panic.add (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::adapters::enumerate::Enumerate",
-                                    "count"
-                                  |)
-                                |),
-                                M.read (| len |)
-                              |);
-                              M.read (| a |)
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.Tuple
+                                  [
+                                    A.to_value
+                                      (BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::iter::adapters::enumerate::Enumerate",
+                                            "count"
+                                          |)
+                                        |),
+                                        M.read (| len |)
+                                      |));
+                                    A.to_value (M.read (| a |))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -1070,7 +1128,7 @@ Module iter.
                 self.iter.try_rfold(init, enumerate(count, fold))
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; Fold; R ], [ self; init; fold ] =>
@@ -1082,6 +1140,7 @@ Module iter.
                 let count :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1155,7 +1214,7 @@ Module iter.
                 self.iter.rfold(init, enumerate(count, fold))
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; Fold ], [ self; init; fold ] =>
@@ -1167,6 +1226,7 @@ Module iter.
                 let count :=
                   M.alloc (|
                     BinOp.Panic.add (|
+                      Integer.Usize,
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -1228,7 +1288,7 @@ Module iter.
                 self.iter.advance_back_by(n)
             }
         *)
-        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -1280,7 +1340,7 @@ Module iter.
                 self.iter.len()
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -1310,7 +1370,7 @@ Module iter.
                 self.iter.is_empty()
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -1365,7 +1425,7 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = I::MAY_HAVE_SIDE_EFFECT; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
@@ -1436,7 +1496,7 @@ Module iter.
                 unsafe { SourceIter::as_inner(&mut self.iter) }
             }
         *)
-        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_inner (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -1476,7 +1536,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
@@ -1486,7 +1546,7 @@ Module iter.
         (* Ty.apply
           (Ty.path "core::option::Option")
           [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY (I : Ty.t) : A.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
@@ -1514,7 +1574,7 @@ Module iter.
                 Enumerate::new(Default::default())
             }
         *)
-        Definition default (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [] =>

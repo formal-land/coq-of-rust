@@ -14,7 +14,7 @@ Module array.
         func(drain)
     }
     *)
-    Definition drain_array_with (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drain_array_with (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; R; impl_for_'a__FnOnce_Drain_'a__T___arrow_R ], [ array; func ] =>
         ltac:(M.monadic
@@ -36,33 +36,37 @@ Module array.
               |) in
             let drain :=
               M.alloc (|
-                Value.StructTuple
-                  "core::array::drain::Drain"
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ T ],
-                        "iter_mut",
-                        []
-                      |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                [ Ty.apply (Ty.path "array") [ T ] ],
-                              [],
-                              "deref_mut",
-                              []
-                            |),
-                            [ array ]
-                          |))
-                      ]
-                    |)
-                  ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::array::drain::Drain"
+                    [
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [ T ],
+                            "iter_mut",
+                            []
+                          |),
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::DerefMut",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    [ Ty.apply (Ty.path "array") [ T ] ],
+                                  [],
+                                  "deref_mut",
+                                  []
+                                |),
+                                [ array ]
+                              |)
+                            |)
+                          ]
+                        |))
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -73,7 +77,10 @@ Module array.
                   "call_once",
                   []
                 |),
-                [ M.read (| func |); Value.Tuple [ M.read (| drain |) ] ]
+                [
+                  M.read (| func |);
+                  M.of_value (| Value.Tuple [ A.to_value (M.read (| drain |)) ] |)
+                ]
               |)
             |)
           |)))
@@ -96,7 +103,7 @@ Module array.
               unsafe { drop_in_place(self.0.as_mut_slice()) }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -146,7 +153,7 @@ Module array.
               Some(unsafe { p.read() })
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -235,18 +242,21 @@ Module array.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [ T ],
-                            "read",
-                            []
-                          |),
-                          [ M.read (| p |) ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*const") [ T ],
+                                "read",
+                                []
+                              |),
+                              [ M.read (| p |) ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -259,7 +269,7 @@ Module array.
               (n, Some(n))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -280,11 +290,18 @@ Module array.
                   |)
                 |) in
               M.alloc (|
-                Value.Tuple
-                  [
-                    M.read (| n |);
-                    Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value (M.read (| n |));
+                      A.to_value
+                        (M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ A.to_value (M.read (| n |)) ]
+                        |))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -312,7 +329,7 @@ Module array.
               self.0.len()
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -370,7 +387,7 @@ Module array.
               unsafe { p.read() }
           }
       *)
-      Definition next_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>

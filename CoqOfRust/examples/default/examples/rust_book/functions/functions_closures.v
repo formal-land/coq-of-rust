@@ -30,16 +30,16 @@ fn main() {
     println!("closure returning one: {}", one());
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let outer_var := M.alloc (| Value.Integer Integer.I32 42 |) in
+        let outer_var := M.alloc (| M.of_value (| Value.Integer 42 |) |) in
         let closure_annotated :=
           M.alloc (|
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
@@ -49,16 +49,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |) |)))
+                            BinOp.Panic.add (|
+                              Integer.I32,
+                              M.read (| i |),
+                              M.read (| outer_var |)
+                            |)))
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           |) in
         let closure_inferred :=
           M.alloc (|
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
@@ -68,11 +73,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |) |)))
+                            BinOp.Panic.add (|
+                              Integer.I32,
+                              M.read (| i |),
+                              M.read (| outer_var |)
+                            |)))
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           |) in
         let _ :=
           let _ :=
@@ -84,52 +94,67 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure_annotated: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "closure_annotated: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
-                                        [ Ty.tuple [ Ty.path "i32" ] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [
-                                        closure_annotated;
-                                        Value.Tuple [ Value.Integer Integer.I32 1 ]
-                                      ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::Fn",
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "i32" ] ]
+                                              (Ty.path "i32"),
+                                            [ Ty.tuple [ Ty.path "i32" ] ],
+                                            "call",
+                                            []
+                                          |),
+                                          [
+                                            closure_annotated;
+                                            M.of_value (|
+                                              Value.Tuple
+                                                [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -140,65 +165,79 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure_inferred: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "closure_inferred: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
-                                        [ Ty.tuple [ Ty.path "i32" ] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [
-                                        closure_inferred;
-                                        Value.Tuple [ Value.Integer Integer.I32 1 ]
-                                      ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::Fn",
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "i32" ] ]
+                                              (Ty.path "i32"),
+                                            [ Ty.tuple [ Ty.path "i32" ] ],
+                                            "call",
+                                            []
+                                          |),
+                                          [
+                                            closure_inferred;
+                                            M.of_value (|
+                                              Value.Tuple
+                                                [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let one :=
           M.alloc (|
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
                     M.match_operator (|
                       M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Integer Integer.I32 1)) ]
+                      [ fun γ => ltac:(M.monadic (M.of_value (| Value.Integer 1 |))) ]
                     |)
                   | _ => M.impossible (||)
-                  end))
+                  end)
+            |)
           |) in
         let _ :=
           let _ :=
@@ -210,50 +249,60 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure returning one: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "closure returning one: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
-                                        [ Ty.tuple [] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [ one; Value.Tuple [] ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::Fn",
+                                            Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
+                                            [ Ty.tuple [] ],
+                                            "call",
+                                            []
+                                          |),
+                                          [ one; M.of_value (| Value.Tuple [] |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

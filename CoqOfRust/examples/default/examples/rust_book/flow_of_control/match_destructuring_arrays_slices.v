@@ -40,19 +40,21 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let array :=
           M.alloc (|
-            Value.Array
-              [
-                Value.Integer Integer.I32 1;
-                Value.Integer Integer.I32 (-2);
-                Value.Integer Integer.I32 6
-              ]
+            M.of_value (|
+              Value.Array
+                [
+                  A.to_value (M.of_value (| Value.Integer 1 |));
+                  A.to_value (M.of_value (| Value.Integer (-2) |));
+                  A.to_value (M.of_value (| Value.Integer 6 |))
+                ]
+            |)
           |) in
         M.match_operator (|
           array,
@@ -62,11 +64,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.I32 0
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                 let second := M.copy (| γ0_1 |) in
                 let third := M.copy (| γ0_2 |) in
                 let _ :=
@@ -82,55 +80,65 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "array[0] = 0, array[1] = " |);
-                                    M.read (| Value.String ", array[2] = " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "array[0] = 0, array[1] = " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String ", array[2] = " |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ second ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ third ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ second ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ third ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.I32 1
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
                 let third := M.copy (| γ0_2 |) in
                 let _ :=
                   M.alloc (|
@@ -145,46 +153,55 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "array[0] = 1, array[2] = " |);
-                                    M.read (| Value.String " and array[1] was ignored
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "array[0] = 1, array[2] = " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String " and array[1] was ignored
 " |)
-                                  ]
-                              |));
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ third ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ third ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.I32 (-1)
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer (-1) |) in
                 let second := M.copy (| γ0_1 |) in
                 let _ :=
                   M.alloc (|
@@ -199,48 +216,57 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "array[0] = -1, array[1] = " |);
-                                    M.read (|
-                                      Value.String " and all the other ones were ignored
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "array[0] = -1, array[1] = " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (|
+                                            Value.String " and all the other ones were ignored
 "
-                                    |)
-                                  ]
-                              |));
+                                          |)
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ second ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ second ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                 let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.I32 3
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
                 let second := M.copy (| γ0_1 |) in
                 let tail := M.copy (| γ0_rest |) in
                 let _ :=
@@ -256,45 +282,61 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "array[0] = 3, array[1] = " |);
-                                    M.read (| Value.String " and the other elements were " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "array[0] = 3, array[1] = " |)
+                                        |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (|
+                                            Value.String " and the other elements were "
+                                          |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ second ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
-                                      |),
-                                      [ tail ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ second ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                          |),
+                                          [ tail ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
@@ -316,54 +358,68 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "array[0] = " |);
-                                    M.read (| Value.String ", middle = " |);
-                                    M.read (| Value.String ", array[2] = " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "array[0] = " |) |));
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String ", middle = " |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String ", array[2] = " |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ first ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
-                                      |),
-                                      [ middle ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ last ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ first ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                          |),
+                                          [ middle ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ last ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "conditional_compilation::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "conditional_compilation::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -130,7 +139,7 @@ Module Impl_conditional_compilation_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -152,7 +161,20 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -161,7 +183,19 @@ Module Impl_conditional_compilation_Env.
           unimplemented!()
       }
   *)
-  Parameter block_number : (list Ty.t) -> (list Value.t) -> M.
+  Definition block_number (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
 End Impl_conditional_compilation_Env.
@@ -181,7 +215,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -190,7 +235,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -215,25 +260,28 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "conditional_compilation::ConditionalCompilation"
-          [
-            ("value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.path "bool",
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "conditional_compilation::ConditionalCompilation"
+            [
+              ("value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "bool",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -244,14 +292,16 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new_foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
-        Value.StructRecord
-          "conditional_compilation::ConditionalCompilation"
-          [ ("value", M.read (| value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "conditional_compilation::ConditionalCompilation"
+            [ ("value", A.to_value (M.read (| value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -262,14 +312,16 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_bar (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new_bar (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
-        Value.StructRecord
-          "conditional_compilation::ConditionalCompilation"
-          [ ("value", M.read (| value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "conditional_compilation::ConditionalCompilation"
+            [ ("value", A.to_value (M.read (| value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -280,14 +332,16 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           Self { value }
       }
   *)
-  Definition new_foo_bar (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new_foo_bar (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
-        Value.StructRecord
-          "conditional_compilation::ConditionalCompilation"
-          [ ("value", M.read (| value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "conditional_compilation::ConditionalCompilation"
+            [ ("value", A.to_value (M.read (| value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -303,7 +357,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }));
       }
   *)
-  Definition inherent_flip_foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inherent_flip_foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -316,14 +370,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           let caller :=
             M.alloc (|
@@ -366,27 +421,33 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       []
                     |)
                   |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::Changes"
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::Changes"
-                        [
-                          ("new_value",
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "conditional_compilation::ConditionalCompilation",
-                                "value"
-                              |)
-                            |));
-                          ("by_", M.read (| caller |))
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "conditional_compilation::Event::Changes"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "conditional_compilation::Changes"
+                              [
+                                ("new_value",
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "conditional_compilation::ConditionalCompilation",
+                                        "value"
+                                      |)
+                                    |)));
+                                ("by_", A.to_value (M.read (| caller |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -406,7 +467,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
           }));
       }
   *)
-  Definition inherent_flip_bar (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inherent_flip_bar (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -463,14 +524,15 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           let _ :=
             M.alloc (|
@@ -491,28 +553,34 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                       []
                     |)
                   |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::ChangesDated"
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::ChangesDated"
-                        [
-                          ("new_value",
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "conditional_compilation::ConditionalCompilation",
-                                "value"
-                              |)
-                            |));
-                          ("by_", M.read (| caller |));
-                          ("when", M.read (| block_number |))
-                        ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "conditional_compilation::Event::ChangesDated"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "conditional_compilation::ChangesDated"
+                              [
+                                ("new_value",
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "conditional_compilation::ConditionalCompilation",
+                                        "value"
+                                      |)
+                                    |)));
+                                ("by_", A.to_value (M.read (| caller |)));
+                                ("when", A.to_value (M.read (| block_number |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -529,7 +597,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -542,16 +610,17 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "conditional_compilation::ConditionalCompilation",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -561,7 +630,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -586,7 +655,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
           self.value = value;
       }
   *)
-  Definition push_foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition push_foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; value ] =>
       ltac:(M.monadic
@@ -634,13 +703,21 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                       []
                     |)
                   |);
-                  Value.StructTuple
-                    "conditional_compilation::Event::Changes"
-                    [
-                      Value.StructRecord
-                        "conditional_compilation::Changes"
-                        [ ("new_value", M.read (| value |)); ("by_", M.read (| caller |)) ]
-                    ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "conditional_compilation::Event::Changes"
+                      [
+                        A.to_value
+                          (M.of_value (|
+                            Value.StructRecord
+                              "conditional_compilation::Changes"
+                              [
+                                ("new_value", A.to_value (M.read (| value |)));
+                                ("by_", A.to_value (M.read (| caller |)))
+                              ]
+                          |))
+                      ]
+                  |)
                 ]
               |)
             |) in
@@ -653,7 +730,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
               |),
               M.read (| value |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

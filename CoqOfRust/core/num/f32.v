@@ -2,93 +2,103 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module f32.
-  Definition value_RADIX : Value.t :=
-    M.run ltac:(M.monadic (M.get_constant (| "core::f32::RADIX" |))).
+  Definition value_RADIX : A.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::RADIX" |))).
   
-  Definition value_MANTISSA_DIGITS : Value.t :=
+  Definition value_MANTISSA_DIGITS : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MANTISSA_DIGITS" |))).
   
-  Definition value_DIGITS : Value.t :=
+  Definition value_DIGITS : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::DIGITS" |))).
   
-  Definition value_EPSILON : Value.t :=
+  Definition value_EPSILON : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::EPSILON" |))).
   
-  Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::MIN" |))).
+  Definition value_MIN : A.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::MIN" |))).
   
-  Definition value_MIN_POSITIVE : Value.t :=
+  Definition value_MIN_POSITIVE : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MIN_POSITIVE" |))).
   
-  Definition value_MAX : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::MAX" |))).
+  Definition value_MAX : A.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::MAX" |))).
   
-  Definition value_MIN_EXP : Value.t :=
+  Definition value_MIN_EXP : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MIN_EXP" |))).
   
-  Definition value_MAX_EXP : Value.t :=
+  Definition value_MAX_EXP : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MAX_EXP" |))).
   
-  Definition value_MIN_10_EXP : Value.t :=
+  Definition value_MIN_10_EXP : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MIN_10_EXP" |))).
   
-  Definition value_MAX_10_EXP : Value.t :=
+  Definition value_MAX_10_EXP : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::MAX_10_EXP" |))).
   
-  Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::NAN" |))).
+  Definition value_NAN : A.t := M.run ltac:(M.monadic (M.get_constant (| "core::f32::NAN" |))).
   
-  Definition value_INFINITY : Value.t :=
+  Definition value_INFINITY : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::INFINITY" |))).
   
-  Definition value_NEG_INFINITY : Value.t :=
+  Definition value_NEG_INFINITY : A.t :=
     M.run ltac:(M.monadic (M.get_constant (| "core::f32::NEG_INFINITY" |))).
   
   Module consts.
-    Definition value_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PI : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_TAU : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_TAU : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_PHI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_PHI : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_EGAMMA : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EGAMMA : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_PI_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_2 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_PI_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_3 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_PI_4 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_4 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_PI_6 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_6 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_PI_8 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_PI_8 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_1_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_PI : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_1_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_PI : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_2_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_PI : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_2_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_2_SQRT_PI : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_SQRT_2 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_1_SQRT_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_2 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_SQRT_3 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_FRAC_1_SQRT_3 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_FRAC_1_SQRT_3 : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_E : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LOG2_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG2_E : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LOG2_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG2_10 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LOG10_E : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG10_E : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LOG10_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LOG10_2 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LN_2 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LN_2 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
-    Definition value_LN_10 : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_LN_10 : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
   End consts.
   
   Module Impl_f32.
@@ -96,102 +106,111 @@ Module f32.
     
     (*     pub const RADIX: u32 = 2; *)
     (* Ty.path "u32" *)
-    Definition value_RADIX : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 2 |))).
+    Definition value_RADIX : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 2 |) |))).
     
     Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
     
     (*     pub const MANTISSA_DIGITS: u32 = 24; *)
     (* Ty.path "u32" *)
-    Definition value_MANTISSA_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 24 |))).
+    Definition value_MANTISSA_DIGITS : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 24 |) |))).
     
     Axiom AssociatedConstant_value_MANTISSA_DIGITS :
       M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
     
     (*     pub const DIGITS: u32 = 6; *)
     (* Ty.path "u32" *)
-    Definition value_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 6 |))).
+    Definition value_DIGITS : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 6 |) |))).
     
     Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
     
     (*     pub const EPSILON: f32 = 1.19209290e-07_f32; *)
     (* Ty.path "f32" *)
-    Definition value_EPSILON : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_EPSILON : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
     Axiom AssociatedConstant_value_EPSILON :
       M.IsAssociatedConstant Self "value_EPSILON" value_EPSILON.
     
     (*     pub const MIN: f32 = -3.40282347e+38_f32; *)
     (* Ty.path "f32" *)
-    Definition value_MIN : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MIN : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
     Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
     
     (*     pub const MIN_POSITIVE: f32 = 1.17549435e-38_f32; *)
     (* Ty.path "f32" *)
-    Definition value_MIN_POSITIVE : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MIN_POSITIVE : A.t :=
+      M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
     Axiom AssociatedConstant_value_MIN_POSITIVE :
       M.IsAssociatedConstant Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
     
     (*     pub const MAX: f32 = 3.40282347e+38_f32; *)
     (* Ty.path "f32" *)
-    Definition value_MAX : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    Definition value_MAX : A.t := M.run ltac:(M.monadic (M.of_value (| UnsupportedLiteral |))).
     
     Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
     
     (*     pub const MIN_EXP: i32 = -125; *)
     (* Ty.path "i32" *)
-    Definition value_MIN_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-125) |))).
+    Definition value_MIN_EXP : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-125) |) |))).
     
     Axiom AssociatedConstant_value_MIN_EXP :
       M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
     
     (*     pub const MAX_EXP: i32 = 128; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 128 |))).
+    Definition value_MAX_EXP : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 128 |) |))).
     
     Axiom AssociatedConstant_value_MAX_EXP :
       M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
     
     (*     pub const MIN_10_EXP: i32 = -37; *)
     (* Ty.path "i32" *)
-    Definition value_MIN_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-37) |))).
+    Definition value_MIN_10_EXP : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-37) |) |))).
     
     Axiom AssociatedConstant_value_MIN_10_EXP :
       M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
     
     (*     pub const MAX_10_EXP: i32 = 38; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 38 |))).
+    Definition value_MAX_10_EXP : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 38 |) |))).
     
     Axiom AssociatedConstant_value_MAX_10_EXP :
       M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
     
     (*     pub const NAN: f32 = 0.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
-    Definition value_NAN : Value.t :=
+    Definition value_NAN : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+            BinOp.Panic.div (|
+              Integer.Usize,
+              M.read (| M.of_value (| UnsupportedLiteral |) |),
+              M.read (| M.of_value (| UnsupportedLiteral |) |)
+            |)
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
     
     (*     pub const INFINITY: f32 = 1.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
-    Definition value_INFINITY : Value.t :=
+    Definition value_INFINITY : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+            BinOp.Panic.div (|
+              Integer.Usize,
+              M.read (| M.of_value (| UnsupportedLiteral |) |),
+              M.read (| M.of_value (| UnsupportedLiteral |) |)
+            |)
           |))).
     
     Axiom AssociatedConstant_value_INFINITY :
@@ -199,11 +218,15 @@ Module f32.
     
     (*     pub const NEG_INFINITY: f32 = -1.0_f32 / 0.0_f32; *)
     (* Ty.path "f32" *)
-    Definition value_NEG_INFINITY : Value.t :=
+    Definition value_NEG_INFINITY : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
+            BinOp.Panic.div (|
+              Integer.Usize,
+              M.read (| M.of_value (| UnsupportedLiteral |) |),
+              M.read (| M.of_value (| UnsupportedLiteral |) |)
+            |)
           |))).
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
@@ -214,12 +237,12 @@ Module f32.
             self != self
         }
     *)
-    Definition is_nan (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_nan (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne (M.read (| self |)) (M.read (| self |))))
+          BinOp.Pure.ne (| M.read (| self |), M.read (| self |) |)))
       | _, _ => M.impossible
       end.
     
@@ -231,7 +254,7 @@ Module f32.
             unsafe { mem::transmute::<u32, f32>(mem::transmute::<f32, u32>(self) & 0x7fff_ffff) }
         }
     *)
-    Definition abs_private (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition abs_private (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -239,15 +262,16 @@ Module f32.
           M.call_closure (|
             M.get_function (| "core::intrinsics::transmute", [ Ty.path "u32"; Ty.path "f32" ] |),
             [
-              BinOp.Pure.bit_and
-                (M.call_closure (|
+              BinOp.Pure.bit_and (|
+                M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [ Ty.path "f32"; Ty.path "u32" ]
                   |),
                   [ M.read (| self |) ]
-                |))
-                (Value.Integer Integer.U32 2147483647)
+                |),
+                M.of_value (| Value.Integer 2147483647 |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -263,18 +287,21 @@ Module f32.
             (self == f32::INFINITY) | (self == f32::NEG_INFINITY)
         }
     *)
-    Definition is_infinite (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_infinite (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.bit_or
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f32::INFINITY" |) |)))
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f32::NEG_INFINITY" |) |)))))
+          BinOp.Pure.bit_or (|
+            BinOp.Pure.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f32::INFINITY" |) |)
+            |),
+            BinOp.Pure.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f32::NEG_INFINITY" |) |)
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -287,17 +314,18 @@ Module f32.
             self.abs_private() < Self::INFINITY
         }
     *)
-    Definition is_finite (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_finite (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.lt
-            (M.call_closure (|
+          BinOp.Pure.lt (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
               [ M.read (| self |) ]
-            |))
-            (M.read (| M.get_constant (| "core::f32::INFINITY" |) |))))
+            |),
+            M.read (| M.get_constant (| "core::f32::INFINITY" |) |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -308,7 +336,7 @@ Module f32.
             matches!(self.classify(), FpCategory::Subnormal)
         }
     *)
-    Definition is_subnormal (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_subnormal (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -322,8 +350,8 @@ Module f32.
                 |)
               |),
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -337,7 +365,7 @@ Module f32.
             matches!(self.classify(), FpCategory::Normal)
         }
     *)
-    Definition is_normal (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_normal (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -351,8 +379,8 @@ Module f32.
                 |)
               |),
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -394,14 +422,14 @@ Module f32.
             }
         }
     *)
-    Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition classify (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -414,11 +442,13 @@ Module f32.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -432,7 +462,9 @@ Module f32.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
+                            M.alloc (|
+                              M.of_value (| Value.StructTuple "core::num::FpCategory::Nan" [] |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
@@ -469,7 +501,7 @@ Module f32.
             }
         }
     *)
-    Definition partial_classify (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_classify (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -487,15 +519,21 @@ Module f32.
               |) in
             M.match_operator (|
               M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::partial_classify::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::partial_classify::EXP_MASK" |) |))
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value
+                        (BinOp.Pure.bit_and (|
+                          M.read (| b |),
+                          M.read (| M.get_constant (| "core::f32::partial_classify::MAN_MASK" |) |)
+                        |));
+                      A.to_value
+                        (BinOp.Pure.bit_and (|
+                          M.read (| b |),
+                          M.read (| M.get_constant (| "core::f32::partial_classify::EXP_MASK" |) |)
+                        |))
+                    ]
+                |)
               |),
               [
                 fun γ =>
@@ -503,29 +541,26 @@ Module f32.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_0 |),
-                        Value.Integer Integer.U32 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 0
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
+                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Zero" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 0
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
+                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Normal" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -549,7 +584,7 @@ Module f32.
             }
         }
     *)
-    Definition classify_bits (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition classify_bits (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ b ] =>
         ltac:(M.monadic
@@ -557,15 +592,21 @@ Module f32.
           M.read (|
             M.match_operator (|
               M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::classify_bits::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::classify_bits::EXP_MASK" |) |))
-                  ]
+                M.of_value (|
+                  Value.Tuple
+                    [
+                      A.to_value
+                        (BinOp.Pure.bit_and (|
+                          M.read (| b |),
+                          M.read (| M.get_constant (| "core::f32::classify_bits::MAN_MASK" |) |)
+                        |));
+                      A.to_value
+                        (BinOp.Pure.bit_and (|
+                          M.read (| b |),
+                          M.read (| M.get_constant (| "core::f32::classify_bits::EXP_MASK" |) |)
+                        |))
+                    ]
+                |)
               |),
               [
                 fun γ =>
@@ -573,16 +614,15 @@ Module f32.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_0 |),
-                        Value.Integer Integer.U32 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 2139095040
+                        Value.Integer 2139095040
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -590,37 +630,36 @@ Module f32.
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 2139095040
+                        Value.Integer 2139095040
                       |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Nan" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_0 |),
-                        Value.Integer Integer.U32 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 0
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
+                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Zero" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer Integer.U32 0
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
+                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::num::FpCategory::Normal" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -635,16 +674,17 @@ Module f32.
             !self.is_sign_negative()
         }
     *)
-    Definition is_sign_positive (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_sign_positive (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f32", "is_sign_negative", [] |),
               [ M.read (| self |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -659,22 +699,24 @@ Module f32.
             unsafe { mem::transmute::<f32, u32>(self) & 0x8000_0000 != 0 }
         }
     *)
-    Definition is_sign_negative (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_sign_negative (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
-              (M.call_closure (|
+          BinOp.Pure.ne (|
+            BinOp.Pure.bit_and (|
+              M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::transmute",
                   [ Ty.path "f32"; Ty.path "u32" ]
                 |),
                 [ M.read (| self |) ]
-              |))
-              (Value.Integer Integer.U32 2147483648))
-            (Value.Integer Integer.U32 0)))
+              |),
+              M.of_value (| Value.Integer 2147483648 |)
+            |),
+            M.of_value (| Value.Integer 0 |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -704,7 +746,7 @@ Module f32.
             Self::from_bits(next_bits)
         }
     *)
-    Definition next_up (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_up (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -721,7 +763,7 @@ Module f32.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -734,16 +776,17 @@ Module f32.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.Pure.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
                                           []
                                         |),
                                         [ M.read (| M.get_constant (| "core::f32::INFINITY" |) |) ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -751,26 +794,30 @@ Module f32.
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| M.read (| self |) |) |) |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
-                      (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f32::next_up::CLEAR_SIGN_MASK" |) |))
+                    BinOp.Pure.bit_and (|
+                      M.read (| bits |),
+                      M.read (| M.get_constant (| "core::f32::next_up::CLEAR_SIGN_MASK" |) |)
+                    |)
                   |) in
                 let next_bits :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer Integer.U32 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| abs |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -778,14 +825,14 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.Pure.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -794,16 +841,18 @@ Module f32.
                                       |) in
                                     M.alloc (|
                                       BinOp.Panic.add (|
+                                        Integer.U32,
                                         M.read (| bits |),
-                                        Value.Integer Integer.U32 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       BinOp.Panic.sub (|
+                                        Integer.U32,
                                         M.read (| bits |),
-                                        Value.Integer Integer.U32 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |)))
                               ]
@@ -847,7 +896,7 @@ Module f32.
             Self::from_bits(next_bits)
         }
     *)
-    Definition next_down (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_down (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -864,7 +913,7 @@ Module f32.
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -877,9 +926,9 @@ Module f32.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.Pure.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
@@ -890,7 +939,8 @@ Module f32.
                                             M.get_constant (| "core::f32::NEG_INFINITY" |)
                                           |)
                                         ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -898,26 +948,30 @@ Module f32.
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| M.read (| self |) |) |) |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
-                      (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f32::next_down::CLEAR_SIGN_MASK" |) |))
+                    BinOp.Pure.bit_and (|
+                      M.read (| bits |),
+                      M.read (| M.get_constant (| "core::f32::next_down::CLEAR_SIGN_MASK" |) |)
+                    |)
                   |) in
                 let next_bits :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer Integer.U32 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| abs |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -925,14 +979,14 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.Pure.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -941,16 +995,18 @@ Module f32.
                                       |) in
                                     M.alloc (|
                                       BinOp.Panic.sub (|
+                                        Integer.U32,
                                         M.read (| bits |),
-                                        Value.Integer Integer.U32 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
                                       BinOp.Panic.add (|
+                                        Integer.U32,
                                         M.read (| bits |),
-                                        Value.Integer Integer.U32 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |)))
                               ]
@@ -976,12 +1032,16 @@ Module f32.
             1.0 / self
         }
     *)
-    Definition recip (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition recip (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.div (| M.read (| UnsupportedLiteral |), M.read (| self |) |)))
+          BinOp.Panic.div (|
+            Integer.Usize,
+            M.read (| M.of_value (| UnsupportedLiteral |) |),
+            M.read (| self |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -994,12 +1054,13 @@ Module f32.
             self * PIS_IN_180
         }
     *)
-    Definition to_degrees (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_degrees (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Panic.mul (|
+            Integer.Usize,
             M.read (| self |),
             M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |)
           |)))
@@ -1014,7 +1075,7 @@ Module f32.
             self * (value / 180.0f32)
         }
     *)
-    Definition to_radians (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_radians (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1023,8 +1084,13 @@ Module f32.
             let value := M.copy (| M.get_constant (| "core::f32::consts::PI" |) |) in
             M.alloc (|
               BinOp.Panic.mul (|
+                Integer.Usize,
                 M.read (| self |),
-                BinOp.Panic.div (| M.read (| value |), M.read (| UnsupportedLiteral |) |)
+                BinOp.Panic.div (|
+                  Integer.Usize,
+                  M.read (| value |),
+                  M.read (| M.of_value (| UnsupportedLiteral |) |)
+                |)
               |)
             |)
           |)))
@@ -1038,7 +1104,7 @@ Module f32.
             intrinsics::maxnumf32(self, other)
         }
     *)
-    Definition max (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition max (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1058,7 +1124,7 @@ Module f32.
             intrinsics::minnumf32(self, other)
         }
     *)
-    Definition min (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition min (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1086,7 +1152,7 @@ Module f32.
             }
         }
     *)
-    Definition maximum (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition maximum (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1094,26 +1160,26 @@ Module f32.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
-                        (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| other |)) |)) in
+                        (M.alloc (| BinOp.Pure.gt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.Pure.gt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1121,14 +1187,14 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.Pure.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1136,7 +1202,7 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -1175,7 +1241,11 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.add (| M.read (| self |), M.read (| other |) |)
+                                      BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (| self |),
+                                        M.read (| other |)
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -1203,7 +1273,7 @@ Module f32.
             }
         }
     *)
-    Definition minimum (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition minimum (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1211,26 +1281,26 @@ Module f32.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
-                        (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| other |)) |)) in
+                        (M.alloc (| BinOp.Pure.lt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.Pure.lt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1238,14 +1308,14 @@ Module f32.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.Pure.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1253,7 +1323,7 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -1292,7 +1362,11 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.add (| M.read (| self |), M.read (| other |) |)
+                                      BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (| self |),
+                                        M.read (| other |)
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -1330,7 +1404,7 @@ Module f32.
             }
         }
     *)
-    Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition midpoint (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1338,7 +1412,11 @@ Module f32.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+              M.alloc (|
+                M.of_value (|
+                  Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1361,7 +1439,7 @@ Module f32.
                         |)
                       |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1369,40 +1447,42 @@ Module f32.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.le
-                                      (M.read (| abs_a |))
-                                      (M.read (| M.get_constant (| "core::f32::midpoint::HI" |) |)),
+                                    BinOp.Pure.le (|
+                                      M.read (| abs_a |),
+                                      M.read (| M.get_constant (| "core::f32::midpoint::HI" |) |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.le
-                                        (M.read (| abs_b |))
-                                        (M.read (|
-                                          M.get_constant (| "core::f32::midpoint::HI" |)
-                                        |))))
+                                      (BinOp.Pure.le (|
+                                        M.read (| abs_b |),
+                                        M.read (| M.get_constant (| "core::f32::midpoint::HI" |) |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               BinOp.Panic.div (|
-                                BinOp.Panic.add (| M.read (| a |), M.read (| b |) |),
-                                M.read (| UnsupportedLiteral |)
+                                Integer.Usize,
+                                BinOp.Panic.add (| Integer.Usize, M.read (| a |), M.read (| b |) |),
+                                M.read (| M.of_value (| UnsupportedLiteral |) |)
                               |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (| abs_a |))
-                                            (M.read (|
+                                          BinOp.Pure.lt (|
+                                            M.read (| abs_a |),
+                                            M.read (|
                                               M.get_constant (| "core::f32::midpoint::LO" |)
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1411,28 +1491,31 @@ Module f32.
                                       |) in
                                     M.alloc (|
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| a |),
                                         BinOp.Panic.div (|
+                                          Integer.Usize,
                                           M.read (| b |),
-                                          M.read (| UnsupportedLiteral |)
+                                          M.read (| M.of_value (| UnsupportedLiteral |) |)
                                         |)
                                       |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.lt
-                                                    (M.read (| abs_b |))
-                                                    (M.read (|
+                                                  BinOp.Pure.lt (|
+                                                    M.read (| abs_b |),
+                                                    M.read (|
                                                       M.get_constant (| "core::f32::midpoint::LO" |)
-                                                    |))
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1441,9 +1524,11 @@ Module f32.
                                               |) in
                                             M.alloc (|
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 BinOp.Panic.div (|
+                                                  Integer.Usize,
                                                   M.read (| a |),
-                                                  M.read (| UnsupportedLiteral |)
+                                                  M.read (| M.of_value (| UnsupportedLiteral |) |)
                                                 |),
                                                 M.read (| b |)
                                               |)
@@ -1452,13 +1537,16 @@ Module f32.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 BinOp.Panic.div (|
+                                                  Integer.Usize,
                                                   M.read (| a |),
-                                                  M.read (| UnsupportedLiteral |)
+                                                  M.read (| M.of_value (| UnsupportedLiteral |) |)
                                                 |),
                                                 BinOp.Panic.div (|
+                                                  Integer.Usize,
                                                   M.read (| b |),
-                                                  M.read (| UnsupportedLiteral |)
+                                                  M.read (| M.of_value (| UnsupportedLiteral |) |)
                                                 |)
                                               |)
                                             |)))
@@ -1486,7 +1574,7 @@ Module f32.
             unsafe { FloatToInt::<Int>::to_int_unchecked(self) }
         }
     *)
-    Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_int_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ Int ], [ self ] =>
         ltac:(M.monadic
@@ -1558,7 +1646,7 @@ Module f32.
             unsafe { intrinsics::const_eval_select((self,), ct_f32_to_u32, rt_f32_to_u32) }
         }
     *)
-    Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_bits (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1574,7 +1662,7 @@ Module f32.
               ]
             |),
             [
-              Value.Tuple [ M.read (| self |) ];
+              M.of_value (| Value.Tuple [ A.to_value (M.read (| self |)) ] |);
               M.get_associated_function (| Self, "ct_f32_to_u32.to_bits", [] |);
               M.get_associated_function (| Self, "rt_f32_to_u32.to_bits", [] |)
             ]
@@ -1637,7 +1725,7 @@ Module f32.
             unsafe { intrinsics::const_eval_select((v,), ct_u32_to_f32, rt_u32_to_f32) }
         }
     *)
-    Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_bits (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ v ] =>
         ltac:(M.monadic
@@ -1653,7 +1741,7 @@ Module f32.
               ]
             |),
             [
-              Value.Tuple [ M.read (| v |) ];
+              M.of_value (| Value.Tuple [ A.to_value (M.read (| v |)) ] |);
               M.get_associated_function (| Self, "ct_u32_to_f32.from_bits", [] |);
               M.get_associated_function (| Self, "rt_u32_to_f32.from_bits", [] |)
             ]
@@ -1668,7 +1756,7 @@ Module f32.
             self.to_bits().to_be_bytes()
         }
     *)
-    Definition to_be_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_be_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1692,7 +1780,7 @@ Module f32.
             self.to_bits().to_le_bytes()
         }
     *)
-    Definition to_le_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_le_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1716,7 +1804,7 @@ Module f32.
             self.to_bits().to_ne_bytes()
         }
     *)
-    Definition to_ne_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_ne_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1740,7 +1828,7 @@ Module f32.
             Self::from_bits(u32::from_be_bytes(bytes))
         }
     *)
-    Definition from_be_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_be_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ bytes ] =>
         ltac:(M.monadic
@@ -1765,7 +1853,7 @@ Module f32.
             Self::from_bits(u32::from_le_bytes(bytes))
         }
     *)
-    Definition from_le_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_le_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ bytes ] =>
         ltac:(M.monadic
@@ -1790,7 +1878,7 @@ Module f32.
             Self::from_bits(u32::from_ne_bytes(bytes))
         }
     *)
-    Definition from_ne_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_ne_bytes (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ bytes ] =>
         ltac:(M.monadic
@@ -1843,7 +1931,7 @@ Module f32.
             left.cmp(&right)
         }
     *)
-    Definition total_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition total_cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -1852,45 +1940,53 @@ Module f32.
           M.read (|
             let left :=
               M.alloc (|
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                     [ M.read (| M.read (| self |) |) ]
-                  |))
+                  |)
+                |)
               |) in
             let right :=
               M.alloc (|
-                M.rust_cast
-                  (M.call_closure (|
+                M.rust_cast (|
+                  M.call_closure (|
                     M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                     [ M.read (| M.read (| other |) |) ]
-                  |))
+                  |)
+                |)
               |) in
             let _ :=
               let β := left in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
-                  (M.read (| β |))
-                  (M.rust_cast
-                    (BinOp.Panic.shr (|
-                      M.rust_cast
-                        (BinOp.Panic.shr (| M.read (| left |), Value.Integer Integer.I32 31 |)),
-                      Value.Integer Integer.I32 1
-                    |)))
+                BinOp.Pure.bit_xor (|
+                  M.read (| β |),
+                  M.rust_cast (|
+                    BinOp.Panic.shr (|
+                      M.rust_cast (|
+                        BinOp.Panic.shr (| M.read (| left |), M.of_value (| Value.Integer 31 |) |)
+                      |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
+                  |)
+                |)
               |) in
             let _ :=
               let β := right in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
-                  (M.read (| β |))
-                  (M.rust_cast
-                    (BinOp.Panic.shr (|
-                      M.rust_cast
-                        (BinOp.Panic.shr (| M.read (| right |), Value.Integer Integer.I32 31 |)),
-                      Value.Integer Integer.I32 1
-                    |)))
+                BinOp.Pure.bit_xor (|
+                  M.read (| β |),
+                  M.rust_cast (|
+                    BinOp.Panic.shr (|
+                      M.rust_cast (|
+                        BinOp.Panic.shr (| M.read (| right |), M.of_value (| Value.Integer 31 |) |)
+                      |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
+                  |)
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1916,7 +2012,7 @@ Module f32.
             self
         }
     *)
-    Definition clamp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clamp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; min; max ] =>
         ltac:(M.monadic
@@ -1926,14 +2022,16 @@ Module f32.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not (BinOp.Pure.le (M.read (| min |)) (M.read (| max |)))
+                            UnOp.Pure.not (|
+                              BinOp.Pure.le (| M.read (| min |), M.read (| max |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1949,76 +2047,91 @@ Module f32.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "min > max, or either was NaN. min = "
-                                          |);
-                                          M.read (| Value.String ", max = " |)
-                                        ]
-                                    |));
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "min > max, or either was NaN. min = "
+                                                |)
+                                              |));
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (| Value.String ", max = " |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |);
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f32" ]
-                                            |),
-                                            [ min ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f32" ]
-                                            |),
-                                            [ max ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "f32" ]
+                                                |),
+                                                [ min ]
+                                              |));
+                                            A.to_value
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [ Ty.path "f32" ]
+                                                |),
+                                                [ max ]
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| min |)) |)) in
+                          (M.alloc (| BinOp.Pure.lt (| M.read (| self |), M.read (| min |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ := M.write (| self, M.read (| min |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| max |)) |)) in
+                          (M.alloc (| BinOp.Pure.gt (| M.read (| self |), M.read (| max |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ := M.write (| self, M.read (| max |) |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             self

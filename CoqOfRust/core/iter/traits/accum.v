@@ -22,7 +22,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -40,9 +40,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -58,13 +58,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -90,7 +95,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -108,9 +113,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -126,13 +131,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -158,7 +168,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -178,9 +188,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -211,7 +221,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -237,7 +248,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -257,9 +268,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I8 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -290,7 +301,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -316,7 +328,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -334,9 +346,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -352,13 +364,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -384,7 +401,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -402,9 +419,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -420,13 +437,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -452,7 +474,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -472,9 +494,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -505,7 +527,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -531,7 +554,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -551,9 +574,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I16 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -584,7 +607,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -610,7 +634,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -628,9 +652,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -646,13 +670,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -678,7 +707,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -696,9 +725,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -714,13 +743,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -746,7 +780,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -766,9 +800,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -799,7 +833,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -825,7 +860,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -845,9 +880,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I32 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -878,7 +913,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -904,7 +940,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -922,9 +958,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -940,13 +976,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -972,7 +1013,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -990,9 +1031,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1008,13 +1049,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1040,7 +1086,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1060,9 +1106,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1093,7 +1139,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1119,7 +1166,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1139,9 +1186,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I64 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1172,7 +1219,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1198,7 +1246,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1216,9 +1264,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1234,13 +1282,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.I128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1266,7 +1319,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1284,9 +1337,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1302,13 +1355,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.I128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1334,7 +1392,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1354,9 +1412,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1387,7 +1445,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1413,7 +1472,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1433,9 +1492,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.I128 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1466,7 +1525,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1492,7 +1552,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1510,9 +1570,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1528,13 +1588,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Isize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1560,7 +1625,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1578,9 +1643,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1596,13 +1661,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Isize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1628,7 +1698,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1648,9 +1718,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1681,7 +1751,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1707,7 +1778,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1727,9 +1798,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Isize 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1760,7 +1831,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1786,7 +1858,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1804,9 +1876,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1822,13 +1894,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1854,7 +1931,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1872,9 +1949,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1890,13 +1967,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U8,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -1922,7 +2004,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -1942,9 +2024,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -1975,7 +2057,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2001,7 +2084,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2021,9 +2104,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U8 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2054,7 +2137,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2080,7 +2164,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2098,9 +2182,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2116,13 +2200,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2148,7 +2237,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2166,9 +2255,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2184,13 +2273,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U16,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2216,7 +2310,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2236,9 +2330,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2269,7 +2363,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2295,7 +2390,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2315,9 +2410,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U16 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2348,7 +2443,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2374,7 +2470,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2392,9 +2488,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2410,13 +2506,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2442,7 +2543,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2460,9 +2561,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2478,13 +2579,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U32,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2510,7 +2616,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2530,9 +2636,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2563,7 +2669,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2589,7 +2696,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2609,9 +2716,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U32 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2642,7 +2749,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2668,7 +2776,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2686,9 +2794,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2704,13 +2812,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2736,7 +2849,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2754,9 +2867,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2772,13 +2885,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U64,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2804,7 +2922,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2824,9 +2942,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2857,7 +2975,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2883,7 +3002,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2903,9 +3022,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U64 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2936,7 +3055,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2962,7 +3082,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -2980,9 +3100,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2998,13 +3118,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.U128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3030,7 +3155,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3048,9 +3173,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3066,13 +3191,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.U128,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3098,7 +3228,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3118,9 +3248,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3151,7 +3281,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3177,7 +3308,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3197,9 +3328,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.U128 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3230,7 +3361,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3256,7 +3388,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3274,9 +3406,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3292,13 +3424,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3324,7 +3461,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3342,9 +3479,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3360,13 +3497,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3392,7 +3534,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3412,9 +3554,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3445,7 +3587,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3471,7 +3614,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3491,9 +3634,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.Integer Integer.Usize 1;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 1 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3524,7 +3667,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3551,7 +3695,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3577,9 +3721,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3616,7 +3764,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3643,7 +3792,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3669,9 +3818,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3708,7 +3861,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3735,7 +3889,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3764,9 +3918,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3807,7 +3965,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3840,7 +3999,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3869,9 +4028,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -3912,7 +4075,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -3945,7 +4109,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -3971,9 +4135,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4010,7 +4178,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4037,7 +4206,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4063,9 +4232,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4102,7 +4275,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4129,7 +4303,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4158,9 +4332,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4201,7 +4379,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4234,7 +4413,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4263,9 +4442,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4306,7 +4489,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4339,7 +4523,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4365,9 +4549,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4404,7 +4592,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4431,7 +4620,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4457,9 +4646,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4496,7 +4689,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4523,7 +4717,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4552,9 +4746,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4595,7 +4793,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4628,7 +4827,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4657,9 +4856,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4700,7 +4903,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4733,7 +4937,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4759,9 +4963,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4798,7 +5006,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4825,7 +5034,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4851,9 +5060,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4890,7 +5103,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -4917,7 +5131,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -4946,9 +5160,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -4989,7 +5207,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5022,7 +5241,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5051,9 +5270,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5094,7 +5317,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5127,7 +5351,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5153,11 +5377,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5194,7 +5420,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5221,7 +5448,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5247,11 +5474,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5288,7 +5517,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5315,7 +5545,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5347,11 +5577,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5392,7 +5624,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5425,7 +5658,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5457,11 +5690,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.I128 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5502,7 +5737,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5535,7 +5771,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5561,11 +5797,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5602,7 +5840,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5629,7 +5868,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5655,11 +5894,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5696,7 +5937,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5723,7 +5965,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5755,11 +5997,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5800,7 +6044,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5833,7 +6078,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5865,11 +6110,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Isize 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -5910,7 +6157,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -5943,7 +6191,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -5969,9 +6217,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6008,7 +6260,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6035,7 +6288,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6061,9 +6314,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6100,7 +6357,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6127,7 +6385,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6156,9 +6414,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6199,7 +6461,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6232,7 +6495,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6261,9 +6524,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6304,7 +6571,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6337,7 +6605,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6363,9 +6631,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6402,7 +6674,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6429,7 +6702,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6455,9 +6728,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6494,7 +6771,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6521,7 +6799,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6550,9 +6828,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6593,7 +6875,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6626,7 +6909,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6655,9 +6938,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6698,7 +6985,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6731,7 +7019,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6757,9 +7045,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6796,7 +7088,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6823,7 +7116,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6849,9 +7142,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6888,7 +7185,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -6915,7 +7213,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -6944,9 +7242,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -6987,7 +7289,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7020,7 +7323,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7049,9 +7352,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7092,7 +7399,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7125,7 +7433,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7151,9 +7459,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7190,7 +7502,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7217,7 +7530,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7243,9 +7556,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7282,7 +7599,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7309,7 +7627,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7338,9 +7656,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7381,7 +7703,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7414,7 +7737,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7443,9 +7766,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7486,7 +7813,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7519,7 +7847,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7545,11 +7873,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7586,7 +7916,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7613,7 +7944,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7639,11 +7970,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7680,7 +8013,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7707,7 +8041,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7739,11 +8073,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7784,7 +8120,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7817,7 +8154,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7849,11 +8186,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.U128 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7894,7 +8233,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -7927,7 +8267,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -7953,11 +8293,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -7994,7 +8336,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8021,7 +8364,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8047,11 +8390,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8088,7 +8433,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8115,7 +8461,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8147,11 +8493,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 0 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 0 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8192,7 +8540,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8225,7 +8574,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8257,11 +8606,13 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  Value.StructTuple
-                    "core::num::wrapping::Wrapping"
-                    [ Value.Integer Integer.Usize 1 ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::num::wrapping::Wrapping"
+                      [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8302,7 +8653,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8334,7 +8686,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8352,9 +8704,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8370,13 +8722,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8402,7 +8759,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8420,9 +8777,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8438,13 +8795,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8470,7 +8832,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8490,9 +8852,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8523,7 +8885,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8549,7 +8912,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8569,9 +8932,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8602,7 +8965,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8628,7 +8992,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8646,9 +9010,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8664,13 +9028,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8696,7 +9065,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8714,9 +9083,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8732,13 +9101,18 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let b := M.copy (| γ |) in
-                                          BinOp.Panic.mul (| M.read (| a |), M.read (| b |) |)))
+                                          BinOp.Panic.mul (|
+                                            Integer.Usize,
+                                            M.read (| a |),
+                                            M.read (| b |)
+                                          |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8764,7 +9138,7 @@ Module iter.
                         )
                     }
         *)
-        Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8784,9 +9158,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8817,7 +9191,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8843,7 +9218,7 @@ Module iter.
                         )
                     }
         *)
-        Definition product (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ iter ] =>
             ltac:(M.monadic
@@ -8863,9 +9238,9 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.read (| UnsupportedLiteral |);
-                  M.closure
-                    (fun γ =>
+                  M.read (| M.of_value (| UnsupportedLiteral |) |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -8896,7 +9271,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -8921,7 +9297,7 @@ Module iter.
                 iter::try_process(iter, |i| i.sum())
             }
         *)
-        Definition sum (T U E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (T U E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T U E in
           match τ, α with
           | [ _ as I ], [ iter ] =>
@@ -8956,8 +9332,8 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -8987,7 +9363,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -9014,7 +9391,7 @@ Module iter.
                 iter::try_process(iter, |i| i.product())
             }
         *)
-        Definition product (T U E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (T U E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T U E in
           match τ, α with
           | [ _ as I ], [ iter ] =>
@@ -9049,8 +9426,8 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -9080,7 +9457,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -9107,7 +9485,7 @@ Module iter.
                 iter::try_process(iter, |i| i.sum())
             }
         *)
-        Definition sum (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T U in
           match τ, α with
           | [ _ as I ], [ iter ] =>
@@ -9142,8 +9520,8 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -9173,7 +9551,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -9200,7 +9579,7 @@ Module iter.
                 iter::try_process(iter, |i| i.product())
             }
         *)
-        Definition product (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T U in
           match τ, α with
           | [ _ as I ], [ iter ] =>
@@ -9235,8 +9614,8 @@ Module iter.
                 |),
                 [
                   M.read (| iter |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -9266,7 +9645,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible

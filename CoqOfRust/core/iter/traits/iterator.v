@@ -5,18 +5,21 @@ Module iter.
   Module traits.
     Module iterator.
       (* fn _assert_is_object_safe(_: &dyn Iterator<Item = ()>) {} *)
-      Definition _assert_is_object_safe (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition _assert_is_object_safe (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ β0 ] =>
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
-            M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+            M.match_operator (|
+              β0,
+              [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
       (* Trait *)
       Module Iterator.
-        Definition next_chunk (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_chunk (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -30,20 +33,24 @@ Module iter.
         
         Axiom ProvidedMethod_next_chunk :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "next_chunk" next_chunk.
-        Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Tuple
-                [ Value.Integer Integer.Usize 0; Value.StructTuple "core::option::Option::None" []
-                ]))
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.of_value (| Value.Integer 0 |));
+                    A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_size_hint :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "size_hint" size_hint.
-        Definition count (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -61,9 +68,9 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Integer Integer.Usize 0;
-                  M.closure
-                    (fun γ =>
+                  M.of_value (| Value.Integer 0 |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -79,15 +86,17 @@ Module iter.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| count |),
-                                            Value.Integer Integer.Usize 1
+                                            M.of_value (| Value.Integer 1 |)
                                           |)))
                                     ]
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -95,7 +104,7 @@ Module iter.
         
         Axiom ProvidedMethod_count :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "count" count.
-        Definition last (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -115,7 +124,7 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.StructTuple "core::option::Option::None" [];
+                  M.of_value (| Value.StructTuple "core::option::Option::None" [] |);
                   M.get_associated_function (| Self, "some.last", [] |)
                 ]
               |)))
@@ -124,7 +133,7 @@ Module iter.
         
         Axiom ProvidedMethod_last :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "last" last.
-        Definition advance_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; n ] =>
             ltac:(M.monadic
@@ -146,12 +155,14 @@ Module iter.
                                 []
                               |),
                               [
-                                Value.StructRecord
-                                  "core::ops::range::Range"
-                                  [
-                                    ("start", Value.Integer Integer.Usize 0);
-                                    ("end_", M.read (| n |))
-                                  ]
+                                M.of_value (|
+                                  Value.StructRecord
+                                    "core::ops::range::Range"
+                                    [
+                                      ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                      ("end_", A.to_value (M.read (| n |)))
+                                    ]
+                                |)
                               ]
                             |)
                           |),
@@ -193,7 +204,7 @@ Module iter.
                                                 |) in
                                               let i := M.copy (| γ0_0 |) in
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -233,39 +244,52 @@ Module iter.
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
-                                                              Value.StructTuple
-                                                                "core::result::Result::Err"
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::num::nonzero::NonZeroUsize",
-                                                                      "new_unchecked",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      BinOp.Panic.sub (|
-                                                                        M.read (| n |),
-                                                                        M.read (| i |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
+                                                              M.of_value (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Err"
+                                                                  [
+                                                                    A.to_value
+                                                                      (M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::num::nonzero::NonZeroUsize",
+                                                                          "new_unchecked",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          BinOp.Panic.sub (|
+                                                                            Integer.Usize,
+                                                                            M.read (| n |),
+                                                                            M.read (| i |)
+                                                                          |)
+                                                                        ]
+                                                                      |))
+                                                                  ]
+                                                              |)
                                                             |)
                                                           |)
                                                         |)
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 |)))
                           ]
                         |)) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                      |)
+                    |)
                   |)))
               |)))
           | _, _ => M.impossible
@@ -273,7 +297,7 @@ Module iter.
         
         Axiom ProvidedMethod_advance_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "advance_by" advance_by.
-        Definition nth (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; n ] =>
             ltac:(M.monadic
@@ -383,7 +407,7 @@ Module iter.
         
         Axiom ProvidedMethod_nth :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "nth" nth.
-        Definition step_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition step_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; step ] =>
             ltac:(M.monadic
@@ -402,7 +426,7 @@ Module iter.
         
         Axiom ProvidedMethod_step_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "step_by" step_by.
-        Definition chain (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition chain (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ U ], [ self; other ] =>
             ltac:(M.monadic
@@ -433,7 +457,7 @@ Module iter.
         
         Axiom ProvidedMethod_chain :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "chain" chain.
-        Definition zip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition zip (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ U ], [ self; other ] =>
             ltac:(M.monadic
@@ -464,7 +488,7 @@ Module iter.
         
         Axiom ProvidedMethod_zip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "zip" zip.
-        Definition intersperse (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition intersperse (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; separator ] =>
             ltac:(M.monadic
@@ -483,7 +507,7 @@ Module iter.
         
         Axiom ProvidedMethod_intersperse :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "intersperse" intersperse.
-        Definition intersperse_with (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition intersperse_with (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ G ], [ self; separator ] =>
             ltac:(M.monadic
@@ -507,7 +531,7 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "intersperse_with"
             intersperse_with.
-        Definition map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition map (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -526,7 +550,7 @@ Module iter.
         
         Axiom ProvidedMethod_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map" map.
-        Definition for_each (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition for_each (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; f ] =>
             ltac:(M.monadic
@@ -545,7 +569,7 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.Tuple [];
+                        M.of_value (| Value.Tuple [] |);
                         M.call_closure (|
                           M.get_associated_function (| Self, "call.for_each", [] |),
                           [ M.read (| f |) ]
@@ -553,14 +577,14 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           | _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_for_each :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "for_each" for_each.
-        Definition filter (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition filter (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -579,7 +603,7 @@ Module iter.
         
         Axiom ProvidedMethod_filter :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "filter" filter.
-        Definition filter_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition filter_map (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -598,7 +622,7 @@ Module iter.
         
         Axiom ProvidedMethod_filter_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "filter_map" filter_map.
-        Definition enumerate (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition enumerate (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -616,7 +640,7 @@ Module iter.
         
         Axiom ProvidedMethod_enumerate :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "enumerate" enumerate.
-        Definition peekable (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition peekable (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -634,7 +658,7 @@ Module iter.
         
         Axiom ProvidedMethod_peekable :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "peekable" peekable.
-        Definition skip_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition skip_while (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -653,7 +677,7 @@ Module iter.
         
         Axiom ProvidedMethod_skip_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "skip_while" skip_while.
-        Definition take_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition take_while (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -672,7 +696,7 @@ Module iter.
         
         Axiom ProvidedMethod_take_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "take_while" take_while.
-        Definition map_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition map_while (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -691,7 +715,7 @@ Module iter.
         
         Axiom ProvidedMethod_map_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map_while" map_while.
-        Definition skip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition skip (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; n ] =>
             ltac:(M.monadic
@@ -710,7 +734,7 @@ Module iter.
         
         Axiom ProvidedMethod_skip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "skip" skip.
-        Definition take (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition take (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; n ] =>
             ltac:(M.monadic
@@ -729,7 +753,7 @@ Module iter.
         
         Axiom ProvidedMethod_take :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "take" take.
-        Definition scan (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition scan (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ St; B; F ], [ self; initial_state; f ] =>
             ltac:(M.monadic
@@ -749,7 +773,7 @@ Module iter.
         
         Axiom ProvidedMethod_scan :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "scan" scan.
-        Definition flat_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition flat_map (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ U; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -768,7 +792,7 @@ Module iter.
         
         Axiom ProvidedMethod_flat_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "flat_map" flat_map.
-        Definition flatten (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition flatten (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -786,7 +810,7 @@ Module iter.
         
         Axiom ProvidedMethod_flatten :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "flatten" flatten.
-        Definition map_windows (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition map_windows (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F; R ], [ self; f ] =>
             ltac:(M.monadic
@@ -805,7 +829,7 @@ Module iter.
         
         Axiom ProvidedMethod_map_windows :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map_windows" map_windows.
-        Definition fuse (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fuse (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -823,7 +847,7 @@ Module iter.
         
         Axiom ProvidedMethod_fuse :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "fuse" fuse.
-        Definition inspect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition inspect (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; f ] =>
             ltac:(M.monadic
@@ -842,7 +866,7 @@ Module iter.
         
         Axiom ProvidedMethod_inspect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "inspect" inspect.
-        Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -853,7 +877,7 @@ Module iter.
         
         Axiom ProvidedMethod_by_ref :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "by_ref" by_ref.
-        Definition collect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition collect (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B ], [ self ] =>
             ltac:(M.monadic
@@ -873,7 +897,7 @@ Module iter.
         
         Axiom ProvidedMethod_collect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "collect" collect.
-        Definition try_collect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_collect (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B ], [ self ] =>
             ltac:(M.monadic
@@ -904,11 +928,13 @@ Module iter.
                   ]
                 |),
                 [
-                  Value.StructTuple
-                    "core::iter::adapters::by_ref_sized::ByRefSized"
-                    [ M.read (| self |) ];
-                  M.closure
-                    (fun γ =>
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::iter::adapters::by_ref_sized::ByRefSized"
+                      [ A.to_value (M.read (| self |)) ]
+                  |);
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -939,7 +965,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -947,7 +974,7 @@ Module iter.
         
         Axiom ProvidedMethod_try_collect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_collect" try_collect.
-        Definition collect_into (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition collect_into (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ E ], [ self; collection ] =>
             ltac:(M.monadic
@@ -974,7 +1001,7 @@ Module iter.
         
         Axiom ProvidedMethod_collect_into :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "collect_into" collect_into.
-        Definition partition (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition partition (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -1007,7 +1034,7 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.Tuple [];
+                        M.of_value (| Value.Tuple [] |);
                         M.call_closure (|
                           M.get_associated_function (| Self, "extend.partition", [] |),
                           [ M.read (| f |); left; right ]
@@ -1015,14 +1042,18 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| left |); M.read (| right |) ] |)
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| left |)); A.to_value (M.read (| right |)) ]
+                  |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_partition :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "partition" partition.
-        Definition partition_in_place (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition partition_in_place (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ T; P ], [ self; β1 ] =>
             ltac:(M.monadic
@@ -1035,12 +1066,12 @@ Module iter.
                     ltac:(M.monadic
                       (let predicate := M.alloc (| γ |) in
                       M.read (|
-                        let true_count := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                        let true_count := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                         let _ :=
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -1075,7 +1106,7 @@ Module iter.
                                         |) in
                                       let head := M.copy (| γ0_0 |) in
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
@@ -1121,11 +1152,12 @@ Module iter.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.add (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    M.of_value (| Value.Integer 1 |)
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
@@ -1142,7 +1174,7 @@ Module iter.
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                           |)
                                         |)
                                       |)))
@@ -1161,7 +1193,7 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "partition_in_place"
             partition_in_place.
-        Definition is_partitioned (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_partitioned (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -1179,8 +1211,8 @@ Module iter.
                   [ self; predicate ]
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.call_closure (|
+                  (UnOp.Pure.not (|
+                    M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Self,
@@ -1189,7 +1221,8 @@ Module iter.
                         [ P ]
                       |),
                       [ self; M.read (| predicate |) ]
-                    |))))
+                    |)
+                  |)))
               |)))
           | _, _ => M.impossible
           end.
@@ -1199,7 +1232,7 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "is_partitioned"
             is_partitioned.
-        Definition try_fold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
@@ -1214,7 +1247,7 @@ Module iter.
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1263,8 +1296,13 @@ Module iter.
                                                   |),
                                                   [
                                                     f;
-                                                    Value.Tuple
-                                                      [ M.read (| accum |); M.read (| x |) ]
+                                                    M.of_value (|
+                                                      Value.Tuple
+                                                        [
+                                                          A.to_value (M.read (| accum |));
+                                                          A.to_value (M.read (| x |))
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -1312,7 +1350,7 @@ Module iter.
                                         |)
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
@@ -1322,7 +1360,7 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                       |)
                                     |)
                                   |)))
@@ -1348,7 +1386,7 @@ Module iter.
         
         Axiom ProvidedMethod_try_fold :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_fold" try_fold.
-        Definition try_for_each (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_for_each (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F; R ], [ self; f ] =>
             ltac:(M.monadic
@@ -1364,7 +1402,7 @@ Module iter.
                 |),
                 [
                   M.read (| self |);
-                  Value.Tuple [];
+                  M.of_value (| Value.Tuple [] |);
                   M.call_closure (|
                     M.get_associated_function (| Self, "call.try_for_each", [] |),
                     [ M.read (| f |) ]
@@ -1376,7 +1414,7 @@ Module iter.
         
         Axiom ProvidedMethod_try_for_each :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_for_each" try_for_each.
-        Definition fold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
@@ -1389,7 +1427,7 @@ Module iter.
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -1424,10 +1462,19 @@ Module iter.
                                       "call_mut",
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                    [
+                                      f;
+                                      M.of_value (|
+                                        Value.Tuple
+                                          [
+                                            A.to_value (M.read (| accum |));
+                                            A.to_value (M.read (| x |))
+                                          ]
+                                      |)
+                                    ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -1437,7 +1484,7 @@ Module iter.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -1451,7 +1498,7 @@ Module iter.
         
         Axiom ProvidedMethod_fold :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "fold" fold.
-        Definition reduce (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reduce (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; f ] =>
             ltac:(M.monadic
@@ -1534,20 +1581,23 @@ Module iter.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::iter::traits::iterator::Iterator",
-                              Self,
-                              [],
-                              "fold",
-                              [ Ty.associated; F ]
-                            |),
-                            [ M.read (| self |); M.read (| first |); M.read (| f |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Self,
+                                  [],
+                                  "fold",
+                                  [ Ty.associated; F ]
+                                |),
+                                [ M.read (| self |); M.read (| first |); M.read (| f |) ]
+                              |))
+                          ]
+                      |)
                     |)
                   |)))
               |)))
@@ -1556,7 +1606,7 @@ Module iter.
         
         Axiom ProvidedMethod_reduce :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "reduce" reduce.
-        Definition try_reduce (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_reduce (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F; R ], [ self; f ] =>
             ltac:(M.monadic
@@ -1605,7 +1655,11 @@ Module iter.
                                             "from_output",
                                             []
                                           |),
-                                          [ Value.StructTuple "core::option::Option::None" [] ]
+                                          [
+                                            M.of_value (|
+                                              Value.StructTuple "core::option::Option::None" []
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |)
@@ -1672,7 +1726,12 @@ Module iter.
                                   "from_output",
                                   []
                                 |),
-                                [ Value.StructTuple "core::option::Option::Some" [ M.read (| i |) ]
+                                [
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [ A.to_value (M.read (| i |)) ]
+                                  |)
                                 ]
                               |)
                             |)))
@@ -1685,7 +1744,7 @@ Module iter.
         
         Axiom ProvidedMethod_try_reduce :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_reduce" try_reduce.
-        Definition all (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition all (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; f ] =>
             ltac:(M.monadic
@@ -1723,7 +1782,7 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.Tuple [];
+                        M.of_value (| Value.Tuple [] |);
                         M.call_closure (|
                           M.get_associated_function (| Self, "check.all", [] |),
                           [ M.read (| f |) ]
@@ -1732,9 +1791,11 @@ Module iter.
                     |)
                   |);
                   M.alloc (|
-                    Value.StructTuple
-                      "core::ops::control_flow::ControlFlow::Continue"
-                      [ Value.Tuple [] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::ops::control_flow::ControlFlow::Continue"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
                   |)
                 ]
               |)))
@@ -1743,7 +1804,7 @@ Module iter.
         
         Axiom ProvidedMethod_all :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "all" all.
-        Definition any (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition any (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; f ] =>
             ltac:(M.monadic
@@ -1781,7 +1842,7 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.Tuple [];
+                        M.of_value (| Value.Tuple [] |);
                         M.call_closure (|
                           M.get_associated_function (| Self, "check.any", [] |),
                           [ M.read (| f |) ]
@@ -1790,9 +1851,11 @@ Module iter.
                     |)
                   |);
                   M.alloc (|
-                    Value.StructTuple
-                      "core::ops::control_flow::ControlFlow::Break"
-                      [ Value.Tuple [] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::ops::control_flow::ControlFlow::Break"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
                   |)
                 ]
               |)))
@@ -1801,7 +1864,7 @@ Module iter.
         
         Axiom ProvidedMethod_any :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "any" any.
-        Definition find (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition find (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -1832,7 +1895,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Tuple [];
+                      M.of_value (| Value.Tuple [] |);
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.find", [] |),
                         [ M.read (| predicate |) ]
@@ -1846,7 +1909,7 @@ Module iter.
         
         Axiom ProvidedMethod_find :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "find" find.
-        Definition find_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition find_map (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -1873,7 +1936,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Tuple [];
+                      M.of_value (| Value.Tuple [] |);
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.find_map", [] |),
                         [ M.read (| f |) ]
@@ -1887,7 +1950,7 @@ Module iter.
         
         Axiom ProvidedMethod_find_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "find_map" find_map.
-        Definition try_find (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_find (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F; R ], [ self; f ] =>
             ltac:(M.monadic
@@ -1912,7 +1975,7 @@ Module iter.
                       |),
                       [
                         M.read (| self |);
-                        Value.Tuple [];
+                        M.of_value (| Value.Tuple [] |);
                         M.call_closure (|
                           M.get_associated_function (| Self, "check.try_find", [] |),
                           [ M.read (| f |) ]
@@ -1948,7 +2011,7 @@ Module iter.
                               "from_output",
                               []
                             |),
-                            [ Value.StructTuple "core::option::Option::None" [] ]
+                            [ M.of_value (| Value.StructTuple "core::option::Option::None" [] |) ]
                           |)
                         |)))
                   ]
@@ -1959,7 +2022,7 @@ Module iter.
         
         Axiom ProvidedMethod_try_find :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_find" try_find.
-        Definition position (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition position (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -1990,7 +2053,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      Value.Integer Integer.Usize 0;
+                      M.of_value (| Value.Integer 0 |);
                       M.call_closure (|
                         M.get_associated_function (| Self, "check.position", [] |),
                         [ M.read (| predicate |) ]
@@ -2004,7 +2067,7 @@ Module iter.
         
         Axiom ProvidedMethod_position :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "position" position.
-        Definition rposition (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rposition (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self; predicate ] =>
             ltac:(M.monadic
@@ -2066,7 +2129,7 @@ Module iter.
         
         Axiom ProvidedMethod_rposition :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "rposition" rposition.
-        Definition max (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition max (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -2096,7 +2159,7 @@ Module iter.
         
         Axiom ProvidedMethod_max :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max" max.
-        Definition min (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition min (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -2126,7 +2189,7 @@ Module iter.
         
         Axiom ProvidedMethod_min :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min" min.
-        Definition max_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition max_by_key (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -2242,7 +2305,11 @@ Module iter.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let x := M.copy (| γ0_1 |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ A.to_value (M.read (| x |)) ]
+                              |)
                             |)))
                       ]
                     |)
@@ -2253,7 +2320,7 @@ Module iter.
         
         Axiom ProvidedMethod_max_by_key :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max_by_key" max_by_key.
-        Definition max_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition max_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; compare ] =>
             ltac:(M.monadic
@@ -2280,7 +2347,7 @@ Module iter.
         
         Axiom ProvidedMethod_max_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max_by" max_by.
-        Definition min_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition min_by_key (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; F ], [ self; f ] =>
             ltac:(M.monadic
@@ -2396,7 +2463,11 @@ Module iter.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let x := M.copy (| γ0_1 |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ A.to_value (M.read (| x |)) ]
+                              |)
                             |)))
                       ]
                     |)
@@ -2407,7 +2478,7 @@ Module iter.
         
         Axiom ProvidedMethod_min_by_key :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min_by_key" min_by_key.
-        Definition min_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition min_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; compare ] =>
             ltac:(M.monadic
@@ -2434,7 +2505,7 @@ Module iter.
         
         Axiom ProvidedMethod_min_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min_by" min_by.
-        Definition rev (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rev (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -2452,7 +2523,7 @@ Module iter.
         
         Axiom ProvidedMethod_rev :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "rev" rev.
-        Definition unzip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition unzip (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ A; B; FromA; FromB ], [ self ] =>
             ltac:(M.monadic
@@ -2491,7 +2562,7 @@ Module iter.
         
         Axiom ProvidedMethod_unzip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "unzip" unzip.
-        Definition copied (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition copied (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ T ], [ self ] =>
             ltac:(M.monadic
@@ -2509,7 +2580,7 @@ Module iter.
         
         Axiom ProvidedMethod_copied :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "copied" copied.
-        Definition cloned (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cloned (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ T ], [ self ] =>
             ltac:(M.monadic
@@ -2527,7 +2598,7 @@ Module iter.
         
         Axiom ProvidedMethod_cloned :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cloned" cloned.
-        Definition cycle (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cycle (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -2545,7 +2616,7 @@ Module iter.
         
         Axiom ProvidedMethod_cycle :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cycle" cycle.
-        Definition array_chunks (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition array_chunks (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -2563,7 +2634,7 @@ Module iter.
         
         Axiom ProvidedMethod_array_chunks :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "array_chunks" array_chunks.
-        Definition sum (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition sum (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as S ], [ self ] =>
             ltac:(M.monadic
@@ -2583,7 +2654,7 @@ Module iter.
         
         Axiom ProvidedMethod_sum :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "sum" sum.
-        Definition product (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition product (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ P ], [ self ] =>
             ltac:(M.monadic
@@ -2603,7 +2674,7 @@ Module iter.
         
         Axiom ProvidedMethod_product :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "product" product.
-        Definition cmp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cmp (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -2625,8 +2696,8 @@ Module iter.
                 [
                   M.read (| self |);
                   M.read (| other |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2657,7 +2728,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2665,7 +2737,7 @@ Module iter.
         
         Axiom ProvidedMethod_cmp :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cmp" cmp.
-        Definition cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I; F ], [ self; other; cmp ] =>
             ltac:(M.monadic
@@ -2728,7 +2800,7 @@ Module iter.
         
         Axiom ProvidedMethod_cmp_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cmp_by" cmp_by.
-        Definition partial_cmp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition partial_cmp (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -2750,8 +2822,8 @@ Module iter.
                 [
                   M.read (| self |);
                   M.read (| other |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2782,7 +2854,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2790,7 +2863,7 @@ Module iter.
         
         Axiom ProvidedMethod_partial_cmp :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "partial_cmp" partial_cmp.
-        Definition partial_cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition partial_cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I; F ], [ self; other; partial_cmp ] =>
             ltac:(M.monadic
@@ -2842,7 +2915,11 @@ Module iter.
                           |) in
                         let ord := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| ord |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| ord |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2865,7 +2942,7 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "partial_cmp_by"
             partial_cmp_by.
-        Definition eq (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -2882,8 +2959,8 @@ Module iter.
                 [
                   M.read (| self |);
                   M.read (| other |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
@@ -2914,7 +2991,8 @@ Module iter.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -2922,7 +3000,7 @@ Module iter.
         
         Axiom ProvidedMethod_eq :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "eq" eq.
-        Definition eq_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I; F ], [ self; other; eq ] =>
             ltac:(M.monadic
@@ -2975,7 +3053,12 @@ Module iter.
                               "eq",
                               []
                             |),
-                            [ ord; M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |) ]
+                            [
+                              ord;
+                              M.alloc (|
+                                M.of_value (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)
+                              |)
+                            ]
                           |)
                         |)));
                     fun γ =>
@@ -2986,7 +3069,7 @@ Module iter.
                             "core::ops::control_flow::ControlFlow::Break",
                             0
                           |) in
-                        M.alloc (| Value.Bool false |)))
+                        M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
               |)))
@@ -2995,14 +3078,14 @@ Module iter.
         
         Axiom ProvidedMethod_eq_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "eq_by" eq_by.
-        Definition ne (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition ne (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              UnOp.Pure.not
-                (M.call_closure (|
+              UnOp.Pure.not (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Self,
@@ -3011,13 +3094,14 @@ Module iter.
                     [ I ]
                   |),
                   [ M.read (| self |); M.read (| other |) ]
-                |))))
+                |)
+              |)))
           | _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_ne :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "ne" ne.
-        Definition lt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition lt (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -3045,9 +3129,14 @@ Module iter.
                     |)
                   |);
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |))
+                        ]
+                    |)
                   |)
                 ]
               |)))
@@ -3056,7 +3145,7 @@ Module iter.
         
         Axiom ProvidedMethod_lt :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "lt" lt.
-        Definition le (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition le (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -3088,18 +3177,19 @@ Module iter.
                         M.find_or_pattern (|
                           γ0_0,
                           [
-                            fun γ => ltac:(M.monadic (Value.Tuple []));
-                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                            fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                           ],
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
+                                | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                                 | _ => M.impossible (||)
-                                end))
+                                end)
+                          |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
               |)))
@@ -3108,7 +3198,7 @@ Module iter.
         
         Axiom ProvidedMethod_le :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "le" le.
-        Definition gt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition gt (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -3136,9 +3226,14 @@ Module iter.
                     |)
                   |);
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::cmp::Ordering::Greater" [] |))
+                        ]
+                    |)
                   |)
                 ]
               |)))
@@ -3147,7 +3242,7 @@ Module iter.
         
         Axiom ProvidedMethod_gt :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "gt" gt.
-        Definition ge (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition ge (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
@@ -3179,18 +3274,19 @@ Module iter.
                         M.find_or_pattern (|
                           γ0_0,
                           [
-                            fun γ => ltac:(M.monadic (Value.Tuple []));
-                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                            fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
                           ],
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
+                                | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                                 | _ => M.impossible (||)
-                                end))
+                                end)
+                          |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                   ]
                 |)
               |)))
@@ -3199,7 +3295,7 @@ Module iter.
         
         Axiom ProvidedMethod_ge :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "ge" ge.
-        Definition is_sorted (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_sorted (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -3235,7 +3331,7 @@ Module iter.
         
         Axiom ProvidedMethod_is_sorted :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "is_sorted" is_sorted.
-        Definition is_sorted_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_sorted_by (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self; compare ] =>
             ltac:(M.monadic
@@ -3273,7 +3369,9 @@ Module iter.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  M.never_to_any (| M.read (| M.return_ (| Value.Bool true |) |) |)
+                                  M.never_to_any (|
+                                    M.read (| M.return_ (| M.of_value (| Value.Bool true |) |) |)
+                                  |)
                                 |)))
                           ]
                         |)
@@ -3303,7 +3401,7 @@ Module iter.
         
         Axiom ProvidedMethod_is_sorted_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "is_sorted_by" is_sorted_by.
-        Definition is_sorted_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_sorted_by_key (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F; K ], [ self; f ] =>
             ltac:(M.monadic
@@ -3338,7 +3436,7 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "is_sorted_by_key"
             is_sorted_by_key.
-        Definition __iterator_get_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; _idx ] =>
             ltac:(M.monadic
@@ -3352,19 +3450,25 @@ Module iter.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "internal error: entered unreachable code: Always specialized"
-                                |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String
+                                          "internal error: entered unreachable code: Always specialized"
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
+                        M.pointer_coercion (|
+                          M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::Argument",
@@ -3373,7 +3477,8 @@ Module iter.
                               |),
                               []
                             |)
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -3419,7 +3524,7 @@ Module iter.
           }
       }
       *)
-      Definition iter_compare (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter_compare (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ A; B; F; T ], [ a; b; f ] =>
           ltac:(M.monadic
@@ -3469,44 +3574,51 @@ Module iter.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          [
-                            M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      B,
-                                      [],
-                                      "next",
-                                      []
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::ops::control_flow::ControlFlow::Continue"
+                            [
+                              A.to_value
+                                (M.read (|
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          B,
+                                          [],
+                                          "next",
+                                          []
+                                        |),
+                                        [ b ]
+                                      |)
                                     |),
-                                    [ b ]
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (|
+                                            M.of_value (|
+                                              Value.StructTuple "core::cmp::Ordering::Equal" []
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.StructTuple "core::cmp::Ordering::Less" []
+                                            |)
+                                          |)))
+                                    ]
                                   |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        Value.StructTuple "core::cmp::Ordering::Equal" []
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      M.alloc (|
-                                        Value.StructTuple "core::cmp::Ordering::Less" []
-                                      |)))
-                                ]
-                              |)
-                            |)
-                          ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3539,14 +3651,14 @@ Module iter.
                 }
             }
         *)
-        Definition compare (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition compare (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ B; X; T; impl_FnMut_X__B_Item__arrow_ControlFlow_T___plus__'a ], [ b; f ] =>
             ltac:(M.monadic
               (let b := M.alloc (| b |) in
               let f := M.alloc (| f |) in
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -3574,17 +3686,25 @@ Module iter.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
-                                          Value.StructTuple
-                                            "core::ops::control_flow::ControlFlow::Break"
-                                            [
-                                              Value.StructTuple
-                                                "core::ops::control_flow::ControlFlow::Continue"
-                                                [
-                                                  Value.StructTuple
-                                                    "core::cmp::Ordering::Greater"
-                                                    []
-                                                ]
-                                            ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::ops::control_flow::ControlFlow::Break"
+                                              [
+                                                A.to_value
+                                                  (M.of_value (|
+                                                    Value.StructTuple
+                                                      "core::ops::control_flow::ControlFlow::Continue"
+                                                      [
+                                                        A.to_value
+                                                          (M.of_value (|
+                                                            Value.StructTuple
+                                                              "core::cmp::Ordering::Greater"
+                                                              []
+                                                          |))
+                                                      ]
+                                                  |))
+                                              ]
+                                          |)
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -3622,11 +3742,20 @@ Module iter.
                                                   "call_mut",
                                                   []
                                                 |),
-                                                [ f; Value.Tuple [ M.read (| x |); M.read (| y |) ]
+                                                [
+                                                  f;
+                                                  M.of_value (|
+                                                    Value.Tuple
+                                                      [
+                                                        A.to_value (M.read (| x |));
+                                                        A.to_value (M.read (| y |))
+                                                      ]
+                                                  |)
                                                 ]
                                               |);
-                                              M.constructor_as_closure
+                                              M.constructor_as_closure (|
                                                 "core::ops::control_flow::ControlFlow::Break"
+                                              |)
                                             ]
                                           |)
                                         |)))
@@ -3636,7 +3765,8 @@ Module iter.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))))
+                    end)
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -3656,7 +3786,7 @@ Module iter.
                 ( **self).next()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -3680,7 +3810,7 @@ Module iter.
                 ( **self).size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -3704,7 +3834,7 @@ Module iter.
                 ( **self).advance_by(n)
             }
         *)
-        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -3729,7 +3859,7 @@ Module iter.
                 ( **self).nth(n)
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -3751,7 +3881,7 @@ Module iter.
                 self.spec_fold(init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -3781,7 +3911,7 @@ Module iter.
                 self.spec_try_fold(init, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -3838,7 +3968,7 @@ Module iter.
                 accum
             }
         *)
-        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F ], [ self; init; f ] =>
@@ -3852,7 +3982,7 @@ Module iter.
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -3887,10 +4017,19 @@ Module iter.
                                       "call_mut",
                                       []
                                     |),
-                                    [ f; Value.Tuple [ M.read (| accum |); M.read (| x |) ] ]
+                                    [
+                                      f;
+                                      M.of_value (|
+                                        Value.Tuple
+                                          [
+                                            A.to_value (M.read (| accum |));
+                                            A.to_value (M.read (| x |))
+                                          ]
+                                      |)
+                                    ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -3900,7 +4039,7 @@ Module iter.
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                   |)
                                 |)
                               |)))
@@ -3925,7 +4064,7 @@ Module iter.
                 try { accum }
             }
         *)
-        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -3941,7 +4080,7 @@ Module iter.
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -3990,8 +4129,13 @@ Module iter.
                                                   |),
                                                   [
                                                     f;
-                                                    Value.Tuple
-                                                      [ M.read (| accum |); M.read (| x |) ]
+                                                    M.of_value (|
+                                                      Value.Tuple
+                                                        [
+                                                          A.to_value (M.read (| accum |));
+                                                          A.to_value (M.read (| x |))
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -4039,7 +4183,7 @@ Module iter.
                                         |)
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
@@ -4049,7 +4193,7 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                       |)
                                     |)
                                   |)))
@@ -4099,7 +4243,7 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ AAA; FFF ], [ self; init; fold ] =>
@@ -4152,7 +4296,7 @@ Module iter.
                 ( **self).try_fold(init, f)
             }
         *)
-        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>

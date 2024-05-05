@@ -44,7 +44,7 @@ Module intrinsics.
     *)
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_UnwindContinue (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_UnwindContinue (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -58,7 +58,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_UnwindUnreachable (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_UnwindUnreachable (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -75,7 +75,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_UnwindTerminate (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_UnwindTerminate (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ reason ] =>
         ltac:(M.monadic
@@ -90,7 +90,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_UnwindCleanup (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_UnwindCleanup (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ goto ] =>
         ltac:(M.monadic
@@ -105,7 +105,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Return (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Return (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -119,7 +119,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Goto (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Goto (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ destination ] =>
         ltac:(M.monadic
@@ -134,7 +134,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Unreachable (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Unreachable (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -148,7 +148,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Drop (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Drop (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; U ], [ place; goto; unwind_action ] =>
         ltac:(M.monadic
@@ -165,7 +165,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Call (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Call (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ U ], [ call; goto; unwind_action ] =>
         ltac:(M.monadic
@@ -182,7 +182,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_UnwindResume (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_UnwindResume (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -196,7 +196,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_StorageLive (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_StorageLive (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ local ] =>
         ltac:(M.monadic
@@ -211,7 +211,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_StorageDead (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_StorageDead (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ local ] =>
         ltac:(M.monadic
@@ -226,7 +226,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Deinit (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Deinit (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -241,7 +241,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Checked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Checked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ binop ] =>
         ltac:(M.monadic
@@ -256,7 +256,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Len (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Len (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -271,7 +271,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_CopyForDeref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_CopyForDeref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -286,7 +286,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Retag (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Retag (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -301,7 +301,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Move (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Move (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -316,7 +316,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Static (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Static (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ s ] =>
         ltac:(M.monadic
@@ -331,7 +331,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_StaticMut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_StaticMut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ s ] =>
         ltac:(M.monadic
@@ -346,7 +346,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Discriminant (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Discriminant (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -361,7 +361,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_SetDiscriminant (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_SetDiscriminant (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place; index ] =>
         ltac:(M.monadic
@@ -377,7 +377,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Offset (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Offset (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; U ], [ ptr; count ] =>
         ltac:(M.monadic
@@ -393,7 +393,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Field (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Field (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ F ], [ place; field ] =>
         ltac:(M.monadic
@@ -409,7 +409,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_Variant (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_Variant (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place; index ] =>
         ltac:(M.monadic
@@ -425,7 +425,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition value_CastTransmute (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition value_CastTransmute (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; U ], [ operand ] =>
         ltac:(M.monadic
@@ -440,7 +440,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition __internal_make_place (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition __internal_make_place (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ place ] =>
         ltac:(M.monadic
@@ -458,7 +458,7 @@ Module intrinsics.
       end.
     
     (*         pub fn $($sig)* { panic!() } *)
-    Definition __debuginfo (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition __debuginfo (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ name; s ] =>
         ltac:(M.monadic

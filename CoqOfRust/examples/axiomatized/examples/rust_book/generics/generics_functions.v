@@ -22,12 +22,12 @@ Require Import CoqOfRust.CoqOfRust.
     fields := [ T ];
   } *)
 
-Parameter reg_fn : (list Ty.t) -> (list Value.t) -> M.
+Parameter reg_fn : (list Ty.t) -> (list A.t) -> M.
 
-Parameter gen_spec_t : (list Ty.t) -> (list Value.t) -> M.
+Parameter gen_spec_t : (list Ty.t) -> (list A.t) -> M.
 
-Parameter gen_spec_i32 : (list Ty.t) -> (list Value.t) -> M.
+Parameter gen_spec_i32 : (list Ty.t) -> (list A.t) -> M.
 
-Parameter generic : (list Ty.t) -> (list Value.t) -> M.
+Parameter generic : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

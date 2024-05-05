@@ -12,7 +12,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -26,17 +26,18 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
           |),
           [
             M.read (| f |);
-            M.read (| Value.String "Borrowed" |);
-            M.read (| Value.String "x" |);
+            M.read (| M.of_value (| Value.String "Borrowed" |) |);
+            M.read (| M.of_value (| Value.String "x" |) |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
+            M.pointer_coercion (|
+              M.alloc (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "scoping_rules_lifetimes_traits::Borrowed",
                   "x"
                 |)
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -58,13 +59,15 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
           Self { x: &10 }
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", M.alloc (| Value.Integer Integer.I32 10 |)) ]))
+        (M.of_value (|
+          Value.StructRecord
+            "scoping_rules_lifetimes_traits::Borrowed"
+            [ ("x", A.to_value (M.alloc (| M.of_value (| Value.Integer 10 |) |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -82,7 +85,7 @@ fn main() {
     println!("b is {:?}", b);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -110,34 +113,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "b is " |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "b is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
-                                |),
-                                [ b ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
+                                    |),
+                                    [ b ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

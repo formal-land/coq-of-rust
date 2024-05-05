@@ -10,7 +10,7 @@ Module bool.
             if self { Some(t) } else { None }
         }
     *)
-    Definition then_some (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition then_some (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self; t ] =>
         ltac:(M.monadic
@@ -18,17 +18,24 @@ Module bool.
           let t := M.alloc (| t |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| t |)) ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -42,7 +49,7 @@ Module bool.
             if self { Some(f()) } else { None }
         }
     *)
-    Definition then_ (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition then_ (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; F ], [ self; f ] =>
         ltac:(M.monadic
@@ -50,30 +57,36 @@ Module bool.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [ Ty.tuple [] ],
-                              "call_once",
-                              []
-                            |),
-                            [ M.read (| f |); Value.Tuple [] ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnOnce",
+                                  F,
+                                  [ Ty.tuple [] ],
+                                  "call_once",
+                                  []
+                                |),
+                                [ M.read (| f |); M.of_value (| Value.Tuple [] |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))

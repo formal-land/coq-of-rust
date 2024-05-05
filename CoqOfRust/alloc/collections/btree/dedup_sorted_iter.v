@@ -23,27 +23,30 @@ Module collections.
                 Self { iter: iter.peekable() }
             }
         *)
-        Definition new (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (K V I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V I in
           match τ, α with
           | [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
-              Value.StructRecord
-                "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        "peekable",
-                        []
-                      |),
-                      [ M.read (| iter |) ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            I,
+                            [],
+                            "peekable",
+                            []
+                          |),
+                          [ M.read (| iter |) ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -80,7 +83,7 @@ Module collections.
                 }
             }
         *)
-        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self K V I in
           match τ, α with
           | [], [ self ] =>
@@ -132,7 +135,9 @@ Module collections.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -178,9 +183,11 @@ Module collections.
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
-                                              Value.StructTuple
-                                                "core::option::Option::Some"
-                                                [ M.read (| next |) ]
+                                              M.of_value (|
+                                                Value.StructTuple
+                                                  "core::option::Option::Some"
+                                                  [ A.to_value (M.read (| next |)) ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -189,7 +196,7 @@ Module collections.
                               |)
                             |) in
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -222,14 +229,17 @@ Module collections.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructTuple
-                                            "core::option::Option::Some"
-                                            [ M.read (| next |) ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [ A.to_value (M.read (| next |)) ]
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |)))
                       |)

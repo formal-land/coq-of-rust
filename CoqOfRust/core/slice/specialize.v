@@ -20,7 +20,7 @@ Module slice.
               }
           }
       *)
-      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; value ] =>
@@ -29,7 +29,7 @@ Module slice.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -119,15 +119,15 @@ Module slice.
                                                       [ M.read (| el |); value ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   |)))
                             ]
                           |)) in
                       M.write (| M.read (| last |), M.read (| value |) |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -153,7 +153,7 @@ Module slice.
               }
           }
       *)
-      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_fill (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; value ] =>
@@ -221,10 +221,10 @@ Module slice.
                                       let item := M.copy (| γ0_0 |) in
                                       let _ :=
                                         M.write (| M.read (| item |), M.read (| value |) |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))

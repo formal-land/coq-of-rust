@@ -29,13 +29,15 @@ Module fmt.
               PadAdapterState { on_newline: true }
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::fmt::builders::PadAdapterState"
-              [ ("on_newline", Value.Bool true) ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::fmt::builders::PadAdapterState"
+                [ ("on_newline", A.to_value (M.of_value (| Value.Bool true |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -59,7 +61,7 @@ Module fmt.
               fmt.wrap_buf(move |buf| slot.insert(PadAdapter { buf, state }))
           }
       *)
-      Definition wrap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wrap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ fmt; slot; state ] =>
           ltac:(M.monadic
@@ -81,8 +83,8 @@ Module fmt.
               |),
               [
                 M.read (| fmt |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -93,8 +95,8 @@ Module fmt.
                               ltac:(M.monadic
                                 (let buf := M.copy (| γ |) in
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
+                                M.pointer_coercion (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -104,19 +106,25 @@ Module fmt.
                                     |),
                                     [
                                       M.read (| slot |);
-                                      Value.StructRecord
-                                        "core::fmt::builders::PadAdapter"
-                                        [
-                                          ("buf",
-                                            (* Unsize *) M.pointer_coercion (M.read (| buf |)));
-                                          ("state", M.read (| state |))
-                                        ]
+                                      M.of_value (|
+                                        Value.StructRecord
+                                          "core::fmt::builders::PadAdapter"
+                                          [
+                                            ("buf",
+                                              A.to_value
+                                                (* Unsize *)
+                                                (M.pointer_coercion (| M.read (| buf |) |)));
+                                            ("state", A.to_value (M.read (| state |)))
+                                          ]
+                                      |)
                                     ]
-                                  |))))
+                                  |)
+                                |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -142,7 +150,7 @@ Module fmt.
               Ok(())
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; s ] =>
           ltac:(M.monadic
@@ -172,7 +180,7 @@ Module fmt.
                                   "split_inclusive",
                                   [ Ty.path "char" ]
                                 |),
-                                [ M.read (| s |); Value.UnicodeChar 10 ]
+                                [ M.read (| s |); M.of_value (| Value.UnicodeChar 10 |) ]
                               |)
                             ]
                           |)
@@ -216,7 +224,7 @@ Module fmt.
                                             let s := M.copy (| γ0_0 |) in
                                             let _ :=
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -275,7 +283,11 @@ Module fmt.
                                                                         "buf"
                                                                       |)
                                                                     |);
-                                                                    M.read (| Value.String "    " |)
+                                                                    M.read (|
+                                                                      M.of_value (|
+                                                                        Value.String "    "
+                                                                      |)
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               ]
@@ -338,9 +350,14 @@ Module fmt.
                                                                 val))
                                                           ]
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)));
+                                                      M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |) in
                                             let _ :=
@@ -362,7 +379,10 @@ Module fmt.
                                                     "ends_with",
                                                     [ Ty.path "char" ]
                                                   |),
-                                                  [ M.read (| s |); Value.UnicodeChar 10 ]
+                                                  [
+                                                    M.read (| s |);
+                                                    M.of_value (| Value.UnicodeChar 10 |)
+                                                  ]
                                                 |)
                                               |) in
                                             let _ :=
@@ -456,14 +476,20 @@ Module fmt.
                                                       val))
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               |)))
                         ]
                       |)) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -478,7 +504,7 @@ Module fmt.
               self.buf.write_char(c)
           }
       *)
-      Definition write_char (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_char (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; c ] =>
           ltac:(M.monadic
@@ -489,7 +515,7 @@ Module fmt.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -538,7 +564,7 @@ Module fmt.
                                               "buf"
                                             |)
                                           |);
-                                          M.read (| Value.String "    " |)
+                                          M.read (| M.of_value (| Value.String "    " |) |)
                                         ]
                                       |)
                                     ]
@@ -593,8 +619,8 @@ Module fmt.
                                       val))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let _ :=
@@ -610,7 +636,7 @@ Module fmt.
                         "core::fmt::builders::PadAdapterState",
                         "on_newline"
                       |),
-                      BinOp.Pure.eq (M.read (| c |)) (Value.UnicodeChar 10)
+                      BinOp.Pure.eq (| M.read (| c |), M.of_value (| Value.UnicodeChar 10 |) |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -674,7 +700,7 @@ Module fmt.
         DebugStruct { fmt, result, has_fields: false }
     }
     *)
-    Definition debug_struct_new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition debug_struct_new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt; name ] =>
         ltac:(M.monadic
@@ -689,13 +715,15 @@ Module fmt.
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugStruct"
-                [
-                  ("fmt", M.read (| fmt |));
-                  ("result", M.read (| result |));
-                  ("has_fields", Value.Bool false)
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::fmt::builders::DebugStruct"
+                  [
+                    ("fmt", A.to_value (M.read (| fmt |)));
+                    ("result", A.to_value (M.read (| result |)));
+                    ("has_fields", A.to_value (M.of_value (| Value.Bool false |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -709,7 +737,7 @@ Module fmt.
               self.field_with(name, |f| value.fmt(f))
           }
       *)
-      Definition field (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition field (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; name; value ] =>
           ltac:(M.monadic
@@ -731,8 +759,8 @@ Module fmt.
               [
                 M.read (| self |);
                 M.read (| name |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -755,7 +783,8 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -793,7 +822,7 @@ Module fmt.
               self
           }
       *)
-      Definition field_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition field_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; name; value_fmt ] =>
           ltac:(M.monadic
@@ -831,8 +860,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -843,7 +872,7 @@ Module fmt.
                                     ltac:(M.monadic
                                       (M.read (|
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -867,21 +896,22 @@ Module fmt.
                                                   |) in
                                                 let _ :=
                                                   M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.read (|
+                                                                UnOp.Pure.not (|
+                                                                  M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
                                                                       M.read (| self |),
                                                                       "core::fmt::builders::DebugStruct",
                                                                       "has_fields"
                                                                     |)
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -922,8 +952,10 @@ Module fmt.
                                                                           |)
                                                                         |);
                                                                         M.read (|
-                                                                          Value.String " {
+                                                                          M.of_value (|
+                                                                            Value.String " {
 "
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -992,17 +1024,23 @@ Module fmt.
                                                                     val))
                                                               ]
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)))
                                                     ]
                                                   |) in
                                                 let slot :=
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)
                                                   |) in
                                                 let state :=
                                                   M.alloc (|
@@ -1146,7 +1184,11 @@ Module fmt.
                                                               "write_str",
                                                               []
                                                             |),
-                                                            [ writer; M.read (| Value.String ": " |)
+                                                            [
+                                                              writer;
+                                                              M.read (|
+                                                                M.of_value (| Value.String ": " |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -1245,7 +1287,9 @@ Module fmt.
                                                             |),
                                                             [
                                                               M.read (| value_fmt |);
-                                                              Value.Tuple [ writer ]
+                                                              M.of_value (|
+                                                                Value.Tuple [ A.to_value writer ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -1314,8 +1358,13 @@ Module fmt.
                                                       "write_str",
                                                       []
                                                     |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
+                                                    [
+                                                      writer;
+                                                      M.read (|
+                                                        M.of_value (| Value.String ",
+" |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)));
                                             fun γ =>
@@ -1323,7 +1372,7 @@ Module fmt.
                                                 (let prefix :=
                                                   M.copy (|
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1339,11 +1388,13 @@ Module fmt.
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
-                                                            Value.String ", "));
+                                                            M.of_value (| Value.String ", " |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (|
-                                                              M.read (| Value.String " { " |)
+                                                              M.read (|
+                                                                M.of_value (| Value.String " { " |)
+                                                              |)
                                                             |)))
                                                       ]
                                                     |)
@@ -1565,7 +1616,9 @@ Module fmt.
                                                                   "fmt"
                                                                 |)
                                                               |);
-                                                              M.read (| Value.String ": " |)
+                                                              M.read (|
+                                                                M.of_value (| Value.String ": " |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -1645,16 +1698,19 @@ Module fmt.
                                                     |),
                                                     [
                                                       M.read (| value_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugStruct",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
+                                                      M.of_value (|
+                                                        Value.Tuple
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugStruct",
+                                                                  "fmt"
+                                                                |)
+                                                              |))
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 |)))
@@ -1664,7 +1720,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -1675,7 +1732,7 @@ Module fmt.
                     "core::fmt::builders::DebugStruct",
                     "has_fields"
                   |),
-                  Value.Bool true
+                  M.of_value (| Value.Bool true |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -1704,7 +1761,7 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish_non_exhaustive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish_non_exhaustive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1740,8 +1797,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -1752,7 +1809,7 @@ Module fmt.
                                     ltac:(M.monadic
                                       (M.read (|
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -1769,7 +1826,7 @@ Module fmt.
                                                     Value.Bool true
                                                   |) in
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -1793,9 +1850,11 @@ Module fmt.
                                                           |) in
                                                         let slot :=
                                                           M.alloc (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::None"
-                                                              []
+                                                            M.of_value (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |)
                                                           |) in
                                                         let state :=
                                                           M.alloc (|
@@ -1860,8 +1919,10 @@ Module fmt.
                                                                     [
                                                                       writer;
                                                                       M.read (|
-                                                                        Value.String "..
+                                                                        M.of_value (|
+                                                                          Value.String "..
 "
+                                                                        |)
                                                                       |)
                                                                     ]
                                                                   |)
@@ -1942,7 +2003,9 @@ Module fmt.
                                                                   "fmt"
                                                                 |)
                                                               |);
-                                                              M.read (| Value.String "}" |)
+                                                              M.read (|
+                                                                M.of_value (| Value.String "}" |)
+                                                              |)
                                                             ]
                                                           |)
                                                         |)));
@@ -1963,7 +2026,11 @@ Module fmt.
                                                                   "fmt"
                                                                 |)
                                                               |);
-                                                              M.read (| Value.String ", .. }" |)
+                                                              M.read (|
+                                                                M.of_value (|
+                                                                  Value.String ", .. }"
+                                                                |)
+                                                              |)
                                                             ]
                                                           |)
                                                         |)))
@@ -1986,7 +2053,9 @@ Module fmt.
                                                           "fmt"
                                                         |)
                                                       |);
-                                                      M.read (| Value.String " { .. }" |)
+                                                      M.read (|
+                                                        M.of_value (| Value.String " { .. }" |)
+                                                      |)
                                                     ]
                                                   |)
                                                 |)))
@@ -1996,7 +2065,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -2022,7 +2092,7 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2030,7 +2100,7 @@ Module fmt.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -2073,8 +2143,8 @@ Module fmt.
                                     "result"
                                   |)
                                 |);
-                                M.closure
-                                  (fun γ =>
+                                M.closure (|
+                                  fun γ =>
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
@@ -2085,7 +2155,7 @@ Module fmt.
                                               ltac:(M.monadic
                                                 (M.read (|
                                                   M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -2122,7 +2192,9 @@ Module fmt.
                                                                     "fmt"
                                                                   |)
                                                                 |);
-                                                                M.read (| Value.String "}" |)
+                                                                M.read (|
+                                                                  M.of_value (| Value.String "}" |)
+                                                                |)
                                                               ]
                                                             |)
                                                           |)));
@@ -2143,7 +2215,9 @@ Module fmt.
                                                                     "fmt"
                                                                   |)
                                                                 |);
-                                                                M.read (| Value.String " }" |)
+                                                                M.read (|
+                                                                  M.of_value (| Value.String " }" |)
+                                                                |)
                                                               ]
                                                             |)
                                                           |)))
@@ -2153,12 +2227,13 @@ Module fmt.
                                           ]
                                         |)
                                       | _ => M.impossible (||)
-                                      end))
+                                      end)
+                                |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.SubPointer.get_struct_record_field (|
@@ -2177,7 +2252,7 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pretty (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2225,7 +2300,7 @@ Module fmt.
         DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
     }
     *)
-    Definition debug_tuple_new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition debug_tuple_new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt; name ] =>
         ltac:(M.monadic
@@ -2240,18 +2315,21 @@ Module fmt.
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugTuple"
-                [
-                  ("fmt", M.read (| fmt |));
-                  ("result", M.read (| result |));
-                  ("fields", Value.Integer Integer.Usize 0);
-                  ("empty_name",
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
-                      [ M.read (| name |) ]
-                    |))
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::fmt::builders::DebugTuple"
+                  [
+                    ("fmt", A.to_value (M.read (| fmt |)));
+                    ("result", A.to_value (M.read (| result |)));
+                    ("fields", A.to_value (M.of_value (| Value.Integer 0 |)));
+                    ("empty_name",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                          [ M.read (| name |) ]
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -2265,7 +2343,7 @@ Module fmt.
               self.field_with(|f| value.fmt(f))
           }
       *)
-      Definition field (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition field (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; value ] =>
           ltac:(M.monadic
@@ -2285,8 +2363,8 @@ Module fmt.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2309,7 +2387,8 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2343,7 +2422,7 @@ Module fmt.
               self
           }
       *)
-      Definition field_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition field_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; value_fmt ] =>
           ltac:(M.monadic
@@ -2380,8 +2459,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -2392,7 +2471,7 @@ Module fmt.
                                     ltac:(M.monadic
                                       (M.read (|
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -2415,22 +2494,23 @@ Module fmt.
                                                   |) in
                                                 let _ :=
                                                   M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.eq
-                                                                  (M.read (|
+                                                                BinOp.Pure.eq (|
+                                                                  M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
                                                                       M.read (| self |),
                                                                       "core::fmt::builders::DebugTuple",
                                                                       "fields"
                                                                     |)
-                                                                  |))
-                                                                  (Value.Integer Integer.Usize 0)
+                                                                  |),
+                                                                  M.of_value (| Value.Integer 0 |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -2471,8 +2551,10 @@ Module fmt.
                                                                           |)
                                                                         |);
                                                                         M.read (|
-                                                                          Value.String "(
+                                                                          M.of_value (|
+                                                                            Value.String "(
 "
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -2541,17 +2623,23 @@ Module fmt.
                                                                     val))
                                                               ]
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)))
                                                     ]
                                                   |) in
                                                 let slot :=
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)
                                                   |) in
                                                 let state :=
                                                   M.alloc (|
@@ -2625,7 +2713,9 @@ Module fmt.
                                                             |),
                                                             [
                                                               M.read (| value_fmt |);
-                                                              Value.Tuple [ writer ]
+                                                              M.of_value (|
+                                                                Value.Tuple [ A.to_value writer ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -2694,8 +2784,13 @@ Module fmt.
                                                       "write_str",
                                                       []
                                                     |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
+                                                    [
+                                                      writer;
+                                                      M.read (|
+                                                        M.of_value (| Value.String ",
+" |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)));
                                             fun γ =>
@@ -2703,33 +2798,36 @@ Module fmt.
                                                 (let prefix :=
                                                   M.copy (|
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (|
+                                                                  BinOp.Pure.eq (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
                                                                         "core::fmt::builders::DebugTuple",
                                                                         "fields"
                                                                       |)
-                                                                    |))
-                                                                    (Value.Integer Integer.Usize 0)
+                                                                    |),
+                                                                    M.of_value (| Value.Integer 0 |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
-                                                            Value.String "("));
+                                                            M.of_value (| Value.String "(" |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (|
-                                                              M.read (| Value.String ", " |)
+                                                              M.read (|
+                                                                M.of_value (| Value.String ", " |)
+                                                              |)
                                                             |)))
                                                       ]
                                                     |)
@@ -2845,16 +2943,19 @@ Module fmt.
                                                     |),
                                                     [
                                                       M.read (| value_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugTuple",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
+                                                      M.of_value (|
+                                                        Value.Tuple
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugTuple",
+                                                                  "fmt"
+                                                                |)
+                                                              |))
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 |)))
@@ -2864,7 +2965,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -2877,7 +2979,11 @@ Module fmt.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -2899,7 +3005,7 @@ Module fmt.
               self.result
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2907,22 +3013,23 @@ Module fmt.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.Pure.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::fmt::builders::DebugTuple",
                                     "fields"
                                   |)
-                                |))
-                                (Value.Integer Integer.Usize 0)
+                                |),
+                                M.of_value (| Value.Integer 0 |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2956,8 +3063,8 @@ Module fmt.
                                     "result"
                                   |)
                                 |);
-                                M.closure
-                                  (fun γ =>
+                                M.closure (|
+                                  fun γ =>
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
@@ -2969,7 +3076,7 @@ Module fmt.
                                                 (M.read (|
                                                   let _ :=
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -2978,17 +3085,18 @@ Module fmt.
                                                                 (M.alloc (|
                                                                   LogicalOp.and (|
                                                                     LogicalOp.and (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                      BinOp.Pure.eq (|
+                                                                        M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (| self |),
                                                                             "core::fmt::builders::DebugTuple",
                                                                             "fields"
                                                                           |)
-                                                                        |))
-                                                                        (Value.Integer
-                                                                          Integer.Usize
-                                                                          1),
+                                                                        |),
+                                                                        M.of_value (|
+                                                                          Value.Integer 1
+                                                                        |)
+                                                                      |),
                                                                       ltac:(M.monadic
                                                                         (M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
@@ -2999,8 +3107,8 @@ Module fmt.
                                                                         |)))
                                                                     |),
                                                                     ltac:(M.monadic
-                                                                      (UnOp.Pure.not
-                                                                        (M.call_closure (|
+                                                                      (UnOp.Pure.not (|
+                                                                        M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::builders::DebugTuple",
@@ -3008,7 +3116,8 @@ Module fmt.
                                                                             []
                                                                           |),
                                                                           [ M.read (| self |) ]
-                                                                        |))))
+                                                                        |)
+                                                                      |)))
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -3050,7 +3159,9 @@ Module fmt.
                                                                             |)
                                                                           |);
                                                                           M.read (|
-                                                                            Value.String ","
+                                                                            M.of_value (|
+                                                                              Value.String ","
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -3120,10 +3231,14 @@ Module fmt.
                                                                       val))
                                                                 ]
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)));
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |) in
                                                   M.alloc (|
@@ -3141,7 +3256,9 @@ Module fmt.
                                                             "fmt"
                                                           |)
                                                         |);
-                                                        M.read (| Value.String ")" |)
+                                                        M.read (|
+                                                          M.of_value (| Value.String ")" |)
+                                                        |)
                                                       ]
                                                     |)
                                                   |)
@@ -3149,12 +3266,13 @@ Module fmt.
                                           ]
                                         |)
                                       | _ => M.impossible (||)
-                                      end))
+                                      end)
+                                |)
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.SubPointer.get_struct_record_field (|
@@ -3173,7 +3291,7 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pretty (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3240,7 +3358,7 @@ Module fmt.
               self.has_fields = true;
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
@@ -3277,8 +3395,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -3289,7 +3407,7 @@ Module fmt.
                                     ltac:(M.monadic
                                       (M.read (|
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -3312,21 +3430,22 @@ Module fmt.
                                                   |) in
                                                 let _ :=
                                                   M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.read (|
+                                                                UnOp.Pure.not (|
+                                                                  M.read (|
                                                                     M.SubPointer.get_struct_record_field (|
                                                                       M.read (| self |),
                                                                       "core::fmt::builders::DebugInner",
                                                                       "has_fields"
                                                                     |)
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -3367,8 +3486,10 @@ Module fmt.
                                                                           |)
                                                                         |);
                                                                         M.read (|
-                                                                          Value.String "
+                                                                          M.of_value (|
+                                                                            Value.String "
 "
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -3437,17 +3558,23 @@ Module fmt.
                                                                     val))
                                                               ]
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)))
                                                     ]
                                                   |) in
                                                 let slot :=
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)
                                                   |) in
                                                 let state :=
                                                   M.alloc (|
@@ -3521,7 +3648,9 @@ Module fmt.
                                                             |),
                                                             [
                                                               M.read (| entry_fmt |);
-                                                              Value.Tuple [ writer ]
+                                                              M.of_value (|
+                                                                Value.Tuple [ A.to_value writer ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -3590,15 +3719,20 @@ Module fmt.
                                                       "write_str",
                                                       []
                                                     |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
+                                                    [
+                                                      writer;
+                                                      M.read (|
+                                                        M.of_value (| Value.String ",
+" |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)));
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
                                                   M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -3645,7 +3779,11 @@ Module fmt.
                                                                           "fmt"
                                                                         |)
                                                                       |);
-                                                                      M.read (| Value.String ", " |)
+                                                                      M.read (|
+                                                                        M.of_value (|
+                                                                          Value.String ", "
+                                                                        |)
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -3712,7 +3850,9 @@ Module fmt.
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |)))
                                                     ]
                                                   |) in
                                                 M.alloc (|
@@ -3733,16 +3873,19 @@ Module fmt.
                                                     |),
                                                     [
                                                       M.read (| entry_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugInner",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
+                                                      M.of_value (|
+                                                        Value.Tuple
+                                                          [
+                                                            A.to_value
+                                                              (M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugInner",
+                                                                  "fmt"
+                                                                |)
+                                                              |))
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 |)))
@@ -3752,7 +3895,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -3763,9 +3907,9 @@ Module fmt.
                     "core::fmt::builders::DebugInner",
                     "has_fields"
                   |),
-                  Value.Bool true
+                  M.of_value (| Value.Bool true |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3777,7 +3921,7 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pretty (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3813,7 +3957,7 @@ Module fmt.
         DebugSet { inner: DebugInner { fmt, result, has_fields: false } }
     }
     *)
-    Definition debug_set_new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition debug_set_new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt ] =>
         ltac:(M.monadic
@@ -3823,22 +3967,27 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
+                  [ M.read (| fmt |); M.read (| M.of_value (| Value.String "{" |) |) ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugSet"
-                [
-                  ("inner",
-                    Value.StructRecord
-                      "core::fmt::builders::DebugInner"
-                      [
-                        ("fmt", M.read (| fmt |));
-                        ("result", M.read (| result |));
-                        ("has_fields", Value.Bool false)
-                      ])
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::fmt::builders::DebugSet"
+                  [
+                    ("inner",
+                      A.to_value
+                        (M.of_value (|
+                          Value.StructRecord
+                            "core::fmt::builders::DebugInner"
+                            [
+                              ("fmt", A.to_value (M.read (| fmt |)));
+                              ("result", A.to_value (M.read (| result |)));
+                              ("has_fields", A.to_value (M.of_value (| Value.Bool false |)))
+                            ]
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3853,7 +4002,7 @@ Module fmt.
               self
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; entry ] =>
           ltac:(M.monadic
@@ -3883,8 +4032,8 @@ Module fmt.
                         "core::fmt::builders::DebugSet",
                         "inner"
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -3907,7 +4056,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -3927,7 +4077,7 @@ Module fmt.
               self
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
@@ -3971,7 +4121,7 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entries (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ D; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
@@ -4038,14 +4188,14 @@ Module fmt.
                                               |),
                                               [
                                                 M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion entry
+                                                (* Unsize *) M.pointer_coercion (| entry |)
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -4061,7 +4211,7 @@ Module fmt.
               self.inner.result.and_then(|_| self.inner.fmt.write_str("}"))
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4093,8 +4243,8 @@ Module fmt.
                     "result"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4121,13 +4271,14 @@ Module fmt.
                                         "fmt"
                                       |)
                                     |);
-                                    M.read (| Value.String "}" |)
+                                    M.read (| M.of_value (| Value.String "}" |) |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4149,7 +4300,7 @@ Module fmt.
         DebugList { inner: DebugInner { fmt, result, has_fields: false } }
     }
     *)
-    Definition debug_list_new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition debug_list_new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt ] =>
         ltac:(M.monadic
@@ -4159,22 +4310,27 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "[" |) ]
+                  [ M.read (| fmt |); M.read (| M.of_value (| Value.String "[" |) |) ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugList"
-                [
-                  ("inner",
-                    Value.StructRecord
-                      "core::fmt::builders::DebugInner"
-                      [
-                        ("fmt", M.read (| fmt |));
-                        ("result", M.read (| result |));
-                        ("has_fields", Value.Bool false)
-                      ])
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::fmt::builders::DebugList"
+                  [
+                    ("inner",
+                      A.to_value
+                        (M.of_value (|
+                          Value.StructRecord
+                            "core::fmt::builders::DebugInner"
+                            [
+                              ("fmt", A.to_value (M.read (| fmt |)));
+                              ("result", A.to_value (M.read (| result |)));
+                              ("has_fields", A.to_value (M.of_value (| Value.Bool false |)))
+                            ]
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -4189,7 +4345,7 @@ Module fmt.
               self
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; entry ] =>
           ltac:(M.monadic
@@ -4219,8 +4375,8 @@ Module fmt.
                         "core::fmt::builders::DebugList",
                         "inner"
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -4243,7 +4399,8 @@ Module fmt.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -4263,7 +4420,7 @@ Module fmt.
               self
           }
       *)
-      Definition entry_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; entry_fmt ] =>
           ltac:(M.monadic
@@ -4307,7 +4464,7 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entries (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ D; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
@@ -4374,14 +4531,14 @@ Module fmt.
                                               |),
                                               [
                                                 M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion entry
+                                                (* Unsize *) M.pointer_coercion (| entry |)
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -4397,7 +4554,7 @@ Module fmt.
               self.inner.result.and_then(|_| self.inner.fmt.write_str("]"))
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4429,8 +4586,8 @@ Module fmt.
                     "result"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4457,13 +4614,14 @@ Module fmt.
                                         "fmt"
                                       |)
                                     |);
-                                    M.read (| Value.String "]" |)
+                                    M.read (| M.of_value (| Value.String "]" |) |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4495,7 +4653,7 @@ Module fmt.
         DebugMap { fmt, result, has_fields: false, has_key: false, state: Default::default() }
     }
     *)
-    Definition debug_map_new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition debug_map_new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ fmt ] =>
         ltac:(M.monadic
@@ -4505,29 +4663,32 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
+                  [ M.read (| fmt |); M.read (| M.of_value (| Value.String "{" |) |) ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugMap"
-                [
-                  ("fmt", M.read (| fmt |));
-                  ("result", M.read (| result |));
-                  ("has_fields", Value.Bool false);
-                  ("has_key", Value.Bool false);
-                  ("state",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "core::fmt::builders::PadAdapterState",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |))
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::fmt::builders::DebugMap"
+                  [
+                    ("fmt", A.to_value (M.read (| fmt |)));
+                    ("result", A.to_value (M.read (| result |)));
+                    ("has_fields", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("has_key", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("state",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "core::fmt::builders::PadAdapterState",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -4541,7 +4702,7 @@ Module fmt.
               self.key(key).value(value)
           }
       *)
-      Definition entry (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entry (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; key; value ] =>
           ltac:(M.monadic
@@ -4557,9 +4718,9 @@ Module fmt.
                     "key",
                     []
                   |),
-                  [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| key |)) ]
+                  [ M.read (| self |); (* Unsize *) M.pointer_coercion (| M.read (| key |) |) ]
                 |);
-                (* Unsize *) M.pointer_coercion (M.read (| value |))
+                (* Unsize *) M.pointer_coercion (| M.read (| value |) |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4572,7 +4733,7 @@ Module fmt.
               self.key_with(|f| key.fmt(f))
           }
       *)
-      Definition key (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition key (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; key ] =>
           ltac:(M.monadic
@@ -4592,8 +4753,8 @@ Module fmt.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4616,7 +4777,8 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4660,7 +4822,7 @@ Module fmt.
               self
           }
       *)
-      Definition key_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition key_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; key_fmt ] =>
           ltac:(M.monadic
@@ -4697,8 +4859,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -4710,22 +4872,24 @@ Module fmt.
                                       (M.read (|
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (UnOp.Pure.not
-                                                            (M.read (|
+                                                        UnOp.Pure.not (|
+                                                          UnOp.Pure.not (|
+                                                            M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.read (| self |),
                                                                 "core::fmt::builders::DebugMap",
                                                                 "has_key"
                                                               |)
-                                                            |)))
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -4748,16 +4912,22 @@ Module fmt.
                                                             |),
                                                             [
                                                               (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "attempted to begin a new map entry without completing the previous one"
-                                                                      |)
-                                                                    ]
-                                                                |))
+                                                              M.pointer_coercion (|
+                                                                M.alloc (|
+                                                                  M.of_value (|
+                                                                    Value.Array
+                                                                      [
+                                                                        A.to_value
+                                                                          (M.read (|
+                                                                            M.of_value (|
+                                                                              Value.String
+                                                                                "attempted to begin a new map entry without completing the previous one"
+                                                                            |)
+                                                                          |))
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -4765,12 +4935,13 @@ Module fmt.
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -4793,21 +4964,22 @@ Module fmt.
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.read (|
+                                                                  UnOp.Pure.not (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
                                                                         "core::fmt::builders::DebugMap",
                                                                         "has_fields"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -4848,8 +5020,10 @@ Module fmt.
                                                                             |)
                                                                           |);
                                                                           M.read (|
-                                                                            Value.String "
+                                                                            M.of_value (|
+                                                                              Value.String "
 "
+                                                                            |)
                                                                           |)
                                                                         ]
                                                                       |)
@@ -4919,17 +5093,23 @@ Module fmt.
                                                                       val))
                                                                 ]
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)));
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |) in
                                                   let slot :=
                                                     M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |)
                                                     |) in
                                                   let _ :=
                                                     M.write (|
@@ -5012,7 +5192,9 @@ Module fmt.
                                                               |),
                                                               [
                                                                 M.read (| key_fmt |);
-                                                                Value.Tuple [ writer ]
+                                                                M.of_value (|
+                                                                  Value.Tuple [ A.to_value writer ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5100,7 +5282,9 @@ Module fmt.
                                                               |),
                                                               [
                                                                 writer;
-                                                                M.read (| Value.String ": " |)
+                                                                M.read (|
+                                                                  M.of_value (| Value.String ": " |)
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5163,12 +5347,12 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let _ :=
                                                     M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -5217,7 +5401,9 @@ Module fmt.
                                                                           |)
                                                                         |);
                                                                         M.read (|
-                                                                          Value.String ", "
+                                                                          M.of_value (|
+                                                                            Value.String ", "
+                                                                          |)
                                                                         |)
                                                                       ]
                                                                     |)
@@ -5288,7 +5474,9 @@ Module fmt.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |) in
                                                   let _ :=
@@ -5328,16 +5516,19 @@ Module fmt.
                                                               |),
                                                               [
                                                                 M.read (| key_fmt |);
-                                                                Value.Tuple
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "core::fmt::builders::DebugMap",
-                                                                        "fmt"
-                                                                      |)
-                                                                    |)
-                                                                  ]
+                                                                M.of_value (|
+                                                                  Value.Tuple
+                                                                    [
+                                                                      A.to_value
+                                                                        (M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "core::fmt::builders::DebugMap",
+                                                                            "fmt"
+                                                                          |)
+                                                                        |))
+                                                                    ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5431,7 +5622,9 @@ Module fmt.
                                                                     "fmt"
                                                                   |)
                                                                 |);
-                                                                M.read (| Value.String ": " |)
+                                                                M.read (|
+                                                                  M.of_value (| Value.String ": " |)
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5494,7 +5687,7 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
                                         let _ :=
@@ -5504,18 +5697,21 @@ Module fmt.
                                               "core::fmt::builders::DebugMap",
                                               "has_key"
                                             |),
-                                            Value.Bool true
+                                            M.of_value (| Value.Bool true |)
                                           |) in
                                         M.alloc (|
-                                          Value.StructTuple
-                                            "core::result::Result::Ok"
-                                            [ Value.Tuple [] ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::result::Result::Ok"
+                                              [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                          |)
                                         |)
                                       |)))
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -5531,7 +5727,7 @@ Module fmt.
               self.value_with(|f| value.fmt(f))
           }
       *)
-      Definition value (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition value (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; value ] =>
           ltac:(M.monadic
@@ -5551,8 +5747,8 @@ Module fmt.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -5575,7 +5771,8 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -5608,7 +5805,7 @@ Module fmt.
               self
           }
       *)
-      Definition value_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition value_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; value_fmt ] =>
           ltac:(M.monadic
@@ -5645,8 +5842,8 @@ Module fmt.
                           "result"
                         |)
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -5658,21 +5855,22 @@ Module fmt.
                                       (M.read (|
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.read (|
+                                                        UnOp.Pure.not (|
+                                                          M.read (|
                                                             M.SubPointer.get_struct_record_field (|
                                                               M.read (| self |),
                                                               "core::fmt::builders::DebugMap",
                                                               "has_key"
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -5695,16 +5893,22 @@ Module fmt.
                                                             |),
                                                             [
                                                               (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "attempted to format a map value before its key"
-                                                                      |)
-                                                                    ]
-                                                                |))
+                                                              M.pointer_coercion (|
+                                                                M.alloc (|
+                                                                  M.of_value (|
+                                                                    Value.Array
+                                                                      [
+                                                                        A.to_value
+                                                                          (M.read (|
+                                                                            M.of_value (|
+                                                                              Value.String
+                                                                                "attempted to format a map value before its key"
+                                                                            |)
+                                                                          |))
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -5712,12 +5916,13 @@ Module fmt.
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -5740,9 +5945,11 @@ Module fmt.
                                                     |) in
                                                   let slot :=
                                                     M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
+                                                      M.of_value (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |)
                                                     |) in
                                                   let writer :=
                                                     M.alloc (|
@@ -5806,7 +6013,9 @@ Module fmt.
                                                               |),
                                                               [
                                                                 M.read (| value_fmt |);
-                                                                Value.Tuple [ writer ]
+                                                                M.of_value (|
+                                                                  Value.Tuple [ A.to_value writer ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5894,8 +6103,10 @@ Module fmt.
                                                               |),
                                                               [
                                                                 writer;
-                                                                M.read (| Value.String ",
+                                                                M.read (|
+                                                                  M.of_value (| Value.String ",
 " |)
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -5958,7 +6169,7 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let _ :=
@@ -5998,16 +6209,19 @@ Module fmt.
                                                               |),
                                                               [
                                                                 M.read (| value_fmt |);
-                                                                Value.Tuple
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "core::fmt::builders::DebugMap",
-                                                                        "fmt"
-                                                                      |)
-                                                                    |)
-                                                                  ]
+                                                                M.of_value (|
+                                                                  Value.Tuple
+                                                                    [
+                                                                      A.to_value
+                                                                        (M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| self |),
+                                                                            "core::fmt::builders::DebugMap",
+                                                                            "fmt"
+                                                                          |)
+                                                                        |))
+                                                                    ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -6070,7 +6284,7 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
                                         let _ :=
@@ -6080,18 +6294,21 @@ Module fmt.
                                               "core::fmt::builders::DebugMap",
                                               "has_key"
                                             |),
-                                            Value.Bool false
+                                            M.of_value (| Value.Bool false |)
                                           |) in
                                         M.alloc (|
-                                          Value.StructTuple
-                                            "core::result::Result::Ok"
-                                            [ Value.Tuple [] ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "core::result::Result::Ok"
+                                              [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                                          |)
                                         |)
                                       |)))
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
@@ -6102,7 +6319,7 @@ Module fmt.
                     "core::fmt::builders::DebugMap",
                     "has_fields"
                   |),
-                  Value.Bool true
+                  M.of_value (| Value.Bool true |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -6124,7 +6341,7 @@ Module fmt.
               self
           }
       *)
-      Definition entries (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition entries (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ K; V; _ as I ], [ self; entries ] =>
           ltac:(M.monadic
@@ -6194,15 +6411,15 @@ Module fmt.
                                               |),
                                               [
                                                 M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion k;
-                                                (* Unsize *) M.pointer_coercion v
+                                                (* Unsize *) M.pointer_coercion (| k |);
+                                                (* Unsize *) M.pointer_coercion (| v |)
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -6222,7 +6439,7 @@ Module fmt.
               })
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6250,8 +6467,8 @@ Module fmt.
                     "result"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -6263,22 +6480,24 @@ Module fmt.
                                 (M.read (|
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (UnOp.Pure.not
-                                                      (M.read (|
+                                                  UnOp.Pure.not (|
+                                                    UnOp.Pure.not (|
+                                                      M.read (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.read (| self |),
                                                           "core::fmt::builders::DebugMap",
                                                           "has_key"
                                                         |)
-                                                      |)))
+                                                      |)
+                                                    |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -6301,23 +6520,31 @@ Module fmt.
                                                       |),
                                                       [
                                                         (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "attempted to finish a map with a partial entry"
-                                                                |)
-                                                              ]
-                                                          |))
+                                                        M.pointer_coercion (|
+                                                          M.alloc (|
+                                                            M.of_value (|
+                                                              Value.Array
+                                                                [
+                                                                  A.to_value
+                                                                    (M.read (|
+                                                                      M.of_value (|
+                                                                        Value.String
+                                                                          "attempted to finish a map with a partial entry"
+                                                                      |)
+                                                                    |))
+                                                                ]
+                                                            |)
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
                                                 |)
                                               |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   M.alloc (|
@@ -6335,7 +6562,7 @@ Module fmt.
                                             "fmt"
                                           |)
                                         |);
-                                        M.read (| Value.String "}" |)
+                                        M.read (| M.of_value (| Value.String "}" |) |)
                                       ]
                                     |)
                                   |)
@@ -6343,7 +6570,8 @@ Module fmt.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6356,7 +6584,7 @@ Module fmt.
               self.fmt.alternate()
           }
       *)
-      Definition is_pretty (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pretty (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6395,7 +6623,7 @@ Module fmt.
               (self.0)(f)
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; f ] =>
@@ -6416,7 +6644,7 @@ Module fmt.
                   "core::fmt::builders::FormatterFn",
                   0
                 |);
-                Value.Tuple [ M.read (| f |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| f |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -6440,7 +6668,7 @@ Module fmt.
               (self.0)(f)
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; f ] =>
@@ -6461,7 +6689,7 @@ Module fmt.
                   "core::fmt::builders::FormatterFn",
                   0
                 |);
-                Value.Tuple [ M.read (| f |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| f |)) ] |)
               ]
             |)))
         | _, _ => M.impossible

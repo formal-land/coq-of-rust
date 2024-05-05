@@ -12,16 +12,19 @@ fn main() {
     15;
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 5 |) in
+        let x := M.alloc (| M.of_value (| Value.Integer 5 |) |) in
         let _ := x in
-        let _ := M.alloc (| BinOp.Panic.add (| M.read (| x |), Value.Integer Integer.I32 1 |) |) in
-        let _ := M.alloc (| Value.Integer Integer.I32 15 |) in
-        M.alloc (| Value.Tuple [] |)
+        let _ :=
+          M.alloc (|
+            BinOp.Panic.add (| Integer.I32, M.read (| x |), M.of_value (| Value.Integer 1 |) |)
+          |) in
+        let _ := M.alloc (| M.of_value (| Value.Integer 15 |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

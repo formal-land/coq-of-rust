@@ -24,7 +24,7 @@ Enum DoubleError
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -42,7 +42,7 @@ Axiom Result :
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -55,7 +55,7 @@ End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter source : (list Ty.t) -> (list Value.t) -> M.
+  Parameter source : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -68,7 +68,7 @@ End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -78,8 +78,8 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Ty.t) -> (list A.t) -> M.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

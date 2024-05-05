@@ -20,7 +20,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher13".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -34,17 +34,18 @@ Module hash.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "SipHasher13" |);
-                M.read (| Value.String "hasher" |);
+                M.read (| M.of_value (| Value.String "SipHasher13" |) |);
+                M.read (| M.of_value (| Value.String "hasher" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::hash::sip::SipHasher13",
                       "hasher"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -62,34 +63,37 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher13".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::hash::sip::SipHasher13"
-              [
-                ("hasher",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "core::hash::sip::Hasher")
-                        [ Ty.path "core::hash::sip::Sip13Rounds" ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher13",
-                        "hasher"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::SipHasher13"
+                [
+                  ("hasher",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "core::hash::sip::Hasher")
+                            [ Ty.path "core::hash::sip::Sip13Rounds" ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::hash::sip::SipHasher13",
+                            "hasher"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -105,27 +109,30 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher13".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::hash::sip::SipHasher13"
-              [
-                ("hasher",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "core::hash::sip::Hasher")
-                        [ Ty.path "core::hash::sip::Sip13Rounds" ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::SipHasher13"
+                [
+                  ("hasher",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "core::hash::sip::Hasher")
+                            [ Ty.path "core::hash::sip::Sip13Rounds" ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -154,7 +161,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher24".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -168,17 +175,18 @@ Module hash.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "SipHasher24" |);
-                M.read (| Value.String "hasher" |);
+                M.read (| M.of_value (| Value.String "SipHasher24" |) |);
+                M.read (| M.of_value (| Value.String "hasher" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::hash::sip::SipHasher24",
                       "hasher"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -196,34 +204,37 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher24".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::hash::sip::SipHasher24"
-              [
-                ("hasher",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply
-                        (Ty.path "core::hash::sip::Hasher")
-                        [ Ty.path "core::hash::sip::Sip24Rounds" ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::hash::sip::SipHasher24",
-                        "hasher"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::SipHasher24"
+                [
+                  ("hasher",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "core::hash::sip::Hasher")
+                            [ Ty.path "core::hash::sip::Sip24Rounds" ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::hash::sip::SipHasher24",
+                            "hasher"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -239,27 +250,30 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher24".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::hash::sip::SipHasher24"
-              [
-                ("hasher",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "core::hash::sip::Hasher")
-                        [ Ty.path "core::hash::sip::Sip24Rounds" ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::SipHasher24"
+                [
+                  ("hasher",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
+                          Ty.apply
+                            (Ty.path "core::hash::sip::Hasher")
+                            [ Ty.path "core::hash::sip::Sip24Rounds" ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -282,7 +296,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -296,16 +310,17 @@ Module hash.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "SipHasher" |);
+                M.read (| M.of_value (| Value.String "SipHasher" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::hash::sip::SipHasher",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -323,31 +338,34 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::hash::sip::SipHasher"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "core::hash::sip::SipHasher24",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::hash::sip::SipHasher",
-                      0
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::hash::sip::SipHasher"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::hash::sip::SipHasher24",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::hash::sip::SipHasher",
+                          0
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -363,24 +381,27 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructTuple
-              "core::hash::sip::SipHasher"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::default::Default",
-                    Ty.path "core::hash::sip::SipHasher24",
-                    [],
-                    "default",
-                    []
-                  |),
-                  []
-                |)
-              ]))
+            (M.of_value (|
+              Value.StructTuple
+                "core::hash::sip::SipHasher"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "core::hash::sip::SipHasher24",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -412,7 +433,7 @@ Module hash.
       Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::sip::Hasher") [ S ].
       
       (* Debug *)
-      Definition fmt (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self; f ] =>
@@ -423,78 +444,97 @@ Module hash.
               let names :=
                 M.alloc (|
                   M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "k0" |);
-                        M.read (| Value.String "k1" |);
-                        M.read (| Value.String "length" |);
-                        M.read (| Value.String "state" |);
-                        M.read (| Value.String "tail" |);
-                        M.read (| Value.String "ntail" |);
-                        M.read (| Value.String "_marker" |)
-                      ]
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value (M.read (| M.of_value (| Value.String "k0" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "k1" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "length" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "state" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "tail" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "ntail" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String "_marker" |) |))
+                        ]
+                    |)
                   |)
                 |) in
               let values :=
                 M.alloc (|
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "k0"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "k1"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "length"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "state"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "tail"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::hash::sip::Hasher",
-                              "ntail"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::hash::sip::Hasher",
-                                "_marker"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.pointer_coercion (|
+                    M.alloc (|
+                      M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "k0"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "k1"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "length"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "state"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "tail"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::hash::sip::Hasher",
+                                  "ntail"
+                                |)
+                              |));
+                            A.to_value
+                              (* Unsize *)
+                              (M.pointer_coercion (|
+                                M.alloc (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::hash::sip::Hasher",
+                                    "_marker"
+                                  |)
+                                |)
+                              |))
+                          ]
+                      |)
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -505,8 +545,8 @@ Module hash.
                   |),
                   [
                     M.read (| f |);
-                    M.read (| Value.String "Hasher" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| M.of_value (| Value.String "Hasher" |) |);
+                    (* Unsize *) M.pointer_coercion (| M.read (| names |) |);
                     M.read (| values |)
                   ]
                 |)
@@ -541,7 +581,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::State".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -555,41 +595,45 @@ Module hash.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "State" |);
-                M.read (| Value.String "v0" |);
+                M.read (| M.of_value (| Value.String "State" |) |);
+                M.read (| M.of_value (| Value.String "v0" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::hash::sip::State",
                     "v0"
-                  |));
-                M.read (| Value.String "v2" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "v2" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::hash::sip::State",
                     "v2"
-                  |));
-                M.read (| Value.String "v1" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "v1" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::hash::sip::State",
                     "v1"
-                  |));
-                M.read (| Value.String "v3" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "v3" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::hash::sip::State",
                       "v3"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -607,14 +651,14 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::State".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -666,7 +710,7 @@ Module hash.
         out
     }
     *)
-    Definition u8to64_le (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition u8to64_le (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ buf; start; len ] =>
         ltac:(M.monadic
@@ -676,25 +720,27 @@ Module hash.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| len |))
-                                          (Value.Integer Integer.Usize 8))
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.lt (|
+                                          M.read (| len |),
+                                          M.of_value (| Value.Integer 8 |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -705,45 +751,56 @@ Module hash.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: len < 8" |) ]
+                                      [
+                                        M.read (|
+                                          M.of_value (| Value.String "assertion failed: len < 8" |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
-            let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
-            let out := M.alloc (| Value.Integer Integer.U64 0 |) in
+            let i := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
+            let out := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 3 |))
-                              (M.read (| len |))
+                            BinOp.Pure.lt (|
+                              BinOp.Panic.add (|
+                                Integer.Usize,
+                                M.read (| i |),
+                                M.of_value (| Value.Integer 3 |)
+                              |),
+                              M.read (| len |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
                           out,
-                          M.rust_cast
-                            (M.read (|
+                          M.rust_cast (|
+                            M.read (|
                               let _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        (let γ :=
+                                          M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
@@ -751,17 +808,19 @@ Module hash.
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
+                                                        UnOp.Pure.not (|
+                                                          BinOp.Pure.le (|
+                                                            BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               BinOp.Panic.add (|
+                                                                Integer.Usize,
                                                                 M.read (| start |),
                                                                 M.read (| i |)
                                                               |),
@@ -772,8 +831,8 @@ Module hash.
                                                                 |),
                                                                 []
                                                               |)
-                                                            |))
-                                                            (M.call_closure (|
+                                                            |),
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "slice")
@@ -782,7 +841,9 @@ Module hash.
                                                                 []
                                                               |),
                                                               [ M.read (| buf |) ]
-                                                            |)))
+                                                            |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -798,23 +859,30 @@ Module hash.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            Value.String
-                                                              "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
+                                                            M.of_value (|
+                                                              Value.String
+                                                                "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
                               let data :=
-                                M.copy (| M.use (M.alloc (| Value.Integer Integer.U32 0 |)) |) in
+                                M.copy (|
+                                  M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |))
+                                |) in
                               let _ :=
                                 M.alloc (|
                                   M.call_closure (|
@@ -838,10 +906,14 @@ Module hash.
                                             |),
                                             [ M.read (| buf |) ]
                                           |);
-                                          BinOp.Panic.add (| M.read (| start |), M.read (| i |) |)
+                                          BinOp.Panic.add (|
+                                            Integer.Usize,
+                                            M.read (| start |),
+                                            M.read (| i |)
+                                          |)
                                         ]
                                       |);
-                                      M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                      M.rust_cast (| M.read (| M.use (M.alloc (| data |)) |) |);
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::mem::size_of",
@@ -858,48 +930,60 @@ Module hash.
                                   [ M.read (| data |) ]
                                 |)
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 4 |)
+                          BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 4 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (BinOp.Panic.add (| M.read (| i |), Value.Integer Integer.Usize 1 |))
-                              (M.read (| len |))
+                            BinOp.Pure.lt (|
+                              BinOp.Panic.add (|
+                                Integer.Usize,
+                                M.read (| i |),
+                                M.of_value (| Value.Integer 1 |)
+                              |),
+                              M.read (| len |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         let β := out in
                         M.write (|
                           β,
-                          BinOp.Pure.bit_or
-                            (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
-                                (M.read (|
+                          BinOp.Pure.bit_or (|
+                            M.read (| β |),
+                            BinOp.Panic.shl (|
+                              M.rust_cast (|
+                                M.read (|
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
@@ -907,17 +991,19 @@ Module hash.
                                               |) in
                                             let _ :=
                                               M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not
-                                                              (BinOp.Pure.le
-                                                                (BinOp.Panic.add (|
+                                                            UnOp.Pure.not (|
+                                                              BinOp.Pure.le (|
+                                                                BinOp.Panic.add (|
+                                                                  Integer.Usize,
                                                                   BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| start |),
                                                                     M.read (| i |)
                                                                   |),
@@ -928,8 +1014,8 @@ Module hash.
                                                                     |),
                                                                     []
                                                                   |)
-                                                                |))
-                                                                (M.call_closure (|
+                                                                |),
+                                                                M.call_closure (|
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "slice")
@@ -938,7 +1024,9 @@ Module hash.
                                                                     []
                                                                   |),
                                                                   [ M.read (| buf |) ]
-                                                                |)))
+                                                                |)
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -954,24 +1042,31 @@ Module hash.
                                                             |),
                                                             [
                                                               M.read (|
-                                                                Value.String
-                                                                  "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
+                                                                M.of_value (|
+                                                                  Value.String
+                                                                    "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
+                                                                |)
                                                               |)
                                                             ]
                                                           |)
                                                         |)
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   let data :=
                                     M.copy (|
-                                      M.use (M.alloc (| Value.Integer Integer.U16 0 |))
+                                      M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |))
                                     |) in
                                   let _ :=
                                     M.alloc (|
@@ -997,12 +1092,13 @@ Module hash.
                                                 [ M.read (| buf |) ]
                                               |);
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| start |),
                                                 M.read (| i |)
                                               |)
                                             ]
                                           |);
-                                          M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                          M.rust_cast (| M.read (| M.use (M.alloc (| data |)) |) |);
                                           M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
@@ -1019,36 +1115,47 @@ Module hash.
                                       [ M.read (| data |) ]
                                     |)
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| M.read (| i |), Value.Integer Integer.Usize 8 |)
-                            |))
+                                |)
+                              |),
+                              BinOp.Panic.mul (|
+                                Integer.Usize,
+                                M.read (| i |),
+                                M.of_value (| Value.Integer 8 |)
+                              |)
+                            |)
+                          |)
                         |) in
                       let β := i in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 2 |)
+                        BinOp.Panic.add (|
+                          Integer.Usize,
+                          M.read (| β |),
+                          M.of_value (| Value.Integer 2 |)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (M.read (| len |)) |)) in
+                        M.use
+                          (M.alloc (| BinOp.Pure.lt (| M.read (| i |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         let β := out in
                         M.write (|
                           β,
-                          BinOp.Pure.bit_or
-                            (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
-                                (M.read (|
+                          BinOp.Pure.bit_or (|
+                            M.read (| β |),
+                            BinOp.Panic.shl (|
+                              M.rust_cast (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -1057,42 +1164,57 @@ Module hash.
                                     |),
                                     [
                                       M.read (| buf |);
-                                      BinOp.Panic.add (| M.read (| start |), M.read (| i |) |)
+                                      BinOp.Panic.add (|
+                                        Integer.Usize,
+                                        M.read (| start |),
+                                        M.read (| i |)
+                                      |)
                                     ]
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| M.read (| i |), Value.Integer Integer.Usize 8 |)
-                            |))
+                                |)
+                              |),
+                              BinOp.Panic.mul (|
+                                Integer.Usize,
+                                M.read (| i |),
+                                M.of_value (| Value.Integer 8 |)
+                              |)
+                            |)
+                          |)
                         |) in
                       let _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.eq (M.read (| i |)) (M.read (| len |)))
+                                      UnOp.Pure.not (|
+                                        BinOp.Pure.eq (| M.read (| i |), M.read (| len |) |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1103,15 +1225,20 @@ Module hash.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: i == len" |) ]
+                                      [
+                                        M.read (|
+                                          M.of_value (| Value.String "assertion failed: i == len" |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             out
@@ -1127,7 +1254,7 @@ Module hash.
               SipHasher::new_with_keys(0, 0)
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -1137,7 +1264,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ M.of_value (| Value.Integer 0 |); M.of_value (| Value.Integer 0 |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1149,31 +1276,37 @@ Module hash.
               SipHasher(SipHasher24 { hasher: Hasher::new_with_keys(key0, key1) })
           }
       *)
-      Definition new_with_keys (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_keys (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ key0; key1 ] =>
           ltac:(M.monadic
             (let key0 := M.alloc (| key0 |) in
             let key1 := M.alloc (| key1 |) in
-            Value.StructTuple
-              "core::hash::sip::SipHasher"
-              [
-                Value.StructRecord
-                  "core::hash::sip::SipHasher24"
-                  [
-                    ("hasher",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::hash::sip::Hasher")
-                            [ Ty.path "core::hash::sip::Sip24Rounds" ],
-                          "new_with_keys",
-                          []
-                        |),
-                        [ M.read (| key0 |); M.read (| key1 |) ]
-                      |))
-                  ]
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::hash::sip::SipHasher"
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructRecord
+                        "core::hash::sip::SipHasher24"
+                        [
+                          ("hasher",
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::hash::sip::Hasher")
+                                    [ Ty.path "core::hash::sip::Sip24Rounds" ],
+                                  "new_with_keys",
+                                  []
+                                |),
+                                [ M.read (| key0 |); M.read (| key1 |) ]
+                              |)))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1189,7 +1322,7 @@ Module hash.
               SipHasher13::new_with_keys(0, 0)
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -1199,7 +1332,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ M.of_value (| Value.Integer 0 |); M.of_value (| Value.Integer 0 |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1211,27 +1344,30 @@ Module hash.
               SipHasher13 { hasher: Hasher::new_with_keys(key0, key1) }
           }
       *)
-      Definition new_with_keys (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_keys (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ key0; key1 ] =>
           ltac:(M.monadic
             (let key0 := M.alloc (| key0 |) in
             let key1 := M.alloc (| key1 |) in
-            Value.StructRecord
-              "core::hash::sip::SipHasher13"
-              [
-                ("hasher",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::hash::sip::Hasher")
-                        [ Ty.path "core::hash::sip::Sip13Rounds" ],
-                      "new_with_keys",
-                      []
-                    |),
-                    [ M.read (| key0 |); M.read (| key1 |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::SipHasher13"
+                [
+                  ("hasher",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::hash::sip::Hasher")
+                            [ Ty.path "core::hash::sip::Sip13Rounds" ],
+                          "new_with_keys",
+                          []
+                        |),
+                        [ M.read (| key0 |); M.read (| key1 |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1257,7 +1393,7 @@ Module hash.
               state
           }
       *)
-      Definition new_with_keys (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_keys (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ key0; key1 ] =>
@@ -1267,25 +1403,32 @@ Module hash.
             M.read (|
               let state :=
                 M.alloc (|
-                  Value.StructRecord
-                    "core::hash::sip::Hasher"
-                    [
-                      ("k0", M.read (| key0 |));
-                      ("k1", M.read (| key1 |));
-                      ("length", Value.Integer Integer.Usize 0);
-                      ("state",
-                        Value.StructRecord
-                          "core::hash::sip::State"
-                          [
-                            ("v0", Value.Integer Integer.U64 0);
-                            ("v1", Value.Integer Integer.U64 0);
-                            ("v2", Value.Integer Integer.U64 0);
-                            ("v3", Value.Integer Integer.U64 0)
-                          ]);
-                      ("tail", Value.Integer Integer.U64 0);
-                      ("ntail", Value.Integer Integer.Usize 0);
-                      ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                    ]
+                  M.of_value (|
+                    Value.StructRecord
+                      "core::hash::sip::Hasher"
+                      [
+                        ("k0", A.to_value (M.read (| key0 |)));
+                        ("k1", A.to_value (M.read (| key1 |)));
+                        ("length", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("state",
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructRecord
+                                "core::hash::sip::State"
+                                [
+                                  ("v0", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                  ("v1", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                  ("v2", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                  ("v3", A.to_value (M.of_value (| Value.Integer 0 |)))
+                                ]
+                            |)));
+                        ("tail", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("ntail", A.to_value (M.of_value (| Value.Integer 0 |)));
+                        ("_marker",
+                          A.to_value
+                            (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                      ]
+                  |)
                 |) in
               let _ :=
                 M.alloc (|
@@ -1317,7 +1460,7 @@ Module hash.
               self.ntail = 0;
           }
       *)
-      Definition reset (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reset (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self ] =>
@@ -1331,7 +1474,7 @@ Module hash.
                     "core::hash::sip::Hasher",
                     "length"
                   |),
-                  Value.Integer Integer.Usize 0
+                  M.of_value (| Value.Integer 0 |)
                 |) in
               let _ :=
                 M.write (|
@@ -1344,15 +1487,16 @@ Module hash.
                     "core::hash::sip::State",
                     "v0"
                   |),
-                  BinOp.Pure.bit_xor
-                    (M.read (|
+                  BinOp.Pure.bit_xor (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
-                    |))
-                    (Value.Integer Integer.U64 8317987319222330741)
+                    |),
+                    M.of_value (| Value.Integer 8317987319222330741 |)
+                  |)
                 |) in
               let _ :=
                 M.write (|
@@ -1365,15 +1509,16 @@ Module hash.
                     "core::hash::sip::State",
                     "v1"
                   |),
-                  BinOp.Pure.bit_xor
-                    (M.read (|
+                  BinOp.Pure.bit_xor (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
-                    |))
-                    (Value.Integer Integer.U64 7237128888997146477)
+                    |),
+                    M.of_value (| Value.Integer 7237128888997146477 |)
+                  |)
                 |) in
               let _ :=
                 M.write (|
@@ -1386,15 +1531,16 @@ Module hash.
                     "core::hash::sip::State",
                     "v2"
                   |),
-                  BinOp.Pure.bit_xor
-                    (M.read (|
+                  BinOp.Pure.bit_xor (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::hash::sip::Hasher",
                         "k0"
                       |)
-                    |))
-                    (Value.Integer Integer.U64 7816392313619706465)
+                    |),
+                    M.of_value (| Value.Integer 7816392313619706465 |)
+                  |)
                 |) in
               let _ :=
                 M.write (|
@@ -1407,15 +1553,16 @@ Module hash.
                     "core::hash::sip::State",
                     "v3"
                   |),
-                  BinOp.Pure.bit_xor
-                    (M.read (|
+                  BinOp.Pure.bit_xor (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::hash::sip::Hasher",
                         "k1"
                       |)
-                    |))
-                    (Value.Integer Integer.U64 8387220255154660723)
+                    |),
+                    M.of_value (| Value.Integer 8387220255154660723 |)
+                  |)
                 |) in
               let _ :=
                 M.write (|
@@ -1424,9 +1571,9 @@ Module hash.
                     "core::hash::sip::Hasher",
                     "ntail"
                   |),
-                  Value.Integer Integer.Usize 0
+                  M.of_value (| Value.Integer 0 |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1444,7 +1591,7 @@ Module hash.
               self.0.hasher.write(msg)
           }
       *)
-      Definition write (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; msg ] =>
           ltac:(M.monadic
@@ -1481,7 +1628,7 @@ Module hash.
               self.0.hasher.write_str(s);
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; s ] =>
           ltac:(M.monadic
@@ -1514,7 +1661,7 @@ Module hash.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1524,7 +1671,7 @@ Module hash.
               self.0.hasher.finish()
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1575,7 +1722,7 @@ Module hash.
               self.hasher.write(msg)
           }
       *)
-      Definition write (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; msg ] =>
           ltac:(M.monadic
@@ -1608,7 +1755,7 @@ Module hash.
               self.hasher.write_str(s);
           }
       *)
-      Definition write_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; s ] =>
           ltac:(M.monadic
@@ -1637,7 +1784,7 @@ Module hash.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1647,7 +1794,7 @@ Module hash.
               self.hasher.finish()
           }
       *)
-      Definition finish (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1736,7 +1883,7 @@ Module hash.
               self.ntail = left;
           }
       *)
-      Definition write (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self; msg ] =>
@@ -1764,26 +1911,30 @@ Module hash.
                         "core::hash::sip::Hasher",
                         "length"
                       |) in
-                    M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| length |) |) |) in
-                  let needed := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    M.write (|
+                      β,
+                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| length |) |)
+                    |) in
+                  let needed := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.read (|
+                                  BinOp.Pure.ne (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::hash::sip::Hasher",
                                         "ntail"
                                       |)
-                                    |))
-                                    (Value.Integer Integer.Usize 0)
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1791,7 +1942,8 @@ Module hash.
                               M.write (|
                                 needed,
                                 BinOp.Panic.sub (|
-                                  Value.Integer Integer.Usize 8,
+                                  Integer.Usize,
+                                  M.of_value (| Value.Integer 8 |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -1810,14 +1962,14 @@ Module hash.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Pure.bit_or
-                                  (M.read (| β |))
-                                  (BinOp.Panic.shl (|
+                                BinOp.Pure.bit_or (|
+                                  M.read (| β |),
+                                  BinOp.Panic.shl (|
                                     M.call_closure (|
                                       M.get_function (| "core::hash::sip::u8to64_le", [] |),
                                       [
                                         M.read (| msg |);
-                                        Value.Integer Integer.Usize 0;
+                                        M.of_value (| Value.Integer 0 |);
                                         M.call_closure (|
                                           M.get_function (|
                                             "core::cmp::min",
@@ -1828,7 +1980,8 @@ Module hash.
                                       ]
                                     |),
                                     BinOp.Panic.mul (|
-                                      Value.Integer Integer.Usize 8,
+                                      Integer.Usize,
+                                      M.of_value (| Value.Integer 8 |),
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1837,17 +1990,21 @@ Module hash.
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |) in
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.lt (M.read (| length |)) (M.read (| needed |))
+                                          BinOp.Pure.lt (|
+                                            M.read (| length |),
+                                            M.read (| needed |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1867,11 +2024,12 @@ Module hash.
                                             M.write (|
                                               β,
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| β |),
                                                 M.read (| length |)
                                               |)
                                             |) in
-                                          M.return_ (| Value.Tuple [] |)
+                                          M.return_ (| M.of_value (| Value.Tuple [] |) |)
                                         |)
                                       |)
                                     |)));
@@ -1890,15 +2048,16 @@ Module hash.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Pure.bit_xor
-                                          (M.read (| β |))
-                                          (M.read (|
+                                        BinOp.Pure.bit_xor (|
+                                          M.read (| β |),
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     let _ :=
                                       M.alloc (|
@@ -1932,15 +2091,16 @@ Module hash.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Pure.bit_xor
-                                          (M.read (| β |))
-                                          (M.read (|
+                                        BinOp.Pure.bit_xor (|
+                                          M.read (| β |),
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::hash::sip::Hasher",
                                               "tail"
                                             |)
-                                          |))
+                                          |)
+                                        |)
                                       |) in
                                     let _ :=
                                       M.write (|
@@ -1949,35 +2109,42 @@ Module hash.
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |),
-                                        Value.Integer Integer.Usize 0
+                                        M.of_value (| Value.Integer 0 |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let len :=
-                    M.alloc (| BinOp.Panic.sub (| M.read (| length |), M.read (| needed |) |) |) in
+                    M.alloc (|
+                      BinOp.Panic.sub (| Integer.Usize, M.read (| length |), M.read (| needed |) |)
+                    |) in
                   let left :=
                     M.alloc (|
-                      BinOp.Pure.bit_and (M.read (| len |)) (Value.Integer Integer.Usize 7)
+                      BinOp.Pure.bit_and (| M.read (| len |), M.of_value (| Value.Integer 7 |) |)
                     |) in
                   let i := M.copy (| needed |) in
                   let _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.lt
-                                        (M.read (| i |))
-                                        (BinOp.Panic.sub (| M.read (| len |), M.read (| left |) |))
+                                      BinOp.Pure.lt (|
+                                        M.read (| i |),
+                                        BinOp.Panic.sub (|
+                                          Integer.Usize,
+                                          M.read (| len |),
+                                          M.read (| left |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1988,11 +2155,15 @@ Module hash.
                                   M.copy (|
                                     let _ :=
                                       M.match_operator (|
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.of_value (| Value.Bool true |)
+                                                  |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
@@ -2000,16 +2171,17 @@ Module hash.
                                                 |) in
                                               let _ :=
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              UnOp.Pure.not
-                                                                (BinOp.Pure.le
-                                                                  (BinOp.Panic.add (|
+                                                              UnOp.Pure.not (|
+                                                                BinOp.Pure.le (|
+                                                                  BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| i |),
                                                                     M.call_closure (|
                                                                       M.get_function (|
@@ -2018,8 +2190,8 @@ Module hash.
                                                                       |),
                                                                       []
                                                                     |)
-                                                                  |))
-                                                                  (M.call_closure (|
+                                                                  |),
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -2028,7 +2200,9 @@ Module hash.
                                                                       []
                                                                     |),
                                                                     [ M.read (| msg |) ]
-                                                                  |)))
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -2044,8 +2218,10 @@ Module hash.
                                                               |),
                                                               [
                                                                 M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
+                                                                  M.of_value (|
+                                                                    Value.String
+                                                                      "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
+                                                                  |)
                                                                 |)
                                                               ]
                                                             |)
@@ -2053,16 +2229,20 @@ Module hash.
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
+                                                        (M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                         ]
                                       |) in
                                     let data :=
                                       M.copy (|
-                                        M.use (M.alloc (| Value.Integer Integer.U64 0 |))
+                                        M.use (M.alloc (| M.of_value (| Value.Integer 0 |) |))
                                       |) in
                                     let _ :=
                                       M.alloc (|
@@ -2090,7 +2270,9 @@ Module hash.
                                                 M.read (| i |)
                                               ]
                                             |);
-                                            M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
+                                            M.rust_cast (|
+                                              M.read (| M.use (M.alloc (| data |)) |)
+                                            |);
                                             M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::size_of",
@@ -2121,7 +2303,7 @@ Module hash.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                    BinOp.Pure.bit_xor (| M.read (| β |), M.read (| mi |) |)
                                   |) in
                                 let _ :=
                                   M.alloc (|
@@ -2155,18 +2337,19 @@ Module hash.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                    BinOp.Pure.bit_xor (| M.read (| β |), M.read (| mi |) |)
                                   |) in
                                 let _ :=
                                   let β := i in
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 8
+                                      M.of_value (| Value.Integer 8 |)
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
@@ -2176,7 +2359,7 @@ Module hash.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
@@ -2204,7 +2387,7 @@ Module hash.
                       |),
                       M.read (| left |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -2218,7 +2401,7 @@ Module hash.
               self.write_u8(0xFF);
           }
       *)
-      Definition write_str (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_str (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self; s ] =>
@@ -2255,10 +2438,10 @@ Module hash.
                       "write_u8",
                       []
                     |),
-                    [ M.read (| self |); Value.Integer Integer.U8 255 ]
+                    [ M.read (| self |); M.of_value (| Value.Integer 255 |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2279,7 +2462,7 @@ Module hash.
               state.v0 ^ state.v1 ^ state.v2 ^ state.v3
           }
       *)
-      Definition finish (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition finish (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self ] =>
@@ -2296,27 +2479,30 @@ Module hash.
                 |) in
               let b :=
                 M.alloc (|
-                  BinOp.Pure.bit_or
-                    (BinOp.Panic.shl (|
-                      BinOp.Pure.bit_and
-                        (M.rust_cast
-                          (M.read (|
+                  BinOp.Pure.bit_or (|
+                    BinOp.Panic.shl (|
+                      BinOp.Pure.bit_and (|
+                        M.rust_cast (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::hash::sip::Hasher",
                               "length"
                             |)
-                          |)))
-                        (Value.Integer Integer.U64 255),
-                      Value.Integer Integer.I32 56
-                    |))
-                    (M.read (|
+                          |)
+                        |),
+                        M.of_value (| Value.Integer 255 |)
+                      |),
+                      M.of_value (| Value.Integer 56 |)
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::hash::sip::Hasher",
                         "tail"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               let _ :=
                 let β :=
@@ -2325,7 +2511,7 @@ Module hash.
                     "core::hash::sip::State",
                     "v3"
                   |) in
-                M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
+                M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| b |) |) |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -2340,7 +2526,7 @@ Module hash.
                     "core::hash::sip::State",
                     "v0"
                   |) in
-                M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
+                M.write (| β, BinOp.Pure.bit_xor (| M.read (| β |), M.read (| b |) |) |) in
               let _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
@@ -2350,7 +2536,7 @@ Module hash.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Pure.bit_xor (M.read (| β |)) (Value.Integer Integer.U64 255)
+                  BinOp.Pure.bit_xor (| M.read (| β |), M.of_value (| Value.Integer 255 |) |)
                 |) in
               let _ :=
                 M.alloc (|
@@ -2360,33 +2546,36 @@ Module hash.
                   |)
                 |) in
               M.alloc (|
-                BinOp.Pure.bit_xor
-                  (BinOp.Pure.bit_xor
-                    (BinOp.Pure.bit_xor
-                      (M.read (|
+                BinOp.Pure.bit_xor (|
+                  BinOp.Pure.bit_xor (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           state,
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           state,
                           "core::hash::sip::State",
                           "v1"
                         |)
-                      |)))
-                    (M.read (|
+                      |)
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         state,
                         "core::hash::sip::State",
                         "v2"
                       |)
-                    |)))
-                  (M.read (|
+                    |)
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (| state, "core::hash::sip::State", "v3" |)
-                  |))
+                  |)
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -2422,72 +2611,81 @@ Module hash.
               }
           }
       *)
-      Definition clone (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::hash::sip::Hasher"
-              [
-                ("k0",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "k0"
-                    |)
-                  |));
-                ("k1",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "k1"
-                    |)
-                  |));
-                ("length",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "length"
-                    |)
-                  |));
-                ("state",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "state"
-                    |)
-                  |));
-                ("tail",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "tail"
-                    |)
-                  |));
-                ("ntail",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "ntail"
-                    |)
-                  |));
-                ("_marker",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::hash::sip::Hasher",
-                      "_marker"
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::hash::sip::Hasher"
+                [
+                  ("k0",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "k0"
+                        |)
+                      |)));
+                  ("k1",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "k1"
+                        |)
+                      |)));
+                  ("length",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "length"
+                        |)
+                      |)));
+                  ("state",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "state"
+                        |)
+                      |)));
+                  ("tail",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "tail"
+                        |)
+                      |)));
+                  ("ntail",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "ntail"
+                        |)
+                      |)));
+                  ("_marker",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::hash::sip::Hasher",
+                          "_marker"
+                        |)
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2508,7 +2706,7 @@ Module hash.
               Hasher::new_with_keys(0, 0)
           }
       *)
-      Definition default (S : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (S : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self S in
         match τ, α with
         | [], [] =>
@@ -2519,7 +2717,7 @@ Module hash.
                 "new_with_keys",
                 []
               |),
-              [ Value.Integer Integer.U64 0; Value.Integer Integer.U64 0 ]
+              [ M.of_value (| Value.Integer 0 |); M.of_value (| Value.Integer 0 |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2547,7 +2745,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip13Rounds".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2555,7 +2753,7 @@ Module hash.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip13Rounds" |) ]
+              [ M.read (| f |); M.read (| M.of_value (| Value.String "Sip13Rounds" |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -2572,12 +2770,12 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip13Rounds".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::hash::sip::Sip13Rounds" []))
+            M.of_value (| Value.StructTuple "core::hash::sip::Sip13Rounds" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2593,9 +2791,10 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip13Rounds".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
-        | [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip13Rounds" []))
+        | [], [] =>
+          ltac:(M.monadic (M.of_value (| Value.StructTuple "core::hash::sip::Sip13Rounds" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -2615,7 +2814,7 @@ Module hash.
               compress!(state);
           }
       *)
-      Definition c_rounds (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition c_rounds (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ state ] =>
           ltac:(M.monadic
@@ -2666,7 +2865,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -2679,15 +2878,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -2706,7 +2906,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -2754,7 +2954,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -2767,15 +2967,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -2821,7 +3022,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -2834,15 +3035,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -2888,7 +3090,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -2901,15 +3103,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -2928,12 +3131,12 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2945,7 +3148,7 @@ Module hash.
               compress!(state);
           }
       *)
-      Definition d_rounds (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition d_rounds (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ state ] =>
           ltac:(M.monadic
@@ -2996,7 +3199,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -3009,15 +3212,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3036,7 +3240,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -3084,7 +3288,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -3097,15 +3301,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3151,7 +3356,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -3164,15 +3369,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3218,7 +3424,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -3231,15 +3437,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3258,11 +3465,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -3308,7 +3515,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -3321,15 +3528,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3348,7 +3556,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -3396,7 +3604,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -3409,15 +3617,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3463,7 +3672,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -3476,15 +3685,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3530,7 +3740,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -3543,15 +3753,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3570,11 +3781,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -3620,7 +3831,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -3633,15 +3844,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3660,7 +3872,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -3708,7 +3920,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -3721,15 +3933,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3775,7 +3988,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -3788,15 +4001,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3842,7 +4056,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -3855,15 +4069,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -3882,12 +4097,12 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3913,7 +4128,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip24Rounds".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -3921,7 +4136,7 @@ Module hash.
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-              [ M.read (| f |); M.read (| Value.String "Sip24Rounds" |) ]
+              [ M.read (| f |); M.read (| M.of_value (| Value.String "Sip24Rounds" |) |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -3938,12 +4153,12 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip24Rounds".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "core::hash::sip::Sip24Rounds" []))
+            M.of_value (| Value.StructTuple "core::hash::sip::Sip24Rounds" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3959,9 +4174,10 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::Sip24Rounds".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
-        | [], [] => ltac:(M.monadic (Value.StructTuple "core::hash::sip::Sip24Rounds" []))
+        | [], [] =>
+          ltac:(M.monadic (M.of_value (| Value.StructTuple "core::hash::sip::Sip24Rounds" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -3982,7 +4198,7 @@ Module hash.
               compress!(state);
           }
       *)
-      Definition c_rounds (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition c_rounds (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ state ] =>
           ltac:(M.monadic
@@ -4033,7 +4249,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -4046,15 +4262,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4073,7 +4290,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -4121,7 +4338,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -4134,15 +4351,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4188,7 +4406,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -4201,15 +4419,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4255,7 +4474,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -4268,15 +4487,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4295,11 +4515,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -4345,7 +4565,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -4358,15 +4578,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4385,7 +4606,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -4433,7 +4654,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -4446,15 +4667,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4500,7 +4722,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -4513,15 +4735,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4567,7 +4790,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -4580,15 +4803,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4607,12 +4831,12 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4625,7 +4849,7 @@ Module hash.
               compress!(state);
           }
       *)
-      Definition d_rounds (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition d_rounds (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ state ] =>
           ltac:(M.monadic
@@ -4676,7 +4900,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -4689,15 +4913,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4716,7 +4941,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -4764,7 +4989,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -4777,15 +5002,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4831,7 +5057,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -4844,15 +5070,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4898,7 +5125,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -4911,15 +5138,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -4938,11 +5166,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -4988,7 +5216,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -5001,15 +5229,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5028,7 +5257,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -5076,7 +5305,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -5089,15 +5318,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5143,7 +5373,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -5156,15 +5386,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5210,7 +5441,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -5223,15 +5454,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5250,11 +5482,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -5300,7 +5532,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -5313,15 +5545,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5340,7 +5573,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -5388,7 +5621,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -5401,15 +5634,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5455,7 +5689,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -5468,15 +5702,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5522,7 +5757,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -5535,15 +5770,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5562,11 +5798,11 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.write (|
@@ -5612,7 +5848,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 13
+                        M.of_value (| Value.Integer 13 |)
                       ]
                     |)
                   |) in
@@ -5625,15 +5861,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5652,7 +5889,7 @@ Module hash.
                             "v0"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
@@ -5700,7 +5937,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 16
+                        M.of_value (| Value.Integer 16 |)
                       ]
                     |)
                   |) in
@@ -5713,15 +5950,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5767,7 +6005,7 @@ Module hash.
                             "v3"
                           |)
                         |);
-                        Value.Integer Integer.U32 21
+                        M.of_value (| Value.Integer 21 |)
                       ]
                     |)
                   |) in
@@ -5780,15 +6018,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v0"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5834,7 +6073,7 @@ Module hash.
                             "v1"
                           |)
                         |);
-                        Value.Integer Integer.U32 17
+                        M.of_value (| Value.Integer 17 |)
                       ]
                     |)
                   |) in
@@ -5847,15 +6086,16 @@ Module hash.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Pure.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
+                    BinOp.Pure.bit_xor (|
+                      M.read (| β |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| state |),
                           "core::hash::sip::State",
                           "v2"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 let _ :=
                   M.write (|
@@ -5874,12 +6114,12 @@ Module hash.
                             "v2"
                           |)
                         |);
-                        Value.Integer Integer.U32 32
+                        M.of_value (| Value.Integer 32 |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
-              M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.

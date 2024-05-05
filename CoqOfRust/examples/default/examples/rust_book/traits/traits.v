@@ -10,7 +10,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module Animal.
-  Definition talk (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition talk (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -26,72 +26,80 @@ Module Animal.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " says " |);
-                                M.read (| Value.String "
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                  A.to_value (M.read (| M.of_value (| Value.String " says " |) |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Self,
-                                          [],
-                                          "name",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Self,
-                                          [],
-                                          "noise",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "traits::Animal",
+                                              Self,
+                                              [],
+                                              "name",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        |)
+                                      ]
+                                    |));
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "traits::Animal",
+                                              Self,
+                                              [],
+                                              "noise",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -107,7 +115,7 @@ Module Impl_traits_Sheep.
           self.naked
       }
   *)
-  Definition is_naked (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_naked (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -131,14 +139,14 @@ Module Impl_traits_Sheep.
           }
       }
   *)
-  Definition shear (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition shear (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -165,50 +173,61 @@ Module Impl_traits_Sheep.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " is already naked...
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "" |) |));
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String " is already naked...
 " |)
-                                      ]
-                                  |));
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "traits::Animal",
-                                                  Ty.path "traits::Sheep",
-                                                  [],
-                                                  "name",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                              |),
+                                              [
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "traits::Animal",
+                                                      Ty.path "traits::Sheep",
+                                                      [],
+                                                      "name",
+                                                      []
+                                                    |),
+                                                    [ M.read (| self |) ]
+                                                  |)
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
@@ -225,42 +244,53 @@ Module Impl_traits_Sheep.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " gets a haircut!
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "" |) |));
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String " gets a haircut!
 " |)
-                                      ]
-                                  |));
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "traits::Sheep",
-                                              "name"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "traits::Sheep",
+                                                  "name"
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                   let _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
@@ -268,9 +298,9 @@ Module Impl_traits_Sheep.
                         "traits::Sheep",
                         "naked"
                       |),
-                      Value.Bool true
+                      M.of_value (| Value.Bool true |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -291,14 +321,19 @@ Module Impl_traits_Animal_for_traits_Sheep.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ name ] =>
       ltac:(M.monadic
         (let name := M.alloc (| name |) in
-        Value.StructRecord
-          "traits::Sheep"
-          [ ("name", M.read (| name |)); ("naked", Value.Bool false) ]))
+        M.of_value (|
+          Value.StructRecord
+            "traits::Sheep"
+            [
+              ("name", A.to_value (M.read (| name |)));
+              ("naked", A.to_value (M.of_value (| Value.Bool false |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -307,7 +342,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           self.name
       }
   *)
-  Definition name (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition name (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -327,14 +362,14 @@ Module Impl_traits_Animal_for_traits_Sheep.
           }
       }
   *)
-  Definition noise (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition noise (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -347,8 +382,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  Value.String "baaaaah?"));
-              fun γ => ltac:(M.monadic (Value.String "baaaaah!"))
+                  M.of_value (| Value.String "baaaaah?" |)));
+              fun γ => ltac:(M.monadic (M.of_value (| Value.String "baaaaah!" |)))
             ]
           |)
         |)))
@@ -361,7 +396,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Definition talk (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition talk (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -377,65 +412,76 @@ Module Impl_traits_Animal_for_traits_Sheep.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " pauses briefly... " |);
-                                M.read (| Value.String "
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String " pauses briefly... " |)
+                                    |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "traits::Sheep",
-                                      "name"
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Ty.path "traits::Sheep",
-                                          [],
-                                          "noise",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "traits::Sheep",
+                                          "name"
+                                        |)
+                                      ]
+                                    |));
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "traits::Animal",
+                                              Ty.path "traits::Sheep",
+                                              [],
+                                              "noise",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
+                                          |)
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -466,7 +512,7 @@ fn main() {
     dolly.talk();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -475,7 +521,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "new", [] |),
-              [ M.read (| Value.String "Dolly" |) ]
+              [ M.read (| M.of_value (| Value.String "Dolly" |) |) ]
             |)
           |) in
         let _ :=
@@ -499,7 +545,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ dolly ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

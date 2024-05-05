@@ -16,12 +16,14 @@ Module Impl_core_convert_From_i32_for_from_Number.
           Number { value: item }
       }
   *)
-  Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ item ] =>
       ltac:(M.monadic
         (let item := M.alloc (| item |) in
-        Value.StructRecord "from::Number" [ ("value", M.read (| item |)) ]))
+        M.of_value (|
+          Value.StructRecord "from::Number" [ ("value", A.to_value (M.read (| item |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -38,7 +40,7 @@ fn main() {
     Number::from(30);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -53,10 +55,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ Value.Integer Integer.I32 30 ]
+              [ M.of_value (| Value.Integer 30 |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

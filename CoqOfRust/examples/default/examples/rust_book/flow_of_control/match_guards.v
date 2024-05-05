@@ -36,14 +36,18 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let temperature :=
           M.alloc (|
-            Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer Integer.I32 35 ]
+            M.of_value (|
+              Value.StructTuple
+                "match_guards::Temperature::Celsius"
+                [ A.to_value (M.of_value (| Value.Integer 35 |)) ]
+            |)
           |) in
         M.match_operator (|
           temperature,
@@ -58,7 +62,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
-                  M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 30) |) in
+                  M.alloc (|
+                    BinOp.Pure.gt (| M.read (| t |), M.of_value (| Value.Integer 30 |) |)
+                  |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|
@@ -73,36 +79,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "C is above 30 Celsius
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "C is above 30 Celsius
 " |)
-                                  ]
-                              |));
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ t ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ t ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -125,36 +141,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "C is below 30 Celsius
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "C is below 30 Celsius
 " |)
-                                  ]
-                              |));
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ t ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ t ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -165,7 +191,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let t := M.copy (| γ0_0 |) in
                 let γ :=
-                  M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer Integer.I32 86) |) in
+                  M.alloc (|
+                    BinOp.Pure.gt (| M.read (| t |), M.of_value (| Value.Integer 86 |) |)
+                  |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let _ :=
                   M.alloc (|
@@ -180,36 +208,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "F is above 86 Fahrenheit
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "F is above 86 Fahrenheit
 " |)
-                                  ]
-                              |));
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ t ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ t ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -232,36 +270,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "F is below 86 Fahrenheit
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String "F is below 86 Fahrenheit
 " |)
-                                  ]
-                              |));
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ t ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [ t ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

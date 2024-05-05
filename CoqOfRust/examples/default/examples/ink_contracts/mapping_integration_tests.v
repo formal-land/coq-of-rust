@@ -17,37 +17,41 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     Ty.apply (Ty.path "mapping_integration_tests::Mapping") [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "mapping_integration_tests::Mapping"
-          [
-            ("_key",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "mapping_integration_tests::Mapping"
+            [
+              ("_key",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -69,7 +73,21 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -80,7 +98,21 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -91,7 +123,22 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -102,7 +149,19 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition new (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
@@ -113,7 +172,21 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -124,7 +197,21 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -135,7 +222,21 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -153,18 +254,27 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "mapping_integration_tests::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "mapping_integration_tests::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -180,14 +290,14 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -226,7 +336,7 @@ Module Impl_mapping_integration_tests_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -261,27 +371,30 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::Mappings".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "mapping_integration_tests::Mappings"
-          [
-            ("balances",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "mapping_integration_tests::Mapping")
-                    [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "mapping_integration_tests::Mappings"
+            [
+              ("balances",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply
+                        (Ty.path "mapping_integration_tests::Mapping")
+                        [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -301,7 +414,18 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -310,7 +434,18 @@ Module Impl_mapping_integration_tests_Mappings.
           unimplemented!()
       }
   *)
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   
@@ -320,7 +455,7 @@ Module Impl_mapping_integration_tests_Mappings.
           Self { balances }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -341,9 +476,11 @@ Module Impl_mapping_integration_tests_Mappings.
               |)
             |) in
           M.alloc (|
-            Value.StructRecord
-              "mapping_integration_tests::Mappings"
-              [ ("balances", M.read (| balances |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "mapping_integration_tests::Mappings"
+                [ ("balances", A.to_value (M.read (| balances |))) ]
+            |)
           |)
         |)))
     | _, _ => M.impossible
@@ -357,7 +494,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.get(&caller)
       }
   *)
-  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -416,7 +553,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.insert(caller, value)
       }
   *)
-  Definition insert_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition insert_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; value ] =>
       ltac:(M.monadic
@@ -478,7 +615,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.size(caller)
       }
   *)
-  Definition size_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition size_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -537,7 +674,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.contains(&caller)
       }
   *)
-  Definition contains_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition contains_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -597,7 +734,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.remove(caller);
       }
   *)
-  Definition remove_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition remove_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -645,7 +782,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -659,7 +796,7 @@ Module Impl_mapping_integration_tests_Mappings.
           self.balances.take(caller)
       }
   *)
-  Definition take_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition take_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic

@@ -21,7 +21,7 @@ Module ops.
                     ( **self).call(args)
                 }
         *)
-        Definition call (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self; args ] =>
@@ -52,7 +52,7 @@ Module ops.
                     ( **self).call(args)
                 }
         *)
-        Definition call_mut (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call_mut (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self; args ] =>
@@ -86,7 +86,7 @@ Module ops.
                     ( *self).call(args)
                 }
         *)
-        Definition call_once (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call_once (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self; args ] =>
@@ -121,7 +121,7 @@ Module ops.
                     ( *self).call_mut(args)
                 }
         *)
-        Definition call_mut (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call_mut (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self; args ] =>
@@ -155,7 +155,7 @@ Module ops.
                     ( *self).call_mut(args)
                 }
         *)
-        Definition call_once (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call_once (A F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A F in
           match τ, α with
           | [], [ self; args ] =>

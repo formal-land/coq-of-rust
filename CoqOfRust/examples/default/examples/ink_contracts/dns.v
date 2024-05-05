@@ -16,37 +16,41 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "dns::Mapping") [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self K V in
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "dns::Mapping"
-          [
-            ("_key",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |));
-            ("_value",
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
-                  [],
-                  "default",
-                  []
-                |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "dns::Mapping"
+            [
+              ("_key",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)));
+              ("_value",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -67,7 +71,21 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +96,21 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +121,22 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +147,19 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter new : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition new (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_new :
     forall (K V : Ty.t),
@@ -111,7 +170,21 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -122,7 +195,21 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -133,7 +220,21 @@ Module Impl_dns_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
+    let Self : Ty.t := Self K V in
+    match τ, α with
+    | [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -151,18 +252,27 @@ Module Impl_core_default_Default_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "dns::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "dns::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -178,14 +288,14 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -222,19 +332,20 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.Pure.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "dns::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "dns::AccountId", 0 |)
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -254,7 +365,19 @@ Module Impl_core_convert_From_array_u8_for_dns_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -342,7 +465,7 @@ Module Impl_dns_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -360,7 +483,20 @@ Module Impl_dns_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_dns_Env.
@@ -388,7 +524,7 @@ fn zero_address() -> AccountId {
     [0u8; 32].into()
 }
 *)
-Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
+Definition zero_address (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -400,7 +536,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
           "into",
           []
         |),
-        [ repeat (Value.Integer Integer.U8 0) 32 ]
+        [ repeat (| M.of_value (| Value.Integer 0 |), 32 |) ]
       |)))
   | _, _ => M.impossible
   end.
@@ -422,7 +558,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
           }
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -506,14 +642,17 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               |)
             |) in
           M.alloc (|
-            Value.StructRecord
-              "dns::DomainNameService"
-              [
-                ("name_to_address", M.read (| name_to_address |));
-                ("name_to_owner", M.read (| name_to_owner |));
-                ("default_address",
-                  M.call_closure (| M.get_function (| "dns::zero_address", [] |), [] |))
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "dns::DomainNameService"
+                [
+                  ("name_to_address", A.to_value (M.read (| name_to_address |)));
+                  ("name_to_owner", A.to_value (M.read (| name_to_owner |)));
+                  ("default_address",
+                    A.to_value
+                      (M.call_closure (| M.get_function (| "dns::zero_address", [] |), [] |)))
+                ]
+            |)
           |)
         |)))
     | _, _ => M.impossible
@@ -562,7 +701,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -589,7 +728,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -617,12 +756,12 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -648,7 +787,18 @@ Module Impl_dns_DomainNameService.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -657,7 +807,7 @@ Module Impl_dns_DomainNameService.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -676,7 +826,7 @@ Module Impl_dns_DomainNameService.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -709,7 +859,7 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition register (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition register (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name ] =>
       ltac:(M.monadic
@@ -738,7 +888,7 @@ Module Impl_dns_DomainNameService.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -772,14 +922,21 @@ Module Impl_dns_DomainNameService.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::NameAlreadyExists" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "dns::Error::NameAlreadyExists" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -818,17 +975,31 @@ Module Impl_dns_DomainNameService.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "dns::Event::Register"
-                        [
-                          Value.StructRecord
-                            "dns::Register"
-                            [ ("name", M.read (| name |)); ("from", M.read (| caller |)) ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "dns::Event::Register"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "dns::Register"
+                                  [
+                                    ("name", A.to_value (M.read (| name |)));
+                                    ("from", A.to_value (M.read (| caller |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -843,7 +1014,7 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_owner_or_default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_owner_or_default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name ] =>
       ltac:(M.monadic
@@ -908,7 +1079,7 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition set_address (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition set_address (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name; new_address ] =>
       ltac:(M.monadic
@@ -949,7 +1120,7 @@ Module Impl_dns_DomainNameService.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -973,14 +1144,21 @@ Module Impl_dns_DomainNameService.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "dns::Error::CallerIsNotOwner" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let old_address :=
@@ -1039,22 +1217,33 @@ Module Impl_dns_DomainNameService.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "dns::Event::SetAddress"
-                        [
-                          Value.StructRecord
-                            "dns::SetAddress"
-                            [
-                              ("name", M.read (| name |));
-                              ("from", M.read (| caller |));
-                              ("old_address", M.read (| old_address |));
-                              ("new_address", M.read (| new_address |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "dns::Event::SetAddress"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "dns::SetAddress"
+                                  [
+                                    ("name", A.to_value (M.read (| name |)));
+                                    ("from", A.to_value (M.read (| caller |)));
+                                    ("old_address", A.to_value (M.read (| old_address |)));
+                                    ("new_address", A.to_value (M.read (| new_address |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1083,7 +1272,7 @@ Module Impl_dns_DomainNameService.
           Ok(())
       }
   *)
-  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition transfer (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name; to ] =>
       ltac:(M.monadic
@@ -1124,7 +1313,7 @@ Module Impl_dns_DomainNameService.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1148,14 +1337,21 @@ Module Impl_dns_DomainNameService.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "dns::Error::CallerIsNotOwner" [] ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "dns::Error::CallerIsNotOwner" []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let old_owner :=
@@ -1214,22 +1410,33 @@ Module Impl_dns_DomainNameService.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "dns::Event::Transfer"
-                        [
-                          Value.StructRecord
-                            "dns::Transfer"
-                            [
-                              ("name", M.read (| name |));
-                              ("from", M.read (| caller |));
-                              ("old_owner", M.read (| old_owner |));
-                              ("new_owner", M.read (| to |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "dns::Event::Transfer"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "dns::Transfer"
+                                  [
+                                    ("name", A.to_value (M.read (| name |)));
+                                    ("from", A.to_value (M.read (| caller |)));
+                                    ("old_owner", A.to_value (M.read (| old_owner |)));
+                                    ("new_owner", A.to_value (M.read (| to |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1244,7 +1451,7 @@ Module Impl_dns_DomainNameService.
               .unwrap_or(self.default_address)
       }
   *)
-  Definition get_address_or_default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_address_or_default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name ] =>
       ltac:(M.monadic
@@ -1294,7 +1501,7 @@ Module Impl_dns_DomainNameService.
           self.get_address_or_default(name)
       }
   *)
-  Definition get_address (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_address (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name ] =>
       ltac:(M.monadic
@@ -1318,7 +1525,7 @@ Module Impl_dns_DomainNameService.
           self.get_owner_or_default(name)
       }
   *)
-  Definition get_owner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_owner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; name ] =>
       ltac:(M.monadic

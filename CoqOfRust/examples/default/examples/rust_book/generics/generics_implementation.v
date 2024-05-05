@@ -23,7 +23,7 @@ Module Impl_generics_implementation_Val.
           &self.val
       }
   *)
-  Definition value (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition value (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -47,7 +47,7 @@ Module Impl_generics_implementation_GenVal_T.
           &self.gen_val
       }
   *)
-  Definition value (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition value (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self T in
     match τ, α with
     | [], [ self ] =>
@@ -74,22 +74,26 @@ fn main() {
     println!("{}, {}", x.value(), y.value());
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let x :=
           M.alloc (|
-            Value.StructRecord
-              "generics_implementation::Val"
-              [ ("val", M.read (| UnsupportedLiteral |)) ]
+            M.of_value (|
+              Value.StructRecord
+                "generics_implementation::Val"
+                [ ("val", A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |))) ]
+            |)
           |) in
         let y :=
           M.alloc (|
-            Value.StructRecord
-              "generics_implementation::GenVal"
-              [ ("gen_val", Value.Integer Integer.I32 3) ]
+            M.of_value (|
+              Value.StructRecord
+                "generics_implementation::GenVal"
+                [ ("gen_val", A.to_value (M.of_value (| Value.Integer 3 |))) ]
+            |)
           |) in
         let _ :=
           let _ :=
@@ -101,70 +105,78 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String ", " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String ", " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "generics_implementation::Val",
-                                        "value",
-                                        []
-                                      |),
-                                      [ x ]
-                                    |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "generics_implementation::GenVal")
-                                          [ Ty.path "i32" ],
-                                        "value",
-                                        []
-                                      |),
-                                      [ y ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "generics_implementation::Val",
+                                            "value",
+                                            []
+                                          |),
+                                          [ x ]
+                                        |)
+                                      |)
+                                    ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "generics_implementation::GenVal")
+                                              [ Ty.path "i32" ],
+                                            "value",
+                                            []
+                                          |),
+                                          [ y ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

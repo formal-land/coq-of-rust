@@ -12,14 +12,14 @@ fn main() -> Result<(), ParseIntError> {
     Ok(())
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let number_str := M.copy (| Value.String "10" |) in
+            let number_str := M.copy (| M.of_value (| Value.String "10" |) |) in
             let number :=
               M.copy (|
                 M.match_operator (|
@@ -53,7 +53,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ A.to_value (M.read (| e |)) ]
+                                |)
                               |)
                             |)
                           |)
@@ -75,34 +79,50 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |));
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                    A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                  ]
+                              |)
+                            |)
+                          |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "i32" ]
-                                    |),
-                                    [ number ]
-                                  |)
-                                ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ number ]
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (|
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+              |)
+            |)
           |)))
       |)))
   | _, _ => M.impossible

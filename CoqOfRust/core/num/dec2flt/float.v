@@ -12,82 +12,85 @@ Module num.
         
         (*     const INFINITY: Self = f32::INFINITY; *)
         (* Ty.path "f32" *)
-        Definition value_INFINITY : Value.t :=
+        Definition value_INFINITY : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f32::INFINITY" |))).
         
         (*     const NEG_INFINITY: Self = f32::NEG_INFINITY; *)
         (* Ty.path "f32" *)
-        Definition value_NEG_INFINITY : Value.t :=
+        Definition value_NEG_INFINITY : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f32::NEG_INFINITY" |))).
         
         (*     const NAN: Self = f32::NAN; *)
         (* Ty.path "f32" *)
-        Definition value_NAN : Value.t :=
+        Definition value_NAN : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f32::NAN" |))).
         
         (*     const NEG_NAN: Self = -f32::NAN; *)
         (* Ty.path "f32" *)
-        Definition value_NEG_NAN : Value.t :=
+        Definition value_NEG_NAN : A.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
-                UnOp.Panic.neg (| M.read (| M.get_constant (| "core::f32::NAN" |) |) |)
+                UnOp.Panic.neg (|
+                  Integer.Usize,
+                  M.read (| M.get_constant (| "core::f32::NAN" |) |)
+                |)
               |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 23; *)
         (* Ty.path "usize" *)
-        Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 23 |))).
+        Definition value_MANTISSA_EXPLICIT_BITS : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 23 |) |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -17; *)
         (* Ty.path "i32" *)
-        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-17) |))).
+        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-17) |) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 10; *)
         (* Ty.path "i32" *)
-        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 10 |))).
+        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 10 |) |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -10; *)
         (* Ty.path "i64" *)
-        Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 (-10) |))).
+        Definition value_MIN_EXPONENT_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-10) |) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 10; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 10 |))).
+        Definition value_MAX_EXPONENT_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 10 |) |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 17; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 17 |))).
+        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 17 |) |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -127; *)
         (* Ty.path "i32" *)
-        Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-127) |))).
+        Definition value_MINIMUM_EXPONENT : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-127) |) |))).
         
         (*     const INFINITE_POWER: i32 = 0xFF; *)
         (* Ty.path "i32" *)
-        Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 255 |))).
+        Definition value_INFINITE_POWER : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 255 |) |))).
         
         (*     const SIGN_INDEX: usize = 31; *)
         (* Ty.path "usize" *)
-        Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 31 |))).
+        Definition value_SIGN_INDEX : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 31 |) |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -65; *)
         (* Ty.path "i32" *)
-        Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-65) |))).
+        Definition value_SMALLEST_POWER_OF_TEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-65) |) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 38; *)
         (* Ty.path "i32" *)
-        Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 38 |))).
+        Definition value_LARGEST_POWER_OF_TEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 38 |) |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -95,7 +98,7 @@ Module num.
                 v as _
             }
         *)
-        Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_u64 (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ v ] =>
             ltac:(M.monadic
@@ -103,30 +106,32 @@ Module num.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| v |))
-                                              (M.read (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              M.read (| v |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -139,21 +144,24 @@ Module num.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
-                M.alloc (| M.rust_cast (M.read (| v |)) |)
+                M.alloc (| M.rust_cast (| M.read (| v |) |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -163,7 +171,7 @@ Module num.
                 f32::from_bits((v & 0xFFFFFFFF) as u32)
             }
         *)
-        Definition from_u64_bits (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_u64_bits (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ v ] =>
             ltac:(M.monadic
@@ -171,8 +179,12 @@ Module num.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "f32", "from_bits", [] |),
                 [
-                  M.rust_cast
-                    (BinOp.Pure.bit_and (M.read (| v |)) (Value.Integer Integer.U64 4294967295))
+                  M.rust_cast (|
+                    BinOp.Pure.bit_and (|
+                      M.read (| v |),
+                      M.of_value (| Value.Integer 4294967295 |)
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -186,7 +198,7 @@ Module num.
                 TABLE[exponent & 15]
             }
         *)
-        Definition pow10_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition pow10_fast_path (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ exponent ] =>
             ltac:(M.monadic
@@ -195,7 +207,10 @@ Module num.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
                   M.alloc (|
-                    BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer Integer.Usize 15)
+                    BinOp.Pure.bit_and (|
+                      M.read (| exponent |),
+                      M.of_value (| Value.Integer 15 |)
+                    |)
                   |)
                 |)
               |)))
@@ -214,7 +229,7 @@ Module num.
                 (mantissa as u64, exponent, sign)
             }
         *)
-        Definition integer_decode (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition integer_decode (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -230,66 +245,74 @@ Module num.
                 let sign :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (BinOp.Panic.shr (|
+                                  BinOp.Pure.eq (|
+                                    BinOp.Panic.shr (|
                                       M.read (| bits |),
-                                      Value.Integer Integer.I32 31
-                                    |))
-                                    (Value.Integer Integer.U32 0)
+                                      M.of_value (| Value.Integer 31 |)
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer Integer.I8 1 |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I8 (-1) |)))
+                            M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                        fun γ =>
+                          ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-1) |) |)))
                       ]
                     |)
                   |) in
                 let exponent :=
                   M.alloc (|
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| bits |), Value.Integer Integer.I32 23 |))
-                        (Value.Integer Integer.U32 255))
+                    M.rust_cast (|
+                      BinOp.Pure.bit_and (|
+                        BinOp.Panic.shr (| M.read (| bits |), M.of_value (| Value.Integer 23 |) |),
+                        M.of_value (| Value.Integer 255 |)
+                      |)
+                    |)
                   |) in
                 let mantissa :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| exponent |))
-                                    (Value.Integer Integer.I16 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| exponent |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               BinOp.Panic.shl (|
-                                BinOp.Pure.bit_and
-                                  (M.read (| bits |))
-                                  (Value.Integer Integer.U32 8388607),
-                                Value.Integer Integer.I32 1
+                                BinOp.Pure.bit_and (|
+                                  M.read (| bits |),
+                                  M.of_value (| Value.Integer 8388607 |)
+                                |),
+                                M.of_value (| Value.Integer 1 |)
                               |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Pure.bit_or
-                                (BinOp.Pure.bit_and
-                                  (M.read (| bits |))
-                                  (Value.Integer Integer.U32 8388607))
-                                (Value.Integer Integer.U32 8388608)
+                              BinOp.Pure.bit_or (|
+                                BinOp.Pure.bit_and (|
+                                  M.read (| bits |),
+                                  M.of_value (| Value.Integer 8388607 |)
+                                |),
+                                M.of_value (| Value.Integer 8388608 |)
+                              |)
                             |)))
                       ]
                     |)
@@ -299,17 +322,24 @@ Module num.
                   M.write (|
                     β,
                     BinOp.Panic.sub (|
+                      Integer.I16,
                       M.read (| β |),
                       BinOp.Panic.add (|
-                        Value.Integer Integer.I16 127,
-                        Value.Integer Integer.I16 23
+                        Integer.I16,
+                        M.of_value (| Value.Integer 127 |),
+                        M.of_value (| Value.Integer 23 |)
                       |)
                     |)
                   |) in
                 M.alloc (|
-                  Value.Tuple
-                    [ M.rust_cast (M.read (| mantissa |)); M.read (| exponent |); M.read (| sign |)
-                    ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value (M.rust_cast (| M.read (| mantissa |) |));
+                        A.to_value (M.read (| exponent |));
+                        A.to_value (M.read (| sign |))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -320,7 +350,7 @@ Module num.
                 self.classify()
             }
         *)
-        Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition classify (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -370,82 +400,85 @@ Module num.
         
         (*     const INFINITY: Self = f64::INFINITY; *)
         (* Ty.path "f64" *)
-        Definition value_INFINITY : Value.t :=
+        Definition value_INFINITY : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f64::INFINITY" |))).
         
         (*     const NEG_INFINITY: Self = f64::NEG_INFINITY; *)
         (* Ty.path "f64" *)
-        Definition value_NEG_INFINITY : Value.t :=
+        Definition value_NEG_INFINITY : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f64::NEG_INFINITY" |))).
         
         (*     const NAN: Self = f64::NAN; *)
         (* Ty.path "f64" *)
-        Definition value_NAN : Value.t :=
+        Definition value_NAN : A.t :=
           M.run ltac:(M.monadic (M.get_constant (| "core::f64::NAN" |))).
         
         (*     const NEG_NAN: Self = -f64::NAN; *)
         (* Ty.path "f64" *)
-        Definition value_NEG_NAN : Value.t :=
+        Definition value_NEG_NAN : A.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
-                UnOp.Panic.neg (| M.read (| M.get_constant (| "core::f64::NAN" |) |) |)
+                UnOp.Panic.neg (|
+                  Integer.Usize,
+                  M.read (| M.get_constant (| "core::f64::NAN" |) |)
+                |)
               |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 52; *)
         (* Ty.path "usize" *)
-        Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 52 |))).
+        Definition value_MANTISSA_EXPLICIT_BITS : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 52 |) |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -4; *)
         (* Ty.path "i32" *)
-        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-4) |))).
+        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-4) |) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 23; *)
         (* Ty.path "i32" *)
-        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 23 |))).
+        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 23 |) |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -22; *)
         (* Ty.path "i64" *)
-        Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 (-22) |))).
+        Definition value_MIN_EXPONENT_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-22) |) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 22; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 22 |))).
+        Definition value_MAX_EXPONENT_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 22 |) |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 37; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I64 37 |))).
+        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 37 |) |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -1023; *)
         (* Ty.path "i32" *)
-        Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-1023) |))).
+        Definition value_MINIMUM_EXPONENT : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-1023) |) |))).
         
         (*     const INFINITE_POWER: i32 = 0x7FF; *)
         (* Ty.path "i32" *)
-        Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 2047 |))).
+        Definition value_INFINITE_POWER : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 2047 |) |))).
         
         (*     const SIGN_INDEX: usize = 63; *)
         (* Ty.path "usize" *)
-        Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 63 |))).
+        Definition value_SIGN_INDEX : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 63 |) |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -342; *)
         (* Ty.path "i32" *)
-        Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 (-342) |))).
+        Definition value_SMALLEST_POWER_OF_TEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-342) |) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 308; *)
         (* Ty.path "i32" *)
-        Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 308 |))).
+        Definition value_LARGEST_POWER_OF_TEN : A.t :=
+          M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 308 |) |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -453,7 +486,7 @@ Module num.
                 v as _
             }
         *)
-        Definition from_u64 (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_u64 (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ v ] =>
             ltac:(M.monadic
@@ -461,30 +494,32 @@ Module num.
               M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| v |))
-                                              (M.read (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              M.read (| v |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                 |)
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -497,21 +532,24 @@ Module num.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                              M.of_value (|
+                                                Value.String
+                                                  "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                              |)
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
-                M.alloc (| M.rust_cast (M.read (| v |)) |)
+                M.alloc (| M.rust_cast (| M.read (| v |) |) |)
               |)))
           | _, _ => M.impossible
           end.
@@ -521,7 +559,7 @@ Module num.
                 f64::from_bits(v)
             }
         *)
-        Definition from_u64_bits (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_u64_bits (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ v ] =>
             ltac:(M.monadic
@@ -542,7 +580,7 @@ Module num.
                 TABLE[exponent & 31]
             }
         *)
-        Definition pow10_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition pow10_fast_path (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ exponent ] =>
             ltac:(M.monadic
@@ -551,7 +589,10 @@ Module num.
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::num::dec2flt::float::pow10_fast_path::TABLE" |),
                   M.alloc (|
-                    BinOp.Pure.bit_and (M.read (| exponent |)) (Value.Integer Integer.Usize 31)
+                    BinOp.Pure.bit_and (|
+                      M.read (| exponent |),
+                      M.of_value (| Value.Integer 31 |)
+                    |)
                   |)
                 |)
               |)))
@@ -573,7 +614,7 @@ Module num.
                 (mantissa, exponent, sign)
             }
         *)
-        Definition integer_decode (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition integer_decode (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
@@ -589,66 +630,74 @@ Module num.
                 let sign :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (BinOp.Panic.shr (|
+                                  BinOp.Pure.eq (|
+                                    BinOp.Panic.shr (|
                                       M.read (| bits |),
-                                      Value.Integer Integer.I32 63
-                                    |))
-                                    (Value.Integer Integer.U64 0)
+                                      M.of_value (| Value.Integer 63 |)
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer Integer.I8 1 |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I8 (-1) |)))
+                            M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                        fun γ =>
+                          ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer (-1) |) |)))
                       ]
                     |)
                   |) in
                 let exponent :=
                   M.alloc (|
-                    M.rust_cast
-                      (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| bits |), Value.Integer Integer.I32 52 |))
-                        (Value.Integer Integer.U64 2047))
+                    M.rust_cast (|
+                      BinOp.Pure.bit_and (|
+                        BinOp.Panic.shr (| M.read (| bits |), M.of_value (| Value.Integer 52 |) |),
+                        M.of_value (| Value.Integer 2047 |)
+                      |)
+                    |)
                   |) in
                 let mantissa :=
                   M.copy (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| exponent |))
-                                    (Value.Integer Integer.I16 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| exponent |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               BinOp.Panic.shl (|
-                                BinOp.Pure.bit_and
-                                  (M.read (| bits |))
-                                  (Value.Integer Integer.U64 4503599627370495),
-                                Value.Integer Integer.I32 1
+                                BinOp.Pure.bit_and (|
+                                  M.read (| bits |),
+                                  M.of_value (| Value.Integer 4503599627370495 |)
+                                |),
+                                M.of_value (| Value.Integer 1 |)
                               |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Pure.bit_or
-                                (BinOp.Pure.bit_and
-                                  (M.read (| bits |))
-                                  (Value.Integer Integer.U64 4503599627370495))
-                                (Value.Integer Integer.U64 4503599627370496)
+                              BinOp.Pure.bit_or (|
+                                BinOp.Pure.bit_and (|
+                                  M.read (| bits |),
+                                  M.of_value (| Value.Integer 4503599627370495 |)
+                                |),
+                                M.of_value (| Value.Integer 4503599627370496 |)
+                              |)
                             |)))
                       ]
                     |)
@@ -658,15 +707,24 @@ Module num.
                   M.write (|
                     β,
                     BinOp.Panic.sub (|
+                      Integer.I16,
                       M.read (| β |),
                       BinOp.Panic.add (|
-                        Value.Integer Integer.I16 1023,
-                        Value.Integer Integer.I16 52
+                        Integer.I16,
+                        M.of_value (| Value.Integer 1023 |),
+                        M.of_value (| Value.Integer 52 |)
                       |)
                     |)
                   |) in
                 M.alloc (|
-                  Value.Tuple [ M.read (| mantissa |); M.read (| exponent |); M.read (| sign |) ]
+                  M.of_value (|
+                    Value.Tuple
+                      [
+                        A.to_value (M.read (| mantissa |));
+                        A.to_value (M.read (| exponent |));
+                        A.to_value (M.read (| sign |))
+                      ]
+                  |)
                 |)
               |)))
           | _, _ => M.impossible
@@ -677,7 +735,7 @@ Module num.
                 self.classify()
             }
         *)
-        Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition classify (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic

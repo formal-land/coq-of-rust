@@ -1205,7 +1205,7 @@ impl FunDefinition {
                                     coq::Expression::just_name("list")
                                         .apply(&coq::Expression::just_name("Ty.t")),
                                     coq::Expression::just_name("list")
-                                        .apply(&coq::Expression::just_name("Value.t")),
+                                        .apply(&coq::Expression::just_name("A.t")),
                                 ],
                                 image: Rc::new(coq::Expression::just_name("M")),
                             }),
@@ -1280,7 +1280,7 @@ impl FunDefinition {
                                         idents: vec!["α".to_string()],
                                         ty: Some(
                                             coq::Expression::just_name("list")
-                                                .apply(&coq::Expression::just_name("Value.t")),
+                                                .apply(&coq::Expression::just_name("A.t")),
                                         ),
                                     },
                                     coq::ArgSpecKind::Explicit,
@@ -1344,7 +1344,7 @@ impl ImplItemKind {
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 )],
-                                image: Rc::new(coq::Expression::just_name("Value.t")),
+                                image: Rc::new(coq::Expression::just_name("A.t")),
                             },
                         },
                     )),
@@ -1362,7 +1362,7 @@ impl ImplItemKind {
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 )],
-                                ty: Some(coq::Expression::just_name("Value.t")),
+                                ty: Some(coq::Expression::just_name("A.t")),
                                 body: if !generic_tys.is_empty() {
                                     coq::Expression::Let {
                                         name: Some("Self".to_string()),
@@ -1585,7 +1585,7 @@ impl TopLevelItem {
                 None => vec![coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
                     &coq::DefinitionKind::Assumption {
-                        ty: coq::Expression::just_name("Value.t"),
+                        ty: coq::Expression::just_name("A.t"),
                     },
                 ))],
                 Some(value) => {
@@ -1593,7 +1593,7 @@ impl TopLevelItem {
                         name,
                         &coq::DefinitionKind::Alias {
                             args: vec![],
-                            ty: Some(coq::Expression::just_name("Value.t")),
+                            ty: Some(coq::Expression::just_name("A.t")),
                             body: coq::Expression::just_name("M.run")
                                 .apply(&coq::Expression::monadic(&value.to_coq())),
                         },

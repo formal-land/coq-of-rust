@@ -24,7 +24,7 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -56,13 +56,13 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          Value.Bool true))
+          M.of_value (| Value.Bool true |)))
       | _, _ => M.impossible
       end.
     
@@ -89,12 +89,12 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     
@@ -111,7 +111,7 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -119,7 +119,7 @@ Module alloc.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "AllocError" |) ]
+            [ M.read (| f |); M.read (| M.of_value (| Value.String "AllocError" |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -151,7 +151,7 @@ Module alloc.
             f.write_str("memory allocation failed")
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -159,7 +159,8 @@ Module alloc.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "memory allocation failed" |) ]
+            [ M.read (| f |); M.read (| M.of_value (| Value.String "memory allocation failed" |) |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -174,7 +175,7 @@ Module alloc.
   
   (* Trait *)
   Module Allocator.
-    Definition allocate_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; layout ] =>
         ltac:(M.monadic
@@ -299,7 +300,7 @@ Module alloc.
                             |)
                           ]
                         |);
-                        Value.Integer Integer.U8 0;
+                        M.of_value (| Value.Integer 0 |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -313,7 +314,11 @@ Module alloc.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| ptr |) ] |)
+                M.alloc (|
+                  M.of_value (|
+                    Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| ptr |)) ]
+                  |)
+                |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -321,7 +326,7 @@ Module alloc.
     
     Axiom ProvidedMethod_allocate_zeroed :
       M.IsProvidedMethod "core::alloc::Allocator" "allocate_zeroed" allocate_zeroed.
-    Definition grow (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
@@ -334,40 +339,42 @@ Module alloc.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -387,27 +394,34 @@ Module alloc.
                                               |),
                                               [
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (|
+                                                                Value.String
+                                                                  "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                              |)
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let new_ptr :=
@@ -508,15 +522,16 @@ Module alloc.
                         |),
                         [
                           (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
+                          M.pointer_coercion (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
                               [ M.read (| ptr |) ]
-                            |));
+                            |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -551,15 +566,21 @@ Module alloc.
                         [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (|
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [ A.to_value (M.read (| new_ptr |)) ]
+                  |)
+                |)
               |)))
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_grow : M.IsProvidedMethod "core::alloc::Allocator" "grow" grow.
-    Definition grow_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
@@ -572,40 +593,42 @@ Module alloc.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.ge
-                                              (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.ge (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -625,27 +648,34 @@ Module alloc.
                                               |),
                                               [
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (|
+                                                                Value.String
+                                                                  "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                              |)
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let new_ptr :=
@@ -746,15 +776,16 @@ Module alloc.
                         |),
                         [
                           (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
+                          M.pointer_coercion (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
                               [ M.read (| ptr |) ]
-                            |));
+                            |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -789,8 +820,14 @@ Module alloc.
                         [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (|
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [ A.to_value (M.read (| new_ptr |)) ]
+                  |)
+                |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -798,7 +835,7 @@ Module alloc.
     
     Axiom ProvidedMethod_grow_zeroed :
       M.IsProvidedMethod "core::alloc::Allocator" "grow_zeroed" grow_zeroed.
-    Definition shrink (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
@@ -811,40 +848,42 @@ Module alloc.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.call_closure (|
+                                          UnOp.Pure.not (|
+                                            BinOp.Pure.le (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ new_layout ]
-                                              |))
-                                              (M.call_closure (|
+                                              |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::alloc::layout::Layout",
                                                   "size",
                                                   []
                                                 |),
                                                 [ old_layout ]
-                                              |)))
+                                              |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -864,27 +903,34 @@ Module alloc.
                                               |),
                                               [
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (|
+                                                                Value.String
+                                                                  "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                              |)
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           ]
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let new_ptr :=
@@ -985,15 +1031,16 @@ Module alloc.
                         |),
                         [
                           (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
+                          M.pointer_coercion (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
                               [ M.read (| ptr |) ]
-                            |));
+                            |)
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
@@ -1028,15 +1075,21 @@ Module alloc.
                         [ M.read (| self |); M.read (| ptr |); M.read (| old_layout |) ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (|
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [ A.to_value (M.read (| new_ptr |)) ]
+                  |)
+                |)
               |)))
           |)))
       | _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_shrink : M.IsProvidedMethod "core::alloc::Allocator" "shrink" shrink.
-    Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -1056,7 +1109,7 @@ Module alloc.
             ( **self).allocate(layout)
         }
     *)
-    Definition allocate (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; layout ] =>
@@ -1075,7 +1128,7 @@ Module alloc.
             ( **self).allocate_zeroed(layout)
         }
     *)
-    Definition allocate_zeroed (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_zeroed (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; layout ] =>
@@ -1095,7 +1148,7 @@ Module alloc.
             unsafe { ( **self).deallocate(ptr, layout) }
         }
     *)
-    Definition deallocate (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deallocate (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; ptr; layout ] =>
@@ -1121,7 +1174,7 @@ Module alloc.
             unsafe { ( **self).grow(ptr, old_layout, new_layout) }
         }
     *)
-    Definition grow (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>
@@ -1153,7 +1206,7 @@ Module alloc.
             unsafe { ( **self).grow_zeroed(ptr, old_layout, new_layout) }
         }
     *)
-    Definition grow_zeroed (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow_zeroed (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>
@@ -1185,7 +1238,7 @@ Module alloc.
             unsafe { ( **self).shrink(ptr, old_layout, new_layout) }
         }
     *)
-    Definition shrink (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A in
       match τ, α with
       | [], [ self; ptr; old_layout; new_layout ] =>

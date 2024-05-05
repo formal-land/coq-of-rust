@@ -4,29 +4,31 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module dec2flt.
     Module number.
-      Definition value_INT_POW10 : Value.t :=
+      Definition value_INT_POW10 : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.Array
-                [
-                  Value.Integer Integer.U64 1;
-                  Value.Integer Integer.U64 10;
-                  Value.Integer Integer.U64 100;
-                  Value.Integer Integer.U64 1000;
-                  Value.Integer Integer.U64 10000;
-                  Value.Integer Integer.U64 100000;
-                  Value.Integer Integer.U64 1000000;
-                  Value.Integer Integer.U64 10000000;
-                  Value.Integer Integer.U64 100000000;
-                  Value.Integer Integer.U64 1000000000;
-                  Value.Integer Integer.U64 10000000000;
-                  Value.Integer Integer.U64 100000000000;
-                  Value.Integer Integer.U64 1000000000000;
-                  Value.Integer Integer.U64 10000000000000;
-                  Value.Integer Integer.U64 100000000000000;
-                  Value.Integer Integer.U64 1000000000000000
-                ]
+              M.of_value (|
+                Value.Array
+                  [
+                    A.to_value (M.of_value (| Value.Integer 1 |));
+                    A.to_value (M.of_value (| Value.Integer 10 |));
+                    A.to_value (M.of_value (| Value.Integer 100 |));
+                    A.to_value (M.of_value (| Value.Integer 1000 |));
+                    A.to_value (M.of_value (| Value.Integer 10000 |));
+                    A.to_value (M.of_value (| Value.Integer 100000 |));
+                    A.to_value (M.of_value (| Value.Integer 1000000 |));
+                    A.to_value (M.of_value (| Value.Integer 10000000 |));
+                    A.to_value (M.of_value (| Value.Integer 100000000 |));
+                    A.to_value (M.of_value (| Value.Integer 1000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 10000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 100000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 1000000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 10000000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 100000000000000 |));
+                    A.to_value (M.of_value (| Value.Integer 1000000000000000 |))
+                  ]
+              |)
             |))).
       
       (* StructRecord
@@ -46,24 +48,24 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
+                          M.of_value (| Value.DeclaredButUndefined |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Value.DeclaredButUndefined,
+                                  M.of_value (| Value.DeclaredButUndefined |),
                                   [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                                 |)))
                           ]
@@ -97,7 +99,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; f ] =>
             ltac:(M.monadic
@@ -111,41 +113,45 @@ Module num.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Number" |);
-                  M.read (| Value.String "exponent" |);
+                  M.read (| M.of_value (| Value.String "Number" |) |);
+                  M.read (| M.of_value (| Value.String "exponent" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::number::Number",
                       "exponent"
-                    |));
-                  M.read (| Value.String "mantissa" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "mantissa" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::number::Number",
                       "mantissa"
-                    |));
-                  M.read (| Value.String "negative" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "negative" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.pointer_coercion (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::number::Number",
                       "negative"
-                    |));
-                  M.read (| Value.String "many_digits" |);
+                    |)
+                  |);
+                  M.read (| M.of_value (| Value.String "many_digits" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -163,58 +169,64 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
-                "core::num::dec2flt::number::Number"
-                [
-                  ("exponent",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "i64",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |));
-                  ("mantissa",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "u64",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |));
-                  ("negative",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "bool",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |));
-                  ("many_digits",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "bool",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |))
-                ]))
+              (M.of_value (|
+                Value.StructRecord
+                  "core::num::dec2flt::number::Number"
+                  [
+                    ("exponent",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "i64",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)));
+                    ("mantissa",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "u64",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)));
+                    ("negative",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "bool",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)));
+                    ("many_digits",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::default::Default",
+                            Ty.path "bool",
+                            [],
+                            "default",
+                            []
+                          |),
+                          []
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -241,7 +253,7 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self; other ] =>
             ltac:(M.monadic
@@ -250,71 +262,75 @@ Module num.
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq
-                      (M.read (|
+                    BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.Pure.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
           | _, _ => M.impossible
           end.
@@ -342,25 +358,29 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
-                  Value.DeclaredButUndefined,
+                  M.of_value (| Value.DeclaredButUndefined |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Value.DeclaredButUndefined,
+                          M.of_value (| Value.DeclaredButUndefined |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                  M.of_value (| Value.DeclaredButUndefined |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -390,7 +410,7 @@ Module num.
                     && !self.many_digits
             }
         *)
-        Definition is_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_fast_path (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self ] =>
             ltac:(M.monadic
@@ -398,58 +418,62 @@ Module num.
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
-                    BinOp.Pure.le
-                      (M.read (|
+                    BinOp.Pure.le (|
+                      M.read (|
                         M.get_constant (|
                           "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.le
-                        (M.read (|
+                      (BinOp.Pure.le (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::dec2flt::number::Number",
                             "exponent"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.get_constant (|
                             "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_DISGUISED_FAST_PATH"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.le
-                      (M.read (|
+                    (BinOp.Pure.le (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "mantissa"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.get_constant (|
                           "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.read (|
+                  (UnOp.Pure.not (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
           | _, _ => M.impossible
           end.
@@ -494,7 +518,7 @@ Module num.
                 }
             }
         *)
-        Definition try_fast_path (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fast_path (τ : list Ty.t) (α : list A.t) : M :=
           match τ, α with
           | [ F ], [ self ] =>
             ltac:(M.monadic
@@ -513,7 +537,7 @@ Module num.
                         |)
                       |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -534,26 +558,27 @@ Module num.
                             let value :=
                               M.copy (|
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.le
-                                                (M.read (|
+                                              BinOp.Pure.le (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::num::dec2flt::number::Number",
                                                     "exponent"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
                                                   |)
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -582,22 +607,23 @@ Module num.
                                             |)
                                           |) in
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (|
+                                                      BinOp.Pure.lt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "core::num::dec2flt::number::Number",
                                                             "exponent"
                                                           |)
-                                                        |))
-                                                        (Value.Integer Integer.I64 0)
+                                                        |),
+                                                        M.of_value (| Value.Integer 0 |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -624,8 +650,9 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
-                                                            (UnOp.Panic.neg (|
+                                                          M.rust_cast (|
+                                                            UnOp.Panic.neg (|
+                                                              Integer.I64,
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.read (| self |),
@@ -633,7 +660,8 @@ Module num.
                                                                   "exponent"
                                                                 |)
                                                               |)
-                                                            |))
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -661,14 +689,15 @@ Module num.
                                                           []
                                                         |),
                                                         [
-                                                          M.rust_cast
-                                                            (M.read (|
+                                                          M.rust_cast (|
+                                                            M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.read (| self |),
                                                                 "core::num::dec2flt::number::Number",
                                                                 "exponent"
                                                               |)
-                                                            |))
+                                                            |)
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -681,6 +710,7 @@ Module num.
                                         (let shift :=
                                           M.alloc (|
                                             BinOp.Panic.sub (|
+                                              Integer.I64,
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
@@ -730,7 +760,7 @@ Module num.
                                                               "core::num::dec2flt::number::INT_POW10"
                                                             |),
                                                             M.alloc (|
-                                                              M.rust_cast (M.read (| shift |))
+                                                              M.rust_cast (| M.read (| shift |) |)
                                                             |)
                                                           |)
                                                         |)
@@ -791,20 +821,21 @@ Module num.
                                           |) in
                                         let _ :=
                                           M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.gt
-                                                          (M.read (| mantissa |))
-                                                          (M.read (|
+                                                        BinOp.Pure.gt (|
+                                                          M.read (| mantissa |),
+                                                          M.read (|
                                                             M.get_constant (|
                                                               "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -815,15 +846,18 @@ Module num.
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
-                                                          Value.StructTuple
-                                                            "core::option::Option::None"
-                                                            []
+                                                          M.of_value (|
+                                                            Value.StructTuple
+                                                              "core::option::Option::None"
+                                                              []
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                             ]
                                           |) in
                                         M.alloc (|
@@ -855,12 +889,13 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  M.rust_cast
-                                                    (M.read (|
+                                                  M.rust_cast (|
+                                                    M.read (|
                                                       M.get_constant (|
                                                         "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
                                                       |)
-                                                    |))
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -871,7 +906,7 @@ Module num.
                               |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -901,16 +936,23 @@ Module num.
                                             [ M.read (| value |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             M.alloc (|
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ A.to_value (M.read (| value |)) ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                            (M.alloc (|
+                              M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                            |)))
                       ]
                     |)
                   |)))

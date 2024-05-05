@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* Trait *)
 Module ProvidedAndRequired.
-  Parameter provided : (list Ty.t) -> (list Value.t) -> M.
+  Parameter provided : (list Ty.t) -> (list A.t) -> M.
   
   Axiom ProvidedMethod_provided :
     M.IsProvidedMethod "provided_method::ProvidedAndRequired" "provided" provided.
@@ -12,7 +12,7 @@ End ProvidedAndRequired.
 Module Impl_provided_method_ProvidedAndRequired_for_i32.
   Definition Self : Ty.t := Ty.path "i32".
   
-  Parameter required : (list Ty.t) -> (list Value.t) -> M.
+  Parameter required : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -25,9 +25,9 @@ End Impl_provided_method_ProvidedAndRequired_for_i32.
 Module Impl_provided_method_ProvidedAndRequired_for_u32.
   Definition Self : Ty.t := Ty.path "u32".
   
-  Parameter required : (list Ty.t) -> (list Value.t) -> M.
+  Parameter required : (list Ty.t) -> (list A.t) -> M.
   
-  Parameter provided : (list Ty.t) -> (list Value.t) -> M.
+  Parameter provided : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -38,4 +38,4 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       [ ("required", InstanceField.Method required); ("provided", InstanceField.Method provided) ].
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

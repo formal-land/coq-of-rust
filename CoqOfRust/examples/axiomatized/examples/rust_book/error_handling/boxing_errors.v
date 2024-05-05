@@ -23,7 +23,7 @@ Axiom Result :
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -36,7 +36,7 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -49,7 +49,7 @@ End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -66,8 +66,8 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
     M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
-Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
+Parameter double_first : (list Ty.t) -> (list A.t) -> M.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

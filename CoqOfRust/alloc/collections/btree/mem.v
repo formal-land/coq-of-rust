@@ -9,7 +9,7 @@ Module collections.
           replace(v, |value| (change(value), ()))
       }
       *)
-      Definition take_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; impl_FnOnce_T__arrow_T ], [ v; change ] =>
           ltac:(M.monadic
@@ -22,8 +22,8 @@ Module collections.
               |),
               [
                 M.read (| v |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -33,24 +33,33 @@ Module collections.
                             fun γ =>
                               ltac:(M.monadic
                                 (let value := M.copy (| γ |) in
-                                Value.Tuple
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        impl_FnOnce_T__arrow_T,
-                                        [ Ty.tuple [ T ] ],
-                                        "call_once",
-                                        []
-                                      |),
-                                      [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
-                                    |);
-                                    Value.Tuple []
-                                  ]))
+                                M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnOnce",
+                                            impl_FnOnce_T__arrow_T,
+                                            [ Ty.tuple [ T ] ],
+                                            "call_once",
+                                            []
+                                          |),
+                                          [
+                                            M.read (| change |);
+                                            M.of_value (|
+                                              Value.Tuple [ A.to_value (M.read (| value |)) ]
+                                            |)
+                                          ]
+                                        |));
+                                      A.to_value (M.of_value (| Value.Tuple [] |))
+                                    ]
+                                |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -74,7 +83,7 @@ Module collections.
           ret
       }
       *)
-      Definition replace (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition replace (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; R; impl_FnOnce_T__arrow__T__R_ ], [ v; change ] =>
           ltac:(M.monadic
@@ -83,7 +92,9 @@ Module collections.
             M.read (|
               let guard :=
                 M.alloc (|
-                  Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
+                  M.of_value (|
+                    Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
+                  |)
                 |) in
               let value :=
                 M.alloc (|
@@ -102,7 +113,10 @@ Module collections.
                       "call_once",
                       []
                     |),
-                    [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
+                    [
+                      M.read (| change |);
+                      M.of_value (| Value.Tuple [ A.to_value (M.read (| value |)) ] |)
+                    ]
                   |)
                 |),
                 [
@@ -120,7 +134,7 @@ Module collections.
                               [ M.read (| v |); M.read (| new_value |) ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |) in
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                       let _ :=
                         M.alloc (|
                           M.call_closure (|
@@ -154,7 +168,7 @@ Module collections.
                       intrinsics::abort()
                   }
           *)
-          Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition drop (τ : list Ty.t) (α : list A.t) : M :=
             match τ, α with
             | [], [ self ] =>
               ltac:(M.monadic

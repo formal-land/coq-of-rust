@@ -38,26 +38,52 @@ fn main() {
     let _char = SingleGen('a'); // Uses `char`.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _s :=
           M.alloc (|
-            Value.StructTuple "generics::Single" [ Value.StructTuple "generics::A" [] ]
+            M.of_value (|
+              Value.StructTuple
+                "generics::Single"
+                [ A.to_value (M.of_value (| Value.StructTuple "generics::A" [] |)) ]
+            |)
           |) in
         let _char :=
-          M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ] |) in
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple
+                "generics::SingleGen"
+                [ A.to_value (M.of_value (| Value.UnicodeChar 97 |)) ]
+            |)
+          |) in
         let _t :=
           M.alloc (|
-            Value.StructTuple "generics::SingleGen" [ Value.StructTuple "generics::A" [] ]
+            M.of_value (|
+              Value.StructTuple
+                "generics::SingleGen"
+                [ A.to_value (M.of_value (| Value.StructTuple "generics::A" [] |)) ]
+            |)
           |) in
         let _i32 :=
-          M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.Integer Integer.I32 6 ] |) in
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple
+                "generics::SingleGen"
+                [ A.to_value (M.of_value (| Value.Integer 6 |)) ]
+            |)
+          |) in
         let _char :=
-          M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple
+                "generics::SingleGen"
+                [ A.to_value (M.of_value (| Value.UnicodeChar 97 |)) ]
+            |)
+          |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

@@ -26,7 +26,7 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -41,47 +41,59 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Sum of odd numbers up to 9 (excluding): " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
-                                        []
-                                      |),
-                                      [ Value.Integer Integer.U32 9 ]
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String "Sum of odd numbers up to 9 (excluding): "
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
+                                            []
+                                          |),
+                                          [ M.of_value (| Value.Integer 9 |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -106,13 +118,13 @@ Module main.
           acc
       }
   *)
-  Definition sum_odd_numbers (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition sum_odd_numbers (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ up_to ] =>
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let acc := M.alloc (| Value.Integer Integer.U32 0 |) in
+          let acc := M.alloc (| M.of_value (| Value.Integer 0 |) |) in
           let _ :=
             M.use
               (M.match_operator (|
@@ -126,9 +138,14 @@ Module main.
                       []
                     |),
                     [
-                      Value.StructRecord
-                        "core::ops::range::Range"
-                        [ ("start", Value.Integer Integer.U32 0); ("end_", M.read (| up_to |)) ]
+                      M.of_value (|
+                        Value.StructRecord
+                          "core::ops::range::Range"
+                          [
+                            ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                            ("end_", A.to_value (M.read (| up_to |)))
+                          ]
+                      |)
                     ]
                   |)
                 |),
@@ -169,12 +186,14 @@ Module main.
                                       M.copy (|
                                         M.match_operator (|
                                           M.alloc (|
-                                            BinOp.Pure.eq
-                                              (BinOp.Panic.rem (|
+                                            BinOp.Pure.eq (|
+                                              BinOp.Panic.rem (|
+                                                Integer.U32,
                                                 M.read (| i |),
-                                                Value.Integer Integer.U32 2
-                                              |))
-                                              (Value.Integer Integer.U32 1)
+                                                M.of_value (| Value.Integer 2 |)
+                                              |),
+                                              M.of_value (| Value.Integer 1 |)
+                                            |)
                                           |),
                                           [
                                             fun γ =>
@@ -202,12 +221,16 @@ Module main.
                                       let β := acc in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (| M.read (| β |), M.read (| addition |) |)
+                                        BinOp.Panic.add (|
+                                          Integer.U32,
+                                          M.read (| β |),
+                                          M.read (| addition |)
+                                        |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       |)))
                 ]
               |)) in

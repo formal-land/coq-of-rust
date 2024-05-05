@@ -30,7 +30,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -47,15 +47,15 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "CordonBleu" |) |)));
+                      M.alloc (| M.read (| M.of_value (| Value.String "CordonBleu" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "Steak" |) |)));
+                      M.alloc (| M.read (| M.of_value (| Value.String "Steak" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "Sushi" |) |)))
+                      M.alloc (| M.read (| M.of_value (| Value.String "Sushi" |) |) |)))
                 ]
               |)
             |)
@@ -101,7 +101,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -118,15 +118,15 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "Monday" |) |)));
+                      M.alloc (| M.read (| M.of_value (| Value.String "Monday" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "Tuesday" |) |)));
+                      M.alloc (| M.read (| M.of_value (| Value.String "Tuesday" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| M.read (| Value.String "Wednesday" |) |)))
+                      M.alloc (| M.read (| M.of_value (| Value.String "Wednesday" |) |) |)))
                 ]
               |)
             |)
@@ -151,7 +151,7 @@ fn have_ingredients(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
+Definition have_ingredients (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ food ] =>
     ltac:(M.monadic
@@ -161,11 +161,16 @@ Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
           food,
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ A.to_value (M.read (| food |)) ]
+                  |)
                 |)))
           ]
         |)
@@ -181,7 +186,7 @@ fn have_recipe(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
+Definition have_recipe (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ food ] =>
     ltac:(M.monadic
@@ -191,11 +196,16 @@ Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
           food,
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ A.to_value (M.read (| food |)) ]
+                  |)
                 |)))
           ]
         |)
@@ -214,7 +224,7 @@ fn cookable_v1(food: Food) -> Option<Food> {
     }
 }
 *)
-Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
+Definition cookable_v1 (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ food ] =>
     ltac:(M.monadic
@@ -229,7 +239,8 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
           |),
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -245,7 +256,9 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        (M.alloc (|
+                          M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -256,7 +269,11 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
                           |) in
                         let food := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| food |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| food |)) ]
+                          |)
                         |)))
                   ]
                 |)))
@@ -271,7 +288,7 @@ fn cookable_v2(food: Food) -> Option<Food> {
     have_recipe(food).and_then(have_ingredients)
 }
 *)
-Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
+Definition cookable_v2 (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ food ] =>
     ltac:(M.monadic
@@ -306,7 +323,7 @@ fn eat(food: Food, day: Day) {
     }
 }
 *)
-Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
+Definition eat (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ food; day ] =>
     ltac:(M.monadic
@@ -339,45 +356,57 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Yay! On " |);
-                                    M.read (| Value.String " we get to eat " |);
-                                    M.read (| Value.String ".
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "Yay! On " |) |));
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (| Value.String " we get to eat " |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String ".
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Day" ]
-                                      |),
-                                      [ day ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Food" ]
-                                      |),
-                                      [ food ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "combinators_and_then::Day" ]
+                                          |),
+                                          [ day ]
+                                        |));
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "combinators_and_then::Food" ]
+                                          |),
+                                          [ food ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
@@ -393,36 +422,48 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Oh no. We don't get to eat on " |);
-                                    M.read (| Value.String "?
-" |)
-                                  ]
-                              |));
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (|
+                                          M.of_value (|
+                                            Value.String "Oh no. We don't get to eat on "
+                                          |)
+                                        |));
+                                      A.to_value (M.read (| M.of_value (| Value.String "?
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "combinators_and_then::Day" ]
-                                      |),
-                                      [ day ]
-                                    |)
-                                  ]
-                              |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "combinators_and_then::Day" ]
+                                          |),
+                                          [ day ]
+                                        |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -438,19 +479,26 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
           M.alloc (|
-            Value.Tuple
-              [
-                Value.StructTuple "combinators_and_then::Food::CordonBleu" [];
-                Value.StructTuple "combinators_and_then::Food::Steak" [];
-                Value.StructTuple "combinators_and_then::Food::Sushi" []
-              ]
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple "combinators_and_then::Food::CordonBleu" []
+                    |));
+                  A.to_value
+                    (M.of_value (| Value.StructTuple "combinators_and_then::Food::Steak" [] |));
+                  A.to_value
+                    (M.of_value (| Value.StructTuple "combinators_and_then::Food::Sushi" [] |))
+                ]
+            |)
           |),
           [
             fun γ =>
@@ -467,7 +515,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [] |),
                       [
                         M.read (| cordon_bleu |);
-                        Value.StructTuple "combinators_and_then::Day::Monday" []
+                        M.of_value (| Value.StructTuple "combinators_and_then::Day::Monday" [] |)
                       ]
                     |)
                   |) in
@@ -477,7 +525,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [] |),
                       [
                         M.read (| steak |);
-                        Value.StructTuple "combinators_and_then::Day::Tuesday" []
+                        M.of_value (| Value.StructTuple "combinators_and_then::Day::Tuesday" [] |)
                       ]
                     |)
                   |) in
@@ -487,11 +535,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_function (| "combinators_and_then::eat", [] |),
                       [
                         M.read (| sushi |);
-                        Value.StructTuple "combinators_and_then::Day::Wednesday" []
+                        M.of_value (| Value.StructTuple "combinators_and_then::Day::Wednesday" [] |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

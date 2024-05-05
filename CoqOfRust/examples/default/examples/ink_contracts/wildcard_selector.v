@@ -6,7 +6,18 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Parameter decode_input : (list Ty.t) -> (list Value.t) -> M.
+Definition decode_input (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [ T ], [] =>
+    ltac:(M.monadic
+      (M.never_to_any (|
+        M.call_closure (|
+          M.get_function (| "core::panicking::panic", [] |),
+          [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+        |)
+      |)))
+  | _, _ => M.impossible
+  end.
 
 (* StructTuple
   {
@@ -23,9 +34,10 @@ Module Impl_wildcard_selector_WildcardSelector.
           Self {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
+    | [], [] =>
+      ltac:(M.monadic (M.of_value (| Value.StructTuple "wildcard_selector::WildcardSelector" [] |)))
     | _, _ => M.impossible
     end.
   
@@ -37,7 +49,7 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Definition wildcard (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition wildcard (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -98,46 +110,61 @@ Module Impl_wildcard_selector_WildcardSelector.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Wildcard selector: " |);
-                                        M.read (| Value.String ", message: " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String "Wildcard selector: " |)
+                                            |));
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (| Value.String ", message: " |)
+                                            |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "
+" |) |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-                                          |),
-                                          [ _selector ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [ _message ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_debug",
+                                                [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                              |),
+                                              [ _selector ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [ _message ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |) in
-                  M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -151,7 +178,7 @@ Module Impl_wildcard_selector_WildcardSelector.
           println!("Wildcard complement message: {}", _message);
       }
   *)
-  Definition wildcard_complement (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition wildcard_complement (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; _message ] =>
       ltac:(M.monadic
@@ -168,37 +195,47 @@ Module Impl_wildcard_selector_WildcardSelector.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Wildcard complement message: " |);
-                                M.read (| Value.String "
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "Wildcard complement message: " |)
+                                    |));
+                                  A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [ _message ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [ _message ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

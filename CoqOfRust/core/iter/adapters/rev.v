@@ -16,27 +16,30 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ T ].
         
         (* Clone *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::adapters::rev::Rev"
-                [
-                  ("iter",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::rev::Rev",
-                          "iter"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::rev::Rev"
+                  [
+                    ("iter",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::adapters::rev::Rev",
+                              "iter"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -54,7 +57,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ T ].
         
         (* Debug *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self; f ] =>
@@ -69,17 +72,18 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Rev" |);
-                  M.read (| Value.String "iter" |);
+                  M.read (| M.of_value (| Value.String "Rev" |) |);
+                  M.read (| M.of_value (| Value.String "iter" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::adapters::rev::Rev",
                         "iter"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -103,13 +107,17 @@ Module iter.
                 Rev { iter }
             }
         *)
-        Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
-              Value.StructRecord "core::iter::adapters::rev::Rev" [ ("iter", M.read (| iter |)) ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::adapters::rev::Rev"
+                  [ ("iter", A.to_value (M.read (| iter |))) ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -130,7 +138,7 @@ Module iter.
                 self.iter.next_back()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -160,7 +168,7 @@ Module iter.
                 self.iter.size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -190,7 +198,7 @@ Module iter.
                 self.iter.advance_back_by(n)
             }
         *)
-        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -222,7 +230,7 @@ Module iter.
                 self.iter.nth_back(n)
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -259,7 +267,7 @@ Module iter.
                 self.iter.try_rfold(init, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -296,7 +304,7 @@ Module iter.
                 self.iter.rfold(init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; F ], [ self; init; f ] =>
@@ -335,7 +343,7 @@ Module iter.
                 self.iter.rfind(predicate)
             }
         *)
-        Definition find (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition find (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ P ], [ self; predicate ] =>
@@ -390,7 +398,7 @@ Module iter.
                 self.iter.next()
             }
         *)
-        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -420,7 +428,7 @@ Module iter.
                 self.iter.advance_by(n)
             }
         *)
-        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -452,7 +460,7 @@ Module iter.
                 self.iter.nth(n)
             }
         *)
-        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; n ] =>
@@ -483,7 +491,7 @@ Module iter.
                 self.iter.try_fold(init, f)
             }
         *)
-        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ B; F; R ], [ self; init; f ] =>
@@ -520,7 +528,7 @@ Module iter.
                 self.iter.fold(init, f)
             }
         *)
-        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Acc; F ], [ self; init; f ] =>
@@ -559,7 +567,7 @@ Module iter.
                 self.iter.find(predicate)
             }
         *)
-        Definition rfind (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfind (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ P ], [ self; predicate ] =>
@@ -612,7 +620,7 @@ Module iter.
                 self.iter.len()
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -642,7 +650,7 @@ Module iter.
                 self.iter.is_empty()
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -713,7 +721,7 @@ Module iter.
                 Rev::new(Default::default())
             }
         *)
-        Definition default (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition default (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [] =>

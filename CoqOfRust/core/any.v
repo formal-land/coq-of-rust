@@ -13,7 +13,7 @@ Module any.
             TypeId::of::<T>()
         }
     *)
-    Definition type_id (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition type_id (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -43,7 +43,7 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -63,7 +63,7 @@ Module any.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "Any" |) |) ]
                 |)
               |)
             ]
@@ -82,7 +82,7 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -102,7 +102,7 @@ Module any.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "Any" |) |) ]
                 |)
               |)
             ]
@@ -121,7 +121,7 @@ Module any.
             f.debug_struct("Any").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -141,7 +141,7 @@ Module any.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "Any" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "Any" |) |) ]
                 |)
               |)
             ]
@@ -174,7 +174,7 @@ Module any.
             t == concrete
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -230,14 +230,14 @@ Module any.
             }
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -255,21 +255,27 @@ Module any.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
-                              "downcast_ref_unchecked",
-                              [ T ]
-                            |),
-                            [ M.read (| self |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                  "downcast_ref_unchecked",
+                                  [ T ]
+                                |),
+                                [ M.read (| self |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -290,14 +296,14 @@ Module any.
             }
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -315,21 +321,27 @@ Module any.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.dyn [ ("core::any::Any::Trait", []) ],
-                              "downcast_mut_unchecked",
-                              [ T ]
-                            |),
-                            [ M.read (| self |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                  "downcast_mut_unchecked",
+                                  [ T ]
+                                |),
+                                [ M.read (| self |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -345,7 +357,7 @@ Module any.
             unsafe { &*(self as *const dyn Any as *const T) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -353,30 +365,31 @@ Module any.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -387,23 +400,30 @@ Module any.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
+                                      [
+                                        M.read (|
+                                          M.of_value (|
+                                            Value.String "assertion failed: self.is::<T>()"
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
-                (M.read (|
-                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                |))
+              M.rust_cast (|
+                M.read (|
+                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (| M.read (| self |) |) |))
+                |)
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -419,7 +439,7 @@ Module any.
             unsafe { &mut *(self as *mut dyn Any as *mut T) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -427,30 +447,31 @@ Module any.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.dyn [ ("core::any::Any::Trait", []) ],
                                             "is",
                                             [ T ]
                                           |),
                                           [ M.read (| self |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -461,23 +482,30 @@ Module any.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
+                                      [
+                                        M.read (|
+                                          M.of_value (|
+                                            Value.String "assertion failed: self.is::<T>()"
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.alloc (|
-              M.rust_cast
-                (M.read (|
-                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                |))
+              M.rust_cast (|
+                M.read (|
+                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (| M.read (| self |) |) |))
+                |)
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -490,14 +518,14 @@ Module any.
             <dyn Any>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -509,7 +537,7 @@ Module any.
             <dyn Any>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -520,7 +548,7 @@ Module any.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -532,7 +560,7 @@ Module any.
             <dyn Any>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -543,7 +571,7 @@ Module any.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -556,7 +584,7 @@ Module any.
             unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -567,7 +595,7 @@ Module any.
               "downcast_ref_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -581,7 +609,7 @@ Module any.
             unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -592,7 +620,7 @@ Module any.
               "downcast_mut_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -604,14 +632,14 @@ Module any.
             <dyn Any>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.dyn [ ("core::any::Any::Trait", []) ], "is", [ T ] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -623,7 +651,7 @@ Module any.
             <dyn Any>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -634,7 +662,7 @@ Module any.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -646,7 +674,7 @@ Module any.
             <dyn Any>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -657,7 +685,7 @@ Module any.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -670,7 +698,7 @@ Module any.
             unsafe { <dyn Any>::downcast_ref_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_ref_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -681,7 +709,7 @@ Module any.
               "downcast_ref_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -695,7 +723,7 @@ Module any.
             unsafe { <dyn Any>::downcast_mut_unchecked::<T>(self) }
         }
     *)
-    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_mut_unchecked (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -706,7 +734,7 @@ Module any.
               "downcast_mut_unchecked",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -728,14 +756,14 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
@@ -765,7 +793,7 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -779,17 +807,18 @@ Module any.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "TypeId" |);
-              M.read (| Value.String "t" |);
+              M.read (| M.of_value (| Value.String "TypeId" |) |);
+              M.read (| M.of_value (| Value.String "t" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::any::TypeId",
                     "t"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -818,15 +847,15 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              M.of_value (| Value.DeclaredButUndefined |),
+              [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
             |)
           |)))
       | _, _ => M.impossible
@@ -845,7 +874,7 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -887,7 +916,7 @@ Module any.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
@@ -927,23 +956,24 @@ Module any.
             self.t == other.t
         }
     *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.read (|
+          BinOp.Pure.eq (|
+            M.read (|
               M.SubPointer.get_struct_record_field (| M.read (| self |), "core::any::TypeId", "t" |)
-            |))
-            (M.read (|
+            |),
+            M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| other |),
                 "core::any::TypeId",
                 "t"
               |)
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -964,7 +994,7 @@ Module any.
             TypeId { t }
         }
     *)
-    Definition of (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition of (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [] =>
         ltac:(M.monadic
@@ -973,7 +1003,11 @@ Module any.
               M.alloc (|
                 M.call_closure (| M.get_function (| "core::intrinsics::type_id", [ T ] |), [] |)
               |) in
-            M.alloc (| Value.StructRecord "core::any::TypeId" [ ("t", M.read (| t |)) ] |)
+            M.alloc (|
+              M.of_value (|
+                Value.StructRecord "core::any::TypeId" [ ("t", A.to_value (M.read (| t |))) ]
+              |)
+            |)
           |)))
       | _, _ => M.impossible
       end.
@@ -1001,7 +1035,7 @@ Module any.
             (self.t as u64).hash(state);
         }
     *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ H ], [ self; state ] =>
         ltac:(M.monadic
@@ -1014,20 +1048,21 @@ Module any.
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ H ] |),
                   [
                     M.alloc (|
-                      M.rust_cast
-                        (M.read (|
+                      M.rust_cast (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::any::TypeId",
                             "t"
                           |)
-                        |))
+                        |)
+                      |)
                     |);
                     M.read (| state |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -1045,7 +1080,7 @@ Module any.
       intrinsics::type_name::<T>()
   }
   *)
-  Definition type_name (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition type_name (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [] =>
       ltac:(M.monadic
@@ -1058,7 +1093,7 @@ Module any.
       type_name::<T>()
   }
   *)
-  Definition type_name_of_val (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition type_name_of_val (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ T ], [ _val ] =>
       ltac:(M.monadic

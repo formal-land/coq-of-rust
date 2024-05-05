@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module task.
   (* Trait *)
   Module Wake.
-    Definition wake_by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition wake_by_ref (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -30,7 +30,7 @@ Module task.
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -49,7 +49,7 @@ Module task.
             unsafe { Waker::from_raw(raw_waker(waker)) }
         }
     *)
-    Definition from (W : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (W : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self W in
       match τ, α with
       | [], [ waker ] =>
@@ -85,7 +85,7 @@ Module task.
             raw_waker(waker)
         }
     *)
-    Definition from (W : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (W : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self W in
       match τ, α with
       | [], [ waker ] =>
@@ -142,7 +142,7 @@ Module task.
       )
   }
   *)
-  Definition raw_waker (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition raw_waker (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ W ], [ waker ] =>
       ltac:(M.monadic
@@ -150,15 +150,16 @@ Module task.
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
           [
-            M.rust_cast
-              (M.call_closure (|
+            M.rust_cast (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
                   []
                 |),
                 [ M.read (| waker |) ]
-              |));
+              |)
+            |);
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -168,15 +169,19 @@ Module task.
                 |),
                 [
                   (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.clone_waker", [] |));
+                  M.pointer_coercion (|
+                    M.get_function (| "alloc::task::raw_waker.clone_waker", [] |)
+                  |);
                   (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [] |));
+                  M.pointer_coercion (| M.get_function (| "alloc::task::raw_waker.wake", [] |) |);
                   (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |));
+                  M.pointer_coercion (|
+                    M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |)
+                  |);
                   (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.drop_waker", [] |))
+                  M.pointer_coercion (|
+                    M.get_function (| "alloc::task::raw_waker.drop_waker", [] |)
+                  |)
                 ]
               |)
             |)
@@ -195,7 +200,7 @@ Module task.
             )
         }
     *)
-    Definition clone_waker (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_waker (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ W ], [ waker ] =>
         ltac:(M.monadic
@@ -209,14 +214,14 @@ Module task.
                     "increment_strong_count",
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.rust_cast (| M.read (| waker |) |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
                 [
-                  M.rust_cast (M.read (| waker |));
+                  M.rust_cast (| M.read (| waker |) |);
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -226,16 +231,21 @@ Module task.
                       |),
                       [
                         (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.clone_waker", [] |));
+                        M.pointer_coercion (|
+                          M.get_function (| "alloc::task::raw_waker.clone_waker", [] |)
+                        |);
                         (* ReifyFnPointer *)
-                        M.pointer_coercion (M.get_function (| "alloc::task::raw_waker.wake", [] |));
+                        M.pointer_coercion (|
+                          M.get_function (| "alloc::task::raw_waker.wake", [] |)
+                        |);
                         (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |));
+                        M.pointer_coercion (|
+                          M.get_function (| "alloc::task::raw_waker.wake_by_ref", [] |)
+                        |);
                         (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_function (| "alloc::task::raw_waker.drop_waker", [] |))
+                        M.pointer_coercion (|
+                          M.get_function (| "alloc::task::raw_waker.drop_waker", [] |)
+                        |)
                       ]
                     |)
                   |)
@@ -252,7 +262,7 @@ Module task.
             <W as Wake>::wake(waker);
         }
     *)
-    Definition wake (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition wake (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ W ], [ waker ] =>
         ltac:(M.monadic
@@ -266,7 +276,7 @@ Module task.
                     "from_raw",
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.rust_cast (| M.read (| waker |) |) ]
                 |)
               |) in
             let _ :=
@@ -276,7 +286,7 @@ Module task.
                   [ M.read (| waker |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -287,7 +297,7 @@ Module task.
             <W as Wake>::wake_by_ref(&waker);
         }
     *)
-    Definition wake_by_ref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition wake_by_ref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ W ], [ waker ] =>
         ltac:(M.monadic
@@ -311,7 +321,7 @@ Module task.
                         "from_raw",
                         []
                       |),
-                      [ M.rust_cast (M.read (| waker |)) ]
+                      [ M.rust_cast (| M.read (| waker |) |) ]
                     |)
                   ]
                 |)
@@ -340,7 +350,7 @@ Module task.
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -350,7 +360,7 @@ Module task.
             unsafe { Arc::decrement_strong_count(waker as *const W) };
         }
     *)
-    Definition drop_waker (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop_waker (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ W ], [ waker ] =>
         ltac:(M.monadic
@@ -364,10 +374,10 @@ Module task.
                     "decrement_strong_count",
                     []
                   |),
-                  [ M.rust_cast (M.read (| waker |)) ]
+                  [ M.rust_cast (| M.read (| waker |) |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.

@@ -14,7 +14,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -29,8 +29,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -40,13 +40,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I8 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -68,7 +72,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -83,8 +87,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -94,13 +98,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I16 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -122,7 +130,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -137,8 +145,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -148,13 +156,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I32 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -176,7 +188,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -191,8 +203,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -202,13 +214,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I64 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -230,7 +246,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -245,8 +261,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -256,13 +272,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.I128 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -284,7 +304,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -299,8 +319,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -310,13 +330,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.Isize 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -338,7 +362,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -353,8 +377,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -364,13 +388,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U8 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -392,7 +420,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -407,8 +435,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -418,13 +446,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U16 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -446,7 +478,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -461,8 +493,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -472,13 +504,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U32 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -500,7 +536,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -515,8 +551,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -526,13 +562,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U64 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -554,7 +594,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -569,8 +609,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -580,13 +620,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.U128 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -608,7 +652,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -623,8 +667,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -634,13 +678,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer Integer.Usize 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -662,7 +710,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -677,8 +725,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -688,13 +736,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Bool false)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.Bool false |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -716,7 +768,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -731,8 +783,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -742,13 +794,17 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.UnicodeChar 0)))
+                                  BinOp.Pure.eq (|
+                                    M.read (| x |),
+                                    M.of_value (| Value.UnicodeChar 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -770,7 +826,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -785,8 +841,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -796,18 +852,20 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
+                                  BinOp.Pure.eq (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                                       [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer Integer.U32 0)))
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -829,7 +887,7 @@ Module vec.
                       $is_zero( *self)
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -844,8 +902,8 @@ Module vec.
               |),
               [
                 M.alloc (|
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -855,18 +913,20 @@ Module vec.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
+                                  BinOp.Pure.eq (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
                                       [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer Integer.U64 0)))
+                                    |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 |);
-                Value.Tuple [ M.read (| M.read (| self |) |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| M.read (| self |) |)) ] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -888,7 +948,7 @@ Module vec.
               ( *self).is_null()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -918,7 +978,7 @@ Module vec.
               ( *self).is_null()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -955,16 +1015,17 @@ Module vec.
               N <= 16 && self.iter().all(IsZero::is_zero)
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.le
-                (M.read (| M.get_constant (| "alloc::vec::is_zero::N" |) |))
-                (Value.Integer Integer.Usize 16),
+              BinOp.Pure.le (|
+                M.read (| M.get_constant (| "alloc::vec::is_zero::N" |) |),
+                M.of_value (| Value.Integer 16 |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -982,7 +1043,7 @@ Module vec.
                           "iter",
                           []
                         |),
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                        [ (* Unsize *) M.pointer_coercion (| M.read (| self |) |) ]
                       |)
                     |);
                     M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], "is_zero", [] |)
@@ -1015,7 +1076,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (A B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (A B C D E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self A B C D E F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1176,7 +1237,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (B C D E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self B C D E F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1322,7 +1383,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (C D E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self C D E F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1453,7 +1514,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (D E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self D E F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1569,7 +1630,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (E F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self E F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1670,7 +1731,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (F G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F G H in
         match τ, α with
         | [], [ self ] =>
@@ -1756,7 +1817,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (G H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self G H in
         match τ, α with
         | [], [ self ] =>
@@ -1827,7 +1888,7 @@ Module vec.
                           $( && $rest.is_zero() )*
                   }
       *)
-      Definition is_zero (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (H : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self H in
         match τ, α with
         | [], [ self ] =>
@@ -1878,7 +1939,7 @@ Module vec.
               self.is_none()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1915,7 +1976,7 @@ Module vec.
               self.is_none()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1952,7 +2013,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1987,7 +2048,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2022,7 +2083,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2057,7 +2118,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2092,7 +2153,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2127,7 +2188,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2162,7 +2223,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2197,7 +2258,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2232,7 +2293,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2267,7 +2328,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2302,7 +2363,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2337,7 +2398,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2375,7 +2436,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2416,7 +2477,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2457,7 +2518,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2498,7 +2559,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2539,7 +2600,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2580,7 +2641,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2621,7 +2682,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2662,7 +2723,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2703,7 +2764,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2744,7 +2805,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2785,7 +2846,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2826,7 +2887,7 @@ Module vec.
                       self.is_none()
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2863,7 +2924,7 @@ Module vec.
               self.0.is_zero()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -2900,7 +2961,7 @@ Module vec.
               self.0.is_zero()
           }
       *)
-      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -2941,7 +3002,7 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2957,7 +3018,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| raw |), M.of_value (| Value.Integer 0 |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2986,7 +3047,7 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3007,7 +3068,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| raw |), M.of_value (| Value.Integer 0 |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3040,7 +3101,7 @@ Module vec.
                       raw == 0
                   }
       *)
-      Definition is_zero (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_zero (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3065,7 +3126,7 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer Integer.U8 0) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| raw |), M.of_value (| Value.Integer 0 |) |) |)
             |)))
         | _, _ => M.impossible
         end.

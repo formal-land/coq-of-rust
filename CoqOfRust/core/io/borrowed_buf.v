@@ -34,7 +34,7 @@ Module io.
                   .finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -75,33 +75,38 @@ Module io.
                                   "debug_struct",
                                   []
                                 |),
-                                [ M.read (| f |); M.read (| Value.String "BorrowedBuf" |) ]
+                                [
+                                  M.read (| f |);
+                                  M.read (| M.of_value (| Value.String "BorrowedBuf" |) |)
+                                ]
                               |)
                             |);
-                            M.read (| Value.String "init" |);
+                            M.read (| M.of_value (| Value.String "init" |) |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
+                            M.pointer_coercion (|
+                              M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::io::borrowed_buf::BorrowedBuf",
                                 "init"
-                              |))
+                              |)
+                            |)
                           ]
                         |);
-                        M.read (| Value.String "filled" |);
+                        M.read (| M.of_value (| Value.String "filled" |) |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::io::borrowed_buf::BorrowedBuf",
                             "filled"
-                          |))
+                          |)
+                        |)
                       ]
                     |);
-                    M.read (| Value.String "capacity" |);
+                    M.read (| M.of_value (| Value.String "capacity" |) |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
+                    M.pointer_coercion (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::io::borrowed_buf::BorrowedBuf",
@@ -110,7 +115,8 @@ Module io.
                           |),
                           [ M.read (| self |) ]
                         |)
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -141,7 +147,7 @@ Module io.
               }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ slice ] =>
           ltac:(M.monadic
@@ -159,46 +165,49 @@ Module io.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::io::borrowed_buf::BorrowedBuf"
-                  [
-                    ("buf",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                [
-                                  Ty.apply
-                                    (Ty.path "slice")
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        [ Ty.path "u8" ]
-                                    ]
-                                ]
-                            ],
-                          "unwrap",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                M.of_value (|
+                  Value.StructRecord
+                    "core::io::borrowed_buf::BorrowedBuf"
+                    [
+                      ("buf",
+                        A.to_value
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "*mut")
-                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                              "as_uninit_slice_mut",
+                                (Ty.path "core::option::Option")
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            [ Ty.path "u8" ]
+                                        ]
+                                    ]
+                                ],
+                              "unwrap",
                               []
                             |),
-                            [ M.read (| M.use (M.alloc (| M.read (| slice |) |)) |) ]
-                          |)
-                        ]
-                      |));
-                    ("filled", Value.Integer Integer.Usize 0);
-                    ("init", M.read (| len |))
-                  ]
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                  "as_uninit_slice_mut",
+                                  []
+                                |),
+                                [ M.read (| M.use (M.alloc (| M.read (| slice |) |)) |) ]
+                              |)
+                            ]
+                          |)));
+                      ("filled", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("init", A.to_value (M.read (| len |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -221,18 +230,20 @@ Module io.
               BorrowedBuf { buf, filled: 0, init: 0 }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ buf ] =>
           ltac:(M.monadic
             (let buf := M.alloc (| buf |) in
-            Value.StructRecord
-              "core::io::borrowed_buf::BorrowedBuf"
-              [
-                ("buf", M.read (| buf |));
-                ("filled", Value.Integer Integer.Usize 0);
-                ("init", Value.Integer Integer.Usize 0)
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::io::borrowed_buf::BorrowedBuf"
+                [
+                  ("buf", A.to_value (M.read (| buf |)));
+                  ("filled", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("init", A.to_value (M.of_value (| Value.Integer 0 |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -262,7 +273,7 @@ Module io.
               self.buf.len()
           }
       *)
-      Definition capacity (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition capacity (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -295,7 +306,7 @@ Module io.
               self.filled
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -317,7 +328,7 @@ Module io.
               self.init
           }
       *)
-      Definition init_len (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition init_len (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -340,7 +351,7 @@ Module io.
               unsafe { MaybeUninit::slice_assume_init_ref(&self.buf[0..self.filled]) }
           }
       *)
-      Definition filled (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition filled (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -371,19 +382,22 @@ Module io.
                         "buf"
                       |)
                     |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.Usize 0);
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |))
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                          ("end_",
+                            A.to_value
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "filled"
+                                |)
+                              |)))
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -399,7 +413,7 @@ Module io.
               unsafe { MaybeUninit::slice_assume_init_mut(&mut self.buf[0..self.filled]) }
           }
       *)
-      Definition filled_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition filled_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -430,19 +444,22 @@ Module io.
                         "buf"
                       |)
                     |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.Usize 0);
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |))
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                          ("end_",
+                            A.to_value
+                              (M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "filled"
+                                |)
+                              |)))
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -464,34 +481,42 @@ Module io.
               }
           }
       *)
-      Definition unfilled (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition unfilled (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::io::borrowed_buf::BorrowedCursor"
-              [
-                ("start",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::io::borrowed_buf::BorrowedBuf",
-                      "filled"
-                    |)
-                  |));
-                ("buf",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.apply (Ty.path "&mut") [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ]
-                      ]
-                    |),
-                    [ M.read (| self |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::io::borrowed_buf::BorrowedCursor"
+                [
+                  ("start",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "filled"
+                        |)
+                      |)));
+                  ("buf",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::transmute",
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ]
+                          ]
+                        |),
+                        [ M.read (| self |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -503,7 +528,7 @@ Module io.
               self
           }
       *)
-      Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clear (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -516,7 +541,7 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |),
-                  Value.Integer Integer.Usize 0
+                  M.of_value (| Value.Integer 0 |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
@@ -531,7 +556,7 @@ Module io.
               self
           }
       *)
-      Definition set_init (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_init (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
@@ -582,7 +607,7 @@ Module io.
       Definition Self : Ty.t := Ty.path "core::io::borrowed_buf::BorrowedCursor".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -596,25 +621,27 @@ Module io.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "BorrowedCursor" |);
-                M.read (| Value.String "buf" |);
+                M.read (| M.of_value (| Value.String "BorrowedCursor" |) |);
+                M.read (| M.of_value (| Value.String "buf" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::io::borrowed_buf::BorrowedCursor",
                     "buf"
-                  |));
-                M.read (| Value.String "start" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "start" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::io::borrowed_buf::BorrowedCursor",
                       "start"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -645,42 +672,50 @@ Module io.
               }
           }
       *)
-      Definition reborrow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reborrow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::io::borrowed_buf::BorrowedCursor"
-              [
-                ("buf",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.apply (Ty.path "&mut") [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ]
-                      ]
-                    |),
-                    [
-                      M.read (|
+            M.of_value (|
+              Value.StructRecord
+                "core::io::borrowed_buf::BorrowedCursor"
+                [
+                  ("buf",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::transmute",
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ]
+                          ]
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
+                              "buf"
+                            |)
+                          |)
+                        ]
+                      |)));
+                  ("start",
+                    A.to_value
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::io::borrowed_buf::BorrowedCursor",
-                          "buf"
+                          "start"
                         |)
-                      |)
-                    ]
-                  |));
-                ("start",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::io::borrowed_buf::BorrowedCursor",
-                      "start"
-                    |)
-                  |))
-              ]))
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -691,12 +726,13 @@ Module io.
               self.buf.capacity() - self.buf.filled
           }
       *)
-      Definition capacity (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition capacity (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.Usize,
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::io::borrowed_buf::BorrowedBuf",
@@ -737,12 +773,13 @@ Module io.
               self.buf.filled - self.start
           }
       *)
-      Definition written (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition written (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Panic.sub (|
+              Integer.Usize,
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
@@ -775,7 +812,7 @@ Module io.
               unsafe { MaybeUninit::slice_assume_init_ref(&self.buf.buf[self.buf.filled..self.buf.init]) }
           }
       *)
-      Definition init_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition init_ref (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -812,38 +849,42 @@ Module io.
                         "buf"
                       |)
                     |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start",
+                            A.to_value
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::io::borrowed_buf::BorrowedCursor",
+                                      "buf"
+                                    |)
+                                  |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "filled"
                                 |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |));
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
+                              |)));
+                          ("end_",
+                            A.to_value
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::io::borrowed_buf::BorrowedCursor",
+                                      "buf"
+                                    |)
+                                  |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "init"
                                 |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "init"
-                            |)
-                          |))
-                      ]
+                              |)))
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -861,7 +902,7 @@ Module io.
               }
           }
       *)
-      Definition init_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition init_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -898,38 +939,42 @@ Module io.
                         "buf"
                       |)
                     |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start",
+                            A.to_value
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::io::borrowed_buf::BorrowedCursor",
+                                      "buf"
+                                    |)
+                                  |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "filled"
                                 |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |));
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
+                              |)));
+                          ("end_",
+                            A.to_value
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::io::borrowed_buf::BorrowedCursor",
+                                      "buf"
+                                    |)
+                                  |),
+                                  "core::io::borrowed_buf::BorrowedBuf",
+                                  "init"
                                 |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "init"
-                            |)
-                          |))
-                      ]
+                              |)))
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -944,7 +989,7 @@ Module io.
               &mut self.buf.buf[self.buf.init..]
           }
       *)
-      Definition uninit_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition uninit_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -973,24 +1018,27 @@ Module io.
                     "buf"
                   |)
                 |);
-                Value.StructRecord
-                  "core::ops::range::RangeFrom"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::RangeFrom"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedCursor",
-                              "buf"
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
+                                  "buf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
+                              "init"
                             |)
-                          |),
-                          "core::io::borrowed_buf::BorrowedBuf",
-                          "init"
-                        |)
-                      |))
-                  ]
+                          |)))
+                    ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1003,7 +1051,7 @@ Module io.
               &mut self.buf.buf[self.buf.filled..]
           }
       *)
-      Definition as_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1032,24 +1080,27 @@ Module io.
                     "buf"
                   |)
                 |);
-                Value.StructRecord
-                  "core::ops::range::RangeFrom"
-                  [
-                    ("start",
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (|
+                M.of_value (|
+                  Value.StructRecord
+                    "core::ops::range::RangeFrom"
+                    [
+                      ("start",
+                        A.to_value
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedCursor",
-                              "buf"
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::io::borrowed_buf::BorrowedCursor",
+                                  "buf"
+                                |)
+                              |),
+                              "core::io::borrowed_buf::BorrowedBuf",
+                              "filled"
                             |)
-                          |),
-                          "core::io::borrowed_buf::BorrowedBuf",
-                          "filled"
-                        |)
-                      |))
-                  ]
+                          |)))
+                    ]
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1064,7 +1115,7 @@ Module io.
               self
           }
       *)
-      Definition advance (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
@@ -1084,7 +1135,10 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |) in
-                M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| n |) |) |) in
+                M.write (|
+                  β,
+                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| n |) |)
+                |) in
               let _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1150,7 +1204,7 @@ Module io.
               self
           }
       *)
-      Definition ensure_init (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ensure_init (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1191,7 +1245,7 @@ Module io.
                           |),
                           [ M.read (| uninit |) ]
                         |);
-                        Value.Integer Integer.U8 0;
+                        M.of_value (| Value.Integer 0 |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1209,7 +1263,7 @@ Module io.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1253,7 +1307,7 @@ Module io.
               self
           }
       *)
-      Definition set_init (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_init (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
@@ -1290,6 +1344,7 @@ Module io.
                         |)
                       |);
                       BinOp.Panic.add (|
+                        Integer.Usize,
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (|
@@ -1331,7 +1386,7 @@ Module io.
               self.buf.filled += buf.len();
           }
       *)
-      Definition append (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition append (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; buf ] =>
           ltac:(M.monadic
@@ -1340,31 +1395,33 @@ Module io.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge
-                                  (M.call_closure (|
+                              UnOp.Pure.not (|
+                                BinOp.Pure.ge (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::io::borrowed_buf::BorrowedCursor",
                                       "capacity",
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| buf |) ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1374,13 +1431,15 @@ Module io.
                               M.get_function (| "core::panicking::panic", [] |),
                               [
                                 M.read (|
-                                  Value.String "assertion failed: self.capacity() >= buf.len()"
+                                  M.of_value (|
+                                    Value.String "assertion failed: self.capacity() >= buf.len()"
+                                  |)
                                 |)
                               ]
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1416,26 +1475,29 @@ Module io.
                               |),
                               [ M.read (| self |) ]
                             |);
-                            Value.StructRecord
-                              "core::ops::range::RangeTo"
-                              [
-                                ("end_",
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| buf |) ]
-                                  |))
-                              ]
+                            M.of_value (|
+                              Value.StructRecord
+                                "core::ops::range::RangeTo"
+                                [
+                                  ("end_",
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          "len",
+                                          []
+                                        |),
+                                        [ M.read (| buf |) ]
+                                      |)))
+                                ]
+                            |)
                           ]
                         |);
                         M.read (| buf |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let _ :=
                   M.alloc (|
@@ -1458,7 +1520,7 @@ Module io.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
@@ -1475,6 +1537,7 @@ Module io.
                 M.write (|
                   β,
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (| β |),
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1486,7 +1549,7 @@ Module io.
                     |)
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.

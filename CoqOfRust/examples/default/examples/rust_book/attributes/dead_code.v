@@ -2,23 +2,32 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* fn used_function() {} *)
-Definition used_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition used_function (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 (* fn unused_function() {} *)
-Definition unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition unused_function (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 (* fn noisy_unused_function() {} *)
-Definition noisy_unused_function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition noisy_unused_function (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
     used_function();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -27,7 +36,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (| M.get_function (| "dead_code::used_function", [] |), [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

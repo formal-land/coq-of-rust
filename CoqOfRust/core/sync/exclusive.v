@@ -15,20 +15,23 @@ Module sync.
         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::sync::exclusive::Exclusive"
-              [
-                ("inner",
-                  M.call_closure (|
-                    M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                    []
-                  |))
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::sync::exclusive::Exclusive"
+                [
+                  ("inner",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -63,7 +66,7 @@ Module sync.
               f.debug_struct("Exclusive").finish_non_exhaustive()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -84,7 +87,7 @@ Module sync.
                       "debug_struct",
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "Exclusive" |) ]
+                    [ M.read (| f |); M.read (| M.of_value (| Value.String "Exclusive" |) |) ]
                   |)
                 |)
               ]
@@ -110,13 +113,17 @@ Module sync.
               Self { inner: t }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
-            Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::exclusive::Exclusive"
+                [ ("inner", A.to_value (M.read (| t |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -129,7 +136,7 @@ Module sync.
               self.inner
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -153,7 +160,7 @@ Module sync.
               &mut self.inner
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -178,7 +185,7 @@ Module sync.
               unsafe { Pin::new_unchecked(&mut self.get_unchecked_mut().inner) }
           }
       *)
-      Definition get_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -224,13 +231,13 @@ Module sync.
               unsafe { &mut *(r as *mut T as *mut Exclusive<T>) }
           }
       *)
-      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| r |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -245,7 +252,7 @@ Module sync.
               unsafe { Pin::new_unchecked(Self::from_mut(r.get_unchecked_mut())) }
           }
       *)
-      Definition from_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_pin_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ r ] =>
@@ -301,7 +308,7 @@ Module sync.
               Self::new(t)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ t ] =>
@@ -339,7 +346,7 @@ Module sync.
               self.into_inner().call_once(args)
           }
       *)
-      Definition call_once (F Args : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_once (F Args : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F Args in
         match τ, α with
         | [], [ self; args ] =>
@@ -385,7 +392,7 @@ Module sync.
               self.get_mut().call_mut(args)
           }
       *)
-      Definition call_mut (F Args : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_mut (F Args : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F Args in
         match τ, α with
         | [], [ self; args ] =>
@@ -430,7 +437,7 @@ Module sync.
               self.get_pin_mut().poll(cx)
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; cx ] =>
@@ -479,7 +486,7 @@ Module sync.
               G::resume(self.get_pin_mut(), arg)
           }
       *)
-      Definition resume (R G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition resume (R G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self R G in
         match τ, α with
         | [], [ self; arg ] =>

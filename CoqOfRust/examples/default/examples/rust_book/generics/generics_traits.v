@@ -22,14 +22,14 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
   Definition Self (T U : Ty.t) : Ty.t := U.
   
   (*     fn double_drop(self, _: T) {} *)
-  Definition double_drop (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition double_drop (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self T U in
     match τ, α with
     | [], [ self; β1 ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let β1 := M.alloc (| β1 |) in
-        M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+        M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ] |)))
     | _, _ => M.impossible
     end.
   
@@ -55,13 +55,13 @@ fn main() {
     // ^ TODO: Try uncommenting these lines.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let empty := M.alloc (| Value.StructTuple "generics_traits::Empty" [] |) in
-        let null := M.alloc (| Value.StructTuple "generics_traits::Null" [] |) in
+        let empty := M.alloc (| M.of_value (| Value.StructTuple "generics_traits::Empty" [] |) |) in
+        let null := M.alloc (| M.of_value (| Value.StructTuple "generics_traits::Null" [] |) |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -75,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| empty |); M.read (| null |) ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

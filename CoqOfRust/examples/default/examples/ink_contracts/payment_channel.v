@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "payment_channel::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "payment_channel::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -83,27 +92,28 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.Pure.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| self |),
               "payment_channel::AccountId",
               0
             |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| other |),
               "payment_channel::AccountId",
               0
             |)
-          |))))
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -130,15 +140,15 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+            M.of_value (| Value.DeclaredButUndefined |),
+            [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -161,7 +171,19 @@ Module Impl_core_convert_From_array_u8_for_payment_channel_AccountId.
           unimplemented!()
       }
   *)
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Definition from (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ value ] =>
+      ltac:(M.monadic
+        (let value := M.alloc (| value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -251,7 +273,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; other ] =>
       ltac:(M.monadic
@@ -278,7 +300,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -306,12 +328,12 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Tuple []))
+        M.of_value (| Value.Tuple [] |)))
     | _, _ => M.impossible
     end.
   
@@ -359,7 +381,7 @@ Module Impl_payment_channel_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition caller (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -381,7 +403,20 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -390,7 +425,20 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter terminate_contract : (list Ty.t) -> (list Value.t) -> M.
+  Definition terminate_contract (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; sender ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let sender := M.alloc (| sender |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
@@ -400,7 +448,21 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Definition transfer (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self; recipient; amount ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let recipient := M.alloc (| recipient |) in
+        let amount := M.alloc (| amount |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
@@ -409,7 +471,19 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter block_timestamp : (list Ty.t) -> (list Value.t) -> M.
+  Definition block_timestamp (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_block_timestamp :
     M.IsAssociatedFunction Self "block_timestamp" block_timestamp.
@@ -419,7 +493,19 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Definition balance (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
@@ -428,7 +514,19 @@ Module Impl_payment_channel_Env.
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Definition account_id (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_payment_channel_Env.
@@ -447,7 +545,20 @@ where
     unimplemented!()
 }
 *)
-Parameter hash_encoded : (list Ty.t) -> (list Value.t) -> M.
+Definition hash_encoded (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [ H; T ], [ input; output ] =>
+    ltac:(M.monadic
+      (let input := M.alloc (| input |) in
+      let output := M.alloc (| output |) in
+      M.never_to_any (|
+        M.call_closure (|
+          M.get_function (| "core::panicking::panic", [] |),
+          [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+        |)
+      |)))
+  | _, _ => M.impossible
+  end.
 
 (*
 pub fn ecdsa_recover(
@@ -458,7 +569,21 @@ pub fn ecdsa_recover(
     unimplemented!()
 }
 *)
-Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
+Definition ecdsa_recover (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [ signature; message_hash; output ] =>
+    ltac:(M.monadic
+      (let signature := M.alloc (| signature |) in
+      let message_hash := M.alloc (| message_hash |) in
+      let output := M.alloc (| output |) in
+      M.never_to_any (|
+        M.call_closure (|
+          M.get_function (| "core::panicking::panic", [] |),
+          [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+        |)
+      |)))
+  | _, _ => M.impossible
+  end.
 
 (*
 Enum Sha2x256
@@ -556,7 +681,20 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -574,7 +712,20 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -592,7 +743,20 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -610,7 +774,20 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
           unimplemented!()
       }
   *)
-  Parameter hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition hash (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [ input; output ] =>
+      ltac:(M.monadic
+        (let input := M.alloc (| input |) in
+        let output := M.alloc (| output |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -628,7 +805,18 @@ Module Impl_payment_channel_PaymentChannel.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -637,7 +825,7 @@ Module Impl_payment_channel_PaymentChannel.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -666,7 +854,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient == signature_account_id.into()
       }
   *)
-  Definition is_signature_valid (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_signature_valid (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; amount; signature ] =>
       ltac:(M.monadic
@@ -676,29 +864,32 @@ Module Impl_payment_channel_PaymentChannel.
         M.read (|
           let encodable :=
             M.alloc (|
-              Value.Tuple
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "payment_channel::Env",
-                      "account_id",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "payment_channel::PaymentChannel",
-                            "env",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |)
-                    ]
-                  |);
-                  M.read (| amount |)
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "payment_channel::Env",
+                          "account_id",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "payment_channel::PaymentChannel",
+                                "env",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          |)
+                        ]
+                      |));
+                    A.to_value (M.read (| amount |))
+                  ]
+              |)
             |) in
           let message :=
             M.alloc (|
@@ -726,7 +917,7 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let pub_key := M.alloc (| repeat (Value.Integer Integer.U8 0) 33 |) in
+          let pub_key := M.alloc (| repeat (| M.of_value (| Value.Integer 0 |), 33 |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -742,8 +933,8 @@ Module Impl_payment_channel_PaymentChannel.
                     M.get_function (| "payment_channel::ecdsa_recover", [] |),
                     [ signature; message; pub_key ]
                   |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -759,17 +950,23 @@ Module Impl_payment_channel_PaymentChannel.
                                         "std::panicking::begin_panic",
                                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                       |),
-                                      [ M.read (| Value.String "recover failed: {err:?}" |) ]
+                                      [
+                                        M.read (|
+                                          M.of_value (| Value.String "recover failed: {err:?}" |)
+                                        |)
+                                      ]
                                     |)
                                   |)))
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)
             |) in
-          let signature_account_id := M.alloc (| repeat (Value.Integer Integer.U8 0) 32 |) in
+          let signature_account_id :=
+            M.alloc (| repeat (| M.of_value (| Value.Integer 0 |), 32 |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -780,7 +977,7 @@ Module Impl_payment_channel_PaymentChannel.
                   "hash",
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion pub_key; signature_account_id ]
+                [ (* Unsize *) M.pointer_coercion (| pub_key |); signature_account_id ]
               |)
             |) in
           M.alloc (|
@@ -831,36 +1028,40 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ recipient; close_duration ] =>
       ltac:(M.monadic
         (let recipient := M.alloc (| recipient |) in
         let close_duration := M.alloc (| close_duration |) in
-        Value.StructRecord
-          "payment_channel::PaymentChannel"
-          [
-            ("sender",
-              M.call_closure (|
-                M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [] |),
-                [
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "payment_channel::PaymentChannel",
-                        "init_env",
-                        []
-                      |),
-                      []
-                    |)
-                  |)
-                ]
-              |));
-            ("recipient", M.read (| recipient |));
-            ("expiration", Value.StructTuple "core::option::Option::None" []);
-            ("withdrawn", Value.Integer Integer.U128 0);
-            ("close_duration", M.read (| close_duration |))
-          ]))
+        M.of_value (|
+          Value.StructRecord
+            "payment_channel::PaymentChannel"
+            [
+              ("sender",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_associated_function (| Ty.path "payment_channel::Env", "caller", [] |),
+                    [
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "payment_channel::PaymentChannel",
+                            "init_env",
+                            []
+                          |),
+                          []
+                        |)
+                      |)
+                    ]
+                  |)));
+              ("recipient", A.to_value (M.read (| recipient |)));
+              ("expiration",
+                A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+              ("withdrawn", A.to_value (M.of_value (| Value.Integer 0 |)));
+              ("close_duration", A.to_value (M.read (| close_duration |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -888,7 +1089,7 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close_inner (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition close_inner (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; amount; signature ] =>
       ltac:(M.monadic
@@ -900,7 +1101,7 @@ Module Impl_payment_channel_PaymentChannel.
             (M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -951,38 +1152,44 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    Value.StructTuple
-                                      "payment_channel::Error::CallerIsNotRecipient"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::CallerIsNotRecipient"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| amount |))
-                                (M.read (|
+                              BinOp.Pure.lt (|
+                                M.read (| amount |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -990,38 +1197,44 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    Value.StructTuple
-                                      "payment_channel::Error::AmountIsLessThanWithdrawn"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::AmountIsLessThanWithdrawn"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1029,15 +1242,23 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::InvalidSignature" []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::InvalidSignature"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1093,6 +1314,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   |)
                                 |);
                                 BinOp.Panic.sub (|
+                                  Integer.U128,
                                   M.read (| amount |),
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -1104,8 +1326,8 @@ Module Impl_payment_channel_PaymentChannel.
                                 |)
                               ]
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -1114,13 +1336,16 @@ Module Impl_payment_channel_PaymentChannel.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
+                                            (M.of_value (|
+                                              Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []
+                                            |)))
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       ]
@@ -1175,7 +1400,13 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1191,7 +1422,7 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition close (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition close (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; amount; signature ] =>
       ltac:(M.monadic
@@ -1304,7 +1535,13 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1332,7 +1569,7 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition start_sender_close (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition start_sender_close (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -1342,7 +1579,7 @@ Module Impl_payment_channel_PaymentChannel.
             (M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1393,15 +1630,23 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::CallerIsNotSender" []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::CallerIsNotSender"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let now :=
@@ -1429,6 +1674,7 @@ Module Impl_payment_channel_PaymentChannel.
               let expiration :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.U64,
                     M.read (| now |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1458,23 +1704,29 @@ Module Impl_payment_channel_PaymentChannel.
                           [ M.read (| self |) ]
                         |)
                       |);
-                      Value.StructTuple
-                        "payment_channel::Event::SenderCloseStarted"
-                        [
-                          Value.StructRecord
-                            "payment_channel::SenderCloseStarted"
-                            [
-                              ("expiration", M.read (| expiration |));
-                              ("close_duration",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "payment_channel::PaymentChannel",
-                                    "close_duration"
-                                  |)
-                                |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "payment_channel::Event::SenderCloseStarted"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "payment_channel::SenderCloseStarted"
+                                  [
+                                    ("expiration", A.to_value (M.read (| expiration |)));
+                                    ("close_duration",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "payment_channel::PaymentChannel",
+                                            "close_duration"
+                                          |)
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
@@ -1485,9 +1737,19 @@ Module Impl_payment_channel_PaymentChannel.
                     "payment_channel::PaymentChannel",
                     "expiration"
                   |),
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| expiration |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ A.to_value (M.read (| expiration |)) ]
+                  |)
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1516,7 +1778,7 @@ Module Impl_payment_channel_PaymentChannel.
           }
       }
   *)
-  Definition claim_timeout (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition claim_timeout (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -1564,14 +1826,14 @@ Module Impl_payment_channel_PaymentChannel.
                         |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.lt (M.read (| now |)) (M.read (| expiration |))
+                                      BinOp.Pure.lt (| M.read (| now |), M.read (| expiration |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1582,18 +1844,24 @@ Module Impl_payment_channel_PaymentChannel.
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
-                                        Value.StructTuple
-                                          "core::result::Result::Err"
-                                          [
-                                            Value.StructTuple
-                                              "payment_channel::Error::NotYetExpired"
-                                              []
-                                          ]
+                                        M.of_value (|
+                                          Value.StructTuple
+                                            "core::result::Result::Err"
+                                            [
+                                              A.to_value
+                                                (M.of_value (|
+                                                  Value.StructTuple
+                                                    "payment_channel::Error::NotYetExpired"
+                                                    []
+                                                |))
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       let _ :=
@@ -1626,14 +1894,25 @@ Module Impl_payment_channel_PaymentChannel.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [ Value.StructTuple "payment_channel::Error::NotYetExpired" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "payment_channel::Error::NotYetExpired" []
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -1671,7 +1950,7 @@ Module Impl_payment_channel_PaymentChannel.
           Ok(())
       }
   *)
-  Definition withdraw (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition withdraw (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; amount; signature ] =>
       ltac:(M.monadic
@@ -1683,7 +1962,7 @@ Module Impl_payment_channel_PaymentChannel.
             (M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1734,38 +2013,44 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    Value.StructTuple
-                                      "payment_channel::Error::CallerIsNotRecipient"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::CallerIsNotRecipient"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.Pure.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1773,35 +2058,44 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ Value.StructTuple "payment_channel::Error::InvalidSignature" []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::InvalidSignature"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| amount |))
-                                (M.read (|
+                              BinOp.Pure.lt (|
+                                M.read (| amount |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1809,23 +2103,29 @@ Module Impl_payment_channel_PaymentChannel.
                           M.never_to_any (|
                             M.read (|
                               M.return_ (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [
-                                    Value.StructTuple
-                                      "payment_channel::Error::AmountIsLessThanWithdrawn"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "payment_channel::Error::AmountIsLessThanWithdrawn"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let amount_to_withdraw :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.U128,
                     M.read (| amount |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -1845,7 +2145,11 @@ Module Impl_payment_channel_PaymentChannel.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
+                  BinOp.Panic.add (|
+                    Integer.U128,
+                    M.read (| β |),
+                    M.read (| amount_to_withdraw |)
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
@@ -1902,8 +2206,8 @@ Module Impl_payment_channel_PaymentChannel.
                                 M.read (| amount_to_withdraw |)
                               ]
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -1912,13 +2216,16 @@ Module Impl_payment_channel_PaymentChannel.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
+                                            (M.of_value (|
+                                              Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []
+                                            |)))
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       ]
@@ -1973,7 +2280,13 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              M.alloc (|
+                M.of_value (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                |)
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -1986,7 +2299,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.sender
       }
   *)
-  Definition get_sender (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_sender (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -2008,7 +2321,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.recipient
       }
   *)
-  Definition get_recipient (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_recipient (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -2031,7 +2344,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.expiration
       }
   *)
-  Definition get_expiration (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_expiration (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -2054,7 +2367,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.withdrawn
       }
   *)
-  Definition get_withdrawn (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_withdrawn (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -2077,7 +2390,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.close_duration
       }
   *)
-  Definition get_close_duration (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_close_duration (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -2100,7 +2413,7 @@ Module Impl_payment_channel_PaymentChannel.
           self.env().balance()
       }
   *)
-  Definition get_balance (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_balance (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic

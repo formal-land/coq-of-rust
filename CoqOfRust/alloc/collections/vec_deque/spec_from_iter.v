@@ -22,7 +22,7 @@ Module collections.
                 crate::vec::Vec::from_iter(iterator).into()
             }
         *)
-        Definition spec_from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_from_iter (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T I in
           match τ, α with
           | [], [ iterator ] =>
@@ -76,7 +76,7 @@ Module collections.
                 iterator.into_vecdeque()
             }
         *)
-        Definition spec_from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ iterator ] =>
@@ -122,7 +122,7 @@ Module collections.
                 iterator.into_vecdeque()
             }
         *)
-        Definition spec_from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ iterator ] =>

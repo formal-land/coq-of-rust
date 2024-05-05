@@ -15,16 +15,18 @@ fn main() {
     let Years(years_as_primitive_2) = years; // Destructuring
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let years :=
           M.alloc (|
-            Value.StructTuple
-              "generics_new_type_idiom_as_base_type::Years"
-              [ Value.Integer Integer.I64 42 ]
+            M.of_value (|
+              Value.StructTuple
+                "generics_new_type_idiom_as_base_type::Years"
+                [ A.to_value (M.of_value (| Value.Integer 42 |)) ]
+            |)
           |) in
         let years_as_primitive_1 :=
           M.copy (|
@@ -46,7 +48,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let years_as_primitive_2 := M.copy (| γ0_0 |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

@@ -12,18 +12,27 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructTuple
-          "updated_incrementer::AccountId"
-          [
-            M.call_closure (|
-              M.get_trait_method (| "core::default::Default", Ty.path "u128", [], "default", [] |),
-              []
-            |)
-          ]))
+        (M.of_value (|
+          Value.StructTuple
+            "updated_incrementer::AccountId"
+            [
+              A.to_value
+                (M.call_closure (|
+                  M.get_trait_method (|
+                    "core::default::Default",
+                    Ty.path "u128",
+                    [],
+                    "default",
+                    []
+                  |),
+                  []
+                |))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -39,14 +48,14 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition clone (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
-            Value.DeclaredButUndefined,
+            M.of_value (| Value.DeclaredButUndefined |),
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
@@ -93,7 +102,20 @@ Module Impl_updated_incrementer_Env.
           unimplemented!()
       }
   *)
-  Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+  Definition set_code_hash (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [ E ], [ self; code_hash ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let code_hash := M.alloc (| code_hash |) in
+        M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_set_code_hash :
     M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
@@ -114,7 +136,18 @@ Module Impl_updated_incrementer_Incrementer.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (τ : list Ty.t) (α : list A.t) : M :=
+    match τ, α with
+    | [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            M.get_function (| "core::panicking::panic", [] |),
+            [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+          |)
+        |)))
+    | _, _ => M.impossible
+    end.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -123,7 +156,7 @@ Module Impl_updated_incrementer_Incrementer.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition env (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -146,7 +179,7 @@ Module Impl_updated_incrementer_Incrementer.
           unreachable!("Constructors are not called when upgrading using `set_code_hash`.")
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -156,7 +189,11 @@ Module Impl_updated_incrementer_Incrementer.
               "core::panicking::unreachable_display",
               [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
             |),
-            [ Value.String "Constructors are not called when upgrading using `set_code_hash`." ]
+            [
+              M.of_value (|
+                Value.String "Constructors are not called when upgrading using `set_code_hash`."
+              |)
+            ]
           |)
         |)))
     | _, _ => M.impossible
@@ -173,7 +210,7 @@ Module Impl_updated_incrementer_Incrementer.
           );
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inc (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -186,7 +223,10 @@ Module Impl_updated_incrementer_Incrementer.
                 "updated_incrementer::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 4 |) |) in
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U32, M.read (| β |), M.of_value (| Value.Integer 4 |) |)
+            |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -197,46 +237,59 @@ Module Impl_updated_incrementer_Incrementer.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The new count is " |);
-                                M.read (|
-                                  Value.String
-                                    ", it was modified using the updated `new_incrementer` code.
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "The new count is " |)
+                                    |));
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String
+                                          ", it was modified using the updated `new_incrementer` code.
 "
-                                |)
-                              ]
-                          |));
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "updated_incrementer::Incrementer",
-                                      "count"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "u32" ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "updated_incrementer::Incrementer",
+                                          "count"
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -248,7 +301,7 @@ Module Impl_updated_incrementer_Incrementer.
           self.count
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -273,7 +326,7 @@ Module Impl_updated_incrementer_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition set_code (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; code_hash ] =>
       ltac:(M.monadic
@@ -312,8 +365,8 @@ Module Impl_updated_incrementer_Incrementer.
                       code_hash
                     ]
                   |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -331,8 +384,10 @@ Module Impl_updated_incrementer_Incrementer.
                                       |),
                                       [
                                         M.read (|
-                                          Value.String
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          M.of_value (|
+                                            Value.String
+                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -340,7 +395,8 @@ Module Impl_updated_incrementer_Incrementer.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)
             |) in
@@ -354,37 +410,47 @@ Module Impl_updated_incrementer_Incrementer.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Switched code hash to " |);
-                                M.read (| Value.String ".
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "Switched code hash to " |)
+                                    |));
+                                  A.to_value (M.read (| M.of_value (| Value.String ".
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-                                  |),
-                                  [ code_hash ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                      |),
+                                      [ code_hash ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

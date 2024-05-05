@@ -38,19 +38,19 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                       |)))
                 ]
@@ -82,20 +82,21 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        M.of_value (| Value.DeclaredButUndefined |),
+                        [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                        ]
                       |)))
                 ]
               |)
@@ -127,7 +128,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -156,11 +157,16 @@ Module net.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -257,7 +263,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -352,7 +358,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -380,7 +386,11 @@ Module net.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -478,7 +488,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -516,7 +526,12 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Tuple
+                              [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                          |)
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -634,14 +649,14 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -671,7 +686,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -724,15 +739,15 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -751,7 +766,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -807,14 +822,14 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -844,7 +859,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -897,15 +912,15 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -924,7 +939,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1029,7 +1044,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1056,7 +1071,7 @@ Module net.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1084,12 +1099,12 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -1106,7 +1121,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1127,7 +1142,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -1166,7 +1181,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1183,31 +1198,35 @@ Module net.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "InterfaceLocal" |) |)));
+                          M.alloc (|
+                            M.read (| M.of_value (| Value.String "InterfaceLocal" |) |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "LinkLocal" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "LinkLocal" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "RealmLocal" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "RealmLocal" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "AdminLocal" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "AdminLocal" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "SiteLocal" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "SiteLocal" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "OrganizationLocal" |) |)));
+                          M.alloc (|
+                            M.read (| M.of_value (| Value.String "OrganizationLocal" |) |)
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Global" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "Global" |) |) |)))
                     ]
                   |)
                 |)
@@ -1235,7 +1254,7 @@ Module net.
               }
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unspecified (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1301,7 +1320,7 @@ Module net.
               }
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_loopback (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1366,7 +1385,7 @@ Module net.
               }
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_global (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1431,7 +1450,7 @@ Module net.
               }
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_multicast (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1497,7 +1516,7 @@ Module net.
               }
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_documentation (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1563,7 +1582,7 @@ Module net.
               }
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_benchmarking (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1626,7 +1645,7 @@ Module net.
               matches!(self, IpAddr::V4(_))
           }
       *)
-      Definition is_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ipv4 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1644,8 +1663,8 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1659,7 +1678,7 @@ Module net.
               matches!(self, IpAddr::V6(_))
           }
       *)
-      Definition is_ipv6 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ipv6 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1677,8 +1696,8 @@ Module net.
                           "core::net::ip_addr::IpAddr::V6",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -1695,7 +1714,7 @@ Module net.
               }
           }
       *)
-      Definition to_canonical (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_canonical (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1752,7 +1771,7 @@ Module net.
               Ipv4Addr { octets: [a, b, c, d] }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ a; b; c; d ] =>
           ltac:(M.monadic
@@ -1760,12 +1779,23 @@ Module net.
             let b := M.alloc (| b |) in
             let c := M.alloc (| c |) in
             let d := M.alloc (| d |) in
-            Value.StructRecord
-              "core::net::ip_addr::Ipv4Addr"
-              [
-                ("octets",
-                  Value.Array [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::ip_addr::Ipv4Addr"
+                [
+                  ("octets",
+                    A.to_value
+                      (M.of_value (|
+                        Value.Array
+                          [
+                            A.to_value (M.read (| a |));
+                            A.to_value (M.read (| b |));
+                            A.to_value (M.read (| c |));
+                            A.to_value (M.read (| d |))
+                          ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1773,8 +1803,8 @@ Module net.
       
       (*     pub const BITS: u32 = 32; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 32 |))).
+      Definition value_BITS : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 32 |) |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -1783,7 +1813,7 @@ Module net.
               u32::from_be_bytes(self.octets)
           }
       *)
-      Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1810,20 +1840,23 @@ Module net.
               Ipv4Addr { octets: bits.to_be_bytes() }
           }
       *)
-      Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| bits |) in
-            Value.StructRecord
-              "core::net::ip_addr::Ipv4Addr"
-              [
-                ("octets",
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u32", "to_be_bytes", [] |),
-                    [ M.read (| bits |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::ip_addr::Ipv4Addr"
+                [
+                  ("octets",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (| Ty.path "u32", "to_be_bytes", [] |),
+                        [ M.read (| bits |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1831,17 +1864,17 @@ Module net.
       
       (*     pub const LOCALHOST: Self = Ipv4Addr::new(127, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_LOCALHOST : Value.t :=
+      Definition value_LOCALHOST : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U8 127;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 1
+                  M.of_value (| Value.Integer 127 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 1 |)
                 ]
               |)
             |))).
@@ -1851,17 +1884,17 @@ Module net.
       
       (*     pub const UNSPECIFIED: Self = Ipv4Addr::new(0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_UNSPECIFIED : Value.t :=
+      Definition value_UNSPECIFIED : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |)
                 ]
               |)
             |))).
@@ -1871,17 +1904,17 @@ Module net.
       
       (*     pub const BROADCAST: Self = Ipv4Addr::new(255, 255, 255, 255); *)
       (* Ty.path "core::net::ip_addr::Ipv4Addr" *)
-      Definition value_BROADCAST : Value.t :=
+      Definition value_BROADCAST : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255
+                  M.of_value (| Value.Integer 255 |);
+                  M.of_value (| Value.Integer 255 |);
+                  M.of_value (| Value.Integer 255 |);
+                  M.of_value (| Value.Integer 255 |)
                 ]
               |)
             |))).
@@ -1894,7 +1927,7 @@ Module net.
               self.octets
           }
       *)
-      Definition octets (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition octets (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1916,13 +1949,13 @@ Module net.
               u32::from_be_bytes(self.octets) == 0
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unspecified (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
                 [
                   M.read (|
@@ -1933,8 +1966,9 @@ Module net.
                     |)
                   |)
                 ]
-              |))
-              (Value.Integer Integer.U32 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1946,13 +1980,13 @@ Module net.
               self.octets()[0] == 127
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_loopback (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.Pure.eq (|
+              M.read (|
                 M.SubPointer.get_array_field (|
                   M.alloc (|
                     M.call_closure (|
@@ -1964,10 +1998,11 @@ Module net.
                       [ M.read (| self |) ]
                     |)
                   |),
-                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                  M.alloc (| M.of_value (| Value.Integer 0 |) |)
                 |)
-              |))
-              (Value.Integer Integer.U8 127)))
+              |),
+              M.of_value (| Value.Integer 127 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1983,7 +2018,7 @@ Module net.
               }
           }
       *)
-      Definition is_private (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_private (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2006,50 +2041,38 @@ Module net.
                       (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 10
-                        |) in
-                      M.alloc (| Value.Bool true |)));
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 10 |) in
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 172
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 172 |) in
                       let b := M.copy (| γ0_1 |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.Pure.ge (M.read (| b |)) (Value.Integer Integer.U8 16)
+                          BinOp.Pure.ge (| M.read (| b |), M.of_value (| Value.Integer 16 |) |)
                         |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.Pure.le (M.read (| b |)) (Value.Integer Integer.U8 31)
+                          BinOp.Pure.le (| M.read (| b |), M.of_value (| Value.Integer 31 |) |)
                         |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.Bool true |)));
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 192
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 192 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 168
-                        |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 168 |) in
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -2063,7 +2086,7 @@ Module net.
               matches!(self.octets(), [169, 254, ..])
           }
       *)
-      Definition is_link_local (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_link_local (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2087,17 +2110,11 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 169
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 169 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 254
-                        |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 254 |) in
+                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -2122,13 +2139,13 @@ Module net.
                   || self.is_broadcast())
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_global (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (LogicalOp.or (|
+            UnOp.Pure.not (|
+              LogicalOp.or (|
                 LogicalOp.or (|
                   LogicalOp.or (|
                     LogicalOp.or (|
@@ -2137,8 +2154,8 @@ Module net.
                           LogicalOp.or (|
                             LogicalOp.or (|
                               LogicalOp.or (|
-                                BinOp.Pure.eq
-                                  (M.read (|
+                                BinOp.Pure.eq (|
+                                  M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -2150,10 +2167,11 @@ Module net.
                                           [ M.read (| self |) ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                     |)
-                                  |))
-                                  (Value.Integer Integer.U8 0),
+                                  |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -2197,8 +2215,8 @@ Module net.
                         ltac:(M.monadic
                           (LogicalOp.and (|
                             LogicalOp.and (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.Pure.eq (|
+                                M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2210,13 +2228,14 @@ Module net.
                                         [ M.read (| self |) ]
                                       |)
                                     |),
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                                   |)
-                                |))
-                                (Value.Integer Integer.U8 192),
+                                |),
+                                M.of_value (| Value.Integer 192 |)
+                              |),
                               ltac:(M.monadic
-                                (BinOp.Pure.eq
-                                  (M.read (|
+                                (BinOp.Pure.eq (|
+                                  M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -2228,14 +2247,15 @@ Module net.
                                           [ M.read (| self |) ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer Integer.Usize 1 |)
+                                      M.alloc (| M.of_value (| Value.Integer 1 |) |)
                                     |)
-                                  |))
-                                  (Value.Integer Integer.U8 0)))
+                                  |),
+                                  M.of_value (| Value.Integer 0 |)
+                                |)))
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.eq
-                                (M.read (|
+                              (BinOp.Pure.eq (|
+                                M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2247,10 +2267,11 @@ Module net.
                                         [ M.read (| self |) ]
                                       |)
                                     |),
-                                    M.alloc (| Value.Integer Integer.Usize 2 |)
+                                    M.alloc (| M.of_value (| Value.Integer 2 |) |)
                                   |)
-                                |))
-                                (Value.Integer Integer.U8 0)))
+                                |),
+                                M.of_value (| Value.Integer 0 |)
+                              |)))
                           |)))
                       |),
                       ltac:(M.monadic
@@ -2292,7 +2313,8 @@ Module net.
                     |),
                     [ M.read (| self |) ]
                   |)))
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2303,14 +2325,14 @@ Module net.
               self.octets()[0] == 100 && (self.octets()[1] & 0b1100_0000 == 0b0100_0000)
           }
       *)
-      Definition is_shared (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_shared (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -2322,14 +2344,15 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U8 100),
+                |),
+                M.of_value (| Value.Integer 100 |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (BinOp.Pure.bit_and
-                    (M.read (|
+                (BinOp.Pure.eq (|
+                  BinOp.Pure.bit_and (|
+                    M.read (|
                       M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
@@ -2341,11 +2364,13 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)
                       |)
-                    |))
-                    (Value.Integer Integer.U8 192))
-                  (Value.Integer Integer.U8 64)))
+                    |),
+                    M.of_value (| Value.Integer 192 |)
+                  |),
+                  M.of_value (| Value.Integer 64 |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2357,14 +2382,14 @@ Module net.
               self.octets()[0] == 198 && (self.octets()[1] & 0xfe) == 18
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_benchmarking (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -2376,14 +2401,15 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U8 198),
+                |),
+                M.of_value (| Value.Integer 198 |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (BinOp.Pure.bit_and
-                    (M.read (|
+                (BinOp.Pure.eq (|
+                  BinOp.Pure.bit_and (|
+                    M.read (|
                       M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
@@ -2395,11 +2421,13 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)
                       |)
-                    |))
-                    (Value.Integer Integer.U8 254))
-                  (Value.Integer Integer.U8 18)))
+                    |),
+                    M.of_value (| Value.Integer 254 |)
+                  |),
+                  M.of_value (| Value.Integer 18 |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2412,15 +2440,15 @@ Module net.
               self.octets()[0] & 240 == 240 && !self.is_broadcast()
           }
       *)
-      Definition is_reserved (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_reserved (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (BinOp.Pure.bit_and
-                  (M.read (|
+              BinOp.Pure.eq (|
+                BinOp.Pure.bit_and (|
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
@@ -2432,21 +2460,24 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| M.of_value (| Value.Integer 0 |) |)
                     |)
-                  |))
-                  (Value.Integer Integer.U8 240))
-                (Value.Integer Integer.U8 240),
+                  |),
+                  M.of_value (| Value.Integer 240 |)
+                |),
+                M.of_value (| Value.Integer 240 |)
+              |),
               ltac:(M.monadic
-                (UnOp.Pure.not
-                  (M.call_closure (|
+                (UnOp.Pure.not (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv4Addr",
                       "is_broadcast",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2458,14 +2489,14 @@ Module net.
               self.octets()[0] >= 224 && self.octets()[0] <= 239
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_multicast (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.ge
-                (M.read (|
+              BinOp.Pure.ge (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -2477,13 +2508,14 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U8 224),
+                |),
+                M.of_value (| Value.Integer 224 |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.le
-                  (M.read (|
+                (BinOp.Pure.le (|
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
@@ -2495,10 +2527,11 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| M.of_value (| Value.Integer 0 |) |)
                     |)
-                  |))
-                  (Value.Integer Integer.U8 239)))
+                  |),
+                  M.of_value (| Value.Integer 239 |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2511,13 +2544,13 @@ Module net.
               u32::from_be_bytes(self.octets()) == u32::from_be_bytes(Self::BROADCAST.octets())
           }
       *)
-      Definition is_broadcast (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_broadcast (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -2529,8 +2562,8 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u32", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -2542,7 +2575,8 @@ Module net.
                     [ M.get_constant (| "core::net::ip_addr::BROADCAST" |) ]
                   |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2554,7 +2588,7 @@ Module net.
               matches!(self.octets(), [192, 0, 2, _] | [198, 51, 100, _] | [203, 0, 113, _])
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_documentation (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2586,19 +2620,19 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 192
+                                  Value.Integer 192
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 0
+                                  Value.Integer 0
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 2
+                                  Value.Integer 2
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
@@ -2608,19 +2642,19 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 198
+                                  Value.Integer 198
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 51
+                                  Value.Integer 51
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 100
+                                  Value.Integer 100
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
@@ -2630,29 +2664,30 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 203
+                                  Value.Integer 203
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 0
+                                  Value.Integer 0
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 113
+                                  Value.Integer 113
                                 |) in
-                              Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
-                              | [] => M.alloc (| Value.Bool true |)
+                              | [] => M.alloc (| M.of_value (| Value.Bool true |) |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -2668,7 +2703,7 @@ Module net.
               Ipv6Addr { octets: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, a, b, c, d] }
           }
       *)
-      Definition to_ipv6_compatible (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ipv6_compatible (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2697,30 +2732,35 @@ Module net.
                       let c := M.copy (| γ0_2 |) in
                       let d := M.copy (| γ0_3 |) in
                       M.alloc (|
-                        Value.StructRecord
-                          "core::net::ip_addr::Ipv6Addr"
-                          [
-                            ("octets",
-                              Value.Array
-                                [
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  M.read (| a |);
-                                  M.read (| b |);
-                                  M.read (| c |);
-                                  M.read (| d |)
-                                ])
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "core::net::ip_addr::Ipv6Addr"
+                            [
+                              ("octets",
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.read (| a |));
+                                        A.to_value (M.read (| b |));
+                                        A.to_value (M.read (| c |));
+                                        A.to_value (M.read (| d |))
+                                      ]
+                                  |)))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -2737,7 +2777,7 @@ Module net.
               Ipv6Addr { octets: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0xFF, a, b, c, d] }
           }
       *)
-      Definition to_ipv6_mapped (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ipv6_mapped (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2766,30 +2806,35 @@ Module net.
                       let c := M.copy (| γ0_2 |) in
                       let d := M.copy (| γ0_3 |) in
                       M.alloc (|
-                        Value.StructRecord
-                          "core::net::ip_addr::Ipv6Addr"
-                          [
-                            ("octets",
-                              Value.Array
-                                [
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 255;
-                                  Value.Integer Integer.U8 255;
-                                  M.read (| a |);
-                                  M.read (| b |);
-                                  M.read (| c |);
-                                  M.read (| d |)
-                                ])
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "core::net::ip_addr::Ipv6Addr"
+                            [
+                              ("octets",
+                                A.to_value
+                                  (M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 0 |));
+                                        A.to_value (M.of_value (| Value.Integer 255 |));
+                                        A.to_value (M.of_value (| Value.Integer 255 |));
+                                        A.to_value (M.read (| a |));
+                                        A.to_value (M.read (| b |));
+                                        A.to_value (M.read (| c |));
+                                        A.to_value (M.read (| d |))
+                                      ]
+                                  |)))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -2812,7 +2857,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -2888,7 +2933,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -2923,12 +2968,14 @@ Module net.
               IpAddr::V4(ipv4)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ipv4 ] =>
           ltac:(M.monadic
             (let ipv4 := M.alloc (| ipv4 |) in
-            Value.StructTuple "core::net::ip_addr::IpAddr::V4" [ M.read (| ipv4 |) ]))
+            M.of_value (|
+              Value.StructTuple "core::net::ip_addr::IpAddr::V4" [ A.to_value (M.read (| ipv4 |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2948,12 +2995,14 @@ Module net.
               IpAddr::V6(ipv6)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ipv6 ] =>
           ltac:(M.monadic
             (let ipv6 := M.alloc (| ipv6 |) in
-            Value.StructTuple "core::net::ip_addr::IpAddr::V6" [ M.read (| ipv6 |) ]))
+            M.of_value (|
+              Value.StructTuple "core::net::ip_addr::IpAddr::V6" [ A.to_value (M.read (| ipv6 |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2987,7 +3036,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -3006,7 +3055,7 @@ Module net.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3073,75 +3122,89 @@ Module net.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "." |);
-                                        M.read (| Value.String "." |);
-                                        M.read (| Value.String "." |)
-                                      ]
-                                  |));
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "" |) |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "." |) |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "." |) |));
+                                          A.to_value
+                                            (M.read (| M.of_value (| Value.String "." |) |))
+                                        ]
+                                    |)
+                                  |)
+                                |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_array_field (|
-                                              octets,
-                                              M.alloc (| Value.Integer Integer.Usize 0 |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_array_field (|
-                                              octets,
-                                              M.alloc (| Value.Integer Integer.Usize 1 |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_array_field (|
-                                              octets,
-                                              M.alloc (| Value.Integer Integer.Usize 2 |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u8" ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_array_field (|
-                                              octets,
-                                              M.alloc (| Value.Integer Integer.Usize 3 |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_array_field (|
+                                                  octets,
+                                                  M.alloc (| M.of_value (| Value.Integer 0 |) |)
+                                                |)
+                                              ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_array_field (|
+                                                  octets,
+                                                  M.alloc (| M.of_value (| Value.Integer 1 |) |)
+                                                |)
+                                              ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_array_field (|
+                                                  octets,
+                                                  M.alloc (| M.of_value (| Value.Integer 2 |) |)
+                                                |)
+                                              ]
+                                            |));
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                "new_display",
+                                                [ Ty.path "u8" ]
+                                              |),
+                                              [
+                                                M.SubPointer.get_array_field (|
+                                                  octets,
+                                                  M.alloc (| M.of_value (| Value.Integer 3 |) |)
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -3189,75 +3252,97 @@ Module net.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (| Value.String "" |);
-                                              M.read (| Value.String "." |);
-                                              M.read (| Value.String "." |);
-                                              M.read (| Value.String "." |)
-                                            ]
-                                        |));
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "" |) |));
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "." |) |));
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "." |) |));
+                                                A.to_value
+                                                  (M.read (| M.of_value (| Value.String "." |) |))
+                                              ]
+                                          |)
+                                        |)
+                                      |);
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u8" ]
-                                                |),
-                                                [
-                                                  M.SubPointer.get_array_field (|
-                                                    octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 0 |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u8" ]
-                                                |),
-                                                [
-                                                  M.SubPointer.get_array_field (|
-                                                    octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 1 |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u8" ]
-                                                |),
-                                                [
-                                                  M.SubPointer.get_array_field (|
-                                                    octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 2 |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_display",
-                                                  [ Ty.path "u8" ]
-                                                |),
-                                                [
-                                                  M.SubPointer.get_array_field (|
-                                                    octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 3 |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Integer 0 |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |));
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Integer 1 |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |));
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Integer 2 |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |));
+                                                A.to_value
+                                                  (M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [ Ty.path "u8" ]
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_array_field (|
+                                                        octets,
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Integer 3 |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -3303,7 +3388,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -3341,7 +3426,7 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3382,7 +3467,7 @@ Module net.
                           "core::net::ip_addr::IpAddr::V6",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -3408,7 +3493,7 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3449,7 +3534,7 @@ Module net.
                           "core::net::ip_addr::IpAddr::V6",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| M.of_value (| Value.Bool false |) |)))
                 ]
               |)
             |)))
@@ -3472,26 +3557,29 @@ Module net.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::cmp::Ord",
-                    Ty.path "core::net::ip_addr::Ipv4Addr",
-                    [],
-                    "cmp",
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "core::net::ip_addr::Ipv4Addr",
+                        [],
+                        "cmp",
+                        []
+                      |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3514,7 +3602,7 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3556,9 +3644,16 @@ Module net.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::cmp::Ordering::Greater" []
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -3585,7 +3680,7 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3627,9 +3722,14 @@ Module net.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -3653,7 +3753,7 @@ Module net.
               self.octets.cmp(&other.octets)
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3699,7 +3799,7 @@ Module net.
               ip.to_bits()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip ] =>
           ltac:(M.monadic
@@ -3727,7 +3827,7 @@ Module net.
               Ipv4Addr::from_bits(ip)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip ] =>
           ltac:(M.monadic
@@ -3759,12 +3859,16 @@ Module net.
               Ipv4Addr { octets }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::ip_addr::Ipv4Addr"
+                [ ("octets", A.to_value (M.read (| octets |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3784,25 +3888,28 @@ Module net.
               IpAddr::V4(Ipv4Addr::from(octets))
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructTuple
-              "core::net::ip_addr::IpAddr::V4"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "core::net::ip_addr::Ipv4Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| octets |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::ip_addr::IpAddr::V4"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "core::net::ip_addr::Ipv4Addr",
+                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                        "from",
+                        []
+                      |),
+                      [ M.read (| octets |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3817,25 +3924,28 @@ Module net.
               IpAddr::V6(Ipv6Addr::from(octets))
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructTuple
-              "core::net::ip_addr::IpAddr::V6"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "core::net::ip_addr::Ipv6Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| octets |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::ip_addr::IpAddr::V6"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                        "from",
+                        []
+                      |),
+                      [ M.read (| octets |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3869,7 +3979,7 @@ Module net.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ a; b; c; d; e; f; g; h ] =>
           ltac:(M.monadic
@@ -3884,58 +3994,71 @@ Module net.
             M.read (|
               let addr16 :=
                 M.alloc (|
-                  Value.Array
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| a |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| b |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| c |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| d |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| e |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| f |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| g |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                        [ M.read (| h |) ]
-                      |)
-                    ]
+                  M.of_value (|
+                    Value.Array
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| a |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| b |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| c |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| d |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| e |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| f |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| g |) ]
+                          |));
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                            [ M.read (| h |) ]
+                          |))
+                      ]
+                  |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "core::net::ip_addr::Ipv6Addr"
-                  [
-                    ("octets",
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::intrinsics::transmute",
-                          [
-                            Ty.apply (Ty.path "array") [ Ty.path "u16" ];
-                            Ty.apply (Ty.path "array") [ Ty.path "u8" ]
-                          ]
-                        |),
-                        [ M.read (| addr16 |) ]
-                      |))
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "core::net::ip_addr::Ipv6Addr"
+                    [
+                      ("octets",
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_function (|
+                              "core::intrinsics::transmute",
+                              [
+                                Ty.apply (Ty.path "array") [ Ty.path "u16" ];
+                                Ty.apply (Ty.path "array") [ Ty.path "u8" ]
+                              ]
+                            |),
+                            [ M.read (| addr16 |) ]
+                          |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -3945,8 +4068,8 @@ Module net.
       
       (*     pub const BITS: u32 = 128; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 128 |))).
+      Definition value_BITS : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 128 |) |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -3955,7 +4078,7 @@ Module net.
               u128::from_be_bytes(self.octets)
           }
       *)
-      Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3982,20 +4105,23 @@ Module net.
               Ipv6Addr { octets: bits.to_be_bytes() }
           }
       *)
-      Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| bits |) in
-            Value.StructRecord
-              "core::net::ip_addr::Ipv6Addr"
-              [
-                ("octets",
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "u128", "to_be_bytes", [] |),
-                    [ M.read (| bits |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::ip_addr::Ipv6Addr"
+                [
+                  ("octets",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (| Ty.path "u128", "to_be_bytes", [] |),
+                        [ M.read (| bits |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4003,21 +4129,21 @@ Module net.
       
       (*     pub const LOCALHOST: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 1); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
-      Definition value_LOCALHOST : Value.t :=
+      Definition value_LOCALHOST : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 1
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 1 |)
                 ]
               |)
             |))).
@@ -4027,21 +4153,21 @@ Module net.
       
       (*     pub const UNSPECIFIED: Self = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0); *)
       (* Ty.path "core::net::ip_addr::Ipv6Addr" *)
-      Definition value_UNSPECIFIED : Value.t :=
+      Definition value_UNSPECIFIED : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |);
+                  M.of_value (| Value.Integer 0 |)
                 ]
               |)
             |))).
@@ -4067,7 +4193,7 @@ Module net.
               ]
           }
       *)
-      Definition segments (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition segments (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4114,41 +4240,51 @@ Module net.
                       let g := M.copy (| γ0_6 |) in
                       let h := M.copy (| γ0_7 |) in
                       M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| a |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| b |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| c |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| d |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| e |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| f |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| g |) ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                              [ M.read (| h |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.Array
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| a |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| b |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| c |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| d |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| e |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| f |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| g |) ]
+                                |));
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                                  [ M.read (| h |) ]
+                                |))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -4163,13 +4299,13 @@ Module net.
               u128::from_be_bytes(self.octets()) == u128::from_be_bytes(Ipv6Addr::UNSPECIFIED.octets())
           }
       *)
-      Definition is_unspecified (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unspecified (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -4181,8 +4317,8 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -4194,7 +4330,8 @@ Module net.
                     [ M.get_constant (| "core::net::ip_addr::UNSPECIFIED" |) ]
                   |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4206,13 +4343,13 @@ Module net.
               u128::from_be_bytes(self.octets()) == u128::from_be_bytes(Ipv6Addr::LOCALHOST.octets())
           }
       *)
-      Definition is_loopback (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_loopback (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.Pure.eq (|
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -4224,8 +4361,8 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (| Ty.path "u128", "from_be_bytes", [] |),
                 [
                   M.call_closure (|
@@ -4237,7 +4374,8 @@ Module net.
                     [ M.get_constant (| "core::net::ip_addr::LOCALHOST" |) ]
                   |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4272,13 +4410,13 @@ Module net.
                   || self.is_unicast_link_local())
           }
       *)
-      Definition is_global (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_global (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (LogicalOp.or (|
+            UnOp.Pure.not (|
+              LogicalOp.or (|
                 LogicalOp.or (|
                   LogicalOp.or (|
                     LogicalOp.or (|
@@ -4331,35 +4469,37 @@ Module net.
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_0 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_1 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_2 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_3 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_4 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_5 |),
-                                            Value.Integer Integer.U16 65535
+                                            Value.Integer 65535
                                           |) in
-                                        M.alloc (| Value.Bool true |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                        M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Bool false |) |)))
                                   ]
                                 |)
                               |)))
@@ -4391,20 +4531,22 @@ Module net.
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_0 |),
-                                          Value.Integer Integer.U16 100
+                                          Value.Integer 100
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_1 |),
-                                          Value.Integer Integer.U16 65435
+                                          Value.Integer 65435
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_2 |),
-                                          Value.Integer Integer.U16 1
+                                          Value.Integer 1
                                         |) in
-                                      M.alloc (| Value.Bool true |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                      M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (| M.of_value (| Value.Bool false |) |)))
                                 ]
                               |)
                             |)))
@@ -4436,25 +4578,26 @@ Module net.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
-                                        Value.Integer Integer.U16 256
+                                        Value.Integer 256
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_1 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_2 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_3 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
-                                    M.alloc (| Value.Bool true |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                               ]
                             |)
                           |)))
@@ -4487,33 +4630,35 @@ Module net.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
-                                        Value.Integer Integer.U16 8193
+                                        Value.Integer 8193
                                       |) in
                                     let b := M.copy (| γ0_1 |) in
                                     let γ :=
                                       M.alloc (|
-                                        BinOp.Pure.lt
-                                          (M.read (| b |))
-                                          (Value.Integer Integer.U16 512)
+                                        BinOp.Pure.lt (|
+                                          M.read (| b |),
+                                          M.of_value (| Value.Integer 512 |)
+                                        |)
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Bool true |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
                               ]
                             |)
                           |),
                           ltac:(M.monadic
-                            (UnOp.Pure.not
-                              (LogicalOp.or (|
+                            (UnOp.Pure.not (|
+                              LogicalOp.or (|
                                 LogicalOp.or (|
                                   LogicalOp.or (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.eq
-                                        (M.call_closure (|
+                                      BinOp.Pure.eq (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "u128",
                                             "from_be_bytes",
@@ -4529,13 +4674,14 @@ Module net.
                                               [ M.read (| self |) ]
                                             |)
                                           ]
-                                        |))
-                                        (Value.Integer
-                                          Integer.U128
-                                          42540488241204005274814694018844196865),
+                                        |),
+                                        M.of_value (|
+                                          Value.Integer 42540488241204005274814694018844196865
+                                        |)
+                                      |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq
-                                          (M.call_closure (|
+                                        (BinOp.Pure.eq (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "u128",
                                               "from_be_bytes",
@@ -4551,10 +4697,11 @@ Module net.
                                                 [ M.read (| self |) ]
                                               |)
                                             ]
-                                          |))
-                                          (Value.Integer
-                                            Integer.U128
-                                            42540488241204005274814694018844196866)))
+                                          |),
+                                          M.of_value (|
+                                            Value.Integer 42540488241204005274814694018844196866
+                                          |)
+                                        |)))
                                     |),
                                     ltac:(M.monadic
                                       (M.read (|
@@ -4591,16 +4738,17 @@ Module net.
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ0_0 |),
-                                                    Value.Integer Integer.U16 8193
+                                                    Value.Integer 8193
                                                   |) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ0_1 |),
-                                                    Value.Integer Integer.U16 3
+                                                    Value.Integer 3
                                                   |) in
-                                                M.alloc (| Value.Bool true |)));
+                                                M.alloc (| M.of_value (| Value.Bool true |) |)));
                                             fun γ =>
-                                              ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                              ltac:(M.monadic
+                                                (M.alloc (| M.of_value (| Value.Bool false |) |)))
                                           ]
                                         |)
                                       |)))
@@ -4633,20 +4781,22 @@ Module net.
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_0 |),
-                                                  Value.Integer Integer.U16 8193
+                                                  Value.Integer 8193
                                                 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_1 |),
-                                                  Value.Integer Integer.U16 4
+                                                  Value.Integer 4
                                                 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_2 |),
-                                                  Value.Integer Integer.U16 274
+                                                  Value.Integer 274
                                                 |) in
-                                              M.alloc (| Value.Bool true |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                              M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| M.of_value (| Value.Bool false |) |)))
                                         ]
                                       |)
                                     |)))
@@ -4678,14 +4828,15 @@ Module net.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ0_0 |),
-                                                Value.Integer Integer.U16 8193
+                                                Value.Integer 8193
                                               |) in
                                             let b := M.copy (| γ0_1 |) in
                                             let γ :=
                                               M.alloc (|
-                                                BinOp.Pure.ge
-                                                  (M.read (| b |))
-                                                  (Value.Integer Integer.U16 32)
+                                                BinOp.Pure.ge (|
+                                                  M.read (| b |),
+                                                  M.of_value (| Value.Integer 32 |)
+                                                |)
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4694,21 +4845,25 @@ Module net.
                                               |) in
                                             let γ :=
                                               M.alloc (|
-                                                BinOp.Pure.le
-                                                  (M.read (| b |))
-                                                  (Value.Integer Integer.U16 47)
+                                                BinOp.Pure.le (|
+                                                  M.read (| b |),
+                                                  M.of_value (| Value.Integer 47 |)
+                                                |)
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            M.alloc (| Value.Bool true |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                            M.alloc (| M.of_value (| Value.Bool true |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Bool false |) |)))
                                       ]
                                     |)
                                   |)))
-                              |))))
+                              |)
+                            |)))
                         |)))
                     |),
                     ltac:(M.monadic
@@ -4740,7 +4895,8 @@ Module net.
                     |),
                     [ M.read (| self |) ]
                   |)))
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4751,14 +4907,14 @@ Module net.
               (self.segments()[0] & 0xfe00) == 0xfc00
           }
       *)
-      Definition is_unique_local (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unique_local (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (BinOp.Pure.bit_and
-                (M.read (|
+            BinOp.Pure.eq (|
+              BinOp.Pure.bit_and (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -4770,11 +4926,13 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U16 65024))
-              (Value.Integer Integer.U16 64512)))
+                |),
+                M.of_value (| Value.Integer 65024 |)
+              |),
+              M.of_value (| Value.Integer 64512 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4786,20 +4944,21 @@ Module net.
               !self.is_multicast()
           }
       *)
-      Definition is_unicast (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unicast (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.Pure.not (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::net::ip_addr::Ipv6Addr",
                   "is_multicast",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4810,14 +4969,14 @@ Module net.
               (self.segments()[0] & 0xffc0) == 0xfe80
           }
       *)
-      Definition is_unicast_link_local (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unicast_link_local (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (BinOp.Pure.bit_and
-                (M.read (|
+            BinOp.Pure.eq (|
+              BinOp.Pure.bit_and (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -4829,11 +4988,13 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U16 65472))
-              (Value.Integer Integer.U16 65152)))
+                |),
+                M.of_value (| Value.Integer 65472 |)
+              |),
+              M.of_value (| Value.Integer 65152 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4845,14 +5006,14 @@ Module net.
               (self.segments()[0] == 0x2001) && (self.segments()[1] == 0xdb8)
           }
       *)
-      Definition is_documentation (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_documentation (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -4864,13 +5025,14 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U16 8193),
+                |),
+                M.of_value (| Value.Integer 8193 |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
@@ -4882,10 +5044,11 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 1 |)
+                      M.alloc (| M.of_value (| Value.Integer 1 |) |)
                     |)
-                  |))
-                  (Value.Integer Integer.U16 3512)))
+                  |),
+                  M.of_value (| Value.Integer 3512 |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -4898,15 +5061,15 @@ Module net.
               (self.segments()[0] == 0x2001) && (self.segments()[1] == 0x2) && (self.segments()[2] == 0)
           }
       *)
-      Definition is_benchmarking (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_benchmarking (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
@@ -4918,13 +5081,14 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| M.of_value (| Value.Integer 0 |) |)
                     |)
-                  |))
-                  (Value.Integer Integer.U16 8193),
+                  |),
+                  M.of_value (| Value.Integer 8193 |)
+                |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_array_field (|
                         M.alloc (|
                           M.call_closure (|
@@ -4936,14 +5100,15 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)
                       |)
-                    |))
-                    (Value.Integer Integer.U16 2)))
+                    |),
+                    M.of_value (| Value.Integer 2 |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
                         M.call_closure (|
@@ -4955,10 +5120,11 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 2 |)
+                      M.alloc (| M.of_value (| Value.Integer 2 |) |)
                     |)
-                  |))
-                  (Value.Integer Integer.U16 0)))
+                  |),
+                  M.of_value (| Value.Integer 0 |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -4977,7 +5143,7 @@ Module net.
                   && !self.is_benchmarking()
           }
       *)
-      Definition is_unicast_global (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_unicast_global (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4997,70 +5163,76 @@ Module net.
                           [ M.read (| self |) ]
                         |),
                         ltac:(M.monadic
-                          (UnOp.Pure.not
-                            (M.call_closure (|
+                          (UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::net::ip_addr::Ipv6Addr",
                                 "is_loopback",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))))
+                            |)
+                          |)))
                       |),
                       ltac:(M.monadic
-                        (UnOp.Pure.not
-                          (M.call_closure (|
+                        (UnOp.Pure.not (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::net::ip_addr::Ipv6Addr",
                               "is_unicast_link_local",
                               []
                             |),
                             [ M.read (| self |) ]
-                          |))))
+                          |)
+                        |)))
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.call_closure (|
+                      (UnOp.Pure.not (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::net::ip_addr::Ipv6Addr",
                             "is_unique_local",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (UnOp.Pure.not
-                      (M.call_closure (|
+                    (UnOp.Pure.not (|
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::net::ip_addr::Ipv6Addr",
                           "is_unspecified",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.call_closure (|
+                  (UnOp.Pure.not (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
                         "is_documentation",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (UnOp.Pure.not
-                  (M.call_closure (|
+                (UnOp.Pure.not (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::net::ip_addr::Ipv6Addr",
                       "is_benchmarking",
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -5086,14 +5258,14 @@ Module net.
               }
           }
       *)
-      Definition multicast_scope (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition multicast_scope (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5112,8 +5284,8 @@ Module net.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         M.alloc (|
-                          BinOp.Pure.bit_and
-                            (M.read (|
+                          BinOp.Pure.bit_and (|
+                            M.read (|
                               M.SubPointer.get_array_field (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -5125,10 +5297,11 @@ Module net.
                                     [ M.read (| self |) ]
                                   |)
                                 |),
-                                M.alloc (| Value.Integer Integer.Usize 0 |)
+                                M.alloc (| M.of_value (| Value.Integer 0 |) |)
                               |)
-                            |))
-                            (Value.Integer Integer.U16 15)
+                            |),
+                            M.of_value (| Value.Integer 15 |)
+                          |)
                         |),
                         [
                           fun γ =>
@@ -5136,121 +5309,160 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 1
+                                  Value.Integer 1
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 2
+                                  Value.Integer 2
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 3
+                                  Value.Integer 3
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 4
+                                  Value.Integer 4
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 5
+                                  Value.Integer 5
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 8
+                                  Value.Integer 8
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 14
+                                  Value.Integer 14
                                 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    Value.StructTuple
-                                      "core::net::ip_addr::Ipv6MulticastScope::Global"
-                                      []
-                                  ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple
+                                            "core::net::ip_addr::Ipv6MulticastScope::Global"
+                                            []
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                              |)))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -5265,14 +5477,14 @@ Module net.
               (self.segments()[0] & 0xff00) == 0xff00
           }
       *)
-      Definition is_multicast (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_multicast (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (BinOp.Pure.bit_and
-                (M.read (|
+            BinOp.Pure.eq (|
+              BinOp.Pure.bit_and (|
+                M.read (|
                   M.SubPointer.get_array_field (|
                     M.alloc (|
                       M.call_closure (|
@@ -5284,11 +5496,13 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| M.of_value (| Value.Integer 0 |) |)
                   |)
-                |))
-                (Value.Integer Integer.U16 65280))
-              (Value.Integer Integer.U16 65280)))
+                |),
+                M.of_value (| Value.Integer 65280 |)
+              |),
+              M.of_value (| Value.Integer 65280 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5305,7 +5519,7 @@ Module net.
               }
           }
       *)
-      Definition to_ipv4_mapped (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ipv4_mapped (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5342,86 +5556,55 @@ Module net.
                       let γ0_14 := M.SubPointer.get_slice_index (| γ, 14 |) in
                       let γ0_15 := M.SubPointer.get_slice_index (| γ, 15 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_2 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_3 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_4 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_4 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_5 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_5 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_6 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_6 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_7 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_7 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_8 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_8 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_9 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_9 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_10 |),
-                          Value.Integer Integer.U8 255
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_10 |), Value.Integer 255 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_11 |),
-                          Value.Integer Integer.U8 255
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_11 |), Value.Integer 255 |) in
                       let a := M.copy (| γ0_12 |) in
                       let b := M.copy (| γ0_13 |) in
                       let c := M.copy (| γ0_14 |) in
                       let d := M.copy (| γ0_15 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::net::ip_addr::Ipv4Addr",
-                                "new",
-                                []
-                              |),
-                              [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::net::ip_addr::Ipv4Addr",
+                                    "new",
+                                    []
+                                  |),
+                                  [ M.read (| a |); M.read (| b |); M.read (| c |); M.read (| d |) ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -5442,14 +5625,14 @@ Module net.
               }
           }
       *)
-      Definition to_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_ipv4 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -5473,30 +5656,15 @@ Module net.
                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_2 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_3 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_4 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_4 |), Value.Integer 0 |) in
                       M.find_or_pattern (|
                         γ0_5,
                         [
@@ -5505,20 +5673,20 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 0
+                                  Value.Integer 0
                                 |) in
-                              Value.Tuple []));
+                              M.of_value (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 65535
+                                  Value.Integer 65535
                                 |) in
-                              Value.Tuple []))
+                              M.of_value (| Value.Tuple [] |)))
                         ],
-                        M.closure
-                          (fun γ =>
+                        M.closure (|
+                          fun γ =>
                             ltac:(M.monadic
                               match γ with
                               | [] =>
@@ -5563,34 +5731,41 @@ Module net.
                                                 let c := M.copy (| γ0_0 |) in
                                                 let d := M.copy (| γ0_1 |) in
                                                 M.alloc (|
-                                                  Value.StructTuple
-                                                    "core::option::Option::Some"
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (| a |);
-                                                          M.read (| b |);
-                                                          M.read (| c |);
-                                                          M.read (| d |)
-                                                        ]
-                                                      |)
-                                                    ]
+                                                  M.of_value (|
+                                                    Value.StructTuple
+                                                      "core::option::Option::Some"
+                                                      [
+                                                        A.to_value
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::net::ip_addr::Ipv4Addr",
+                                                              "new",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (| a |);
+                                                              M.read (| b |);
+                                                              M.read (| c |);
+                                                              M.read (| d |)
+                                                            ]
+                                                          |))
+                                                      ]
+                                                  |)
                                                 |)))
                                           ]
                                         |)))
                                   ]
                                 |)
                               | _ => M.impossible (||)
-                              end))
+                              end)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -5607,7 +5782,7 @@ Module net.
               IpAddr::V6( *self)
           }
       *)
-      Definition to_canonical (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_canonical (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5617,7 +5792,7 @@ Module net.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -5643,20 +5818,24 @@ Module net.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple
-                                      "core::net::ip_addr::IpAddr::V4"
-                                      [ M.read (| mapped |) ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::net::ip_addr::IpAddr::V4"
+                                        [ A.to_value (M.read (| mapped |)) ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::net::ip_addr::IpAddr::V6"
-                      [ M.read (| M.read (| self |) |) ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::net::ip_addr::IpAddr::V6"
+                        [ A.to_value (M.read (| M.read (| self |) |)) ]
+                    |)
                   |)
                 |)))
             |)))
@@ -5671,7 +5850,7 @@ Module net.
               self.octets
           }
       *)
-      Definition octets (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition octets (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5764,7 +5943,7 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -5774,7 +5953,7 @@ Module net.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -5839,7 +6018,7 @@ Module net.
                               |)
                             |) in
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -5878,25 +6057,39 @@ Module net.
                                           |),
                                           [
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "::ffff:" |) ]
-                                              |));
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.of_value (| Value.String "::ffff:" |)
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |);
                                             (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
-                                                      |),
-                                                      [ ipv4 ]
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.pointer_coercion (|
+                                              M.alloc (|
+                                                M.of_value (|
+                                                  Value.Array
+                                                    [
+                                                      A.to_value
+                                                        (M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_display",
+                                                            [ Ty.path "core::net::ip_addr::Ipv4Addr"
+                                                            ]
+                                                          |),
+                                                          [ ipv4 ]
+                                                        |))
+                                                    ]
+                                                |)
+                                              |)
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -5971,7 +6164,10 @@ Module net.
                                                           "iter",
                                                           []
                                                         |),
-                                                        [ (* Unsize *) M.pointer_coercion segments ]
+                                                        [
+                                                          (* Unsize *)
+                                                          M.pointer_coercion (| segments |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -6036,20 +6232,23 @@ Module net.
                                                                 let γ1_1 := M.read (| γ1_1 |) in
                                                                 let segment := M.copy (| γ1_1 |) in
                                                                 M.match_operator (|
-                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  M.alloc (|
+                                                                    M.of_value (| Value.Tuple [] |)
+                                                                  |),
                                                                   [
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.Pure.eq
-                                                                                (M.read (|
+                                                                              BinOp.Pure.eq (|
+                                                                                M.read (|
                                                                                   segment
-                                                                                |))
-                                                                                (Value.Integer
-                                                                                  Integer.U16
-                                                                                  0)
+                                                                                |),
+                                                                                M.of_value (|
+                                                                                  Value.Integer 0
+                                                                                |)
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -6059,7 +6258,9 @@ Module net.
                                                                         let _ :=
                                                                           M.match_operator (|
                                                                             M.alloc (|
-                                                                              Value.Tuple []
+                                                                              M.of_value (|
+                                                                                Value.Tuple []
+                                                                              |)
                                                                             |),
                                                                             [
                                                                               fun γ =>
@@ -6067,17 +6268,19 @@ Module net.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        BinOp.Pure.eq
-                                                                                          (M.read (|
+                                                                                        BinOp.Pure.eq (|
+                                                                                          M.read (|
                                                                                             M.SubPointer.get_struct_record_field (|
                                                                                               current,
                                                                                               "core::net::ip_addr::fmt::Span",
                                                                                               "len"
                                                                                             |)
-                                                                                          |))
-                                                                                          (Value.Integer
-                                                                                            Integer.Usize
-                                                                                            0)
+                                                                                          |),
+                                                                                          M.of_value (|
+                                                                                            Value.Integer
+                                                                                              0
+                                                                                          |)
+                                                                                        |)
                                                                                       |)) in
                                                                                   let _ :=
                                                                                     M.is_constant_or_break_match (|
@@ -6097,12 +6300,16 @@ Module net.
                                                                                       M.read (| i |)
                                                                                     |) in
                                                                                   M.alloc (|
-                                                                                    Value.Tuple []
+                                                                                    M.of_value (|
+                                                                                      Value.Tuple []
+                                                                                    |)
                                                                                   |)));
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
-                                                                                    Value.Tuple []
+                                                                                    M.of_value (|
+                                                                                      Value.Tuple []
+                                                                                    |)
                                                                                   |)))
                                                                             ]
                                                                           |) in
@@ -6116,15 +6323,18 @@ Module net.
                                                                           M.write (|
                                                                             β,
                                                                             BinOp.Panic.add (|
+                                                                              Integer.Usize,
                                                                               M.read (| β |),
-                                                                              Value.Integer
-                                                                                Integer.Usize
-                                                                                1
+                                                                              M.of_value (|
+                                                                                Value.Integer 1
+                                                                              |)
                                                                             |)
                                                                           |) in
                                                                         M.match_operator (|
                                                                           M.alloc (|
-                                                                            Value.Tuple []
+                                                                            M.of_value (|
+                                                                              Value.Tuple []
+                                                                            |)
                                                                           |),
                                                                           [
                                                                             fun γ =>
@@ -6132,21 +6342,22 @@ Module net.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.Pure.gt
-                                                                                        (M.read (|
+                                                                                      BinOp.Pure.gt (|
+                                                                                        M.read (|
                                                                                           M.SubPointer.get_struct_record_field (|
                                                                                             current,
                                                                                             "core::net::ip_addr::fmt::Span",
                                                                                             "len"
                                                                                           |)
-                                                                                        |))
-                                                                                        (M.read (|
+                                                                                        |),
+                                                                                        M.read (|
                                                                                           M.SubPointer.get_struct_record_field (|
                                                                                             longest,
                                                                                             "core::net::ip_addr::fmt::Span",
                                                                                             "len"
                                                                                           |)
-                                                                                        |))
+                                                                                        |)
+                                                                                      |)
                                                                                     |)) in
                                                                                 let _ :=
                                                                                   M.is_constant_or_break_match (|
@@ -6161,12 +6372,16 @@ Module net.
                                                                                     |)
                                                                                   |) in
                                                                                 M.alloc (|
-                                                                                  Value.Tuple []
+                                                                                  M.of_value (|
+                                                                                    Value.Tuple []
+                                                                                  |)
                                                                                 |)));
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (M.alloc (|
-                                                                                  Value.Tuple []
+                                                                                  M.of_value (|
+                                                                                    Value.Tuple []
+                                                                                  |)
                                                                                 |)))
                                                                           ]
                                                                         |)));
@@ -6188,35 +6403,40 @@ Module net.
                                                                             |)
                                                                           |) in
                                                                         M.alloc (|
-                                                                          Value.Tuple []
+                                                                          M.of_value (|
+                                                                            Value.Tuple []
+                                                                          |)
                                                                         |)))
                                                                   ]
                                                                 |)))
                                                           ]
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)))
+                                                      M.alloc (|
+                                                        M.of_value (| Value.Tuple [] |)
+                                                      |)))
                                                   |)))
                                             ]
                                           |)) in
                                       longest
                                     |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.gt
-                                                  (M.read (|
+                                                BinOp.Pure.gt (|
+                                                  M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       zeroes,
                                                       "core::net::ip_addr::fmt::Span",
                                                       "len"
                                                     |)
-                                                  |))
-                                                  (Value.Integer Integer.Usize 1)
+                                                  |),
+                                                  M.of_value (| Value.Integer 1 |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -6262,18 +6482,21 @@ Module net.
                                                           |),
                                                           [
                                                             segments;
-                                                            Value.StructRecord
-                                                              "core::ops::range::RangeTo"
-                                                              [
-                                                                ("end_",
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      zeroes,
-                                                                      "core::net::ip_addr::fmt::Span",
-                                                                      "start"
-                                                                    |)
-                                                                  |))
-                                                              ]
+                                                            M.of_value (|
+                                                              Value.StructRecord
+                                                                "core::ops::range::RangeTo"
+                                                                [
+                                                                  ("end_",
+                                                                    A.to_value
+                                                                      (M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          zeroes,
+                                                                          "core::net::ip_addr::fmt::Span",
+                                                                          "start"
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]
@@ -6356,7 +6579,9 @@ Module net.
                                                       |),
                                                       [
                                                         M.read (| f |);
-                                                        M.read (| Value.String "::" |)
+                                                        M.read (|
+                                                          M.of_value (| Value.String "::" |)
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -6438,27 +6663,31 @@ Module net.
                                                   |),
                                                   [
                                                     segments;
-                                                    Value.StructRecord
-                                                      "core::ops::range::RangeFrom"
-                                                      [
-                                                        ("start",
-                                                          BinOp.Panic.add (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                zeroes,
-                                                                "core::net::ip_addr::fmt::Span",
-                                                                "start"
-                                                              |)
-                                                            |),
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                zeroes,
-                                                                "core::net::ip_addr::fmt::Span",
-                                                                "len"
-                                                              |)
-                                                            |)
-                                                          |))
-                                                      ]
+                                                    M.of_value (|
+                                                      Value.StructRecord
+                                                        "core::ops::range::RangeFrom"
+                                                        [
+                                                          ("start",
+                                                            A.to_value
+                                                              (BinOp.Panic.add (|
+                                                                Integer.Usize,
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    zeroes,
+                                                                    "core::net::ip_addr::fmt::Span",
+                                                                    "start"
+                                                                  |)
+                                                                |),
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    zeroes,
+                                                                    "core::net::ip_addr::fmt::Span",
+                                                                    "len"
+                                                                  |)
+                                                                |)
+                                                              |)))
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -6475,7 +6704,7 @@ Module net.
                                               |),
                                               [
                                                 M.read (| f |);
-                                                (* Unsize *) M.pointer_coercion segments
+                                                (* Unsize *) M.pointer_coercion (| segments |)
                                               ]
                                             |)
                                           |)))
@@ -6525,29 +6754,45 @@ Module net.
                                         |),
                                         [
                                           (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array [ M.read (| Value.String "" |) ]
-                                            |));
+                                          M.pointer_coercion (|
+                                            M.alloc (|
+                                              M.of_value (|
+                                                Value.Array
+                                                  [
+                                                    A.to_value
+                                                      (M.read (|
+                                                        M.of_value (| Value.String "" |)
+                                                      |))
+                                                  ]
+                                              |)
+                                            |)
+                                          |);
                                           (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
-                                                      ]
-                                                    |),
-                                                    [ self ]
-                                                  |)
-                                                ]
-                                            |))
+                                          M.pointer_coercion (|
+                                            M.alloc (|
+                                              M.of_value (|
+                                                Value.Array
+                                                  [
+                                                    A.to_value
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              [
+                                                                Ty.path
+                                                                  "core::net::ip_addr::Ipv6Addr"
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [ self ]
+                                                      |))
+                                                  ]
+                                              |)
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -6598,7 +6843,7 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -6636,7 +6881,7 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6655,7 +6900,7 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)));
+                      M.alloc (| M.of_value (| Value.Bool false |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -6703,7 +6948,7 @@ Module net.
               }
           }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6722,7 +6967,7 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)));
+                      M.alloc (| M.of_value (| Value.Bool false |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -6767,26 +7012,29 @@ Module net.
               Some(self.cmp(other))
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::cmp::Ord",
-                    Ty.path "core::net::ip_addr::Ipv6Addr",
-                    [],
-                    "cmp",
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        [],
+                        "cmp",
+                        []
+                      |),
+                      [ M.read (| self |); M.read (| other |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6809,7 +7057,7 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6829,9 +7077,14 @@ Module net.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::cmp::Ordering::Less" [] |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6880,7 +7133,7 @@ Module net.
               }
           }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6900,9 +7153,16 @@ Module net.
                           0
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple "core::cmp::Ordering::Greater" []
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -6948,7 +7208,7 @@ Module net.
               self.segments().cmp(&other.segments())
           }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7004,7 +7264,7 @@ Module net.
               ip.to_bits()
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip ] =>
           ltac:(M.monadic
@@ -7032,7 +7292,7 @@ Module net.
               Ipv6Addr::from_bits(ip)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ip ] =>
           ltac:(M.monadic
@@ -7064,12 +7324,16 @@ Module net.
               Ipv6Addr { octets }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ octets ] =>
           ltac:(M.monadic
             (let octets := M.alloc (| octets |) in
-            Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::ip_addr::Ipv6Addr"
+                [ ("octets", A.to_value (M.read (| octets |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7090,7 +7354,7 @@ Module net.
               Ipv6Addr::new(a, b, c, d, e, f, g, h)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ segments ] =>
           ltac:(M.monadic
@@ -7159,25 +7423,28 @@ Module net.
               IpAddr::V6(Ipv6Addr::from(segments))
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ segments ] =>
           ltac:(M.monadic
             (let segments := M.alloc (| segments |) in
-            Value.StructTuple
-              "core::net::ip_addr::IpAddr::V6"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "core::net::ip_addr::Ipv6Addr",
-                    [ Ty.apply (Ty.path "array") [ Ty.path "u16" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| segments |) ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::ip_addr::IpAddr::V6"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        [ Ty.apply (Ty.path "array") [ Ty.path "u16" ] ],
+                        "from",
+                        []
+                      |),
+                      [ M.read (| segments |) ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7203,7 +7470,7 @@ Module net.
               self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7270,12 +7537,12 @@ Module net.
                                         let _ :=
                                           M.write (|
                                             M.read (| octet |),
-                                            UnOp.Pure.not (M.read (| M.read (| octet |) |))
+                                            UnOp.Pure.not (| M.read (| M.read (| octet |) |) |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -7304,7 +7571,7 @@ Module net.
               !*self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7345,7 +7612,7 @@ Module net.
               self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7412,12 +7679,12 @@ Module net.
                                         let _ :=
                                           M.write (|
                                             M.read (| octet |),
-                                            UnOp.Pure.not (M.read (| M.read (| octet |) |))
+                                            UnOp.Pure.not (| M.read (| M.read (| octet |) |) |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
@@ -7446,7 +7713,7 @@ Module net.
               !*self
           }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7483,7 +7750,7 @@ Module net.
                           }
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7595,10 +7862,10 @@ Module net.
                                             [ M.read (| lhs |); M.read (| rhs |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -7622,7 +7889,7 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7642,7 +7909,7 @@ Module net.
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7668,7 +7935,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7714,7 +7981,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7762,7 +8029,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7810,7 +8077,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7856,7 +8123,7 @@ Module net.
                           }
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -7968,10 +8235,10 @@ Module net.
                                             [ M.read (| lhs |); M.read (| rhs |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -7995,7 +8262,7 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8015,7 +8282,7 @@ Module net.
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8041,7 +8308,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8087,7 +8354,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8135,7 +8402,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8183,7 +8450,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8229,7 +8496,7 @@ Module net.
                           }
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8341,10 +8608,10 @@ Module net.
                                             [ M.read (| lhs |); M.read (| rhs |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -8368,7 +8635,7 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8388,7 +8655,7 @@ Module net.
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8414,7 +8681,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8460,7 +8727,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8508,7 +8775,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8556,7 +8823,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8602,7 +8869,7 @@ Module net.
                           }
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8714,10 +8981,10 @@ Module net.
                                             [ M.read (| lhs |); M.read (| rhs |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -8741,7 +9008,7 @@ Module net.
                           self.$bitop_assign( *rhs);
                       }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8761,7 +9028,7 @@ Module net.
                     [ M.read (| self |); M.read (| M.read (| rhs |) |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8787,7 +9054,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8833,7 +9100,7 @@ Module net.
                           self
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8881,7 +9148,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic
@@ -8929,7 +9196,7 @@ Module net.
                           lhs
                       }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; rhs ] =>
           ltac:(M.monadic

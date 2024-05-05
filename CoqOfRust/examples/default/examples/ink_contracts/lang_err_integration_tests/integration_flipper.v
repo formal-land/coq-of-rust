@@ -19,7 +19,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Definition Self : Ty.t := Ty.path "integration_flipper::FlipperError".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
         let f := M.alloc (| f |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-          [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
+          [ M.read (| f |); M.read (| M.of_value (| Value.String "FlipperError" |) |) ]
         |)))
     | _, _ => M.impossible
     end.
@@ -48,12 +48,16 @@ Module Impl_integration_flipper_Flipper.
           Self { value: init_value }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord "integration_flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
+        M.of_value (|
+          Value.StructRecord
+            "integration_flipper::Flipper"
+            [ ("value", A.to_value (M.read (| init_value |))) ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -64,7 +68,7 @@ Module Impl_integration_flipper_Flipper.
           Self::new(Default::default())
       }
   *)
-  Definition new_default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new_default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -91,39 +95,49 @@ Module Impl_integration_flipper_Flipper.
           }
       }
   *)
-  Definition try_new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition try_new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ succeed ] =>
       ltac:(M.monadic
         (let succeed := M.alloc (| succeed |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use succeed in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "integration_flipper::Flipper",
-                            "new",
-                            []
-                          |),
-                          [ Value.Bool true ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "integration_flipper::Flipper",
+                                "new",
+                                []
+                              |),
+                              [ M.of_value (| Value.Bool true |) ]
+                            |))
+                        ]
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      [ Value.StructTuple "integration_flipper::FlipperError" [] ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructTuple "integration_flipper::FlipperError" []
+                            |))
+                        ]
+                    |)
                   |)))
             ]
           |)
@@ -138,7 +152,7 @@ Module Impl_integration_flipper_Flipper.
           self.value = !self.value;
       }
   *)
-  Definition flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -151,16 +165,17 @@ Module Impl_integration_flipper_Flipper.
                 "integration_flipper::Flipper",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.Pure.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "integration_flipper::Flipper",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -172,7 +187,7 @@ Module Impl_integration_flipper_Flipper.
           self.value
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -195,7 +210,7 @@ Module Impl_integration_flipper_Flipper.
           Err(())
       }
   *)
-  Definition err_flip (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition err_flip (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -208,7 +223,13 @@ Module Impl_integration_flipper_Flipper.
                 [ M.read (| self |) ]
               |)
             |) in
-          M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
+          M.alloc (|
+            M.of_value (|
+              Value.StructTuple
+                "core::result::Result::Err"
+                [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+            |)
+          |)
         |)))
     | _, _ => M.impossible
     end.

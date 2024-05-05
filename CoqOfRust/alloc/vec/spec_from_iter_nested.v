@@ -38,7 +38,7 @@ Module vec.
               vector
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I in
         match τ, α with
         | [], [ iterator ] =>
@@ -130,7 +130,9 @@ Module vec.
                                                   "saturating_add",
                                                   []
                                                 |),
-                                                [ M.read (| lower |); Value.Integer Integer.Usize 1
+                                                [
+                                                  M.read (| lower |);
+                                                  M.of_value (| Value.Integer 1 |)
                                                 ]
                                               |)
                                             ]
@@ -179,10 +181,10 @@ Module vec.
                                                 "set_len",
                                                 []
                                               |),
-                                              [ vector; Value.Integer Integer.Usize 1 ]
+                                              [ vector; M.of_value (| Value.Integer 1 |) ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |) in
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                                       vector))
                                 ]
                               |)))
@@ -238,7 +240,7 @@ Module vec.
               vector
           }
       *)
-      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T I in
         match τ, α with
         | [], [ iterator ] =>
@@ -299,11 +301,21 @@ Module vec.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "capacity overflow" |) ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (|
+                                                      Value.String "capacity overflow"
+                                                    |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]

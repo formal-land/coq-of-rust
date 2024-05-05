@@ -32,7 +32,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           }
       }
   *)
-  Definition run (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition run (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; x; y ] =>
       ltac:(M.monadic
@@ -46,11 +46,11 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  M.alloc (| BinOp.Panic.add (| M.read (| x |), M.read (| y |) |) |)));
+                  M.alloc (| BinOp.Panic.add (| Integer.I32, M.read (| x |), M.read (| y |) |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  M.alloc (| BinOp.Panic.sub (| M.read (| x |), M.read (| y |) |) |)))
+                  M.alloc (| BinOp.Panic.sub (| Integer.I32, M.read (| x |), M.read (| y |) |) |)))
             ]
           |)
         |)))

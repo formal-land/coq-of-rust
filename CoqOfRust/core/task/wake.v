@@ -29,28 +29,29 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.Pure.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::task::wake::RawWaker",
                     "data"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -89,7 +90,7 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -103,25 +104,27 @@ Module task.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "RawWaker" |);
-                M.read (| Value.String "data" |);
+                M.read (| M.of_value (| Value.String "RawWaker" |) |);
+                M.read (| M.of_value (| Value.String "data" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWaker",
                     "data"
-                  |));
-                M.read (| Value.String "vtable" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "vtable" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::task::wake::RawWaker",
                       "vtable"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -143,15 +146,20 @@ Module task.
               RawWaker { data, vtable }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ data; vtable ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let vtable := M.alloc (| vtable |) in
-            Value.StructRecord
-              "core::task::wake::RawWaker"
-              [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::task::wake::RawWaker"
+                [
+                  ("data", A.to_value (M.read (| data |)));
+                  ("vtable", A.to_value (M.read (| vtable |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -162,7 +170,7 @@ Module task.
               self.data
           }
       *)
-      Definition data (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition data (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -184,7 +192,7 @@ Module task.
               self.vtable
           }
       *)
-      Definition vtable (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition vtable (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -234,7 +242,7 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -243,71 +251,75 @@ Module task.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::task::wake::RawWakerVTable",
                         "clone"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::task::wake::RawWakerVTable",
                           "wake"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::task::wake::RawWakerVTable",
                         "wake_by_ref"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -335,29 +347,29 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Value.DeclaredButUndefined,
+                        M.of_value (| Value.DeclaredButUndefined |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Value.DeclaredButUndefined,
+                                M.of_value (| Value.DeclaredButUndefined |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Value.DeclaredButUndefined,
+                                        M.of_value (| Value.DeclaredButUndefined |),
                                         [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
                                       |)))
                                 ]
@@ -382,7 +394,7 @@ Module task.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -396,41 +408,45 @@ Module task.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "RawWakerVTable" |);
-                M.read (| Value.String "clone" |);
+                M.read (| M.of_value (| Value.String "RawWakerVTable" |) |);
+                M.read (| M.of_value (| Value.String "clone" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWakerVTable",
                     "clone"
-                  |));
-                M.read (| Value.String "wake" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "wake" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWakerVTable",
                     "wake"
-                  |));
-                M.read (| Value.String "wake_by_ref" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "wake_by_ref" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWakerVTable",
                     "wake_by_ref"
-                  |));
-                M.read (| Value.String "drop" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "drop" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::task::wake::RawWakerVTable",
                       "drop"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -457,7 +473,7 @@ Module task.
               Self { clone, wake, wake_by_ref, drop }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ clone; wake; wake_by_ref; drop ] =>
           ltac:(M.monadic
@@ -465,14 +481,16 @@ Module task.
             let wake := M.alloc (| wake |) in
             let wake_by_ref := M.alloc (| wake_by_ref |) in
             let drop := M.alloc (| drop |) in
-            Value.StructRecord
-              "core::task::wake::RawWakerVTable"
-              [
-                ("clone", M.read (| clone |));
-                ("wake", M.read (| wake |));
-                ("wake_by_ref", M.read (| wake_by_ref |));
-                ("drop", M.read (| drop |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::task::wake::RawWakerVTable"
+                [
+                  ("clone", A.to_value (M.read (| clone |)));
+                  ("wake", A.to_value (M.read (| wake |)));
+                  ("wake_by_ref", A.to_value (M.read (| wake_by_ref |)));
+                  ("drop", A.to_value (M.read (| drop |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -509,18 +527,22 @@ Module task.
               Context { waker, _marker: PhantomData, _marker2: PhantomData }
           }
       *)
-      Definition from_waker (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_waker (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
-            Value.StructRecord
-              "core::task::wake::Context"
-              [
-                ("waker", M.read (| waker |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" []);
-                ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::task::wake::Context"
+                [
+                  ("waker", A.to_value (M.read (| waker |)));
+                  ("_marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)));
+                  ("_marker2",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -531,7 +553,7 @@ Module task.
               &self.waker
           }
       *)
-      Definition waker (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition waker (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -557,7 +579,7 @@ Module task.
               f.debug_struct("Context").field("waker", &self.waker).finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -584,17 +606,18 @@ Module task.
                           "debug_struct",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "Context" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "Context" |) |) ]
                       |)
                     |);
-                    M.read (| Value.String "waker" |);
+                    M.read (| M.of_value (| Value.String "waker" |) |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::task::wake::Context",
                         "waker"
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -669,7 +692,7 @@ Module task.
               unsafe { (wake)(data) };
           }
       *)
-      Definition wake (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wake (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -714,7 +737,7 @@ Module task.
                 |) in
               let _ :=
                 M.alloc (| M.call_closure (| M.read (| wake |), [ M.read (| data |) ] |) |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -730,7 +753,7 @@ Module task.
               unsafe { (self.waker.vtable.wake_by_ref)(self.waker.data) }
           }
       *)
-      Definition wake_by_ref (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wake_by_ref (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -777,7 +800,7 @@ Module task.
               self.waker == other.waker
           }
       *)
-      Definition will_wake (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition will_wake (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -814,12 +837,16 @@ Module task.
               Waker { waker }
           }
       *)
-      Definition from_raw (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_raw (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
-            Value.StructRecord "core::task::wake::Waker" [ ("waker", M.read (| waker |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::task::wake::Waker"
+                [ ("waker", A.to_value (M.read (| waker |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -842,13 +869,18 @@ Module task.
               Waker { waker: RAW }
           }
       *)
-      Definition noop (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition noop (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "core::task::wake::Waker"
-              [ ("waker", M.read (| M.get_constant (| "core::task::wake::noop::RAW" |) |)) ]))
+            (M.of_value (|
+              Value.StructRecord
+                "core::task::wake::Waker"
+                [
+                  ("waker",
+                    A.to_value (M.read (| M.get_constant (| "core::task::wake::noop::RAW" |) |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -859,7 +891,7 @@ Module task.
               &self.waker
           }
       *)
-      Definition as_raw (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_raw (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -888,48 +920,51 @@ Module task.
               }
           }
       *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::task::wake::Waker"
-              [
-                ("waker",
-                  M.call_closure (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
+            M.of_value (|
+              Value.StructRecord
+                "core::task::wake::Waker"
+                [
+                  ("waker",
+                    A.to_value
+                      (M.call_closure (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::task::wake::Waker",
-                              "waker"
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::task::wake::Waker",
+                                  "waker"
+                                |),
+                                "core::task::wake::RawWaker",
+                                "vtable"
+                              |)
                             |),
-                            "core::task::wake::RawWaker",
-                            "vtable"
+                            "core::task::wake::RawWakerVTable",
+                            "clone"
                           |)
                         |),
-                        "core::task::wake::RawWakerVTable",
-                        "clone"
-                      |)
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::task::wake::Waker",
-                            "waker"
-                          |),
-                          "core::task::wake::RawWaker",
-                          "data"
-                        |)
-                      |)
-                    ]
-                  |))
-              ]))
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::task::wake::Waker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "data"
+                            |)
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -940,7 +975,7 @@ Module task.
               }
           }
       *)
-      Definition clone_from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone_from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; source ] =>
           ltac:(M.monadic
@@ -948,22 +983,23 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::task::wake::Waker",
                                   "will_wake",
                                   []
                                 |),
                                 [ M.read (| self |); M.read (| source |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
@@ -980,8 +1016,8 @@ Module task.
                             [ M.read (| source |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -1009,7 +1045,7 @@ Module task.
               unsafe { (self.waker.vtable.drop)(self.waker.data) }
           }
       *)
-      Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1069,7 +1105,7 @@ Module task.
                   .finish()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -1122,13 +1158,14 @@ Module task.
                                   "debug_struct",
                                   []
                                 |),
-                                [ M.read (| f |); M.read (| Value.String "Waker" |) ]
+                                [ M.read (| f |); M.read (| M.of_value (| Value.String "Waker" |) |)
+                                ]
                               |)
                             |);
-                            M.read (| Value.String "data" |);
+                            M.read (| M.of_value (| Value.String "data" |) |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
+                            M.pointer_coercion (|
+                              M.SubPointer.get_struct_record_field (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::task::wake::Waker",
@@ -1136,11 +1173,12 @@ Module task.
                                 |),
                                 "core::task::wake::RawWaker",
                                 "data"
-                              |))
+                              |)
+                            |)
                           ]
                         |);
-                        M.read (| Value.String "vtable" |);
-                        (* Unsize *) M.pointer_coercion vtable_ptr
+                        M.read (| M.of_value (| Value.String "vtable" |) |);
+                        (* Unsize *) M.pointer_coercion (| vtable_ptr |)
                       ]
                     |)
                   ]

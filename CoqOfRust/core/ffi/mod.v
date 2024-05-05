@@ -131,7 +131,7 @@ Module ffi.
             f.debug_struct("c_void").finish()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -151,7 +151,7 @@ Module ffi.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "c_void" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "c_void" |) |) ]
                 |)
               |)
             ]
@@ -189,7 +189,7 @@ Module ffi.
     Definition Self : Ty.t := Ty.path "core::ffi::VaListImpl".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -203,49 +203,54 @@ Module ffi.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "VaListImpl" |);
-              M.read (| Value.String "gp_offset" |);
+              M.read (| M.of_value (| Value.String "VaListImpl" |) |);
+              M.read (| M.of_value (| Value.String "gp_offset" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::ffi::VaListImpl",
                   "gp_offset"
-                |));
-              M.read (| Value.String "fp_offset" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "fp_offset" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::ffi::VaListImpl",
                   "fp_offset"
-                |));
-              M.read (| Value.String "overflow_arg_area" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "overflow_arg_area" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::ffi::VaListImpl",
                   "overflow_arg_area"
-                |));
-              M.read (| Value.String "reg_save_area" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "reg_save_area" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::ffi::VaListImpl",
                   "reg_save_area"
-                |));
-              M.read (| Value.String "_marker" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "_marker" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::ffi::VaListImpl",
                     "_marker"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -277,7 +282,7 @@ Module ffi.
     Definition Self : Ty.t := Ty.path "core::ffi::VaList".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -291,25 +296,27 @@ Module ffi.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "VaList" |);
-              M.read (| Value.String "inner" |);
+              M.read (| M.of_value (| Value.String "VaList" |) |);
+              M.read (| M.of_value (| Value.String "inner" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.pointer_coercion (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::ffi::VaList",
                   "inner"
-                |));
-              M.read (| Value.String "_marker" |);
+                |)
+              |);
+              M.read (| M.of_value (| Value.String "_marker" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::ffi::VaList",
                     "_marker"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -331,17 +338,20 @@ Module ffi.
             VaList { inner: self, _marker: PhantomData }
         }
     *)
-    Definition as_va_list (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_va_list (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::ffi::VaList"
-            [
-              ("inner", M.read (| self |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::ffi::VaList"
+              [
+                ("inner", A.to_value (M.read (| self |)));
+                ("_marker",
+                  A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -352,7 +362,7 @@ Module ffi.
             unsafe { va_arg(self) }
         }
     *)
-    Definition arg (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition arg (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ self ] =>
         ltac:(M.monadic
@@ -380,7 +390,7 @@ Module ffi.
             ret
         }
     *)
-    Definition with_copy (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_copy (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ F; R ], [ self; f ] =>
         ltac:(M.monadic
@@ -412,17 +422,20 @@ Module ffi.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ffi::VaListImpl",
-                            "as_va_list",
-                            []
-                          |),
-                          [ ap ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ffi::VaListImpl",
+                                "as_va_list",
+                                []
+                              |),
+                              [ ap ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               |) in
@@ -431,7 +444,7 @@ Module ffi.
                 M.alloc (|
                   M.call_closure (| M.get_function (| "core::ffi::va_end", [] |), [ ap ] |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
             ret
           |)))
       | _, _ => M.impossible
@@ -451,7 +464,7 @@ Module ffi.
             &self.inner
         }
     *)
-    Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -483,7 +496,7 @@ Module ffi.
             &mut self.inner
         }
     *)
-    Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -670,7 +683,7 @@ Module ffi.
             }
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -749,12 +762,12 @@ Module ffi.
             // This works for now, since `va_end` is a no-op on all current LLVM targets.
         }
     *)
-    Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.Tuple []))
+          M.of_value (| Value.Tuple [] |)))
       | _, _ => M.impossible
       end.
     

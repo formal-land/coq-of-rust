@@ -11,7 +11,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -24,7 +24,7 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -55,7 +55,7 @@ End Impl_core_marker_Copy_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -68,7 +68,7 @@ End Impl_core_clone_Clone_for_clone_Pair.
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self : Ty.t := Ty.path "clone::Pair".
   
-  Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter fmt : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -78,4 +78,4 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

@@ -9,14 +9,16 @@ Module iter.
           FromCoroutine(coroutine)
       }
       *)
-      Definition from_coroutine (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_coroutine (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ G ], [ coroutine ] =>
           ltac:(M.monadic
             (let coroutine := M.alloc (| coroutine |) in
-            Value.StructTuple
-              "core::iter::sources::from_coroutine::FromCoroutine"
-              [ M.read (| coroutine |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::iter::sources::from_coroutine::FromCoroutine"
+                [ A.to_value (M.read (| coroutine |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -32,26 +34,29 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [ G ].
         
         (* Clone *)
-        Definition clone (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self G in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple
-                "core::iter::sources::from_coroutine::FromCoroutine"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::iter::sources::from_coroutine::FromCoroutine",
-                        0
-                      |)
-                    ]
-                  |)
-                ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::iter::sources::from_coroutine::FromCoroutine"
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", G, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| self |),
+                            "core::iter::sources::from_coroutine::FromCoroutine",
+                            0
+                          |)
+                        ]
+                      |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -79,7 +84,7 @@ Module iter.
                 }
             }
         *)
-        Definition next (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self G in
           match τ, α with
           | [], [ self ] =>
@@ -111,7 +116,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        Value.Tuple []
+                        M.of_value (| Value.Tuple [] |)
                       ]
                     |)
                   |),
@@ -126,7 +131,11 @@ Module iter.
                           |) in
                         let n := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| n |)) ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -136,7 +145,9 @@ Module iter.
                             "core::ops::coroutine::CoroutineState::Complete",
                             0
                           |) in
-                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                        M.alloc (|
+                          M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                        |)))
                   ]
                 |)
               |)))
@@ -162,7 +173,7 @@ Module iter.
                 f.debug_struct("FromCoroutine").finish()
             }
         *)
-        Definition fmt (G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (G : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self G in
           match τ, α with
           | [], [ self; f ] =>
@@ -183,7 +194,7 @@ Module iter.
                         "debug_struct",
                         []
                       |),
-                      [ M.read (| f |); M.read (| Value.String "FromCoroutine" |) ]
+                      [ M.read (| f |); M.read (| M.of_value (| Value.String "FromCoroutine" |) |) ]
                     |)
                   |)
                 ]

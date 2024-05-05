@@ -25,7 +25,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
   
-  Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -60,7 +60,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
   
-  Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter eq : forall (A B : Ty.t), (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     forall (A B : Ty.t),
@@ -71,4 +71,4 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

@@ -116,7 +116,7 @@ Module collections.
                   .finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -151,12 +151,12 @@ Module collections.
                               "debug_tuple",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Iter" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "Iter" |) |) ]
                           |)
                         |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
+                        M.pointer_coercion (|
+                          M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -185,50 +185,65 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
-                                      "alloc::collections::linked_list::LinkedList"
-                                      [
-                                        ("head",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "head"
-                                            |)
-                                          |));
-                                        ("tail",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "tail"
-                                            |)
-                                          |));
-                                        ("len",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "len"
-                                            |)
-                                          |));
-                                        ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                                        ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                                      ]
+                                    M.of_value (|
+                                      Value.StructRecord
+                                        "alloc::collections::linked_list::LinkedList"
+                                        [
+                                          ("head",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::Iter",
+                                                  "head"
+                                                |)
+                                              |)));
+                                          ("tail",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::Iter",
+                                                  "tail"
+                                                |)
+                                              |)));
+                                          ("len",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::Iter",
+                                                  "len"
+                                                |)
+                                              |)));
+                                          ("alloc",
+                                            A.to_value
+                                              (M.of_value (|
+                                                Value.StructTuple "alloc::alloc::Global" []
+                                              |)));
+                                          ("marker",
+                                            A.to_value
+                                              (M.of_value (|
+                                                Value.StructTuple "core::marker::PhantomData" []
+                                              |)))
+                                        ]
+                                    |)
                                   ]
                                 |)
                               |)
                             ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::Iter",
                         "len"
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -254,13 +269,13 @@ Module collections.
               Iter { ..*self }
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple "alloc::collections::linked_list::Iter" []))
+            M.of_value (| Value.StructTuple "alloc::collections::linked_list::Iter" [] |)))
         | _, _ => M.impossible
         end.
       
@@ -325,7 +340,7 @@ Module collections.
                   .finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -360,12 +375,12 @@ Module collections.
                               "debug_tuple",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "IterMut" |) |) ]
                           |)
                         |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
+                        M.pointer_coercion (|
+                          M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -394,50 +409,65 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
-                                      "alloc::collections::linked_list::LinkedList"
-                                      [
-                                        ("head",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "head"
-                                            |)
-                                          |));
-                                        ("tail",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "tail"
-                                            |)
-                                          |));
-                                        ("len",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "len"
-                                            |)
-                                          |));
-                                        ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                                        ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                                      ]
+                                    M.of_value (|
+                                      Value.StructRecord
+                                        "alloc::collections::linked_list::LinkedList"
+                                        [
+                                          ("head",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::IterMut",
+                                                  "head"
+                                                |)
+                                              |)));
+                                          ("tail",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::IterMut",
+                                                  "tail"
+                                                |)
+                                              |)));
+                                          ("len",
+                                            A.to_value
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::IterMut",
+                                                  "len"
+                                                |)
+                                              |)));
+                                          ("alloc",
+                                            A.to_value
+                                              (M.of_value (|
+                                                Value.StructTuple "alloc::alloc::Global" []
+                                              |)));
+                                          ("marker",
+                                            A.to_value
+                                              (M.of_value (|
+                                                Value.StructTuple "core::marker::PhantomData" []
+                                              |)))
+                                        ]
+                                    |)
                                   ]
                                 |)
                               |)
                             ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::IterMut",
                         "len"
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -467,33 +497,36 @@ Module collections.
         Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [ T; A ].
       
       (* Clone *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::IntoIter"
-              [
-                ("list",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::linked_list::IntoIter",
-                        "list"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::IntoIter"
+                [
+                  ("list",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::linked_list::IntoIter",
+                            "list"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -515,7 +548,7 @@ Module collections.
               f.debug_tuple("IntoIter").field(&self.list).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; f ] =>
@@ -543,16 +576,17 @@ Module collections.
                           "debug_tuple",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "IntoIter" |) |) ]
                       |)
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::IntoIter",
                         "list"
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -578,19 +612,25 @@ Module collections.
               Node { next: None, prev: None, element }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ element ] =>
           ltac:(M.monadic
             (let element := M.alloc (| element |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::Node"
-              [
-                ("next", Value.StructTuple "core::option::Option::None" []);
-                ("prev", Value.StructTuple "core::option::Option::None" []);
-                ("element", M.read (| element |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Node"
+                [
+                  ("next",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("prev",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("element", A.to_value (M.read (| element |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -603,7 +643,7 @@ Module collections.
               self.element
           }
       *)
-      Definition into_element (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_element (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ A ], [ self ] =>
@@ -648,7 +688,7 @@ Module collections.
               }
           }
       *)
-      Definition push_front_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; node ] =>
@@ -696,11 +736,15 @@ Module collections.
                     "alloc::collections::linked_list::Node",
                     "prev"
                   |),
-                  Value.StructTuple "core::option::Option::None" []
+                  M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
                 |) in
               let node :=
                 M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| node |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ A.to_value (M.read (| node |)) ]
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
@@ -767,9 +811,13 @@ Module collections.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -797,7 +845,7 @@ Module collections.
               })
           }
       *)
-      Definition pop_front_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -845,8 +893,8 @@ Module collections.
                     "head"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -927,7 +975,9 @@ Module collections.
                                                 "alloc::collections::linked_list::LinkedList",
                                                 "tail"
                                               |),
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -958,7 +1008,9 @@ Module collections.
                                                 "alloc::collections::linked_list::Node",
                                                 "prev"
                                               |),
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)))
                                       ]
                                     |) in
@@ -972,8 +1024,9 @@ Module collections.
                                     M.write (|
                                       β,
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| β |),
-                                        Value.Integer Integer.Usize 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |) in
                                   node
@@ -981,7 +1034,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1011,7 +1065,7 @@ Module collections.
               }
           }
       *)
-      Definition push_back_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; node ] =>
@@ -1035,7 +1089,7 @@ Module collections.
                     "alloc::collections::linked_list::Node",
                     "next"
                   |),
-                  Value.StructTuple "core::option::Option::None" []
+                  M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
                 |) in
               let _ :=
                 M.write (|
@@ -1063,7 +1117,11 @@ Module collections.
                 |) in
               let node :=
                 M.alloc (|
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| node |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [ A.to_value (M.read (| node |)) ]
+                  |)
                 |) in
               let _ :=
                 M.match_operator (|
@@ -1130,9 +1188,13 @@ Module collections.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1160,7 +1222,7 @@ Module collections.
               })
           }
       *)
-      Definition pop_back_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -1208,8 +1270,8 @@ Module collections.
                     "tail"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1290,7 +1352,9 @@ Module collections.
                                                 "alloc::collections::linked_list::LinkedList",
                                                 "head"
                                               |),
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -1321,7 +1385,9 @@ Module collections.
                                                 "alloc::collections::linked_list::Node",
                                                 "next"
                                               |),
-                                              Value.StructTuple "core::option::Option::None" []
+                                              M.of_value (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
                                             |)))
                                       ]
                                     |) in
@@ -1335,8 +1401,9 @@ Module collections.
                                     M.write (|
                                       β,
                                       BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| β |),
-                                        Value.Integer Integer.Usize 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |) in
                                   node
@@ -1344,7 +1411,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1374,7 +1442,7 @@ Module collections.
               self.len -= 1;
           }
       *)
-      Definition unlink_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition unlink_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; node ] =>
@@ -1522,9 +1590,13 @@ Module collections.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.sub (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1566,7 +1638,7 @@ Module collections.
               self.len += splice_length;
           }
       *)
-      Definition splice_nodes (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_nodes (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; existing_prev; existing_next; splice_start; splice_end; splice_length ] =>
@@ -1580,7 +1652,7 @@ Module collections.
             M.read (|
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1612,11 +1684,13 @@ Module collections.
                               "alloc::collections::linked_list::Node",
                               "next"
                             |),
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ M.read (| splice_start |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ A.to_value (M.read (| splice_start |)) ]
+                            |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -1626,16 +1700,18 @@ Module collections.
                               "alloc::collections::linked_list::LinkedList",
                               "head"
                             |),
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ M.read (| splice_start |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ A.to_value (M.read (| splice_start |)) ]
+                            |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1667,11 +1743,13 @@ Module collections.
                               "alloc::collections::linked_list::Node",
                               "prev"
                             |),
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ M.read (| splice_end |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ A.to_value (M.read (| splice_end |)) ]
+                            |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -1681,11 +1759,13 @@ Module collections.
                               "alloc::collections::linked_list::LinkedList",
                               "tail"
                             |),
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ M.read (| splice_end |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ A.to_value (M.read (| splice_end |)) ]
+                            |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -1725,7 +1805,7 @@ Module collections.
                     |),
                     M.read (| existing_next |)
                   |) in
-                M.alloc (| Value.Tuple [] |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
               let _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
@@ -1733,8 +1813,11 @@ Module collections.
                     "alloc::collections::linked_list::LinkedList",
                     "len"
                   |) in
-                M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| splice_length |) |) |) in
-              M.alloc (| Value.Tuple [] |)
+                M.write (|
+                  β,
+                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| splice_length |) |)
+                |) in
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1759,7 +1842,7 @@ Module collections.
               }
           }
       *)
-      Definition detach_all_nodes (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition detach_all_nodes (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -1822,12 +1905,12 @@ Module collections.
                         "alloc::collections::linked_list::LinkedList",
                         "len"
                       |);
-                      Value.Integer Integer.Usize 0
+                      M.of_value (| Value.Integer 0 |)
                     ]
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1861,13 +1944,27 @@ Module collections.
                           |)
                         |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [ Value.Tuple [ M.read (| head |); M.read (| tail |); M.read (| len |) ] ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.Tuple
+                                    [
+                                      A.to_value (M.read (| head |));
+                                      A.to_value (M.read (| tail |));
+                                      A.to_value (M.read (| len |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -1921,7 +2018,7 @@ Module collections.
               }
           }
       *)
-      Definition split_off_before_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off_before_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; split_node; at_ ] =>
@@ -1931,7 +2028,7 @@ Module collections.
             let at_ := M.alloc (| at_ |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1943,8 +2040,10 @@ Module collections.
                           0
                         |) in
                       let split_node := M.copy (| γ0_0 |) in
-                      let first_part_head := M.copy (| Value.DeclaredButUndefined |) in
-                      let first_part_tail := M.copy (| Value.DeclaredButUndefined |) in
+                      let first_part_head :=
+                        M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
+                      let first_part_tail :=
+                        M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
                       let _ :=
                         let _ :=
                           M.write (|
@@ -1987,10 +2086,10 @@ Module collections.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |) in
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -2023,9 +2122,11 @@ Module collections.
                                         "alloc::collections::linked_list::Node",
                                         "next"
                                       |),
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                                 let _ :=
                                   M.write (|
                                     first_part_head,
@@ -2037,38 +2138,53 @@ Module collections.
                                       |)
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
                                   M.write (|
                                     first_part_head,
-                                    Value.StructTuple "core::option::Option::None" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       let first_part :=
                         M.alloc (|
-                          Value.StructRecord
-                            "alloc::collections::linked_list::LinkedList"
-                            [
-                              ("head", M.read (| first_part_head |));
-                              ("tail", M.read (| first_part_tail |));
-                              ("len", M.read (| at_ |));
-                              ("alloc",
-                                M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::linked_list::LinkedList",
-                                      "alloc"
-                                    |)
-                                  ]
-                                |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ]
+                          M.of_value (|
+                            Value.StructRecord
+                              "alloc::collections::linked_list::LinkedList"
+                              [
+                                ("head", A.to_value (M.read (| first_part_head |)));
+                                ("tail", A.to_value (M.read (| first_part_tail |)));
+                                ("len", A.to_value (M.read (| at_ |)));
+                                ("alloc",
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        A,
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "alloc"
+                                        |)
+                                      ]
+                                    |)));
+                                ("marker",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple "core::marker::PhantomData" []
+                                    |)))
+                              ]
+                          |)
                         |) in
                       let _ :=
                         M.write (|
@@ -2077,7 +2193,11 @@ Module collections.
                             "alloc::collections::linked_list::LinkedList",
                             "head"
                           |),
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| split_node |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| split_node |)) ]
+                          |)
                         |) in
                       let _ :=
                         M.write (|
@@ -2087,6 +2207,7 @@ Module collections.
                             "len"
                           |),
                           BinOp.Panic.sub (|
+                            Integer.Usize,
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -2190,7 +2311,7 @@ Module collections.
               }
           }
       *)
-      Definition split_off_after_node (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off_after_node (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; split_node; at_ ] =>
@@ -2200,7 +2321,7 @@ Module collections.
             let at_ := M.alloc (| at_ |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2212,8 +2333,10 @@ Module collections.
                           0
                         |) in
                       let split_node := M.copy (| γ0_0 |) in
-                      let second_part_head := M.copy (| Value.DeclaredButUndefined |) in
-                      let second_part_tail := M.copy (| Value.DeclaredButUndefined |) in
+                      let second_part_head :=
+                        M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
+                      let second_part_tail :=
+                        M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
                       let _ :=
                         let _ :=
                           M.write (|
@@ -2256,10 +2379,10 @@ Module collections.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |) in
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -2292,9 +2415,11 @@ Module collections.
                                         "alloc::collections::linked_list::Node",
                                         "prev"
                                       |),
-                                      Value.StructTuple "core::option::Option::None" []
+                                      M.of_value (|
+                                        Value.StructTuple "core::option::Option::None" []
+                                      |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                                 let _ :=
                                   M.write (|
                                     second_part_tail,
@@ -2306,48 +2431,65 @@ Module collections.
                                       |)
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
                                   M.write (|
                                     second_part_tail,
-                                    Value.StructTuple "core::option::Option::None" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       let second_part :=
                         M.alloc (|
-                          Value.StructRecord
-                            "alloc::collections::linked_list::LinkedList"
-                            [
-                              ("head", M.read (| second_part_head |));
-                              ("tail", M.read (| second_part_tail |));
-                              ("len",
-                                BinOp.Panic.sub (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::linked_list::LinkedList",
-                                      "len"
-                                    |)
-                                  |),
-                                  M.read (| at_ |)
-                                |));
-                              ("alloc",
-                                M.call_closure (|
-                                  M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::linked_list::LinkedList",
-                                      "alloc"
-                                    |)
-                                  ]
-                                |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ]
+                          M.of_value (|
+                            Value.StructRecord
+                              "alloc::collections::linked_list::LinkedList"
+                              [
+                                ("head", A.to_value (M.read (| second_part_head |)));
+                                ("tail", A.to_value (M.read (| second_part_tail |)));
+                                ("len",
+                                  A.to_value
+                                    (BinOp.Panic.sub (|
+                                      Integer.Usize,
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "len"
+                                        |)
+                                      |),
+                                      M.read (| at_ |)
+                                    |)));
+                                ("alloc",
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        A,
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "alloc"
+                                        |)
+                                      ]
+                                    |)));
+                                ("marker",
+                                  A.to_value
+                                    (M.of_value (|
+                                      Value.StructTuple "core::marker::PhantomData" []
+                                    |)))
+                              ]
+                          |)
                         |) in
                       let _ :=
                         M.write (|
@@ -2356,7 +2498,11 @@ Module collections.
                             "alloc::collections::linked_list::LinkedList",
                             "tail"
                           |),
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| split_node |) ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| split_node |)) ]
+                          |)
                         |) in
                       let _ :=
                         M.write (|
@@ -2420,21 +2566,28 @@ Module collections.
               LinkedList { head: None, tail: None, len: 0, alloc, marker: PhantomData }
           }
       *)
-      Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| alloc |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::LinkedList"
-              [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer Integer.Usize 0);
-                ("alloc", M.read (| alloc |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::LinkedList"
+                [
+                  ("head",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("tail",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("len", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("alloc", A.to_value (M.read (| alloc |)));
+                  ("marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2447,41 +2600,47 @@ Module collections.
               Iter { head: self.head, tail: self.tail, len: self.len, marker: PhantomData }
           }
       *)
-      Definition iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::Iter"
-              [
-                ("head",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "head"
-                    |)
-                  |));
-                ("tail",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "tail"
-                    |)
-                  |));
-                ("len",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "len"
-                    |)
-                  |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Iter"
+                [
+                  ("head",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "head"
+                        |)
+                      |)));
+                  ("tail",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "tail"
+                        |)
+                      |)));
+                  ("len",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "len"
+                        |)
+                      |)));
+                  ("marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2494,41 +2653,47 @@ Module collections.
               IterMut { head: self.head, tail: self.tail, len: self.len, marker: PhantomData }
           }
       *)
-      Definition iter_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::IterMut"
-              [
-                ("head",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "head"
-                    |)
-                  |));
-                ("tail",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "tail"
-                    |)
-                  |));
-                ("len",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "len"
-                    |)
-                  |));
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::IterMut"
+                [
+                  ("head",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "head"
+                        |)
+                      |)));
+                  ("tail",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "tail"
+                        |)
+                      |)));
+                  ("len",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "len"
+                        |)
+                      |)));
+                  ("marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2541,26 +2706,29 @@ Module collections.
               Cursor { index: 0, current: self.head, list: self }
           }
       *)
-      Definition cursor_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::Cursor"
-              [
-                ("index", Value.Integer Integer.Usize 0);
-                ("current",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "head"
-                    |)
-                  |));
-                ("list", M.read (| self |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Cursor"
+                [
+                  ("index", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("current",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "head"
+                        |)
+                      |)));
+                  ("list", A.to_value (M.read (| self |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2573,26 +2741,29 @@ Module collections.
               CursorMut { index: 0, current: self.head, list: self }
           }
       *)
-      Definition cursor_front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_front_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::CursorMut"
-              [
-                ("index", Value.Integer Integer.Usize 0);
-                ("current",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "head"
-                    |)
-                  |));
-                ("list", M.read (| self |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::CursorMut"
+                [
+                  ("index", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("current",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "head"
+                        |)
+                      |)));
+                  ("list", A.to_value (M.read (| self |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2605,49 +2776,53 @@ Module collections.
               Cursor { index: self.len.checked_sub(1).unwrap_or(0), current: self.tail, list: self }
           }
       *)
-      Definition cursor_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::Cursor"
-              [
-                ("index",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
-                      "unwrap_or",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Cursor"
+                [
+                  ("index",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                          "unwrap_or",
+                          []
+                        |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::linked_list::LinkedList",
-                              "len"
-                            |)
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::linked_list::LinkedList",
+                                  "len"
+                                |)
+                              |);
+                              M.of_value (| Value.Integer 1 |)
+                            ]
                           |);
-                          Value.Integer Integer.Usize 1
+                          M.of_value (| Value.Integer 0 |)
                         ]
-                      |);
-                      Value.Integer Integer.Usize 0
-                    ]
-                  |));
-                ("current",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "tail"
-                    |)
-                  |));
-                ("list", M.read (| self |))
-              ]))
+                      |)));
+                  ("current",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "tail"
+                        |)
+                      |)));
+                  ("list", A.to_value (M.read (| self |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2660,49 +2835,53 @@ Module collections.
               CursorMut { index: self.len.checked_sub(1).unwrap_or(0), current: self.tail, list: self }
           }
       *)
-      Definition cursor_back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cursor_back_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::CursorMut"
-              [
-                ("index",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
-                      "unwrap_or",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::CursorMut"
+                [
+                  ("index",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                          "unwrap_or",
+                          []
+                        |),
                         [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::linked_list::LinkedList",
-                              "len"
-                            |)
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::linked_list::LinkedList",
+                                  "len"
+                                |)
+                              |);
+                              M.of_value (| Value.Integer 1 |)
+                            ]
                           |);
-                          Value.Integer Integer.Usize 1
+                          M.of_value (| Value.Integer 0 |)
                         ]
-                      |);
-                      Value.Integer Integer.Usize 0
-                    ]
-                  |));
-                ("current",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::LinkedList",
-                      "tail"
-                    |)
-                  |));
-                ("list", M.read (| self |))
-              ]))
+                      |)));
+                  ("current",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::LinkedList",
+                          "tail"
+                        |)
+                      |)));
+                  ("list", A.to_value (M.read (| self |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2715,7 +2894,7 @@ Module collections.
               self.head.is_none()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -2753,7 +2932,7 @@ Module collections.
               self.len
           }
       *)
-      Definition len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -2786,7 +2965,7 @@ Module collections.
               });
           }
       *)
-      Definition clear (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clear (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -2805,82 +2984,90 @@ Module collections.
                       ]
                     |),
                     [
-                      Value.StructRecord
-                        "alloc::collections::linked_list::LinkedList"
-                        [
-                          ("head",
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  [
+                      M.of_value (|
+                        Value.StructRecord
+                          "alloc::collections::linked_list::LinkedList"
+                          [
+                            ("head",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      (Ty.path "core::option::Option")
                                       [
                                         Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          [ T ]
-                                      ]
-                                  ],
-                                "take",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::linked_list::LinkedList",
-                                  "head"
-                                |)
-                              ]
-                            |));
-                          ("tail",
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ]
+                                      ],
+                                    "take",
+                                    []
+                                  |),
                                   [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::linked_list::LinkedList",
+                                      "head"
+                                    |)
+                                  ]
+                                |)));
+                            ("tail",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      (Ty.path "core::option::Option")
                                       [
                                         Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          [ T ]
-                                      ]
-                                  ],
-                                "take",
-                                []
-                              |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              [ T ]
+                                          ]
+                                      ],
+                                    "take",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::linked_list::LinkedList",
+                                      "tail"
+                                    |)
+                                  ]
+                                |)));
+                            ("len",
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_function (| "core::mem::take", [ Ty.path "usize" ] |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::collections::linked_list::LinkedList",
+                                      "len"
+                                    |)
+                                  ]
+                                |)));
+                            ("alloc",
+                              A.to_value
+                                (M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::LinkedList",
-                                  "tail"
-                                |)
-                              ]
-                            |));
-                          ("len",
-                            M.call_closure (|
-                              M.get_function (| "core::mem::take", [ Ty.path "usize" ] |),
-                              [
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::linked_list::LinkedList",
-                                  "len"
-                                |)
-                              ]
-                            |));
-                          ("alloc",
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::linked_list::LinkedList",
-                              "alloc"
-                            |));
-                          ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                        ]
+                                  "alloc"
+                                |)));
+                            ("marker",
+                              A.to_value
+                                (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                          ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2897,7 +3084,7 @@ Module collections.
               self.iter().any(|e| e == x)
           }
       *)
-      Definition contains (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; x ] =>
@@ -2923,8 +3110,8 @@ Module collections.
                     [ M.read (| self |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2947,7 +3134,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2962,7 +3150,7 @@ Module collections.
               unsafe { self.head.as_ref().map(|node| &node.as_ref().element) }
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3021,8 +3209,8 @@ Module collections.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3053,7 +3241,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3068,7 +3257,7 @@ Module collections.
               unsafe { self.head.as_mut().map(|node| &mut node.as_mut().element) }
           }
       *)
-      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3127,8 +3316,8 @@ Module collections.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3159,7 +3348,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3174,7 +3364,7 @@ Module collections.
               unsafe { self.tail.as_ref().map(|node| &node.as_ref().element) }
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3233,8 +3423,8 @@ Module collections.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3265,7 +3455,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3280,7 +3471,7 @@ Module collections.
               unsafe { self.tail.as_mut().map(|node| &mut node.as_mut().element) }
           }
       *)
-      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3339,8 +3530,8 @@ Module collections.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3371,7 +3562,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3391,7 +3583,7 @@ Module collections.
               }
           }
       *)
-      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; elt ] =>
@@ -3473,7 +3665,7 @@ Module collections.
                     [ M.read (| self |); M.read (| node_ptr |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3487,7 +3679,7 @@ Module collections.
               self.pop_front_node().map(Node::into_element)
           }
       *)
-      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3553,7 +3745,7 @@ Module collections.
               }
           }
       *)
-      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; elt ] =>
@@ -3635,7 +3827,7 @@ Module collections.
                     [ M.read (| self |); M.read (| node_ptr |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3649,7 +3841,7 @@ Module collections.
               self.pop_back_node().map(Node::into_element)
           }
       *)
-      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -3740,7 +3932,7 @@ Module collections.
               unsafe { self.split_off_after_node(split_node, at) }
           }
       *)
-      Definition split_off (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_off (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; at_ ] =>
@@ -3763,15 +3955,16 @@ Module collections.
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.le (M.read (| at_ |)) (M.read (| len |)))
+                                  UnOp.Pure.not (|
+                                    BinOp.Pure.le (| M.read (| at_ |), M.read (| len |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3788,35 +3981,44 @@ Module collections.
                                       |),
                                       [
                                         (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String
-                                                    "Cannot split off at a nonexistent index"
-                                                |)
-                                              ]
-                                          |))
+                                        M.pointer_coercion (|
+                                          M.alloc (|
+                                            M.of_value (|
+                                              Value.Array
+                                                [
+                                                  A.to_value
+                                                    (M.read (|
+                                                      M.of_value (|
+                                                        Value.String
+                                                          "Cannot split off at a nonexistent index"
+                                                      |)
+                                                    |))
+                                                ]
+                                            |)
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   ]
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| at_ |)) (Value.Integer Integer.Usize 0)
+                                  BinOp.Pure.eq (|
+                                    M.read (| at_ |),
+                                    M.of_value (| Value.Integer 0 |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3872,14 +4074,14 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| at_ |)) (M.read (| len |))
+                                          BinOp.Pure.eq (| M.read (| at_ |), M.read (| len |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3922,7 +4124,8 @@ Module collections.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |)))
                       ]
@@ -3930,28 +4133,33 @@ Module collections.
                   let split_node :=
                     M.copy (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le
-                                      (BinOp.Panic.sub (|
+                                    BinOp.Pure.le (|
+                                      BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| at_ |),
-                                        Value.Integer Integer.Usize 1
-                                      |))
-                                      (BinOp.Panic.sub (|
+                                        M.of_value (| Value.Integer 1 |)
+                                      |),
+                                      BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (| len |),
-                                          Value.Integer Integer.Usize 1
+                                          M.of_value (| Value.Integer 1 |)
                                         |),
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (| at_ |),
-                                          Value.Integer Integer.Usize 1
+                                          M.of_value (| Value.Integer 1 |)
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3986,16 +4194,21 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
-                                            "core::ops::range::Range"
-                                            [
-                                              ("start", Value.Integer Integer.Usize 0);
-                                              ("end_",
-                                                BinOp.Panic.sub (|
-                                                  M.read (| at_ |),
-                                                  Value.Integer Integer.Usize 1
-                                                |))
-                                            ]
+                                          M.of_value (|
+                                            Value.StructRecord
+                                              "core::ops::range::Range"
+                                              [
+                                                ("start",
+                                                  A.to_value (M.of_value (| Value.Integer 0 |)));
+                                                ("end_",
+                                                  A.to_value
+                                                    (BinOp.Panic.sub (|
+                                                      Integer.Usize,
+                                                      M.read (| at_ |),
+                                                      M.of_value (| Value.Integer 1 |)
+                                                    |)))
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     |),
@@ -4053,10 +4266,12 @@ Module collections.
                                                               [ iter ]
                                                             |)
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |)) in
@@ -4095,22 +4310,29 @@ Module collections.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
-                                            "core::ops::range::Range"
-                                            [
-                                              ("start", Value.Integer Integer.Usize 0);
-                                              ("end_",
-                                                BinOp.Panic.sub (|
-                                                  BinOp.Panic.sub (|
-                                                    M.read (| len |),
-                                                    Value.Integer Integer.Usize 1
-                                                  |),
-                                                  BinOp.Panic.sub (|
-                                                    M.read (| at_ |),
-                                                    Value.Integer Integer.Usize 1
-                                                  |)
-                                                |))
-                                            ]
+                                          M.of_value (|
+                                            Value.StructRecord
+                                              "core::ops::range::Range"
+                                              [
+                                                ("start",
+                                                  A.to_value (M.of_value (| Value.Integer 0 |)));
+                                                ("end_",
+                                                  A.to_value
+                                                    (BinOp.Panic.sub (|
+                                                      Integer.Usize,
+                                                      BinOp.Panic.sub (|
+                                                        Integer.Usize,
+                                                        M.read (| len |),
+                                                        M.of_value (| Value.Integer 1 |)
+                                                      |),
+                                                      BinOp.Panic.sub (|
+                                                        Integer.Usize,
+                                                        M.read (| at_ |),
+                                                        M.of_value (| Value.Integer 1 |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     |),
@@ -4168,10 +4390,12 @@ Module collections.
                                                               [ iter ]
                                                             |)
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           |)))
                                     ]
                                   |)) in
@@ -4225,7 +4449,7 @@ Module collections.
               }
           }
       *)
-      Definition remove (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; at_ ] =>
@@ -4246,14 +4470,16 @@ Module collections.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not (BinOp.Pure.lt (M.read (| at_ |)) (M.read (| len |)))
+                              UnOp.Pure.not (|
+                                BinOp.Pure.lt (| M.read (| at_ |), M.read (| len |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4270,41 +4496,48 @@ Module collections.
                                   |),
                                   [
                                     (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Cannot remove at an index outside of the list bounds"
-                                            |)
-                                          ]
-                                      |))
+                                    M.pointer_coercion (|
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Array
+                                            [
+                                              A.to_value
+                                                (M.read (|
+                                                  M.of_value (|
+                                                    Value.String
+                                                      "Cannot remove at an index outside of the list bounds"
+                                                  |)
+                                                |))
+                                            ]
+                                        |)
+                                      |)
+                                    |)
                                   ]
                                 |)
                               ]
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let offset_from_end :=
                 M.alloc (|
                   BinOp.Panic.sub (|
-                    BinOp.Panic.sub (| M.read (| len |), M.read (| at_ |) |),
-                    Value.Integer Integer.Usize 1
+                    Integer.Usize,
+                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| at_ |) |),
+                    M.of_value (| Value.Integer 1 |)
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le (M.read (| at_ |)) (M.read (| offset_from_end |))
+                            BinOp.Pure.le (| M.read (| at_ |), M.read (| offset_from_end |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let cursor :=
@@ -4333,12 +4566,14 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer Integer.Usize 0);
-                                      ("end_", M.read (| at_ |))
-                                    ]
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                        ("end_", A.to_value (M.read (| at_ |)))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |),
@@ -4392,10 +4627,10 @@ Module collections.
                                                       [ cursor ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   |)))
                             ]
                           |)) in
@@ -4448,12 +4683,14 @@ Module collections.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
-                                    "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer Integer.Usize 0);
-                                      ("end_", M.read (| offset_from_end |))
-                                    ]
+                                  M.of_value (|
+                                    Value.StructRecord
+                                      "core::ops::range::Range"
+                                      [
+                                        ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                                        ("end_", A.to_value (M.read (| offset_from_end |)))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |),
@@ -4507,10 +4744,10 @@ Module collections.
                                                       [ cursor ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   |)))
                             ]
                           |)) in
@@ -4553,7 +4790,7 @@ Module collections.
               self.retain_mut(|elem| f(elem));
           }
       *)
-      Definition retain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition retain (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ F ], [ self; f ] =>
@@ -4575,8 +4812,8 @@ Module collections.
                     |),
                     [
                       M.read (| self |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -4594,16 +4831,22 @@ Module collections.
                                           "call_mut",
                                           []
                                         |),
-                                        [ f; Value.Tuple [ M.read (| elem |) ] ]
+                                        [
+                                          f;
+                                          M.of_value (|
+                                            Value.Tuple [ A.to_value (M.read (| elem |)) ]
+                                          |)
+                                        ]
                                       |)))
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4627,7 +4870,7 @@ Module collections.
               }
           }
       *)
-      Definition retain_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition retain_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ F ], [ self; f ] =>
@@ -4649,7 +4892,7 @@ Module collections.
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -4674,15 +4917,15 @@ Module collections.
                             |) in
                           let node := M.copy (| γ0_0 |) in
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.Pure.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
@@ -4690,8 +4933,14 @@ Module collections.
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ M.read (| node |) ] ]
-                                          |))
+                                            [
+                                              f;
+                                              M.of_value (|
+                                                Value.Tuple [ A.to_value (M.read (| node |)) ]
+                                              |)
+                                            ]
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -4721,7 +4970,7 @@ Module collections.
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let _ :=
@@ -4737,7 +4986,7 @@ Module collections.
                                         [ cursor ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |)));
                       fun γ =>
@@ -4747,7 +4996,7 @@ Module collections.
                               M.read (|
                                 let _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)
                               |)
                             |)
                           |)))
@@ -4774,7 +5023,7 @@ Module collections.
               ExtractIf { list: self, it, pred: filter, idx: 0, old_len }
           }
       *)
-      Definition extract_if (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extract_if (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ F ], [ self; filter ] =>
@@ -4799,15 +5048,17 @@ Module collections.
                   |)
                 |) in
               M.alloc (|
-                Value.StructRecord
-                  "alloc::collections::linked_list::ExtractIf"
-                  [
-                    ("list", M.read (| self |));
-                    ("it", M.read (| it |));
-                    ("pred", M.read (| filter |));
-                    ("idx", Value.Integer Integer.Usize 0);
-                    ("old_len", M.read (| old_len |))
-                  ]
+                M.of_value (|
+                  Value.StructRecord
+                    "alloc::collections::linked_list::ExtractIf"
+                    [
+                      ("list", A.to_value (M.read (| self |)));
+                      ("it", A.to_value (M.read (| it |)));
+                      ("pred", A.to_value (M.read (| filter |)));
+                      ("idx", A.to_value (M.of_value (| Value.Integer 0 |)));
+                      ("old_len", A.to_value (M.read (| old_len |)))
+                    ]
+                |)
               |)
             |)))
         | _, _ => M.impossible
@@ -4829,7 +5080,7 @@ Module collections.
               Self::new()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -4867,20 +5118,28 @@ Module collections.
               LinkedList { head: None, tail: None, len: 0, alloc: Global, marker: PhantomData }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "alloc::collections::linked_list::LinkedList"
-              [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer Integer.Usize 0);
-                ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                ("marker", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+            (M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::LinkedList"
+                [
+                  ("head",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("tail",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("len", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("alloc",
+                    A.to_value (M.of_value (| Value.StructTuple "alloc::alloc::Global" [] |)));
+                  ("marker",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4908,7 +5167,7 @@ Module collections.
               }
           }
       *)
-      Definition append (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition append (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -4948,7 +5207,7 @@ Module collections.
                         |) in
                       let tail := M.copy (| γ0_0 |) in
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -5007,9 +5266,11 @@ Module collections.
                                       "alloc::collections::linked_list::Node",
                                       "next"
                                     |),
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| other_head |) ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| other_head |)) ]
+                                    |)
                                   |) in
                                 let _ :=
                                   M.write (|
@@ -5031,11 +5292,13 @@ Module collections.
                                       "alloc::collections::linked_list::Node",
                                       "prev"
                                     |),
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [ M.read (| tail |) ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ A.to_value (M.read (| tail |)) ]
+                                    |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |) in
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                               let _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
@@ -5078,6 +5341,7 @@ Module collections.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
                                     M.call_closure (|
                                       M.get_function (|
@@ -5090,13 +5354,13 @@ Module collections.
                                           "alloc::collections::linked_list::LinkedList",
                                           "len"
                                         |);
-                                        Value.Integer Integer.Usize 0
+                                        M.of_value (| Value.Integer 0 |)
                                       ]
                                     |)
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         ]
                       |)))
                 ]
@@ -5133,7 +5397,7 @@ Module collections.
               mem::forget(guard);
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -5142,15 +5406,17 @@ Module collections.
             M.read (|
               let guard :=
                 M.alloc (|
-                  Value.StructTuple
-                    "alloc::collections::linked_list::drop::DropGuard"
-                    [ M.read (| self |) ]
+                  M.of_value (|
+                    Value.StructTuple
+                      "alloc::collections::linked_list::drop::DropGuard"
+                      [ A.to_value (M.read (| self |)) ]
+                  |)
                 |) in
               let _ :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -5201,7 +5467,7 @@ Module collections.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
@@ -5209,7 +5475,7 @@ Module collections.
                                 M.read (|
                                   let _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                 |)
                               |)
                             |)))
@@ -5230,7 +5496,7 @@ Module collections.
                     [ M.read (| guard |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5266,7 +5532,7 @@ Module collections.
               }
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -5274,25 +5540,28 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::Iter",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer Integer.Usize 0)
+                              |),
+                              M.of_value (| Value.Integer 0 |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -5333,8 +5602,8 @@ Module collections.
                                 "head"
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -5373,8 +5642,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    M.of_value (| Value.Integer 1 |)
                                                   |)
                                                 |) in
                                               let _ :=
@@ -5403,7 +5673,8 @@ Module collections.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       |)))
@@ -5418,33 +5689,40 @@ Module collections.
               (self.len, Some(self.len))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::linked_list::Iter",
-                    "len"
-                  |)
-                |);
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    M.read (|
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::Iter",
                         "len"
                       |)
-                    |)
-                  ]
-              ]))
+                    |));
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::linked_list::Iter",
+                                "len"
+                              |)
+                            |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5453,7 +5731,7 @@ Module collections.
               self.next_back()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -5506,7 +5784,7 @@ Module collections.
               }
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -5514,25 +5792,28 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::Iter",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer Integer.Usize 0)
+                              |),
+                              M.of_value (| Value.Integer 0 |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -5573,8 +5854,8 @@ Module collections.
                                 "tail"
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -5613,8 +5894,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    M.of_value (| Value.Integer 1 |)
                                                   |)
                                                 |) in
                                               let _ :=
@@ -5643,7 +5925,8 @@ Module collections.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       |)))
@@ -5697,35 +5980,42 @@ Module collections.
               Iter { head: None, tail: None, len: 0, marker: Default::default() }
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "alloc::collections::linked_list::Iter"
-              [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer Integer.Usize 0);
-                ("marker",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "core::marker::PhantomData")
-                        [
+            (M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Iter"
+                [
+                  ("head",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("tail",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("len", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("marker",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
                           Ty.apply
-                            (Ty.path "&")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
-                        ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+                            (Ty.path "core::marker::PhantomData")
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5760,7 +6050,7 @@ Module collections.
               }
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -5768,25 +6058,28 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::IterMut",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer Integer.Usize 0)
+                              |),
+                              M.of_value (| Value.Integer 0 |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -5827,8 +6120,8 @@ Module collections.
                                 "head"
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -5867,8 +6160,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    M.of_value (| Value.Integer 1 |)
                                                   |)
                                                 |) in
                                               let _ :=
@@ -5897,7 +6191,8 @@ Module collections.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       |)))
@@ -5912,33 +6207,40 @@ Module collections.
               (self.len, Some(self.len))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::collections::linked_list::IterMut",
-                    "len"
-                  |)
-                |);
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    M.read (|
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::IterMut",
                         "len"
                       |)
-                    |)
-                  ]
-              ]))
+                    |));
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::linked_list::IterMut",
+                                "len"
+                              |)
+                            |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5947,7 +6249,7 @@ Module collections.
               self.next_back()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -6000,7 +6302,7 @@ Module collections.
               }
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -6008,25 +6310,28 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.Pure.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::IterMut",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer Integer.Usize 0)
+                              |),
+                              M.of_value (| Value.Integer 0 |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -6067,8 +6372,8 @@ Module collections.
                                 "tail"
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -6107,8 +6412,9 @@ Module collections.
                                                 M.write (|
                                                   β,
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| β |),
-                                                    Value.Integer Integer.Usize 1
+                                                    M.of_value (| Value.Integer 1 |)
                                                   |)
                                                 |) in
                                               let _ :=
@@ -6137,7 +6443,8 @@ Module collections.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end))
+                                  end)
+                            |)
                           ]
                         |)
                       |)))
@@ -6191,35 +6498,42 @@ Module collections.
               IterMut { head: None, tail: None, len: 0, marker: Default::default() }
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
-              "alloc::collections::linked_list::IterMut"
-              [
-                ("head", Value.StructTuple "core::option::Option::None" []);
-                ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer Integer.Usize 0);
-                ("marker",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.apply
-                        (Ty.path "core::marker::PhantomData")
-                        [
+            (M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::IterMut"
+                [
+                  ("head",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("tail",
+                    A.to_value
+                      (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                  ("len", A.to_value (M.of_value (| Value.Integer 0 |)));
+                  ("marker",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::default::Default",
                           Ty.apply
-                            (Ty.path "&mut")
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
-                        ],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |))
-              ]))
+                            (Ty.path "core::marker::PhantomData")
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [ T ] ]
+                            ],
+                          [],
+                          "default",
+                          []
+                        |),
+                        []
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6264,7 +6578,7 @@ Module collections.
               Cursor { index, current, list }
           }
       *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -6298,13 +6612,15 @@ Module collections.
                       let current := M.copy (| γ0_1 |) in
                       let list := M.copy (| γ0_2 |) in
                       M.alloc (|
-                        Value.StructRecord
-                          "alloc::collections::linked_list::Cursor"
-                          [
-                            ("index", M.read (| index |));
-                            ("current", M.read (| current |));
-                            ("list", M.read (| list |))
-                          ]
+                        M.of_value (|
+                          Value.StructRecord
+                            "alloc::collections::linked_list::Cursor"
+                            [
+                              ("index", A.to_value (M.read (| index |)));
+                              ("current", A.to_value (M.read (| current |)));
+                              ("list", A.to_value (M.read (| list |)))
+                            ]
+                        |)
                       |)))
                 ]
               |)
@@ -6330,7 +6646,7 @@ Module collections.
               f.debug_tuple("Cursor").field(&self.list).field(&self.index()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; f ] =>
@@ -6365,21 +6681,22 @@ Module collections.
                               "debug_tuple",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "Cursor" |) |) ]
                           |)
                         |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::collections::linked_list::Cursor",
                             "list"
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
+                    M.pointer_coercion (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [ T; A ],
@@ -6388,7 +6705,8 @@ Module collections.
                           |),
                           [ M.read (| self |) ]
                         |)
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -6436,7 +6754,7 @@ Module collections.
               f.debug_tuple("CursorMut").field(&self.list).field(&self.index()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; f ] =>
@@ -6471,21 +6789,23 @@ Module collections.
                               "debug_tuple",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
+                            [ M.read (| f |); M.read (| M.of_value (| Value.String "CursorMut" |) |)
+                            ]
                           |)
                         |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::collections::linked_list::CursorMut",
                             "list"
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
+                    M.pointer_coercion (|
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -6496,7 +6816,8 @@ Module collections.
                           |),
                           [ M.read (| self |) ]
                         |)
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -6523,7 +6844,7 @@ Module collections.
               Some(self.index)
           }
       *)
-      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -6611,17 +6932,20 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::linked_list::Cursor",
-                                    "index"
-                                  |)
-                                |)
-                              ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::linked_list::Cursor",
+                                        "index"
+                                      |)
+                                    |))
+                                ]
+                            |)
                           |)))
                     ]
                   |)
@@ -6651,7 +6975,7 @@ Module collections.
               }
           }
       *)
-      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -6712,9 +7036,9 @@ Module collections.
                             "alloc::collections::linked_list::Cursor",
                             "index"
                           |),
-                          Value.Integer Integer.Usize 0
+                          M.of_value (| Value.Integer 0 |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -6761,9 +7085,13 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -6790,7 +7118,7 @@ Module collections.
               }
           }
       *)
-      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -6879,14 +7207,14 @@ Module collections.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer Integer.Usize 1
+                                  M.of_value (| Value.Integer 1 |)
                                 ]
                               |);
-                              Value.Integer Integer.Usize 0
+                              M.of_value (| Value.Integer 0 |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -6948,11 +7276,11 @@ Module collections.
                                       "index"
                                     |)
                                   |);
-                                  Value.Integer Integer.Usize 1
+                                  M.of_value (| Value.Integer 1 |)
                                 ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -6983,11 +7311,12 @@ Module collections.
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -7003,7 +7332,7 @@ Module collections.
               unsafe { self.current.map(|current| &( *current.as_ptr()).element) }
           }
       *)
-      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7041,8 +7370,8 @@ Module collections.
                     "current"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -7073,7 +7402,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -7094,7 +7424,7 @@ Module collections.
               }
           }
       *)
-      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7177,8 +7507,8 @@ Module collections.
                   |),
                   [
                     M.read (| next |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -7209,7 +7539,8 @@ Module collections.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -7232,7 +7563,7 @@ Module collections.
               }
           }
       *)
-      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7315,8 +7646,8 @@ Module collections.
                   |),
                   [
                     M.read (| prev |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -7347,7 +7678,8 @@ Module collections.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -7364,7 +7696,7 @@ Module collections.
               self.list.front()
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7398,7 +7730,7 @@ Module collections.
               self.list.back()
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7438,7 +7770,7 @@ Module collections.
               Some(self.index)
           }
       *)
-      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition index (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7526,17 +7858,20 @@ Module collections.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::linked_list::CursorMut",
-                                    "index"
-                                  |)
-                                |)
-                              ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::linked_list::CursorMut",
+                                        "index"
+                                      |)
+                                    |))
+                                ]
+                            |)
                           |)))
                     ]
                   |)
@@ -7566,7 +7901,7 @@ Module collections.
               }
           }
       *)
-      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7627,9 +7962,9 @@ Module collections.
                             "alloc::collections::linked_list::CursorMut",
                             "index"
                           |),
-                          Value.Integer Integer.Usize 0
+                          M.of_value (| Value.Integer 0 |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -7676,9 +8011,13 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -7705,7 +8044,7 @@ Module collections.
               }
           }
       *)
-      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_prev (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7794,14 +8133,14 @@ Module collections.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer Integer.Usize 1
+                                  M.of_value (| Value.Integer 1 |)
                                 ]
                               |);
-                              Value.Integer Integer.Usize 0
+                              M.of_value (| Value.Integer 0 |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -7863,11 +8202,11 @@ Module collections.
                                       "index"
                                     |)
                                   |);
-                                  Value.Integer Integer.Usize 1
+                                  M.of_value (| Value.Integer 1 |)
                                 ]
                               |);
-                              M.closure
-                                (fun γ =>
+                              M.closure (|
+                                fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
@@ -7898,11 +8237,12 @@ Module collections.
                                         ]
                                       |)
                                     | _ => M.impossible (||)
-                                    end))
+                                    end)
+                              |)
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -7918,7 +8258,7 @@ Module collections.
               unsafe { self.current.map(|current| &mut ( *current.as_ptr()).element) }
           }
       *)
-      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition current (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -7956,8 +8296,8 @@ Module collections.
                     "current"
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -7988,7 +8328,8 @@ Module collections.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -8009,7 +8350,7 @@ Module collections.
               }
           }
       *)
-      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -8092,8 +8433,8 @@ Module collections.
                   |),
                   [
                     M.read (| next |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -8124,7 +8465,8 @@ Module collections.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -8147,7 +8489,7 @@ Module collections.
               }
           }
       *)
-      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_prev (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -8230,8 +8572,8 @@ Module collections.
                   |),
                   [
                     M.read (| prev |);
-                    M.closure
-                      (fun γ =>
+                    M.closure (|
+                      fun γ =>
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
@@ -8262,7 +8604,8 @@ Module collections.
                               ]
                             |)
                           | _ => M.impossible (||)
-                          end))
+                          end)
+                    |)
                   ]
                 |)
               |)
@@ -8279,40 +8622,45 @@ Module collections.
               Cursor { list: self.list, current: self.current, index: self.index }
           }
       *)
-      Definition as_cursor (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_cursor (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::Cursor"
-              [
-                ("list",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::CursorMut",
-                      "list"
-                    |)
-                  |));
-                ("current",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::CursorMut",
-                      "current"
-                    |)
-                  |));
-                ("index",
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::CursorMut",
-                      "index"
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::Cursor"
+                [
+                  ("list",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::CursorMut",
+                          "list"
+                        |)
+                      |)));
+                  ("current",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::CursorMut",
+                          "current"
+                        |)
+                      |)));
+                  ("index",
+                    A.to_value
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::CursorMut",
+                          "index"
+                        |)
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8335,7 +8683,7 @@ Module collections.
               }
           }
       *)
-      Definition insert_after (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_after (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; item ] =>
@@ -8485,12 +8833,12 @@ Module collections.
                       M.read (| node_next |);
                       M.read (| spliced_node |);
                       M.read (| spliced_node |);
-                      Value.Integer Integer.Usize 1
+                      M.of_value (| Value.Integer 1 |)
                     ]
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -8544,8 +8892,8 @@ Module collections.
                             |)
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -8569,7 +8917,7 @@ Module collections.
               }
           }
       *)
-      Definition insert_before (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_before (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; item ] =>
@@ -8719,7 +9067,7 @@ Module collections.
                       |);
                       M.read (| spliced_node |);
                       M.read (| spliced_node |);
-                      Value.Integer Integer.Usize 1
+                      M.of_value (| Value.Integer 1 |)
                     ]
                   |)
                 |) in
@@ -8732,9 +9080,13 @@ Module collections.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8754,7 +9106,7 @@ Module collections.
               }
           }
       *)
-      Definition remove_current (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove_current (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -8915,17 +9267,20 @@ Module collections.
                       |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| unlinked_node |),
-                            "alloc::collections::linked_list::Node",
-                            "element"
-                          |)
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| unlinked_node |),
+                                "alloc::collections::linked_list::Node",
+                                "element"
+                              |)
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -8958,7 +9313,7 @@ Module collections.
               }
           }
       *)
-      Definition remove_current_as_list (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remove_current_as_list (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -9113,7 +9468,7 @@ Module collections.
                         "alloc::collections::linked_list::Node",
                         "prev"
                       |),
-                      Value.StructTuple "core::option::Option::None" []
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
                     |) in
                   let _ :=
                     M.write (|
@@ -9131,44 +9486,66 @@ Module collections.
                         "alloc::collections::linked_list::Node",
                         "next"
                       |),
-                      Value.StructTuple "core::option::Option::None" []
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
                     |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      [
-                        Value.StructRecord
-                          "alloc::collections::linked_list::LinkedList"
-                          [
-                            ("head",
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ M.read (| unlinked_node |) ]);
-                            ("tail",
-                              Value.StructTuple
-                                "core::option::Option::Some"
-                                [ M.read (| unlinked_node |) ]);
-                            ("len", Value.Integer Integer.Usize 1);
-                            ("alloc",
-                              M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructRecord
+                                "alloc::collections::linked_list::LinkedList"
                                 [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::CursorMut",
-                                        "list"
-                                      |)
-                                    |),
-                                    "alloc::collections::linked_list::LinkedList",
-                                    "alloc"
-                                  |)
+                                  ("head",
+                                    A.to_value
+                                      (M.of_value (|
+                                        Value.StructTuple
+                                          "core::option::Option::Some"
+                                          [ A.to_value (M.read (| unlinked_node |)) ]
+                                      |)));
+                                  ("tail",
+                                    A.to_value
+                                      (M.of_value (|
+                                        Value.StructTuple
+                                          "core::option::Option::Some"
+                                          [ A.to_value (M.read (| unlinked_node |)) ]
+                                      |)));
+                                  ("len", A.to_value (M.of_value (| Value.Integer 1 |)));
+                                  ("alloc",
+                                    A.to_value
+                                      (M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::clone::Clone",
+                                          A,
+                                          [],
+                                          "clone",
+                                          []
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::linked_list::CursorMut",
+                                                "list"
+                                              |)
+                                            |),
+                                            "alloc::collections::linked_list::LinkedList",
+                                            "alloc"
+                                          |)
+                                        ]
+                                      |)));
+                                  ("marker",
+                                    A.to_value
+                                      (M.of_value (|
+                                        Value.StructTuple "core::marker::PhantomData" []
+                                      |)))
                                 ]
-                              |));
-                            ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                          ]
-                      ]
+                            |))
+                        ]
+                    |)
                   |)
                 |)))
             |)))
@@ -9192,7 +9569,7 @@ Module collections.
               unsafe { self.list.split_off_after_node(self.current, split_off_idx) }
           }
       *)
-      Definition split_after (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_after (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -9202,22 +9579,22 @@ Module collections.
               let split_off_idx :=
                 M.copy (|
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (|
+                                BinOp.Pure.eq (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::linked_list::CursorMut",
                                       "index"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -9229,15 +9606,17 @@ Module collections.
                                       "alloc::collections::linked_list::LinkedList",
                                       "len"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer Integer.Usize 0 |)));
+                          M.alloc (| M.of_value (| Value.Integer 0 |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
                             BinOp.Panic.add (|
+                              Integer.Usize,
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -9245,7 +9624,7 @@ Module collections.
                                   "index"
                                 |)
                               |),
-                              Value.Integer Integer.Usize 1
+                              M.of_value (| Value.Integer 1 |)
                             |)
                           |)))
                     ]
@@ -9253,22 +9632,22 @@ Module collections.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.Pure.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "alloc::collections::linked_list::CursorMut",
                                     "index"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -9280,7 +9659,8 @@ Module collections.
                                     "alloc::collections::linked_list::LinkedList",
                                     "len"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9291,10 +9671,10 @@ Module collections.
                               "alloc::collections::linked_list::CursorMut",
                               "index"
                             |),
-                            Value.Integer Integer.Usize 0
+                            M.of_value (| Value.Integer 0 |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               M.alloc (|
@@ -9341,7 +9721,7 @@ Module collections.
               unsafe { self.list.split_off_before_node(self.current, split_off_idx) }
           }
       *)
-      Definition split_before (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition split_before (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -9363,7 +9743,7 @@ Module collections.
                     "alloc::collections::linked_list::CursorMut",
                     "index"
                   |),
-                  Value.Integer Integer.Usize 0
+                  M.of_value (| Value.Integer 0 |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -9408,7 +9788,7 @@ Module collections.
               self.index += 1;
           }
       *)
-      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; elt ] =>
@@ -9445,9 +9825,13 @@ Module collections.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                  BinOp.Panic.add (|
+                    Integer.Usize,
+                    M.read (| β |),
+                    M.of_value (| Value.Integer 1 |)
+                  |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9469,7 +9853,7 @@ Module collections.
               }
           }
       *)
-      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; elt ] =>
@@ -9498,7 +9882,7 @@ Module collections.
                   |)
                 |) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9539,10 +9923,14 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                          BinOp.Panic.add (|
+                            Integer.Usize,
+                            M.read (| β |),
+                            M.of_value (| Value.Integer 1 |)
+                          |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -9574,7 +9962,7 @@ Module collections.
               }
           }
       *)
-      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -9582,7 +9970,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9609,12 +9997,14 @@ Module collections.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -9691,7 +10081,7 @@ Module collections.
                                       [ M.read (| self |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
@@ -9704,11 +10094,12 @@ Module collections.
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      M.of_value (| Value.Integer 1 |)
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
                       M.alloc (|
@@ -9758,7 +10149,7 @@ Module collections.
               }
           }
       *)
-      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -9766,7 +10157,7 @@ Module collections.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -9793,12 +10184,14 @@ Module collections.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -9869,13 +10262,15 @@ Module collections.
                                       "alloc::collections::linked_list::CursorMut",
                                       "current"
                                     |),
-                                    Value.StructTuple "core::option::Option::None" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -9921,6 +10316,7 @@ Module collections.
                                               "index"
                                             |),
                                             BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (|
@@ -9934,11 +10330,13 @@ Module collections.
                                                   "len"
                                                 |)
                                               |),
-                                              Value.Integer Integer.Usize 1
+                                              M.of_value (| Value.Integer 1 |)
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |)))
                           ]
@@ -9978,7 +10376,7 @@ Module collections.
               self.list.front()
           }
       *)
-      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -10012,7 +10410,7 @@ Module collections.
               self.list.front_mut()
           }
       *)
-      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition front_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -10046,7 +10444,7 @@ Module collections.
               self.list.back()
           }
       *)
-      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -10080,7 +10478,7 @@ Module collections.
               self.list.back_mut()
           }
       *)
-      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition back_mut (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -10135,7 +10533,7 @@ Module collections.
               }
           }
       *)
-      Definition splice_after (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_after (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; list ] =>
@@ -10173,7 +10571,9 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                              M.never_to_any (|
+                                M.read (| M.return_ (| M.of_value (| Value.Tuple [] |) |) |)
+                              |)
                             |)))
                       ]
                     |),
@@ -10271,7 +10671,7 @@ Module collections.
                               |)
                             |) in
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -10330,8 +10730,9 @@ Module collections.
                                         |)
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |)))
                     ]
@@ -10361,7 +10762,7 @@ Module collections.
               }
           }
       *)
-      Definition splice_before (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition splice_before (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; list ] =>
@@ -10399,7 +10800,9 @@ Module collections.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                              M.never_to_any (|
+                                M.read (| M.return_ (| M.of_value (| Value.Tuple [] |) |) |)
+                              |)
                             |)))
                       ]
                     |),
@@ -10505,9 +10908,13 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Panic.add (| M.read (| β |), M.read (| splice_len |) |)
+                              BinOp.Panic.add (|
+                                Integer.Usize,
+                                M.read (| β |),
+                                M.read (| splice_len |)
+                              |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |)
                 |)))
@@ -10570,7 +10977,7 @@ Module collections.
               None
           }
       *)
-      Definition next (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T F A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F A in
         match τ, α with
         | [], [ self ] =>
@@ -10583,7 +10990,7 @@ Module collections.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -10638,12 +11045,13 @@ Module collections.
                                   M.write (|
                                     β,
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (| β |),
-                                      Value.Integer Integer.Usize 1
+                                      M.of_value (| Value.Integer 1 |)
                                     |)
                                   |) in
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -10664,29 +11072,32 @@ Module collections.
                                                     "alloc::collections::linked_list::ExtractIf",
                                                     "pred"
                                                   |);
-                                                  Value.Tuple
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::ptr::non_null::NonNull")
-                                                              [
+                                                  M.of_value (|
+                                                    Value.Tuple
+                                                      [
+                                                        A.to_value
+                                                          (M.SubPointer.get_struct_record_field (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
-                                                                    "alloc::collections::linked_list::Node")
-                                                                  [ T ]
-                                                              ],
-                                                            "as_mut",
-                                                            []
-                                                          |),
-                                                          [ node ]
-                                                        |),
-                                                        "alloc::collections::linked_list::Node",
-                                                        "element"
-                                                      |)
-                                                    ]
+                                                                    "core::ptr::non_null::NonNull")
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloc::collections::linked_list::Node")
+                                                                      [ T ]
+                                                                  ],
+                                                                "as_mut",
+                                                                []
+                                                              |),
+                                                              [ node ]
+                                                            |),
+                                                            "alloc::collections::linked_list::Node",
+                                                            "element"
+                                                          |))
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             |)) in
@@ -10722,54 +11133,59 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.return_ (|
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "alloc::boxed::Box")
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::linked_list::Node")
-                                                                  [ T ];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            "from_raw",
-                                                            []
-                                                          |),
-                                                          [
+                                                M.of_value (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [
+                                                      A.to_value
+                                                        (M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
-                                                                  (Ty.path
-                                                                    "core::ptr::non_null::NonNull")
+                                                                  (Ty.path "alloc::boxed::Box")
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::collections::linked_list::Node")
-                                                                      [ T ]
+                                                                      [ T ];
+                                                                    Ty.path "alloc::alloc::Global"
                                                                   ],
-                                                                "as_ptr",
+                                                                "from_raw",
                                                                 []
                                                               |),
-                                                              [ M.read (| node |) ]
-                                                            |)
-                                                          ]
-                                                        |),
-                                                        "alloc::collections::linked_list::Node",
-                                                        "element"
-                                                      |)
-                                                    |)
-                                                  ]
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ptr::non_null::NonNull")
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::collections::linked_list::Node")
+                                                                          [ T ]
+                                                                      ],
+                                                                    "as_ptr",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| node |) ]
+                                                                |)
+                                                              ]
+                                                            |),
+                                                            "alloc::collections::linked_list::Node",
+                                                            "element"
+                                                          |)
+                                                        |))
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |)));
                             fun γ =>
@@ -10781,14 +11197,14 @@ Module collections.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
+                  M.alloc (| M.of_value (| Value.StructTuple "core::option::Option::None" [] |) |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -10799,36 +11215,43 @@ Module collections.
               (0, Some(self.old_len - self.idx))
           }
       *)
-      Definition size_hint (T F A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T F A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                Value.Integer Integer.Usize 0;
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    BinOp.Panic.sub (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::linked_list::ExtractIf",
-                          "old_len"
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::linked_list::ExtractIf",
-                          "idx"
-                        |)
-                      |)
-                    |)
-                  ]
-              ]))
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 0 |));
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (BinOp.Panic.sub (|
+                              Integer.Usize,
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::linked_list::ExtractIf",
+                                  "old_len"
+                                |)
+                              |),
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::linked_list::ExtractIf",
+                                  "idx"
+                                |)
+                              |)
+                            |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10857,7 +11280,7 @@ Module collections.
               f.debug_tuple("ExtractIf").field(&self.list).finish()
           }
       *)
-      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ self; f ] =>
@@ -10885,16 +11308,17 @@ Module collections.
                           "debug_tuple",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "ExtractIf" |) |) ]
                       |)
                     |);
                     (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
+                    M.pointer_coercion (|
+                      M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::linked_list::ExtractIf",
                         "list"
-                      |))
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -10923,7 +11347,7 @@ Module collections.
               self.list.pop_front()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -10951,29 +11375,17 @@ Module collections.
               (self.list.len, Some(self.list.len))
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::linked_list::IntoIter",
-                      "list"
-                    |),
-                    "alloc::collections::linked_list::LinkedList",
-                    "len"
-                  |)
-                |);
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    M.read (|
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -10983,9 +11395,28 @@ Module collections.
                         "alloc::collections::linked_list::LinkedList",
                         "len"
                       |)
-                    |)
-                  ]
-              ]))
+                    |));
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::linked_list::IntoIter",
+                                  "list"
+                                |),
+                                "alloc::collections::linked_list::LinkedList",
+                                "len"
+                              |)
+                            |))
+                        ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11012,7 +11443,7 @@ Module collections.
               self.list.pop_back()
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -11081,7 +11512,7 @@ Module collections.
               LinkedList::new().into_iter()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -11134,7 +11565,7 @@ Module collections.
               list
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ _ as I ], [ iter ] =>
@@ -11199,15 +11630,17 @@ Module collections.
               IntoIter { list: self }
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "alloc::collections::linked_list::IntoIter"
-              [ ("list", M.read (| self |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "alloc::collections::linked_list::IntoIter"
+                [ ("list", A.to_value (M.read (| self |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11243,7 +11676,7 @@ Module collections.
               self.iter()
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -11292,7 +11725,7 @@ Module collections.
               self.iter_mut()
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -11332,7 +11765,7 @@ Module collections.
               <Self as SpecExtend<I>>::spec_extend(self, iter);
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ _ as I ], [ self; iter ] =>
@@ -11353,7 +11786,7 @@ Module collections.
                     [ M.read (| self |); M.read (| iter |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11363,7 +11796,7 @@ Module collections.
               self.push_back(elem);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; elem ] =>
@@ -11382,7 +11815,7 @@ Module collections.
                     [ M.read (| self |); M.read (| elem |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11409,7 +11842,7 @@ Module collections.
               iter.into_iter().for_each(move |elt| self.push_back(elt));
           }
       *)
-      Definition spec_extend (I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (I A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self I A in
         match τ, α with
         | [], [ self; iter ] =>
@@ -11438,8 +11871,8 @@ Module collections.
                         |),
                         [ M.read (| iter |) ]
                       |);
-                      M.closure
-                        (fun γ =>
+                      M.closure (|
+                        fun γ =>
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
@@ -11462,11 +11895,12 @@ Module collections.
                                 ]
                               |)
                             | _ => M.impossible (||)
-                            end))
+                            end)
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11491,7 +11925,7 @@ Module collections.
               self.append(other);
           }
       *)
-      Definition spec_extend (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; β1 ] =>
@@ -11518,7 +11952,7 @@ Module collections.
                             [ M.read (| self |); M.read (| other |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                     |)))
               ]
             |)))
@@ -11549,7 +11983,7 @@ Module collections.
               self.extend(iter.into_iter().cloned());
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ _ as I ], [ self; iter ] =>
@@ -11594,7 +12028,7 @@ Module collections.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11604,7 +12038,7 @@ Module collections.
               self.push_back(elem);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; β1 ] =>
@@ -11632,7 +12066,7 @@ Module collections.
                             [ M.read (| self |); M.read (| elem |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                     |)))
               ]
             |)))
@@ -11661,7 +12095,7 @@ Module collections.
               self.len() == other.len() && self.iter().eq(other)
           }
       *)
-      Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; other ] =>
@@ -11669,23 +12103,24 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.Pure.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -11721,7 +12156,7 @@ Module collections.
               self.len() != other.len() || self.iter().ne(other)
           }
       *)
-      Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; other ] =>
@@ -11729,23 +12164,24 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.or (|
-              BinOp.Pure.ne
-                (M.call_closure (|
+              BinOp.Pure.ne (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -11808,7 +12244,7 @@ Module collections.
               self.iter().partial_cmp(other)
           }
       *)
-      Definition partial_cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; other ] =>
@@ -11860,7 +12296,7 @@ Module collections.
               self.iter().cmp(other)
           }
       *)
-      Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; other ] =>
@@ -11914,7 +12350,7 @@ Module collections.
               list
           }
       *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self ] =>
@@ -12002,7 +12438,7 @@ Module collections.
               }
           }
       *)
-      Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; other ] =>
@@ -12023,15 +12459,15 @@ Module collections.
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.call_closure (|
+                              BinOp.Pure.gt (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -12040,8 +12476,8 @@ Module collections.
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -12050,7 +12486,8 @@ Module collections.
                                     []
                                   |),
                                   [ M.read (| other |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12079,8 +12516,8 @@ Module collections.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               let _ :=
@@ -12197,23 +12634,23 @@ Module collections.
                                               [ M.read (| elem |); M.read (| elem_other |) ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |)) in
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.Pure.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "alloc::collections::linked_list::Iter") [ T ],
@@ -12222,7 +12659,8 @@ Module collections.
                                   []
                                 |),
                                 [ iter_other ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
@@ -12257,8 +12695,8 @@ Module collections.
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |)
             |)))
@@ -12287,7 +12725,7 @@ Module collections.
               f.debug_list().entries(self).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [], [ self; f ] =>
@@ -12353,7 +12791,7 @@ Module collections.
               }
           }
       *)
-      Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T A in
         match τ, α with
         | [ H ], [ self; state ] =>
@@ -12448,10 +12886,10 @@ Module collections.
                                             [ M.read (| elt |); M.read (| state |) ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                         |)))
                   ]
                 |))
@@ -12479,7 +12917,7 @@ Module collections.
               Self::from_iter(arr)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ arr ] =>
@@ -12522,8 +12960,11 @@ Module collections.
         }
     }
     *)
-    Definition assert_covariance (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    Definition assert_covariance (τ : list Ty.t) (α : list A.t) : M :=
+      match τ, α with
+      | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+      | _, _ => M.impossible
+      end.
     
     Module assert_covariance.
       (*
@@ -12531,7 +12972,7 @@ Module collections.
               x
           }
       *)
-      Definition a (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition a (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
@@ -12545,7 +12986,7 @@ Module collections.
               x
           }
       *)
-      Definition b (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition b (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
@@ -12559,7 +13000,7 @@ Module collections.
               x
           }
       *)
-      Definition c (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition c (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic

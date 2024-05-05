@@ -19,14 +19,17 @@ Module asserting.
         [ Ty.apply (Ty.path "core::asserting::Wrapper") [ Ty.apply (Ty.path "&") [ E ] ] ].
     
     (*     fn try_capture(&self, _: &mut Capture<E, TryCaptureWithoutDebug>) {} *)
-    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self E in
       match τ, α with
       | [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
-          M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (|
+            β1,
+            [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -51,7 +54,7 @@ Module asserting.
             f.write_str("N/A")
         }
     *)
-    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self E in
       match τ, α with
       | [], [ self; f ] =>
@@ -60,7 +63,7 @@ Module asserting.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-            [ M.read (| f |); M.read (| Value.String "N/A" |) ]
+            [ M.read (| f |); M.read (| M.of_value (| Value.String "N/A" |) |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -93,7 +96,7 @@ Module asserting.
             to.elem = Some( *self.0);
         }
     *)
-    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_capture (E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self E in
       match τ, α with
       | [], [ self; to ] =>
@@ -108,21 +111,24 @@ Module asserting.
                   "core::asserting::Capture",
                   "elem"
                 |),
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [
-                    M.read (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "core::asserting::Wrapper",
-                          0
-                        |)
-                      |)
-                    |)
-                  ]
+                M.of_value (|
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    [
+                      A.to_value
+                        (M.read (|
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "core::asserting::Wrapper",
+                              0
+                            |)
+                          |)
+                        |))
+                    ]
+                |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -151,7 +157,7 @@ Module asserting.
             }
         }
     *)
-    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self E in
       match τ, α with
       | [], [ self; f ] =>
@@ -175,7 +181,7 @@ Module asserting.
                           "write_str",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "N/A" |) ]
+                        [ M.read (| f |); M.read (| M.of_value (| Value.String "N/A" |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -227,17 +233,21 @@ Module asserting.
             Self { elem: None, phantom: PhantomData }
         }
     *)
-    Definition new (M_ T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (M_ T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self M_ T in
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "core::asserting::Capture"
-            [
-              ("elem", Value.StructTuple "core::option::Option::None" []);
-              ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-            ]))
+          (M.of_value (|
+            Value.StructRecord
+              "core::asserting::Capture"
+              [
+                ("elem",
+                  A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)));
+                ("phantom",
+                  A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     

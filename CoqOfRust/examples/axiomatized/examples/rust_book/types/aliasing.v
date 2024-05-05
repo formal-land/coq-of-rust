@@ -7,4 +7,4 @@ Axiom Inch : (Ty.path "aliasing::Inch") = (Ty.path "u64").
 
 Axiom U64 : (Ty.path "aliasing::U64") = (Ty.path "u64").
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

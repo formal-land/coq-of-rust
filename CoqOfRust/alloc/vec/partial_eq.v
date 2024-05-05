@@ -7,7 +7,7 @@ Module vec.
       Definition Self (T U A1 A2 : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A1 ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A1 A2 : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A1 A2 : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A1 A2 in
         match τ, α with
         | [], [ self; other ] =>
@@ -31,7 +31,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -41,7 +44,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -49,7 +55,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A1 A2 : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A1 A2 : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A1 A2 in
         match τ, α with
         | [], [ self; other ] =>
@@ -73,7 +79,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -83,7 +92,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -105,7 +117,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -129,7 +141,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -141,7 +156,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -150,7 +165,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -174,7 +189,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -186,7 +204,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -209,7 +227,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -233,7 +251,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -245,7 +266,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -254,7 +275,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -278,7 +299,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -290,7 +314,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -314,7 +338,7 @@ Module vec.
         Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -340,7 +364,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| self |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -351,7 +375,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -359,7 +386,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -385,7 +412,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| self |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -396,7 +423,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -418,7 +448,7 @@ Module vec.
         Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -444,7 +474,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| self |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -455,7 +485,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -463,7 +496,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -489,7 +522,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| self |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -500,7 +533,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -521,7 +557,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -545,7 +581,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -555,7 +594,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -563,7 +605,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -587,7 +629,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -597,7 +642,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -618,7 +666,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -642,7 +690,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -652,7 +703,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -660,7 +714,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -684,7 +738,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -694,7 +751,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -716,7 +776,7 @@ Module vec.
         Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -753,7 +813,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -764,7 +824,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -772,7 +835,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -809,7 +872,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -820,7 +883,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -842,7 +908,7 @@ Module vec.
         Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ self; other ] =>
@@ -879,7 +945,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -892,7 +958,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -901,7 +967,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ self; other ] =>
@@ -938,7 +1004,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -951,7 +1017,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -975,7 +1041,7 @@ Module vec.
         Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ self; other ] =>
@@ -1012,7 +1078,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -1025,7 +1091,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -1034,7 +1100,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U in
         match τ, α with
         | [], [ self; other ] =>
@@ -1071,7 +1137,7 @@ Module vec.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |);
                 M.call_closure (|
@@ -1084,7 +1150,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -1107,7 +1173,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -1131,7 +1197,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1141,7 +1210,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -1149,7 +1221,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -1173,7 +1245,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1183,7 +1258,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| other |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| other |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |)
               ]
             |)))
@@ -1204,7 +1282,7 @@ Module vec.
       Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
       
       (*             fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] } *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -1228,7 +1306,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1240,7 +1321,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]
@@ -1249,7 +1330,7 @@ Module vec.
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
-      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (T U A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T U A in
         match τ, α with
         | [], [ self; other ] =>
@@ -1273,7 +1354,10 @@ Module vec.
                     "index",
                     []
                   |),
-                  [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  [
+                    M.read (| self |);
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
+                  ]
                 |);
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1285,7 +1369,7 @@ Module vec.
                   |),
                   [
                     M.read (| M.read (| other |) |);
-                    Value.StructTuple "core::ops::range::RangeFull" []
+                    M.of_value (| Value.StructTuple "core::ops::range::RangeFull" [] |)
                   ]
                 |)
               ]

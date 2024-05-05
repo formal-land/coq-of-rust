@@ -26,7 +26,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
   
   (* PartialEq *)
-  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self A B in
     match τ, α with
     | [], [ self; other ] =>
@@ -109,7 +109,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
   
   (* PartialEq *)
-  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
     let Self : Ty.t := Self A B in
     match τ, α with
     | [], [ self; other ] =>
@@ -195,42 +195,58 @@ fn main() {
     //           _struct1 == _struct2);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let _tuple1 :=
           M.alloc (|
-            Value.StructTuple
-              "generics_phantom_type::PhantomTuple"
-              [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
+            M.of_value (|
+              Value.StructTuple
+                "generics_phantom_type::PhantomTuple"
+                [
+                  A.to_value (M.of_value (| Value.UnicodeChar 81 |));
+                  A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |))
+                ]
+            |)
           |) in
         let _tuple2 :=
           M.alloc (|
-            Value.StructTuple
-              "generics_phantom_type::PhantomTuple"
-              [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
+            M.of_value (|
+              Value.StructTuple
+                "generics_phantom_type::PhantomTuple"
+                [
+                  A.to_value (M.of_value (| Value.UnicodeChar 81 |));
+                  A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |))
+                ]
+            |)
           |) in
         let _struct1 :=
           M.alloc (|
-            Value.StructRecord
-              "generics_phantom_type::PhantomStruct"
-              [
-                ("first", Value.UnicodeChar 81);
-                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "generics_phantom_type::PhantomStruct"
+                [
+                  ("first", A.to_value (M.of_value (| Value.UnicodeChar 81 |)));
+                  ("phantom",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)
           |) in
         let _struct2 :=
           M.alloc (|
-            Value.StructRecord
-              "generics_phantom_type::PhantomStruct"
-              [
-                ("first", Value.UnicodeChar 81);
-                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
-              ]
+            M.of_value (|
+              Value.StructRecord
+                "generics_phantom_type::PhantomStruct"
+                [
+                  ("first", A.to_value (M.of_value (| Value.UnicodeChar 81 |)));
+                  ("phantom",
+                    A.to_value (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                ]
+            |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

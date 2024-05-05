@@ -6,8 +6,8 @@ Axiom AliasedResult :
   (Ty.apply (Ty.path "aliases_for_result::AliasedResult") [ T ]) =
     (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "core::num::error::ParseIntError" ]).
 
-Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
+Parameter multiply : (list Ty.t) -> (list A.t) -> M.
 
-Parameter print : (list Ty.t) -> (list Value.t) -> M.
+Parameter print : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

@@ -55,12 +55,15 @@ fn red<T: Red>(_: &T) -> &'static str {
     "red"
 }
 *)
-Definition red (τ : list Ty.t) (α : list Value.t) : M :=
+Definition red (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "red" |))) ] |)))
+      M.match_operator (|
+        β0,
+        [ fun γ => ltac:(M.monadic (M.read (| M.of_value (| Value.String "red" |) |))) ]
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -69,12 +72,15 @@ fn blue<T: Blue>(_: &T) -> &'static str {
     "blue"
 }
 *)
-Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
+Definition blue (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ] |)))
+      M.match_operator (|
+        β0,
+        [ fun γ => ltac:(M.monadic (M.read (| M.of_value (| Value.String "blue" |) |))) ]
+      |)))
   | _, _ => M.impossible
   end.
 
@@ -92,17 +98,23 @@ fn main() {
     // ^ TODO: Try uncommenting this line.
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let cardinal :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] |) in
+          M.alloc (|
+            M.of_value (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Cardinal" [] |)
+          |) in
         let blue_jay :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] |) in
+          M.alloc (|
+            M.of_value (| Value.StructTuple "generics_bounds_test_case_empty_bounds::BlueJay" [] |)
+          |) in
         let _turkey :=
-          M.alloc (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] |) in
+          M.alloc (|
+            M.of_value (| Value.StructTuple "generics_bounds_test_case_empty_bounds::Turkey" [] |)
+          |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -113,47 +125,57 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "A cardinal is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "A cardinal is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "generics_bounds_test_case_empty_bounds::red",
-                                        [ Ty.path "generics_bounds_test_case_empty_bounds::Cardinal"
-                                        ]
-                                      |),
-                                      [ cardinal ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "generics_bounds_test_case_empty_bounds::red",
+                                            [
+                                              Ty.path
+                                                "generics_bounds_test_case_empty_bounds::Cardinal"
+                                            ]
+                                          |),
+                                          [ cardinal ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -164,48 +186,58 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "A blue jay is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "A blue jay is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "generics_bounds_test_case_empty_bounds::blue",
-                                        [ Ty.path "generics_bounds_test_case_empty_bounds::BlueJay"
-                                        ]
-                                      |),
-                                      [ blue_jay ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "generics_bounds_test_case_empty_bounds::blue",
+                                            [
+                                              Ty.path
+                                                "generics_bounds_test_case_empty_bounds::BlueJay"
+                                            ]
+                                          |),
+                                          [ blue_jay ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

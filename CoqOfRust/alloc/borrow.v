@@ -10,7 +10,7 @@ Module borrow.
             &**self
         }
     *)
-    Definition borrow (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -40,7 +40,7 @@ Module borrow.
   
   (* Trait *)
   Module ToOwned.
-    Definition clone_into (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_into (Self : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; target ] =>
         ltac:(M.monadic
@@ -55,7 +55,7 @@ Module borrow.
                   [ M.read (| self |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -75,7 +75,7 @@ Module borrow.
             self.clone()
         }
     *)
-    Definition to_owned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_owned (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -93,7 +93,7 @@ Module borrow.
             target.clone_from(self);
         }
     *)
-    Definition clone_into (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_into (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; target ] =>
@@ -108,7 +108,7 @@ Module borrow.
                   [ M.read (| target |); M.read (| self |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -161,7 +161,7 @@ Module borrow.
             }
         }
     *)
-    Definition clone (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -181,7 +181,11 @@ Module borrow.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| b |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "alloc::borrow::Cow::Borrowed"
+                          [ A.to_value (M.read (| b |)) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -202,20 +206,23 @@ Module borrow.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "alloc::borrow::Cow::Owned"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "alloc::borrow::ToOwned",
-                              B,
-                              [],
-                              "to_owned",
-                              []
-                            |),
-                            [ M.read (| b |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "alloc::borrow::Cow::Owned"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "alloc::borrow::ToOwned",
+                                  B,
+                                  [],
+                                  "to_owned",
+                                  []
+                                |),
+                                [ M.read (| b |) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -231,7 +238,7 @@ Module borrow.
             }
         }
     *)
-    Definition clone_from (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self; source ] =>
@@ -240,7 +247,11 @@ Module borrow.
           let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
+              M.alloc (|
+                M.of_value (|
+                  Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| source |)) ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -329,7 +340,7 @@ Module borrow.
             }
         }
     *)
-    Definition is_borrowed (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_borrowed (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -347,12 +358,12 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -368,21 +379,22 @@ Module borrow.
             !self.is_borrowed()
         }
     *)
-    Definition is_owned (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_owned (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::borrow::Cow") [ B ],
                 "is_borrowed",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -404,7 +416,7 @@ Module borrow.
             }
         }
     *)
-    Definition to_mut (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_mut (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -428,20 +440,23 @@ Module borrow.
                         let _ :=
                           M.write (|
                             M.read (| self |),
-                            Value.StructTuple
-                              "alloc::borrow::Cow::Owned"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "alloc::borrow::ToOwned",
-                                    B,
-                                    [],
-                                    "to_owned",
-                                    []
-                                  |),
-                                  [ M.read (| borrowed |) ]
-                                |)
-                              ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "alloc::borrow::Cow::Owned"
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "alloc::borrow::ToOwned",
+                                        B,
+                                        [],
+                                        "to_owned",
+                                        []
+                                      |),
+                                      [ M.read (| borrowed |) ]
+                                    |))
+                                ]
+                            |)
                           |) in
                         M.alloc (|
                           M.read (|
@@ -456,8 +471,10 @@ Module borrow.
                                           M.get_function (| "core::panicking::panic", [] |),
                                           [
                                             M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
+                                              M.of_value (|
+                                                Value.String
+                                                  "internal error: entered unreachable code"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -503,7 +520,7 @@ Module borrow.
             }
         }
     *)
-    Definition into_owned (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_owned (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -559,7 +576,7 @@ Module borrow.
             }
         }
     *)
-    Definition deref (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self ] =>
@@ -628,7 +645,7 @@ Module borrow.
             Ord::cmp(&**self, &**other)
         }
     *)
-    Definition cmp (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self; other ] =>
@@ -680,7 +697,7 @@ Module borrow.
             PartialEq::eq(&**self, &**other)
         }
     *)
-    Definition eq (B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (B C : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B C in
       match τ, α with
       | [], [ self; other ] =>
@@ -732,7 +749,7 @@ Module borrow.
             PartialOrd::partial_cmp(&**self, &**other)
         }
     *)
-    Definition partial_cmp (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self; other ] =>
@@ -787,7 +804,7 @@ Module borrow.
             }
         }
     *)
-    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self; f ] =>
@@ -856,7 +873,7 @@ Module borrow.
             }
         }
     *)
-    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [ self; f ] =>
@@ -922,19 +939,28 @@ Module borrow.
             Owned(<B as ToOwned>::Owned::default())
         }
     *)
-    Definition default (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
-          (Value.StructTuple
-            "alloc::borrow::Cow::Owned"
-            [
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.associated, [], "default", [] |),
-                []
-              |)
-            ]))
+          (M.of_value (|
+            Value.StructTuple
+              "alloc::borrow::Cow::Owned"
+              [
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.associated,
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -955,7 +981,7 @@ Module borrow.
             Hash::hash(&**self, state)
         }
     *)
-    Definition hash (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (B : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self B in
       match τ, α with
       | [ H ], [ self; state ] =>
@@ -998,7 +1024,7 @@ Module borrow.
             self
         }
     *)
-    Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1038,7 +1064,7 @@ Module borrow.
             self
         }
     *)
-    Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition add (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; rhs ] =>
         ltac:(M.monadic
@@ -1083,7 +1109,7 @@ Module borrow.
             self
         }
     *)
-    Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition add (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; rhs ] =>
         ltac:(M.monadic
@@ -1134,7 +1160,7 @@ Module borrow.
             }
         }
     *)
-    Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; rhs ] =>
         ltac:(M.monadic
@@ -1142,7 +1168,7 @@ Module borrow.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1168,29 +1194,34 @@ Module borrow.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.write (|
                       M.read (| self |),
-                      Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| rhs |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "alloc::borrow::Cow::Borrowed"
+                          [ A.to_value (M.read (| rhs |)) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
                                       [ M.read (| rhs |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -1212,6 +1243,7 @@ Module borrow.
                                             |),
                                             [
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
@@ -1246,12 +1278,15 @@ Module borrow.
                                       let _ :=
                                         M.write (|
                                           M.read (| self |),
-                                          Value.StructTuple
-                                            "alloc::borrow::Cow::Owned"
-                                            [ M.read (| s |) ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::borrow::Cow::Owned"
+                                              [ A.to_value (M.read (| s |)) ]
+                                          |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             let _ :=
@@ -1275,8 +1310,8 @@ Module borrow.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)))
               ]
@@ -1310,7 +1345,7 @@ Module borrow.
             }
         }
     *)
-    Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; rhs ] =>
         ltac:(M.monadic
@@ -1318,7 +1353,7 @@ Module borrow.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1346,15 +1381,15 @@ Module borrow.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.Pure.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (| Ty.path "str", "is_empty", [] |),
                                       [
                                         M.call_closure (|
@@ -1370,13 +1405,14 @@ Module borrow.
                                           [ rhs ]
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
                               M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -1398,6 +1434,7 @@ Module borrow.
                                             |),
                                             [
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
@@ -1445,12 +1482,15 @@ Module borrow.
                                       let _ :=
                                         M.write (|
                                           M.read (| self |),
-                                          Value.StructTuple
-                                            "alloc::borrow::Cow::Owned"
-                                            [ M.read (| s |) ]
+                                          M.of_value (|
+                                            Value.StructTuple
+                                              "alloc::borrow::Cow::Owned"
+                                              [ A.to_value (M.read (| s |)) ]
+                                          |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                 ]
                               |) in
                             let _ :=
@@ -1483,8 +1523,8 @@ Module borrow.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |)))
               ]

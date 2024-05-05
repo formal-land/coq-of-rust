@@ -43,12 +43,15 @@ fn main() {
     println!("Bob says: {}", bob);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let pangram := M.copy (| Value.String "the quick brown fox jumps over the lazy dog" |) in
+        let pangram :=
+          M.copy (|
+            M.of_value (| Value.String "the quick brown fox jumps over the lazy dog" |)
+          |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -59,33 +62,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Pangram: " |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "Pangram: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [ pangram ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [ pangram ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -96,17 +109,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Words in reverse
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Words in reverse
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           M.use
             (M.match_operator (|
@@ -189,44 +209,57 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               |),
                                               [
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "> " |);
-                                                        M.read (| Value.String "
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (| Value.String "> " |)
+                                                            |));
+                                                          A.to_value
+                                                            (M.read (|
+                                                              M.of_value (| Value.String "
 " |)
-                                                      ]
-                                                  |));
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |);
                                                 (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_display",
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                [ Ty.path "str" ]
-                                                            ]
-                                                          |),
-                                                          [ word ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.pointer_coercion (|
+                                                  M.alloc (|
+                                                    M.of_value (|
+                                                      Value.Array
+                                                        [
+                                                          A.to_value
+                                                            (M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "new_display",
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    [ Ty.path "str" ]
+                                                                ]
+                                                              |),
+                                                              [ word ]
+                                                            |))
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     |)))
               ]
             |)) in
@@ -367,21 +400,30 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           "push_str",
                                           []
                                         |),
-                                        [ string; M.read (| Value.String ", " |) ]
+                                        [ string; M.read (| M.of_value (| Value.String ", " |) |) ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     |)))
               ]
             |)) in
         let chars_to_trim :=
           M.alloc (|
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (| Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ] |))
+            M.pointer_coercion (|
+              M.alloc (|
+                M.of_value (|
+                  Value.Array
+                    [
+                      A.to_value (M.of_value (| Value.UnicodeChar 32 |));
+                      A.to_value (M.of_value (| Value.UnicodeChar 44 |))
+                    ]
+                |)
+              |)
+            |)
           |) in
         let trimmed_str :=
           M.alloc (|
@@ -416,36 +458,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Used characters: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Used characters: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                |),
-                                [ trimmed_str ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    |),
+                                    [ trimmed_str ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let alice :=
           M.alloc (|
             M.call_closure (|
@@ -456,7 +506,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "from",
                 []
               |),
-              [ M.read (| Value.String "I like dogs" |) ]
+              [ M.read (| M.of_value (| Value.String "I like dogs" |) |) ]
             |)
           |) in
         let bob :=
@@ -478,8 +528,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [ alice ]
                 |);
-                M.read (| Value.String "dog" |);
-                M.read (| Value.String "cat" |)
+                M.read (| M.of_value (| Value.String "dog" |) |);
+                M.read (| M.of_value (| Value.String "cat" |) |)
               ]
             |)
           |) in
@@ -493,36 +543,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Alice says: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Alice says: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "alloc::string::String" ]
-                                |),
-                                [ alice ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [ alice ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -533,35 +591,45 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Bob says: " |); M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "Bob says: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "alloc::string::String" ]
-                                |),
-                                [ bob ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [ bob ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

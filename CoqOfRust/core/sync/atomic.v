@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module sync.
   Module atomic.
-    Definition value_EMULATE_ATOMIC_BOOL : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    Definition value_EMULATE_ATOMIC_BOOL : A.t :=
+      M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |))).
     
     (* StructRecord
       {
@@ -21,13 +21,13 @@ Module sync.
               Self::new(false)
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
-              [ Value.Bool false ]
+              [ M.of_value (| Value.Bool false |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -68,7 +68,7 @@ Module sync.
               AtomicPtr::new(crate::ptr::null_mut())
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
@@ -167,7 +167,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -188,7 +188,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -205,23 +205,23 @@ Module sync.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Relaxed" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Relaxed" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Release" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Release" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Acquire" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Acquire" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "AcqRel" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "AcqRel" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "SeqCst" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "SeqCst" |) |) |)))
                     ]
                   |)
                 |)
@@ -253,12 +253,12 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -286,7 +286,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -313,7 +313,7 @@ Module sync.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -330,7 +330,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ __H ], [ self; state ] =>
           ltac:(M.monadic
@@ -365,13 +365,13 @@ Module sync.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_sync_atomic_Ordering.
     
-    Definition value_ATOMIC_BOOL_INIT : Value.t :=
+    Definition value_ATOMIC_BOOL_INIT : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [] |),
-              [ Value.Bool false ]
+              [ M.of_value (| Value.Bool false |) ]
             |)
           |))).
     
@@ -383,24 +383,27 @@ Module sync.
               AtomicBool { v: UnsafeCell::new(v as u8) }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicBool"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
-                      "new",
-                      []
-                    |),
-                    [ M.rust_cast (M.read (| v |)) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicBool"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                          "new",
+                          []
+                        |),
+                        [ M.rust_cast (| M.read (| v |) |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -412,7 +415,7 @@ Module sync.
               unsafe { &*ptr.cast() }
           }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -436,13 +439,13 @@ Module sync.
               unsafe { &mut *(self.v.get() as *mut bool) }
           }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.rust_cast
-              (M.call_closure (|
+            M.rust_cast (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
                   "get",
@@ -455,7 +458,8 @@ Module sync.
                     "v"
                   |)
                 ]
-              |))))
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -468,12 +472,12 @@ Module sync.
               unsafe { &mut *(v as *mut bool as *mut Self) }
           }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -485,12 +489,12 @@ Module sync.
               unsafe { &mut *(this as *mut [Self] as *mut [bool]) }
           }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -504,12 +508,12 @@ Module sync.
               unsafe { &mut *(v as *mut [bool] as *mut [Self]) }
           }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -521,13 +525,13 @@ Module sync.
               self.v.into_inner() != 0
           }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.Pure.ne (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
                   "into_inner",
@@ -542,8 +546,9 @@ Module sync.
                     |)
                   |)
                 ]
-              |))
-              (Value.Integer Integer.U8 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -556,19 +561,19 @@ Module sync.
               unsafe { atomic_load(self.v.get(), order) != 0 }
           }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.Pure.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u8" ] |),
                 [
                   (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
+                  M.pointer_coercion (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
                         "get",
@@ -581,11 +586,13 @@ Module sync.
                           "v"
                         |)
                       ]
-                    |));
+                    |)
+                  |);
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer Integer.U8 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -600,7 +607,7 @@ Module sync.
               }
           }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -627,12 +634,12 @@ Module sync.
                           |)
                         ]
                       |);
-                      M.rust_cast (M.read (| val |));
+                      M.rust_cast (| M.read (| val |) |);
                       M.read (| order |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -649,7 +656,7 @@ Module sync.
               }
           }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -658,7 +665,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -666,7 +673,7 @@ Module sync.
                         M.use (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -683,7 +690,11 @@ Module sync.
                                     "fetch_or",
                                     []
                                   |),
-                                  [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                                  [
+                                    M.read (| self |);
+                                    M.of_value (| Value.Bool true |);
+                                    M.read (| order |)
+                                  ]
                                 |)
                               |)));
                           fun γ =>
@@ -695,7 +706,11 @@ Module sync.
                                     "fetch_and",
                                     []
                                   |),
-                                  [ M.read (| self |); Value.Bool false; M.read (| order |) ]
+                                  [
+                                    M.read (| self |);
+                                    M.of_value (| Value.Bool false |);
+                                    M.read (| order |)
+                                  ]
                                 |)
                               |)))
                         ]
@@ -703,8 +718,8 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        BinOp.Pure.ne
-                          (M.call_closure (|
+                        BinOp.Pure.ne (|
+                          M.call_closure (|
                             M.get_function (|
                               "core::sync::atomic::atomic_swap",
                               [ Ty.path "u8" ]
@@ -724,11 +739,12 @@ Module sync.
                                   |)
                                 ]
                               |);
-                              M.rust_cast (M.read (| val |));
+                              M.rust_cast (| M.read (| val |) |);
                               M.read (| order |)
                             ]
-                          |))
-                          (Value.Integer Integer.U8 0)
+                          |),
+                          M.of_value (| Value.Integer 0 |)
+                        |)
                       |)))
                 ]
               |)
@@ -746,7 +762,7 @@ Module sync.
               }
           }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -849,7 +865,7 @@ Module sync.
               }
           }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -860,7 +876,7 @@ Module sync.
             let failure := M.alloc (| failure |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -871,7 +887,13 @@ Module sync.
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
-                              Value.Tuple [ M.read (| success |); M.read (| failure |) ]
+                              M.of_value (|
+                                Value.Tuple
+                                  [
+                                    A.to_value (M.read (| success |));
+                                    A.to_value (M.read (| failure |))
+                                  ]
+                              |)
                             |),
                             [
                               fun γ =>
@@ -879,21 +901,27 @@ Module sync.
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -912,16 +940,22 @@ Module sync.
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "there is no such thing as an acquire-release failure ordering"
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (|
+                                                              Value.String
+                                                                "there is no such thing as an acquire-release failure ordering"
+                                                            |)
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -933,28 +967,36 @@ Module sync.
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                    |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -973,16 +1015,22 @@ Module sync.
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "there is no such thing as a release failure ordering"
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (|
+                                                              Value.String
+                                                                "there is no such thing as a release failure ordering"
+                                                            |)
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -994,7 +1042,9 @@ Module sync.
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   M.alloc (|
-                                    Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                                    M.of_value (|
+                                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                                    |)
                                   |)))
                             ]
                           |)
@@ -1002,14 +1052,14 @@ Module sync.
                       let old :=
                         M.copy (|
                           M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq (M.read (| current |)) (M.read (| new |))
+                                        BinOp.Pure.eq (| M.read (| current |), M.read (| new |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1023,7 +1073,11 @@ Module sync.
                                         "fetch_or",
                                         []
                                       |),
-                                      [ M.read (| self |); Value.Bool false; M.read (| order |) ]
+                                      [
+                                        M.read (| self |);
+                                        M.of_value (| Value.Bool false |);
+                                        M.read (| order |)
+                                      ]
                                     |)
                                   |)));
                               fun γ =>
@@ -1042,14 +1096,14 @@ Module sync.
                           |)
                         |) in
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq (M.read (| old |)) (M.read (| current |))
+                                    BinOp.Pure.eq (| M.read (| old |), M.read (| current |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1057,12 +1111,20 @@ Module sync.
                                   Value.Bool true
                                 |) in
                               M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ M.read (| old |) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    [ A.to_value (M.read (| old |)) ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
-                                Value.StructTuple "core::result::Result::Err" [ M.read (| old |) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [ A.to_value (M.read (| old |)) ]
+                                |)
                               |)))
                         ]
                       |)));
@@ -1090,8 +1152,8 @@ Module sync.
                                   |)
                                 ]
                               |);
-                              M.rust_cast (M.read (| current |));
-                              M.rust_cast (M.read (| new |));
+                              M.rust_cast (| M.read (| current |) |);
+                              M.rust_cast (| M.read (| new |) |);
                               M.read (| success |);
                               M.read (| failure |)
                             ]
@@ -1108,9 +1170,17 @@ Module sync.
                                 |) in
                               let x := M.copy (| γ0_0 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::result::Result::Ok"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Ok"
+                                    [
+                                      A.to_value
+                                        (BinOp.Pure.ne (|
+                                          M.read (| x |),
+                                          M.of_value (| Value.Integer 0 |)
+                                        |))
+                                    ]
+                                |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -1122,9 +1192,17 @@ Module sync.
                                 |) in
                               let x := M.copy (| γ0_0 |) in
                               M.alloc (|
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                                M.of_value (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      A.to_value
+                                        (BinOp.Pure.ne (|
+                                          M.read (| x |),
+                                          M.of_value (| Value.Integer 0 |)
+                                        |))
+                                    ]
+                                |)
                               |)))
                         ]
                       |)))
@@ -1158,7 +1236,7 @@ Module sync.
               }
           }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -1172,7 +1250,7 @@ Module sync.
                 (M.read (|
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1203,7 +1281,7 @@ Module sync.
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                       ]
                     |) in
                   M.match_operator (|
@@ -1228,8 +1306,8 @@ Module sync.
                               |)
                             ]
                           |);
-                          M.rust_cast (M.read (| current |));
-                          M.rust_cast (M.read (| new |));
+                          M.rust_cast (| M.read (| current |) |);
+                          M.rust_cast (| M.read (| new |) |);
                           M.read (| success |);
                           M.read (| failure |)
                         ]
@@ -1246,9 +1324,17 @@ Module sync.
                             |) in
                           let x := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::result::Result::Ok"
+                                [
+                                  A.to_value
+                                    (BinOp.Pure.ne (|
+                                      M.read (| x |),
+                                      M.of_value (| Value.Integer 0 |)
+                                    |))
+                                ]
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1260,9 +1346,17 @@ Module sync.
                             |) in
                           let x := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              [ BinOp.Pure.ne (M.read (| x |)) (Value.Integer Integer.U8 0) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                [
+                                  A.to_value
+                                    (BinOp.Pure.ne (|
+                                      M.read (| x |),
+                                      M.of_value (| Value.Integer 0 |)
+                                    |))
+                                ]
+                            |)
                           |)))
                     ]
                   |)
@@ -1280,15 +1374,15 @@ Module sync.
               unsafe { atomic_and(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.Pure.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_and", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1305,11 +1399,12 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.rust_cast (| M.read (| val |) |);
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer Integer.U8 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1332,7 +1427,7 @@ Module sync.
               }
           }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -1341,7 +1436,7 @@ Module sync.
             let order := M.alloc (| order |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1354,7 +1449,8 @@ Module sync.
                             "fetch_xor",
                             []
                           |),
-                          [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                          [ M.read (| self |); M.of_value (| Value.Bool true |); M.read (| order |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1366,7 +1462,8 @@ Module sync.
                             "swap",
                             []
                           |),
-                          [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+                          [ M.read (| self |); M.of_value (| Value.Bool true |); M.read (| order |)
+                          ]
                         |)
                       |)))
                 ]
@@ -1383,15 +1480,15 @@ Module sync.
               unsafe { atomic_or(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.Pure.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_or", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1408,11 +1505,12 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.rust_cast (| M.read (| val |) |);
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer Integer.U8 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1424,15 +1522,15 @@ Module sync.
               unsafe { atomic_xor(self.v.get(), val as u8, order) != 0 }
           }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.Pure.ne
-              (M.call_closure (|
+            BinOp.Pure.ne (|
+              M.call_closure (|
                 M.get_function (| "core::sync::atomic::atomic_xor", [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
@@ -1449,11 +1547,12 @@ Module sync.
                       |)
                     ]
                   |);
-                  M.rust_cast (M.read (| val |));
+                  M.rust_cast (| M.read (| val |) |);
                   M.read (| order |)
                 ]
-              |))
-              (Value.Integer Integer.U8 0)))
+              |),
+              M.of_value (| Value.Integer 0 |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1464,7 +1563,7 @@ Module sync.
               self.fetch_xor(true, order)
           }
       *)
-      Definition fetch_not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -1476,7 +1575,7 @@ Module sync.
                 "fetch_xor",
                 []
               |),
-              [ M.read (| self |); Value.Bool true; M.read (| order |) ]
+              [ M.read (| self |); M.of_value (| Value.Bool true |); M.read (| order |) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -1488,7 +1587,7 @@ Module sync.
               self.v.get().cast()
           }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1541,7 +1640,7 @@ Module sync.
               Err(prev)
           }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -1567,7 +1666,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1581,7 +1680,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -1644,14 +1748,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -1669,27 +1779,30 @@ Module sync.
               AtomicPtr { p: UnsafeCell::new(p) }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicPtr"
-              [
-                ("p",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "*mut") [ T ] ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| p |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicPtr"
+                [
+                  ("p",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::cell::UnsafeCell")
+                            [ Ty.apply (Ty.path "*mut") [ T ] ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| p |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1703,7 +1816,7 @@ Module sync.
               unsafe { &*ptr.cast() }
           }
       *)
-      Definition from_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ ptr ] =>
@@ -1729,7 +1842,7 @@ Module sync.
               self.p.get_mut()
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1767,7 +1880,7 @@ Module sync.
               unsafe { &mut *(v as *mut *mut T as *mut Self) }
           }
       *)
-      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ v ] =>
@@ -1775,12 +1888,12 @@ Module sync.
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -1798,13 +1911,13 @@ Module sync.
               unsafe { &mut *(this as *mut [Self] as *mut [*mut T]) }
           }
       *)
-      Definition get_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1821,13 +1934,13 @@ Module sync.
               unsafe { &mut *(v as *mut [*mut T] as *mut [Self]) }
           }
       *)
-      Definition from_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -1840,7 +1953,7 @@ Module sync.
               self.p.into_inner()
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -1875,7 +1988,7 @@ Module sync.
               unsafe { atomic_load(self.p.get(), order) }
           }
       *)
-      Definition load (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; order ] =>
@@ -1889,8 +2002,8 @@ Module sync.
               |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
@@ -1905,7 +2018,8 @@ Module sync.
                         "p"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -1924,7 +2038,7 @@ Module sync.
               }
           }
       *)
-      Definition store (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; ptr; order ] =>
@@ -1962,7 +2076,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1977,7 +2091,7 @@ Module sync.
               unsafe { atomic_swap(self.p.get(), ptr, order) }
           }
       *)
-      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; ptr; order ] =>
@@ -2024,7 +2138,7 @@ Module sync.
               }
           }
       *)
-      Definition compare_and_swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; current; new; order ] =>
@@ -2097,7 +2211,7 @@ Module sync.
               unsafe { atomic_compare_exchange(self.p.get(), current, new, success, failure) }
           }
       *)
-      Definition compare_exchange (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
@@ -2155,7 +2269,7 @@ Module sync.
               unsafe { atomic_compare_exchange_weak(self.p.get(), current, new, success, failure) }
           }
       *)
-      Definition compare_exchange_weak (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
@@ -2218,7 +2332,7 @@ Module sync.
               Err(prev)
           }
       *)
-      Definition fetch_update (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
@@ -2245,7 +2359,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -2259,7 +2373,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -2322,14 +2441,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -2344,7 +2469,7 @@ Module sync.
               self.fetch_byte_add(val.wrapping_mul(core::mem::size_of::<T>()), order)
           }
       *)
-      Definition fetch_ptr_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_ptr_add (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2382,7 +2507,7 @@ Module sync.
               self.fetch_byte_sub(val.wrapping_mul(core::mem::size_of::<T>()), order)
           }
       *)
-      Definition fetch_ptr_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_ptr_sub (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2421,7 +2546,7 @@ Module sync.
               unsafe { atomic_add(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_byte_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_byte_add (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2476,7 +2601,7 @@ Module sync.
               unsafe { atomic_sub(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_byte_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_byte_sub (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2531,7 +2656,7 @@ Module sync.
               unsafe { atomic_or(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_or (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2586,7 +2711,7 @@ Module sync.
               unsafe { atomic_and(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_and (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2641,7 +2766,7 @@ Module sync.
               unsafe { atomic_xor(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
           }
       *)
-      Definition fetch_xor (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; val; order ] =>
@@ -2695,7 +2820,7 @@ Module sync.
               self.p.get()
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -2731,7 +2856,7 @@ Module sync.
               Self::new(b)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -2759,7 +2884,7 @@ Module sync.
               Self::new(p)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ p ] =>
@@ -2800,7 +2925,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -2834,7 +2959,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI8".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -2862,7 +2987,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -2880,7 +3005,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -2917,24 +3042,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicI8"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicI8"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2946,7 +3074,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -2969,7 +3097,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3004,19 +3132,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -3032,12 +3160,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -3055,19 +3183,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -3083,7 +3211,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3115,7 +3243,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -3125,8 +3253,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i8" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i8" ],
                       "get",
@@ -3139,7 +3267,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -3154,7 +3283,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3186,7 +3315,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3199,7 +3328,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3246,7 +3375,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -3315,7 +3444,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -3365,7 +3494,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -3412,7 +3541,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3451,7 +3580,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3490,7 +3619,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3529,7 +3658,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3568,7 +3697,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3607,7 +3736,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3656,7 +3785,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -3682,7 +3811,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -3696,7 +3825,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -3759,14 +3893,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -3781,7 +3921,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3820,7 +3960,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -3858,7 +3998,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3898,7 +4038,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -3932,7 +4072,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU8".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -3960,7 +4100,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -3978,7 +4118,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -4015,24 +4155,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicU8"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicU8"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4044,7 +4187,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -4067,7 +4210,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4102,19 +4245,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -4130,12 +4273,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -4153,19 +4296,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -4181,7 +4324,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4213,7 +4356,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -4223,8 +4366,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u8" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u8" ],
                       "get",
@@ -4237,7 +4380,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -4252,7 +4396,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4284,7 +4428,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4297,7 +4441,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4344,7 +4488,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -4413,7 +4557,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -4463,7 +4607,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -4510,7 +4654,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4549,7 +4693,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4588,7 +4732,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4627,7 +4771,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4666,7 +4810,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4705,7 +4849,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4754,7 +4898,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -4780,7 +4924,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -4794,7 +4938,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -4857,14 +5006,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -4879,7 +5034,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4918,7 +5073,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -4956,7 +5111,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4996,7 +5151,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -5030,7 +5185,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI16".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -5058,7 +5213,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -5076,7 +5231,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -5113,24 +5268,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicI16"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicI16"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5142,7 +5300,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -5165,7 +5323,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5200,19 +5358,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -5228,12 +5386,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -5251,19 +5409,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -5279,7 +5437,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5311,7 +5469,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -5321,8 +5479,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i16" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i16" ],
                       "get",
@@ -5335,7 +5493,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -5350,7 +5509,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5382,7 +5541,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5395,7 +5554,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5442,7 +5601,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -5511,7 +5670,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -5561,7 +5720,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -5608,7 +5767,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5647,7 +5806,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5686,7 +5845,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5725,7 +5884,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5764,7 +5923,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5803,7 +5962,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -5852,7 +6011,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -5878,7 +6037,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -5892,7 +6051,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -5955,14 +6119,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -5977,7 +6147,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6016,7 +6186,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6054,7 +6224,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6094,7 +6264,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -6128,7 +6298,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU16".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -6156,7 +6326,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -6174,7 +6344,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -6211,24 +6381,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicU16"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicU16"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6240,7 +6413,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -6263,7 +6436,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6298,19 +6471,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -6326,12 +6499,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -6349,19 +6522,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -6377,7 +6550,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -6409,7 +6582,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -6419,8 +6592,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u16" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u16" ],
                       "get",
@@ -6433,7 +6606,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -6448,7 +6622,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6480,7 +6654,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6493,7 +6667,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6540,7 +6714,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -6609,7 +6783,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -6659,7 +6833,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -6706,7 +6880,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6745,7 +6919,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6784,7 +6958,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6823,7 +6997,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6862,7 +7036,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6901,7 +7075,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -6950,7 +7124,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -6976,7 +7150,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -6990,7 +7164,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -7053,14 +7232,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -7075,7 +7260,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7114,7 +7299,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7152,7 +7337,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7192,7 +7377,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -7226,7 +7411,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI32".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -7254,7 +7439,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -7272,7 +7457,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -7309,24 +7494,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicI32"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicI32"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7338,7 +7526,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -7361,7 +7549,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7396,19 +7584,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -7424,12 +7612,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -7447,19 +7635,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -7475,7 +7663,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -7507,7 +7695,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -7517,8 +7705,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i32" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i32" ],
                       "get",
@@ -7531,7 +7719,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -7546,7 +7735,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7578,7 +7767,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7591,7 +7780,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7638,7 +7827,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -7707,7 +7896,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -7757,7 +7946,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -7804,7 +7993,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7843,7 +8032,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7882,7 +8071,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7921,7 +8110,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7960,7 +8149,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -7999,7 +8188,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8048,7 +8237,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -8074,7 +8263,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -8088,7 +8277,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -8151,14 +8345,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -8173,7 +8373,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8212,7 +8412,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8250,7 +8450,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -8290,7 +8490,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -8324,7 +8524,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU32".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -8352,7 +8552,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -8370,7 +8570,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -8407,24 +8607,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicU32"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicU32"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8436,7 +8639,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -8459,7 +8662,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -8494,19 +8697,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -8522,12 +8725,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -8545,19 +8748,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -8573,7 +8776,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -8605,7 +8808,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -8615,8 +8818,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u32" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u32" ],
                       "get",
@@ -8629,7 +8832,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -8644,7 +8848,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8676,7 +8880,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8689,7 +8893,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8736,7 +8940,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -8805,7 +9009,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -8855,7 +9059,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -8902,7 +9106,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8941,7 +9145,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -8980,7 +9184,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9019,7 +9223,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9058,7 +9262,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9097,7 +9301,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9146,7 +9350,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -9172,7 +9376,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -9186,7 +9390,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -9249,14 +9458,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -9271,7 +9486,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9310,7 +9525,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9348,7 +9563,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -9388,7 +9603,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -9422,7 +9637,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicI64".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -9450,7 +9665,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -9468,7 +9683,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -9505,24 +9720,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicI64"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicI64"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9534,7 +9752,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -9557,7 +9775,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -9592,19 +9810,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -9620,12 +9838,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -9643,19 +9861,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -9671,7 +9889,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -9703,7 +9921,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -9713,8 +9931,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "i64" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "i64" ],
                       "get",
@@ -9727,7 +9945,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -9742,7 +9961,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9774,7 +9993,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9787,7 +10006,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -9834,7 +10053,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -9903,7 +10122,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -9953,7 +10172,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -10000,7 +10219,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10039,7 +10258,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10078,7 +10297,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10117,7 +10336,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10156,7 +10375,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10195,7 +10414,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10244,7 +10463,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -10270,7 +10489,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -10284,7 +10503,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -10347,14 +10571,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -10369,7 +10599,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10408,7 +10638,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10446,7 +10676,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -10486,7 +10716,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -10520,7 +10750,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicU64".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -10548,7 +10778,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -10566,7 +10796,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -10603,24 +10833,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicU64"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicU64"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10632,7 +10865,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -10655,7 +10888,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -10690,19 +10923,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -10718,12 +10951,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -10741,19 +10974,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -10769,7 +11002,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -10801,7 +11034,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -10811,8 +11044,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "u64" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "u64" ],
                       "get",
@@ -10825,7 +11058,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -10840,7 +11074,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10872,7 +11106,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10885,7 +11119,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -10932,7 +11166,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -11001,7 +11235,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -11051,7 +11285,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -11098,7 +11332,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11137,7 +11371,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11176,7 +11410,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11215,7 +11449,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11254,7 +11488,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11293,7 +11527,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11342,7 +11576,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -11368,7 +11602,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -11382,7 +11616,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -11445,14 +11684,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -11467,7 +11712,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11506,7 +11751,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11544,7 +11789,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -11584,7 +11829,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -11618,7 +11863,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicIsize".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -11646,7 +11891,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -11664,7 +11909,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -11701,24 +11946,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicIsize"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicIsize"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11730,7 +11978,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -11753,7 +12001,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -11788,19 +12036,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -11816,12 +12064,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -11839,19 +12087,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -11867,7 +12115,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -11899,7 +12147,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -11909,8 +12157,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "isize" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "isize" ],
                       "get",
@@ -11923,7 +12171,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -11938,7 +12187,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -11970,7 +12219,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11983,7 +12232,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12030,7 +12279,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -12099,7 +12348,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -12152,7 +12401,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -12199,7 +12448,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12238,7 +12487,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12277,7 +12526,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12316,7 +12565,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12355,7 +12604,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12394,7 +12643,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12443,7 +12692,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -12469,7 +12718,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -12483,7 +12732,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -12546,14 +12800,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -12568,7 +12828,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12607,7 +12867,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -12645,7 +12905,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -12685,7 +12945,7 @@ Module sync.
                       Self::new(Default::default())
                   }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
@@ -12719,7 +12979,7 @@ Module sync.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicUsize".
       
       (*             fn from(v: $int_type) -> Self { Self::new(v) } *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
@@ -12747,7 +13007,7 @@ Module sync.
                       fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -12765,7 +13025,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -12802,24 +13062,27 @@ Module sync.
                       Self {v: UnsafeCell::new(v)}
                   }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
-            Value.StructRecord
-              "core::sync::atomic::AtomicUsize"
-              [
-                ("v",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::sync::atomic::AtomicUsize"
+                [
+                  ("v",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12831,7 +13094,7 @@ Module sync.
                       unsafe { &*ptr.cast() }
                   }
       *)
-      Definition from_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ ptr ] =>
           ltac:(M.monadic
@@ -12854,7 +13117,7 @@ Module sync.
                       self.v.get_mut()
                   }
       *)
-      Definition get_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -12889,19 +13152,19 @@ Module sync.
                       unsafe { &mut *(v as *mut $int_type as *mut Self) }
                   }
       *)
-      Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -12917,12 +13180,12 @@ Module sync.
                       unsafe { &mut *(this as *mut [Self] as *mut [$int_type]) }
                   }
       *)
-      Definition get_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
-            M.rust_cast (M.read (| M.use (M.alloc (| M.read (| this |) |)) |))))
+            M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| this |) |)) |) |)))
         | _, _ => M.impossible
         end.
       
@@ -12940,19 +13203,19 @@ Module sync.
                       unsafe { &mut *(v as *mut [$int_type] as *mut [Self]) }
                   }
       *)
-      Definition from_mut_slice (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_mut_slice (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| repeat (Value.Tuple []) 0 |),
+                M.alloc (| repeat (| M.of_value (| Value.Tuple [] |), 0 |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))
+                        M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| v |) |)) |) |)
                       |)))
                 ]
               |)
@@ -12968,7 +13231,7 @@ Module sync.
                       self.v.into_inner()
                   }
       *)
-      Definition into_inner (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -13000,7 +13263,7 @@ Module sync.
                       unsafe { atomic_load(self.v.get(), order) }
                   }
       *)
-      Definition load (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; order ] =>
           ltac:(M.monadic
@@ -13010,8 +13273,8 @@ Module sync.
               M.get_function (| "core::sync::atomic::atomic_load", [ Ty.path "usize" ] |),
               [
                 (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
+                M.pointer_coercion (|
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::cell::UnsafeCell") [ Ty.path "usize" ],
                       "get",
@@ -13024,7 +13287,8 @@ Module sync.
                         "v"
                       |)
                     ]
-                  |));
+                  |)
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -13039,7 +13303,7 @@ Module sync.
                       unsafe { atomic_store(self.v.get(), val, order); }
                   }
       *)
-      Definition store (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition store (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13071,7 +13335,7 @@ Module sync.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13084,7 +13348,7 @@ Module sync.
                       unsafe { atomic_swap(self.v.get(), val, order) }
                   }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13131,7 +13395,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_and_swap (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_and_swap (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; order ] =>
           ltac:(M.monadic
@@ -13200,7 +13464,7 @@ Module sync.
                       unsafe { atomic_compare_exchange(self.v.get(), current, new, success, failure) }
                   }
       *)
-      Definition compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -13253,7 +13517,7 @@ Module sync.
                       }
                   }
       *)
-      Definition compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
@@ -13300,7 +13564,7 @@ Module sync.
                       unsafe { atomic_add(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13339,7 +13603,7 @@ Module sync.
                       unsafe { atomic_sub(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13378,7 +13642,7 @@ Module sync.
                       unsafe { atomic_and(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13417,7 +13681,7 @@ Module sync.
                       unsafe { atomic_nand(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_nand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_nand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13456,7 +13720,7 @@ Module sync.
                       unsafe { atomic_or(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_or (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_or (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13495,7 +13759,7 @@ Module sync.
                       unsafe { atomic_xor(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_xor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_xor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13544,7 +13808,7 @@ Module sync.
                       Err(prev)
                   }
       *)
-      Definition fetch_update (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_update (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
@@ -13570,7 +13834,7 @@ Module sync.
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -13584,7 +13848,12 @@ Module sync.
                                         "call_mut",
                                         []
                                       |),
-                                      [ f; Value.Tuple [ M.read (| prev |) ] ]
+                                      [
+                                        f;
+                                        M.of_value (|
+                                          Value.Tuple [ A.to_value (M.read (| prev |)) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let γ0_0 :=
@@ -13647,14 +13916,20 @@ Module sync.
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                     |)
                                   |)
                                 |)))
                           ]
                         |)))
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| prev |) ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [ A.to_value (M.read (| prev |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible
@@ -13669,7 +13944,7 @@ Module sync.
                       unsafe { $max_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_max (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_max (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13708,7 +13983,7 @@ Module sync.
                       unsafe { $min_fn(self.v.get(), val, order) }
                   }
       *)
-      Definition fetch_min (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fetch_min (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; val; order ] =>
           ltac:(M.monadic
@@ -13746,7 +14021,7 @@ Module sync.
                       self.v.get()
                   }
       *)
-      Definition as_ptr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -13771,23 +14046,23 @@ Module sync.
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
     End Impl_core_sync_atomic_AtomicUsize.
     
-    Definition value_ATOMIC_ISIZE_INIT : Value.t :=
+    Definition value_ATOMIC_ISIZE_INIT : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicIsize", "new", [] |),
-              [ Value.Integer Integer.Isize 0 ]
+              [ M.of_value (| Value.Integer 0 |) ]
             |)
           |))).
     
-    Definition value_ATOMIC_USIZE_INIT : Value.t :=
+    Definition value_ATOMIC_USIZE_INIT : A.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicUsize", "new", [] |),
-              [ Value.Integer Integer.Usize 0 ]
+              [ M.of_value (| Value.Integer 0 |) ]
             |)
           |))).
     
@@ -13802,7 +14077,7 @@ Module sync.
         }
     }
     *)
-    Definition strongest_failure_ordering (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strongest_failure_ordering (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ order ] =>
         ltac:(M.monadic
@@ -13813,19 +14088,29 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)));
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)))
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -13846,7 +14131,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_store (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_store (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -13896,15 +14181,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as an acquire store"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as an acquire store"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -13926,16 +14218,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release store"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as an acquire-release store"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -13962,7 +14260,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_load (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_load (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; order ] =>
         ltac:(M.monadic
@@ -14011,15 +14309,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as a release load"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as a release load"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -14041,16 +14346,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release load"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as an acquire-release load"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -14077,7 +14388,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_swap (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_swap (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -14148,7 +14459,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_add (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_add (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -14219,7 +14530,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_sub (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_sub (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -14309,7 +14620,7 @@ Module sync.
         if ok { Ok(val) } else { Err(val) }
     }
     *)
-    Definition atomic_compare_exchange (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_compare_exchange (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
@@ -14321,7 +14632,12 @@ Module sync.
           M.read (|
             M.match_operator (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| success |)); A.to_value (M.read (| failure |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -14535,16 +14851,22 @@ Module sync.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as an acquire-release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "there is no such thing as an acquire-release failure ordering"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -14568,16 +14890,22 @@ Module sync.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as a release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "there is no such thing as a release failure ordering"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -14594,7 +14922,7 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -14602,12 +14930,20 @@ Module sync.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  [ A.to_value (M.read (| val |)) ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Err" [ M.read (| val |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [ A.to_value (M.read (| val |)) ]
+                              |)
                             |)))
                       ]
                     |)))
@@ -14650,7 +14986,7 @@ Module sync.
         if ok { Ok(val) } else { Err(val) }
     }
     *)
-    Definition atomic_compare_exchange_weak (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_compare_exchange_weak (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
@@ -14662,7 +14998,12 @@ Module sync.
           M.read (|
             M.match_operator (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| success |)); A.to_value (M.read (| failure |)) ]
+                  |)
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -14876,16 +15217,22 @@ Module sync.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as an acquire-release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "there is no such thing as an acquire-release failure ordering"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -14909,16 +15256,22 @@ Module sync.
                                 |),
                                 [
                                   (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as a release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.pointer_coercion (|
+                                    M.alloc (|
+                                      M.of_value (|
+                                        Value.Array
+                                          [
+                                            A.to_value
+                                              (M.read (|
+                                                M.of_value (|
+                                                  Value.String
+                                                    "there is no such thing as a release failure ordering"
+                                                |)
+                                              |))
+                                          ]
+                                      |)
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -14935,7 +15288,7 @@ Module sync.
                     let val := M.copy (| γ0_0 |) in
                     let ok := M.copy (| γ0_1 |) in
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -14943,12 +15296,20 @@ Module sync.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  [ A.to_value (M.read (| val |)) ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              Value.StructTuple "core::result::Result::Err" [ M.read (| val |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [ A.to_value (M.read (| val |)) ]
+                              |)
                             |)))
                       ]
                     |)))
@@ -14972,7 +15333,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_and (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_and (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15043,7 +15404,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_nand (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_nand (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15114,7 +15475,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_or (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_or (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15185,7 +15546,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_xor (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_xor (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15256,7 +15617,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_max (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_max (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15327,7 +15688,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_min (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_min (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15398,7 +15759,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_umax (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_umax (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15469,7 +15830,7 @@ Module sync.
         }
     }
     *)
-    Definition atomic_umin (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition atomic_umin (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
@@ -15540,7 +15901,7 @@ Module sync.
         }
     }
     *)
-    Definition fence (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fence (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ order ] =>
         ltac:(M.monadic
@@ -15596,15 +15957,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as a relaxed fence"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as a relaxed fence"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -15631,7 +15999,7 @@ Module sync.
         }
     }
     *)
-    Definition compiler_fence (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition compiler_fence (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ order ] =>
         ltac:(M.monadic
@@ -15699,16 +16067,22 @@ Module sync.
                               |),
                               [
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as a relaxed compiler fence"
-                                        |)
-                                      ]
-                                  |))
+                                M.pointer_coercion (|
+                                  M.alloc (|
+                                    M.of_value (|
+                                      Value.Array
+                                        [
+                                          A.to_value
+                                            (M.read (|
+                                              M.of_value (|
+                                                Value.String
+                                                  "there is no such thing as a relaxed compiler fence"
+                                              |)
+                                            |))
+                                        ]
+                                    |)
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -15729,7 +16103,7 @@ Module sync.
               fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -15747,7 +16121,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -15773,7 +16147,7 @@ Module sync.
               fmt::Debug::fmt(&self.load(Ordering::Relaxed), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -15798,7 +16172,7 @@ Module sync.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)
                     ]
                   |)
                 |);
@@ -15825,7 +16199,7 @@ Module sync.
               fmt::Pointer::fmt(&self.load(Ordering::SeqCst), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -15848,7 +16222,9 @@ Module sync.
                       "load",
                       []
                     |),
-                    [ M.read (| self |); Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                    [
+                      M.read (| self |);
+                      M.of_value (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)
                     ]
                   |)
                 |);
@@ -15872,7 +16248,7 @@ Module sync.
         spin_loop()
     }
     *)
-    Definition spin_loop_hint (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spin_loop_hint (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic (M.call_closure (| M.get_function (| "core::hint::spin_loop", [] |), [] |)))

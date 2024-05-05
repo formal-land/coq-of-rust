@@ -63,7 +63,7 @@ fn main() {
     println!("{number:>width$}");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -78,12 +78,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "31 days
-" |) ] |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [ A.to_value (M.read (| M.of_value (| Value.String "31 days
+" |) |)) ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                      M.pointer_coercion (|
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
@@ -92,13 +98,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             []
                           |)
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -109,53 +116,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Alice, this is Bob. Bob, this is Alice
-" |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "none",
-                              []
-                            |),
-                            []
-                          |)
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String "the quick brown fox jumps over the lazy dog
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String "Alice, this is Bob. Bob, this is Alice
 "
-                              |)
-                            ]
-                        |));
+                                    |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                      M.pointer_coercion (|
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
@@ -164,13 +143,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             []
                           |)
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -181,14 +161,25 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Base 10:               69420
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (|
+                                      Value.String "the quick brown fox jumps over the lazy dog
+"
+                                    |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                      M.pointer_coercion (|
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
@@ -197,400 +188,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             []
                           |)
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Base 2 (binary):       " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_binary",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 69420 |) ]
-                              |)
-                            ]
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Base 8 (octal):        " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_octal",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 69420 |) ]
-                              |)
-                            ]
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Base 16 (hexadecimal): " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_lower_hex",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 69420 |) ]
-                              |)
-                            ]
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Base 16 (hexadecimal): " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_upper_hex",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 69420 |) ]
-                              |)
-                            ]
-                        |))
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_v1_formatted",
-                      []
-                    |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 1 |) ]
-                              |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer Integer.Usize 0;
-                                  Value.UnicodeChar 32;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer Integer.U32 0;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 5 ]
-                                ]
-                              |)
-                            ]
-                        |));
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::UnsafeArg",
-                          "new",
-                          []
-                        |),
-                        []
+                        |)
                       |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_v1_formatted",
-                      []
-                    |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 1 |) ]
-                              |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer Integer.Usize 0;
-                                  Value.UnicodeChar 48;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Left" [];
-                                  Value.Integer Integer.U32 0;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 5 ]
-                                ]
-                              |)
-                            ]
-                        |));
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::UnsafeArg",
-                          "new",
-                          []
-                        |),
-                        []
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_v1_formatted",
-                      []
-                    |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.I32 1 |) ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "from_usize",
-                                  []
-                                |),
-                                [ M.alloc (| Value.Integer Integer.Usize 5 |) ]
-                              |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer Integer.Usize 0;
-                                  Value.UnicodeChar 48;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer Integer.U32 0;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Param"
-                                    [ Value.Integer Integer.Usize 1 ]
-                                ]
-                              |)
-                            ]
-                        |));
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::UnsafeArg",
-                          "new",
-                          []
-                        |),
-                        []
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -601,14 +206,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "My name is Bond, James Bond
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Base 10:               69420
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                      M.pointer_coercion (|
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::Argument",
@@ -617,15 +231,214 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             []
                           |)
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        let number := M.copy (| UnsupportedLiteral |) in
-        let width := M.alloc (| Value.Integer Integer.Usize 5 |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Base 2 (binary):       " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_binary",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 69420 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Base 8 (octal):        " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_octal",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 69420 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Base 16 (hexadecimal): " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_lower_hex",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 69420 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "Base 16 (hexadecimal): " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_upper_hex",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 69420 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -640,59 +453,71 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "f64" ]
-                                |),
-                                [ number ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "from_usize",
-                                  []
-                                |),
-                                [ width ]
-                              |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 1 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Placeholder",
-                                  "new",
-                                  []
-                                |),
-                                [
-                                  Value.Integer Integer.Usize 0;
-                                  Value.UnicodeChar 32;
-                                  Value.StructTuple "core::fmt::rt::Alignment::Right" [];
-                                  Value.Integer Integer.U32 0;
-                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Param"
-                                    [ Value.Integer Integer.Usize 1 ]
-                                ]
-                              |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (| Value.UnicodeChar 32 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Alignment::Right" []
+                                      |);
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      |);
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ A.to_value (M.of_value (| Value.Integer 5 |)) ]
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::rt::UnsafeArg",
@@ -706,8 +531,350 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1_formatted",
+                      []
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 1 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (| Value.UnicodeChar 48 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Alignment::Left" []
+                                      |);
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      |);
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ A.to_value (M.of_value (| Value.Integer 5 |)) ]
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::UnsafeArg",
+                          "new",
+                          []
+                        |),
+                        []
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1_formatted",
+                      []
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 1 |) |) ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "from_usize",
+                                      []
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 5 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (| Value.UnicodeChar 48 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Alignment::Right" []
+                                      |);
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      |);
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Param"
+                                          [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::UnsafeArg",
+                          "new",
+                          []
+                        |),
+                        []
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "My name is Bond, James Bond
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
+                              []
+                            |),
+                            []
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let number := M.copy (| M.of_value (| UnsupportedLiteral |) |) in
+        let width := M.alloc (| M.of_value (| Value.Integer 5 |) |) in
+        let _ :=
+          let _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1_formatted",
+                      []
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "f64" ]
+                                    |),
+                                    [ number ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "from_usize",
+                                      []
+                                    |),
+                                    [ width ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (| Value.UnicodeChar 32 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Alignment::Right" []
+                                      |);
+                                      M.of_value (| Value.Integer 0 |);
+                                      M.of_value (|
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      |);
+                                      M.of_value (|
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Param"
+                                          [ A.to_value (M.of_value (| Value.Integer 1 |)) ]
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::UnsafeArg",
+                          "new",
+                          []
+                        |),
+                        []
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

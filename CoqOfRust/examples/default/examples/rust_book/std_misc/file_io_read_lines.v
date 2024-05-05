@@ -9,7 +9,7 @@ fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     return io::BufReader::new(file).lines();
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
+Definition read_lines (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ filename ] =>
     ltac:(M.monadic
@@ -81,7 +81,7 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -99,7 +99,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "to_string",
                     []
                   |),
-                  [ M.read (| Value.String "./hosts" |) ]
+                  [ M.read (| M.of_value (| Value.String "./hosts" |) |) ]
                 |)
               ]
             |)
@@ -177,56 +177,72 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             |),
                                             [
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "" |);
-                                                      M.read (| Value.String "
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "" |)
+                                                          |));
+                                                        A.to_value
+                                                          (M.read (|
+                                                            M.of_value (| Value.String "
 " |)
-                                                    ]
-                                                |));
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |);
                                               (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  [
-                                                                    Ty.path "alloc::string::String";
-                                                                    Ty.path "std::io::error::Error"
-                                                                  ],
-                                                                "unwrap",
-                                                                []
-                                                              |),
-                                                              [ M.read (| line |) ]
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.pointer_coercion (|
+                                                M.alloc (|
+                                                  M.of_value (|
+                                                    Value.Array
+                                                      [
+                                                        A.to_value
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      [
+                                                                        Ty.path
+                                                                          "alloc::string::String";
+                                                                        Ty.path
+                                                                          "std::io::error::Error"
+                                                                      ],
+                                                                    "unwrap",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| line |) ]
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |))
+                                                      ]
+                                                  |)
+                                                |)
+                                              |)
                                             ]
                                           |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   |)))
             ]
           |))

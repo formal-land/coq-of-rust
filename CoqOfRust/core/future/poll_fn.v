@@ -11,12 +11,16 @@ Module future.
         PollFn { f }
     }
     *)
-    Definition poll_fn (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition poll_fn (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; F ], [ f ] =>
         ltac:(M.monadic
           (let f := M.alloc (| f |) in
-          Value.StructRecord "core::future::poll_fn::PollFn" [ ("f", M.read (| f |)) ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::future::poll_fn::PollFn"
+              [ ("f", A.to_value (M.read (| f |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -47,7 +51,7 @@ Module future.
               f.debug_struct("PollFn").finish()
           }
       *)
-      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self F in
         match τ, α with
         | [], [ self; f ] =>
@@ -68,7 +72,7 @@ Module future.
                       "debug_struct",
                       []
                     |),
-                    [ M.read (| f |); M.read (| Value.String "PollFn" |) ]
+                    [ M.read (| f |); M.read (| M.of_value (| Value.String "PollFn" |) |) ]
                   |)
                 |)
               ]
@@ -98,7 +102,7 @@ Module future.
               (unsafe { &mut self.get_unchecked_mut().f })(cx)
           }
       *)
-      Definition poll (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T F in
         match τ, α with
         | [], [ self; cx ] =>
@@ -132,7 +136,7 @@ Module future.
                   "core::future::poll_fn::PollFn",
                   "f"
                 |);
-                Value.Tuple [ M.read (| cx |) ]
+                M.of_value (| Value.Tuple [ A.to_value (M.read (| cx |)) ] |)
               ]
             |)))
         | _, _ => M.impossible

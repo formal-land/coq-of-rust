@@ -49,7 +49,7 @@ Module collections.
                   }
               }
           *)
-          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; f ] =>
@@ -91,10 +91,13 @@ Module collections.
                                           "debug_tuple",
                                           []
                                         |),
-                                        [ M.read (| f |); M.read (| Value.String "Entry" |) ]
+                                        [
+                                          M.read (| f |);
+                                          M.read (| M.of_value (| Value.String "Entry" |) |)
+                                        ]
                                       |)
                                     |);
-                                    (* Unsize *) M.pointer_coercion (M.read (| v |))
+                                    (* Unsize *) M.pointer_coercion (| M.read (| v |) |)
                                   ]
                                 |)
                               ]
@@ -131,10 +134,13 @@ Module collections.
                                           "debug_tuple",
                                           []
                                         |),
-                                        [ M.read (| f |); M.read (| Value.String "Entry" |) ]
+                                        [
+                                          M.read (| f |);
+                                          M.read (| M.of_value (| Value.String "Entry" |) |)
+                                        ]
                                       |)
                                     |);
-                                    (* Unsize *) M.pointer_coercion (M.read (| o |))
+                                    (* Unsize *) M.pointer_coercion (| M.read (| o |) |)
                                   ]
                                 |)
                               ]
@@ -201,7 +207,7 @@ Module collections.
                   f.debug_tuple("VacantEntry").field(self.key()).finish()
               }
           *)
-          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; f ] =>
@@ -229,12 +235,15 @@ Module collections.
                               "debug_tuple",
                               []
                             |),
-                            [ M.read (| f |); M.read (| Value.String "VacantEntry" |) ]
+                            [
+                              M.read (| f |);
+                              M.read (| M.of_value (| Value.String "VacantEntry" |) |)
+                            ]
                           |)
                         |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
+                        M.pointer_coercion (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
@@ -243,7 +252,8 @@ Module collections.
                               []
                             |),
                             [ M.read (| self |) ]
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -301,7 +311,7 @@ Module collections.
                   f.debug_struct("OccupiedEntry").field("key", self.key()).field("value", self.get()).finish()
               }
           *)
-          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; f ] =>
@@ -336,13 +346,16 @@ Module collections.
                                   "debug_struct",
                                   []
                                 |),
-                                [ M.read (| f |); M.read (| Value.String "OccupiedEntry" |) ]
+                                [
+                                  M.read (| f |);
+                                  M.read (| M.of_value (| Value.String "OccupiedEntry" |) |)
+                                ]
                               |)
                             |);
-                            M.read (| Value.String "key" |);
+                            M.read (| M.of_value (| Value.String "key" |) |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.call_closure (|
+                            M.pointer_coercion (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
@@ -351,13 +364,14 @@ Module collections.
                                   []
                                 |),
                                 [ M.read (| self |) ]
-                              |))
+                              |)
+                            |)
                           ]
                         |);
-                        M.read (| Value.String "value" |);
+                        M.read (| M.of_value (| Value.String "value" |) |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
+                        M.pointer_coercion (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
@@ -366,7 +380,8 @@ Module collections.
                               []
                             |),
                             [ M.read (| self |) ]
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -410,7 +425,7 @@ Module collections.
                       .finish()
               }
           *)
-          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; f ] =>
@@ -452,13 +467,16 @@ Module collections.
                                       "debug_struct",
                                       []
                                     |),
-                                    [ M.read (| f |); M.read (| Value.String "OccupiedError" |) ]
+                                    [
+                                      M.read (| f |);
+                                      M.read (| M.of_value (| Value.String "OccupiedError" |) |)
+                                    ]
                                   |)
                                 |);
-                                M.read (| Value.String "key" |);
+                                M.read (| M.of_value (| Value.String "key" |) |);
                                 (* Unsize *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
+                                M.pointer_coercion (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path
@@ -474,13 +492,14 @@ Module collections.
                                         "entry"
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               ]
                             |);
-                            M.read (| Value.String "old_value" |);
+                            M.read (| M.of_value (| Value.String "old_value" |) |);
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.call_closure (|
+                            M.pointer_coercion (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
@@ -495,17 +514,19 @@ Module collections.
                                     "entry"
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           ]
                         |);
-                        M.read (| Value.String "new_value" |);
+                        M.read (| M.of_value (| Value.String "new_value" |) |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
+                        M.pointer_coercion (|
+                          M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::collections::btree::map::entry::OccupiedError",
                             "value"
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -537,7 +558,7 @@ Module collections.
                   )
               }
           *)
-          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition fmt (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; f ] =>
@@ -552,92 +573,107 @@ Module collections.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "failed to insert " |);
-                                M.read (| Value.String ", key " |);
-                                M.read (| Value.String " already exists with value " |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "failed to insert " |)
+                                    |));
+                                  A.to_value (M.read (| M.of_value (| Value.String ", key " |) |));
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String " already exists with value " |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [ V ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::btree::map::entry::OccupiedError",
-                                      "value"
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [ Ty.apply (Ty.path "&") [ K ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::map::entry::OccupiedEntry")
-                                            [ K; V; A ],
-                                          "key",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::btree::map::entry::OccupiedError",
-                                            "entry"
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ V ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::btree::map::entry::OccupiedError",
+                                          "value"
+                                        |)
+                                      ]
+                                    |));
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "&") [ K ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                [ K; V; A ],
+                                              "key",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::btree::map::entry::OccupiedError",
+                                                "entry"
+                                              |)
+                                            ]
                                           |)
-                                        ]
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [ Ty.apply (Ty.path "&") [ V ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::map::entry::OccupiedEntry")
-                                            [ K; V; A ],
-                                          "get",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::btree::map::entry::OccupiedError",
-                                            "entry"
+                                        |)
+                                      ]
+                                    |));
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "&") [ V ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                [ K; V; A ],
+                                              "get",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::collections::btree::map::entry::OccupiedError",
+                                                "entry"
+                                              |)
+                                            ]
                                           |)
-                                        ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
@@ -665,13 +701,13 @@ Module collections.
                   "key already exists"
               }
           *)
-          Definition description (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition description (K V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V in
             match τ, α with
             | [], [ self ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
-                M.read (| Value.String "key already exists" |)))
+                M.read (| M.of_value (| Value.String "key already exists" |) |)))
             | _, _ => M.impossible
             end.
           
@@ -696,7 +732,7 @@ Module collections.
                   }
               }
           *)
-          Definition or_insert (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition or_insert (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; default ] =>
@@ -767,7 +803,7 @@ Module collections.
                   }
               }
           *)
-          Definition or_insert_with (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition or_insert_with (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [ F ], [ self; default ] =>
@@ -827,7 +863,7 @@ Module collections.
                                     "call_once",
                                     []
                                   |),
-                                  [ M.read (| default |); Value.Tuple [] ]
+                                  [ M.read (| default |); M.of_value (| Value.Tuple [] |) ]
                                 |)
                               ]
                             |)
@@ -853,7 +889,7 @@ Module collections.
                   }
               }
           *)
-          Definition or_insert_with_key (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition or_insert_with_key (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [ F ], [ self; default ] =>
@@ -906,20 +942,23 @@ Module collections.
                                 |),
                                 [
                                   M.read (| default |);
-                                  Value.Tuple
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::map::entry::VacantEntry")
-                                            [ K; V; A ],
-                                          "key",
-                                          []
-                                        |),
-                                        [ entry ]
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::entry::VacantEntry")
+                                                [ K; V; A ],
+                                              "key",
+                                              []
+                                            |),
+                                            [ entry ]
+                                          |))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |) in
@@ -953,7 +992,7 @@ Module collections.
                   }
               }
           *)
-          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1029,7 +1068,7 @@ Module collections.
                   }
               }
           *)
-          Definition and_modify (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition and_modify (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [ F ], [ self; f ] =>
@@ -1061,27 +1100,32 @@ Module collections.
                                 |),
                                 [
                                   M.read (| f |);
-                                  Value.Tuple
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::map::entry::OccupiedEntry")
-                                            [ K; V; A ],
-                                          "get_mut",
-                                          []
-                                        |),
-                                        [ entry ]
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                [ K; V; A ],
+                                              "get_mut",
+                                              []
+                                            |),
+                                            [ entry ]
+                                          |))
+                                      ]
+                                  |)
                                 ]
                               |)
                             |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "alloc::collections::btree::map::entry::Entry::Occupied"
-                              [ M.read (| entry |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "alloc::collections::btree::map::entry::Entry::Occupied"
+                                [ A.to_value (M.read (| entry |)) ]
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1093,9 +1137,11 @@ Module collections.
                             |) in
                           let entry := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "alloc::collections::btree::map::entry::Entry::Vacant"
-                              [ M.read (| entry |) ]
+                            M.of_value (|
+                              Value.StructTuple
+                                "alloc::collections::btree::map::entry::Entry::Vacant"
+                                [ A.to_value (M.read (| entry |)) ]
+                            |)
                           |)))
                     ]
                   |)
@@ -1114,7 +1160,7 @@ Module collections.
                   }
               }
           *)
-          Definition or_default (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition or_default (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1199,7 +1245,7 @@ Module collections.
                   &self.key
               }
           *)
-          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1222,7 +1268,7 @@ Module collections.
                   self.key
               }
           *)
-          Definition into_key (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition into_key (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1280,7 +1326,7 @@ Module collections.
                   unsafe { &mut *out_ptr }
               }
           *)
-          Definition insert (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition insert (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; value ] =>
@@ -1418,27 +1464,30 @@ Module collections.
                                     "alloc::collections::btree::map::BTreeMap",
                                     "root"
                                   |),
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::NodeRef")
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Owned";
-                                              K;
-                                              V;
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::Leaf"
-                                            ],
-                                          "forget_type",
-                                          []
-                                        |),
-                                        [ M.read (| root |) ]
-                                      |)
-                                    ]
+                                  M.of_value (|
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                [
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Owned";
+                                                  K;
+                                                  V;
+                                                  Ty.path
+                                                    "alloc::collections::btree::node::marker::Leaf"
+                                                ],
+                                              "forget_type",
+                                              []
+                                            |),
+                                            [ M.read (| root |) ]
+                                          |))
+                                      ]
+                                  |)
                                 |) in
                               let _ :=
                                 M.write (|
@@ -1447,7 +1496,7 @@ Module collections.
                                     "alloc::collections::btree::map::BTreeMap",
                                     "length"
                                   |),
-                                  Value.Integer Integer.Usize 1
+                                  M.of_value (| Value.Integer 1 |)
                                 |) in
                               val_ptr));
                           fun γ =>
@@ -1528,8 +1577,8 @@ Module collections.
                                               |)
                                             ]
                                           |);
-                                          M.closure
-                                            (fun γ =>
+                                          M.closure (|
+                                            fun γ =>
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
@@ -1736,7 +1785,8 @@ Module collections.
                                                     ]
                                                   |)
                                                 | _ => M.impossible (||)
-                                                end))
+                                                end)
+                                          |)
                                         ]
                                       |)
                                     |) in
@@ -1801,8 +1851,9 @@ Module collections.
                                     M.write (|
                                       β,
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| β |),
-                                        Value.Integer Integer.Usize 1
+                                        M.of_value (| Value.Integer 1 |)
                                       |)
                                     |) in
                                   val_ptr
@@ -1830,7 +1881,7 @@ Module collections.
                   self.handle.reborrow().into_kv().0
               }
           *)
-          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition key (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1903,7 +1954,7 @@ Module collections.
                   self.remove_kv()
               }
           *)
-          Definition remove_entry (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition remove_entry (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -1931,7 +1982,7 @@ Module collections.
                   self.handle.reborrow().into_kv().1
               }
           *)
-          Definition get (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition get (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -2004,7 +2055,7 @@ Module collections.
                   self.handle.kv_mut().1
               }
           *)
-          Definition get_mut (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition get_mut (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -2055,7 +2106,7 @@ Module collections.
                   self.handle.into_val_mut()
               }
           *)
-          Definition into_mut (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition into_mut (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -2101,7 +2152,7 @@ Module collections.
                   mem::replace(self.get_mut(), value)
               }
           *)
-          Definition insert (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition insert (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self; value ] =>
@@ -2136,7 +2187,7 @@ Module collections.
                   self.remove_kv().1
               }
           *)
-          Definition remove (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition remove (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
@@ -2181,14 +2232,14 @@ Module collections.
                   old_kv
               }
           *)
-          Definition remove_kv (K V A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          Definition remove_kv (K V A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
             let Self : Ty.t := Self K V A in
             match τ, α with
             | [], [ self ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.read (|
-                  let emptied_internal_root := M.alloc (| Value.Bool false |) in
+                  let emptied_internal_root := M.alloc (| M.of_value (| Value.Bool false |) |) in
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -2217,8 +2268,8 @@ Module collections.
                               "handle"
                             |)
                           |);
-                          M.closure
-                            (fun γ =>
+                          M.closure (|
+                            fun γ =>
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
@@ -2228,12 +2279,16 @@ Module collections.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.read (|
-                                            M.write (| emptied_internal_root, Value.Bool true |)
+                                            M.write (|
+                                              emptied_internal_root,
+                                              M.of_value (| Value.Bool true |)
+                                            |)
                                           |)))
                                     ]
                                   |)
                                 | _ => M.impossible (||)
-                                end));
+                                end)
+                          |);
                           M.call_closure (|
                             M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                             [
@@ -2287,11 +2342,15 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.sub (|
+                                Integer.Usize,
+                                M.read (| β |),
+                                M.of_value (| Value.Integer 1 |)
+                              |)
                             |) in
                           let _ :=
                             M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -2388,8 +2447,9 @@ Module collections.
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |) in
                           old_kv))

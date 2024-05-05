@@ -6,7 +6,7 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+Definition function (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -21,18 +21,27 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "called `function()`
+" |)
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.
@@ -43,7 +52,7 @@ Module cool.
           println!("called `cool::function()`");
       }
   *)
-  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition function (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -62,18 +71,27 @@ Module cool.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `cool::function()`
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "called `cool::function()`
+" |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -85,7 +103,7 @@ Module my.
           println!("called `my::function()`");
       }
   *)
-  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition function (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -104,18 +122,27 @@ Module my.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `my::function()`
-" |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "called `my::function()`
+" |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -126,7 +153,7 @@ Module my.
                 println!("called `my::cool::function()`");
             }
     *)
-    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition function (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [] =>
         ltac:(M.monadic
@@ -145,19 +172,29 @@ Module my.
                         |),
                         [
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `my::cool::function()`
-" |) ]
-                            |))
+                          M.pointer_coercion (|
+                            M.alloc (|
+                              M.of_value (|
+                                Value.Array
+                                  [
+                                    A.to_value
+                                      (M.read (|
+                                        M.of_value (|
+                                          Value.String "called `my::cool::function()`
+"
+                                        |)
+                                      |))
+                                  ]
+                              |)
+                            |)
+                          |)
                         ]
                       |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |) in
-            M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -188,7 +225,7 @@ Module my.
           }
       }
   *)
-  Definition indirect_call (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition indirect_call (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -207,18 +244,28 @@ Module my.
                       |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my::indirect_call()`, that
-> " |) ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String "called `my::indirect_call()`, that
+> "
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (| M.get_function (| "super_and_self::my::function", [] |), [] |)
@@ -239,7 +286,7 @@ Module my.
             M.alloc (|
               M.call_closure (| M.get_function (| "super_and_self::cool::function", [] |), [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -250,7 +297,7 @@ fn main() {
     my::indirect_call();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -259,7 +306,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (| M.get_function (| "super_and_self::my::indirect_call", [] |), [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

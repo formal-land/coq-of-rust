@@ -9,26 +9,35 @@ Module iter.
           Once { inner: Some(value).into_iter() }
       }
       *)
-      Definition once (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition once (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
-            Value.StructRecord
-              "core::iter::sources::once::Once"
-              [
-                ("inner",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "core::option::Option") [ T ],
-                      [],
-                      "into_iter",
-                      []
-                    |),
-                    [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::iter::sources::once::Once"
+                [
+                  ("inner",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply (Ty.path "core::option::Option") [ T ],
+                          [],
+                          "into_iter",
+                          []
+                        |),
+                        [
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ A.to_value (M.read (| value |)) ]
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -44,33 +53,36 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
         
         (* Clone *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::sources::once::Once"
-                [
-                  ("inner",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::IntoIter") [ T ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::once::Once",
-                          "inner"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::sources::once::Once"
+                  [
+                    ("inner",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::once::Once",
+                              "inner"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -88,7 +100,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
         
         (* Debug *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self; f ] =>
@@ -103,17 +115,18 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Once" |);
-                  M.read (| Value.String "inner" |);
+                  M.read (| M.of_value (| Value.String "Once" |) |);
+                  M.read (| M.of_value (| Value.String "inner" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::sources::once::Once",
                         "inner"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -140,7 +153,7 @@ Module iter.
                 self.inner.next()
             }
         *)
-        Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -170,7 +183,7 @@ Module iter.
                 self.inner.size_hint()
             }
         *)
-        Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -218,7 +231,7 @@ Module iter.
                 self.inner.next_back()
             }
         *)
-        Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>
@@ -261,7 +274,7 @@ Module iter.
                 self.inner.len()
             }
         *)
-        Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self T in
           match τ, α with
           | [], [ self ] =>

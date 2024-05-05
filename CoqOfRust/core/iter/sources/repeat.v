@@ -9,14 +9,16 @@ Module iter.
           Repeat { element: elt }
       }
       *)
-      Definition repeat (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition repeat (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ elt ] =>
           ltac:(M.monadic
             (let elt := M.alloc (| elt |) in
-            Value.StructRecord
-              "core::iter::sources::repeat::Repeat"
-              [ ("element", M.read (| elt |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::iter::sources::repeat::Repeat"
+                [ ("element", A.to_value (M.read (| elt |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -32,27 +34,30 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
         
         (* Clone *)
-        Definition clone (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::sources::repeat::Repeat"
-                [
-                  ("element",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::repeat::Repeat",
-                          "element"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "core::iter::sources::repeat::Repeat"
+                  [
+                    ("element",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::iter::sources::repeat::Repeat",
+                              "element"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -70,7 +75,7 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [ A ].
         
         (* Debug *)
-        Definition fmt (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self; f ] =>
@@ -85,17 +90,18 @@ Module iter.
                 |),
                 [
                   M.read (| f |);
-                  M.read (| Value.String "Repeat" |);
-                  M.read (| Value.String "element" |);
+                  M.read (| M.of_value (| Value.String "Repeat" |) |);
+                  M.read (| M.of_value (| Value.String "element" |) |);
                   (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
+                  M.pointer_coercion (|
+                    M.alloc (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::iter::sources::repeat::Repeat",
                         "element"
                       |)
-                    |))
+                    |)
+                  |)
                 ]
               |)))
           | _, _ => M.impossible
@@ -122,26 +128,29 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition next (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple
-                "core::option::Option::Some"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
-                      |)
-                    ]
-                  |)
-                ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::sources::repeat::Repeat",
+                            "element"
+                          |)
+                        ]
+                      |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -150,17 +159,19 @@ Module iter.
                 (usize::MAX, None)
             }
         *)
-        Definition size_hint (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.Tuple
-                [
-                  M.read (| M.get_constant (| "core::num::MAX" |) |);
-                  Value.StructTuple "core::option::Option::None" []
-                ]))
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |));
+                    A.to_value (M.of_value (| Value.StructTuple "core::option::Option::None" [] |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -171,7 +182,7 @@ Module iter.
                 Ok(())
             }
         *)
-        Definition advance_by (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self; n ] =>
@@ -185,7 +196,11 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -199,7 +214,7 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition nth (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self; n ] =>
@@ -213,20 +228,29 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat::Repeat",
-                                    "element"
-                                  |)
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      A,
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::sources::repeat::Repeat",
+                                        "element"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -239,14 +263,16 @@ Module iter.
                 loop {}
             }
         *)
-        Definition last (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.never_to_any (|
-                M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
+                M.read (|
+                  M.loop (| ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -256,14 +282,16 @@ Module iter.
                 loop {}
             }
         *)
-        Definition count (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition count (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.never_to_any (|
-                M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
+                M.read (|
+                  M.loop (| ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -295,26 +323,29 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition next_back (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructTuple
-                "core::option::Option::Some"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
-                      |)
-                    ]
-                  |)
-                ]))
+              M.of_value (|
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::sources::repeat::Repeat",
+                            "element"
+                          |)
+                        ]
+                      |))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -325,7 +356,7 @@ Module iter.
                 Ok(())
             }
         *)
-        Definition advance_back_by (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self; n ] =>
@@ -339,7 +370,11 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::result::Result::Ok"
+                              [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                          |)
                         |)))
                   ]
                 |)
@@ -353,7 +388,7 @@ Module iter.
                 Some(self.element.clone())
             }
         *)
-        Definition nth_back (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth_back (A : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self A in
           match τ, α with
           | [], [ self; n ] =>
@@ -367,20 +402,29 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat::Repeat",
-                                    "element"
-                                  |)
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      A,
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::iter::sources::repeat::Repeat",
+                                        "element"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)

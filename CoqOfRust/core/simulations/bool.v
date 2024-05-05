@@ -4,8 +4,11 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 Module Bool.
-  Global Instance IsToValue : ToValue bool := {
+  Global Instance IsToTy : ToTy bool := {
     Φ := Ty.path "bool";
+  }.
+
+  Global Instance IsToValue : ToValue bool := {
     φ := Value.Bool;
   }.
 

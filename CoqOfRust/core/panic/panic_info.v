@@ -24,7 +24,7 @@ Module panic.
       Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicInfo".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -38,49 +38,54 @@ Module panic.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "PanicInfo" |);
-                M.read (| Value.String "payload" |);
+                M.read (| M.of_value (| Value.String "PanicInfo" |) |);
+                M.read (| M.of_value (| Value.String "payload" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
                     "payload"
-                  |));
-                M.read (| Value.String "message" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "message" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
                     "message"
-                  |));
-                M.read (| Value.String "location" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "location" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
                     "location"
-                  |));
-                M.read (| Value.String "can_unwind" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "can_unwind" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
                     "can_unwind"
-                  |));
-                M.read (| Value.String "force_no_backtrace" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "force_no_backtrace" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::panic::panic_info::PanicInfo",
                       "force_no_backtrace"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -108,7 +113,7 @@ Module panic.
               PanicInfo { location, message, payload: &NoPayload, can_unwind, force_no_backtrace }
           }
       *)
-      Definition internal_constructor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition internal_constructor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ message; location; can_unwind; force_no_backtrace ] =>
           ltac:(M.monadic
@@ -116,22 +121,28 @@ Module panic.
             let location := M.alloc (| location |) in
             let can_unwind := M.alloc (| can_unwind |) in
             let force_no_backtrace := M.alloc (| force_no_backtrace |) in
-            Value.StructRecord
-              "core::panic::panic_info::PanicInfo"
-              [
-                ("location", M.read (| location |));
-                ("message", M.read (| message |));
-                ("payload",
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::panic::panic_info::internal_constructor::NoPayload"
-                        []
-                    |)));
-                ("can_unwind", M.read (| can_unwind |));
-                ("force_no_backtrace", M.read (| force_no_backtrace |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::panic::panic_info::PanicInfo"
+                [
+                  ("location", A.to_value (M.read (| location |)));
+                  ("message", A.to_value (M.read (| message |)));
+                  ("payload",
+                    A.to_value
+                      (* Unsize *)
+                      (M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.StructTuple
+                              "core::panic::panic_info::internal_constructor::NoPayload"
+                              []
+                          |)
+                        |)
+                      |)));
+                  ("can_unwind", A.to_value (M.read (| can_unwind |)));
+                  ("force_no_backtrace", A.to_value (M.read (| force_no_backtrace |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -143,7 +154,7 @@ Module panic.
               self.payload = info;
           }
       *)
-      Definition set_payload (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set_payload (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; info ] =>
           ltac:(M.monadic
@@ -157,9 +168,9 @@ Module panic.
                     "core::panic::panic_info::PanicInfo",
                     "payload"
                   |),
-                  (* Unsize *) M.pointer_coercion (M.read (| info |))
+                  (* Unsize *) M.pointer_coercion (| M.read (| info |) |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -171,22 +182,24 @@ Module panic.
               self.payload
           }
       *)
-      Definition payload (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition payload (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             (* Unsize *)
-            M.pointer_coercion
+            M.pointer_coercion (|
               (* Unsize *)
-              (M.pointer_coercion
-                (M.read (|
+              M.pointer_coercion (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
                     "payload"
                   |)
-                |)))))
+                |)
+              |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -197,7 +210,7 @@ Module panic.
               self.message
           }
       *)
-      Definition message (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition message (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -221,22 +234,25 @@ Module panic.
               Some(&self.location)
           }
       *)
-      Definition location (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition location (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::option::Option::Some"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "location"
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::option::Option::Some"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::panic::panic_info::PanicInfo",
+                        "location"
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -247,7 +263,7 @@ Module panic.
               self.can_unwind
           }
       *)
-      Definition can_unwind (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition can_unwind (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -269,7 +285,7 @@ Module panic.
               self.force_no_backtrace
           }
       *)
-      Definition force_no_backtrace (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition force_no_backtrace (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -309,7 +325,7 @@ Module panic.
               Ok(())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; formatter ] =>
           ltac:(M.monadic
@@ -338,7 +354,10 @@ Module panic.
                                 "write_str",
                                 []
                               |),
-                              [ M.read (| formatter |); M.read (| Value.String "panicked at " |) ]
+                              [
+                                M.read (| formatter |);
+                                M.read (| M.of_value (| Value.String "panicked at " |) |)
+                              ]
                             |)
                           ]
                         |)
@@ -479,7 +498,7 @@ Module panic.
                     |) in
                   let _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -516,8 +535,11 @@ Module panic.
                                           "write_str",
                                           []
                                         |),
-                                        [ M.read (| formatter |); M.read (| Value.String ":
-" |) ]
+                                        [
+                                          M.read (| formatter |);
+                                          M.read (| M.of_value (| Value.String ":
+" |) |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -646,11 +668,11 @@ Module panic.
                                       val))
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -702,8 +724,8 @@ Module panic.
                                                 |),
                                                 [
                                                   M.read (| formatter |);
-                                                  M.read (| Value.String ":
-" |)
+                                                  M.read (| M.of_value (| Value.String ":
+" |) |)
                                                 ]
                                               |)
                                             ]
@@ -841,13 +863,20 @@ Module panic.
                                               val))
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                               ]
                             |)))
                       ]
                     |) in
-                  M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+                  M.alloc (|
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [ A.to_value (M.of_value (| Value.Tuple [] |)) ]
+                    |)
+                  |)
                 |)))
             |)))
         | _, _ => M.impossible

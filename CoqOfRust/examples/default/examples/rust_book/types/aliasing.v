@@ -23,13 +23,13 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 5 |)) |) in
-        let inches := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 2 |)) |) in
+        let nanoseconds := M.copy (| M.use (M.alloc (| M.of_value (| Value.Integer 5 |) |)) |) in
+        let inches := M.copy (| M.use (M.alloc (| M.of_value (| Value.Integer 2 |) |)) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -40,62 +40,74 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " nanoseconds + " |);
-                              M.read (| Value.String " inches = " |);
-                              M.read (| Value.String " unit?
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String " nanoseconds + " |) |));
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String " inches = " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String " unit?
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [ nanoseconds ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [ inches ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u64" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Panic.add (|
-                                      M.read (| nanoseconds |),
-                                      M.read (| inches |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [ nanoseconds ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [ inches ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        BinOp.Panic.add (|
+                                          Integer.U64,
+                                          M.read (| nanoseconds |),
+                                          M.read (| inches |)
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

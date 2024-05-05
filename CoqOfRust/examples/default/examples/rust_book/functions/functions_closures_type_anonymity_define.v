@@ -12,8 +12,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 Module main.
   (*
@@ -24,7 +27,7 @@ Module main.
           f();
       }
   *)
-  Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition apply (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [ F ], [ f ] =>
       ltac:(M.monadic
@@ -40,10 +43,10 @@ Module main.
                   "call_once",
                   []
                 |),
-                [ M.read (| f |); Value.Tuple [] ]
+                [ M.read (| f |); M.of_value (| Value.Tuple [] |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

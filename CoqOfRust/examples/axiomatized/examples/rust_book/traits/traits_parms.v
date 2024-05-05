@@ -46,7 +46,7 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   
   Definition _SomeType : Ty.t := Ty.path "traits_parms::SomeOtherType".
   
-  Parameter some_fn : (list Ty.t) -> (list Value.t) -> M.
+  Parameter some_fn : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance

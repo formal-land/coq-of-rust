@@ -11,15 +11,15 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u8" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 0 |))).
+      Definition value_ZERO : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -125,7 +125,7 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -244,15 +244,15 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u16" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U16 0 |))).
+      Definition value_ZERO : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -358,7 +358,7 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -477,15 +477,15 @@ Module net.
       
       (*         const ZERO: Self = 0; *)
       (* Ty.path "u32" *)
-      Definition value_ZERO : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 0 |))).
+      Definition value_ZERO : A.t :=
+        M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |))).
       
       (*
               fn checked_mul(&self, other: u32) -> Option<Self> {
                   Self::checked_mul( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -591,7 +591,7 @@ Module net.
                   Self::checked_add( *self, other.try_into().ok()?)
               }
       *)
-      Definition checked_add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition checked_add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -721,12 +721,16 @@ Module net.
               Parser { state: input }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
-            Value.StructRecord "core::net::parser::Parser" [ ("state", M.read (| input |)) ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::net::parser::Parser"
+                [ ("state", A.to_value (M.read (| input |))) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -745,7 +749,7 @@ Module net.
               result
           }
       *)
-      Definition read_atomically (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_atomically (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; F ], [ self; inner ] =>
           ltac:(M.monadic
@@ -773,12 +777,15 @@ Module net.
                       "call_once",
                       []
                     |),
-                    [ M.read (| inner |); Value.Tuple [ M.read (| self |) ] ]
+                    [
+                      M.read (| inner |);
+                      M.of_value (| Value.Tuple [ A.to_value (M.read (| self |)) ] |)
+                    ]
                   |)
                 |) in
               let _ :=
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -805,8 +812,8 @@ Module net.
                             |),
                             M.read (| state |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                   ]
                 |) in
               result
@@ -826,7 +833,7 @@ Module net.
               if self.state.is_empty() { result } else { None }.ok_or(AddrParseError(kind))
           }
       *)
-      Definition parse_with (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_with (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; F ], [ self; inner; kind ] =>
           ltac:(M.monadic
@@ -847,7 +854,10 @@ Module net.
                       "call_once",
                       []
                     |),
-                    [ M.read (| inner |); Value.Tuple [ M.read (| self |) ] ]
+                    [
+                      M.read (| inner |);
+                      M.of_value (| Value.Tuple [ A.to_value (M.read (| self |)) ] |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -860,7 +870,7 @@ Module net.
                   [
                     M.read (|
                       M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -892,11 +902,17 @@ Module net.
                               result));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (M.alloc (|
+                                M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                              |)))
                         ]
                       |)
                     |);
-                    Value.StructTuple "core::net::parser::AddrParseError" [ M.read (| kind |) ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::net::parser::AddrParseError"
+                        [ A.to_value (M.read (| kind |)) ]
+                    |)
                   ]
                 |)
               |)
@@ -911,7 +927,7 @@ Module net.
               self.state.first().map(|&b| char::from(b))
           }
       *)
-      Definition peek_char (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_char (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -946,8 +962,8 @@ Module net.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -971,7 +987,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -987,7 +1004,7 @@ Module net.
               })
           }
       *)
-      Definition read_char (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_char (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -1037,8 +1054,8 @@ Module net.
                     |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1078,7 +1095,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1093,7 +1111,7 @@ Module net.
               })
           }
       *)
-      Definition read_given_char (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_given_char (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; target ] =>
           ltac:(M.monadic
@@ -1113,8 +1131,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1144,8 +1162,8 @@ Module net.
                                       |),
                                       [ M.read (| p |) ]
                                     |);
-                                    M.closure
-                                      (fun γ =>
+                                    M.closure (|
+                                      fun γ =>
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
@@ -1157,16 +1175,19 @@ Module net.
                                                     (let c := M.copy (| γ |) in
                                                     M.read (|
                                                       M.match_operator (|
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
-                                                                    BinOp.Pure.eq
-                                                                      (M.read (| c |))
-                                                                      (M.read (| target |))
+                                                                    BinOp.Pure.eq (|
+                                                                      M.read (| c |),
+                                                                      M.read (| target |)
+                                                                    |)
                                                                   |)) in
                                                               let _ :=
                                                                 M.is_constant_or_break_match (|
@@ -1174,16 +1195,25 @@ Module net.
                                                                   Value.Bool true
                                                                 |) in
                                                               M.alloc (|
-                                                                Value.StructTuple
-                                                                  "core::option::Option::Some"
-                                                                  [ Value.Tuple [] ]
+                                                                M.of_value (|
+                                                                  Value.StructTuple
+                                                                    "core::option::Option::Some"
+                                                                    [
+                                                                      A.to_value
+                                                                        (M.of_value (|
+                                                                          Value.Tuple []
+                                                                        |))
+                                                                    ]
+                                                                |)
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (M.alloc (|
-                                                                Value.StructTuple
-                                                                  "core::option::Option::None"
-                                                                  []
+                                                                M.of_value (|
+                                                                  Value.StructTuple
+                                                                    "core::option::Option::None"
+                                                                    []
+                                                                |)
                                                               |)))
                                                         ]
                                                       |)
@@ -1191,13 +1221,15 @@ Module net.
                                               ]
                                             |)
                                           | _ => M.impossible (||)
-                                          end))
+                                          end)
+                                    |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1219,7 +1251,7 @@ Module net.
               })
           }
       *)
-      Definition read_separator (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_separator (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T; F ], [ self; sep; index; inner ] =>
           ltac:(M.monadic
@@ -1241,8 +1273,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1255,16 +1287,17 @@ Module net.
                                 M.read (|
                                   let _ :=
                                     M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.gt
-                                                    (M.read (| index |))
-                                                    (Value.Integer Integer.Usize 0)
+                                                  BinOp.Pure.gt (|
+                                                    M.read (| index |),
+                                                    M.of_value (| Value.Integer 0 |)
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -1346,8 +1379,10 @@ Module net.
                                                       val))
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                       ]
                                     |) in
                                   M.alloc (|
@@ -1366,14 +1401,18 @@ Module net.
                                         "call_once",
                                         []
                                       |),
-                                      [ M.read (| inner |); Value.Tuple [ M.read (| p |) ] ]
+                                      [
+                                        M.read (| inner |);
+                                        M.of_value (| Value.Tuple [ A.to_value (M.read (| p |)) ] |)
+                                      ]
                                     |)
                                   |)
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1415,7 +1454,7 @@ Module net.
               })
           }
       *)
-      Definition read_number (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_number (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [ T ], [ self; radix; max_digits; allow_zero_prefix ] =>
           ltac:(M.monadic
@@ -1437,8 +1476,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -1455,7 +1494,8 @@ Module net.
                                         "core::net::parser::ReadNumberHelper::ZERO"
                                       |)
                                     |) in
-                                  let digit_count := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                                  let digit_count :=
+                                    M.alloc (| M.of_value (| Value.Integer 0 |) |) in
                                   let has_leading_zero :=
                                     M.alloc (|
                                       M.call_closure (|
@@ -1484,9 +1524,12 @@ Module net.
                                             |)
                                           |);
                                           M.alloc (|
-                                            Value.StructTuple
-                                              "core::option::Option::Some"
-                                              [ Value.UnicodeChar 48 ]
+                                            M.of_value (|
+                                              Value.StructTuple
+                                                "core::option::Option::Some"
+                                                [ A.to_value (M.of_value (| Value.UnicodeChar 48 |))
+                                                ]
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -1495,7 +1538,7 @@ Module net.
                                     M.loop (|
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -1526,8 +1569,8 @@ Module net.
                                                       |),
                                                       [
                                                         M.read (| p |);
-                                                        M.closure
-                                                          (fun γ =>
+                                                        M.closure (|
+                                                          fun γ =>
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [ α0 ] =>
@@ -1650,7 +1693,8 @@ Module net.
                                                                   ]
                                                                 |)
                                                               | _ => M.impossible (||)
-                                                              end))
+                                                              end)
+                                                        |)
                                                       ]
                                                     |)
                                                   |) in
@@ -1832,12 +1876,13 @@ Module net.
                                                   M.write (|
                                                     β,
                                                     BinOp.Panic.add (|
+                                                      Integer.Usize,
                                                       M.read (| β |),
-                                                      Value.Integer Integer.Usize 1
+                                                      M.of_value (| Value.Integer 1 |)
                                                     |)
                                                   |) in
                                                 M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -1850,16 +1895,19 @@ Module net.
                                                           |) in
                                                         let max_digits := M.copy (| γ0_0 |) in
                                                         M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (|
+                                                            M.of_value (| Value.Tuple [] |)
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.gt
-                                                                        (M.read (| digit_count |))
-                                                                        (M.read (| max_digits |))
+                                                                      BinOp.Pure.gt (|
+                                                                        M.read (| digit_count |),
+                                                                        M.read (| max_digits |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -1870,21 +1918,27 @@ Module net.
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       M.return_ (|
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
+                                                                        M.of_value (|
+                                                                          Value.StructTuple
+                                                                            "core::option::Option::None"
+                                                                            []
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  M.of_value (| Value.Tuple [] |)
+                                                                |)))
                                                           ]
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
+                                                        (M.alloc (|
+                                                          M.of_value (| Value.Tuple [] |)
+                                                        |)))
                                                   ]
                                                 |)));
                                             fun γ =>
@@ -1898,7 +1952,7 @@ Module net.
                                                             M.read (| M.break (||) |)
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)
+                                                      M.alloc (| M.of_value (| Value.Tuple [] |) |)
                                                     |)
                                                   |)
                                                 |)))
@@ -1906,16 +1960,17 @@ Module net.
                                         |)))
                                     |) in
                                   M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| digit_count |))
-                                                  (Value.Integer Integer.Usize 0)
+                                                BinOp.Pure.eq (|
+                                                  M.read (| digit_count |),
+                                                  M.of_value (| Value.Integer 0 |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1923,12 +1978,14 @@ Module net.
                                               Value.Bool true
                                             |) in
                                           M.alloc (|
-                                            Value.StructTuple "core::option::Option::None" []
+                                            M.of_value (|
+                                              Value.StructTuple "core::option::Option::None" []
+                                            |)
                                           |)));
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -1937,15 +1994,17 @@ Module net.
                                                       (M.alloc (|
                                                         LogicalOp.and (|
                                                           LogicalOp.and (|
-                                                            UnOp.Pure.not
-                                                              (M.read (| allow_zero_prefix |)),
+                                                            UnOp.Pure.not (|
+                                                              M.read (| allow_zero_prefix |)
+                                                            |),
                                                             ltac:(M.monadic
                                                               (M.read (| has_leading_zero |)))
                                                           |),
                                                           ltac:(M.monadic
-                                                            (BinOp.Pure.gt
-                                                              (M.read (| digit_count |))
-                                                              (Value.Integer Integer.Usize 1)))
+                                                            (BinOp.Pure.gt (|
+                                                              M.read (| digit_count |),
+                                                              M.of_value (| Value.Integer 1 |)
+                                                            |)))
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -1954,16 +2013,20 @@ Module net.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [ M.read (| result |) ]
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [ A.to_value (M.read (| result |)) ]
+                                                    |)
                                                   |)))
                                             ]
                                           |)))
@@ -1973,7 +2036,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -1998,7 +2062,7 @@ Module net.
               })
           }
       *)
-      Definition read_ipv4_addr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_ipv4_addr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2019,8 +2083,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2032,7 +2096,9 @@ Module net.
                                 (let p := M.copy (| γ |) in
                                 M.read (|
                                   let groups :=
-                                    M.alloc (| repeat (Value.Integer Integer.U8 0) 4 |) in
+                                    M.alloc (|
+                                      repeat (| M.of_value (| Value.Integer 0 |), 4 |)
+                                    |) in
                                   let _ :=
                                     M.use
                                       (M.match_operator (|
@@ -2070,7 +2136,7 @@ Module net.
                                                       "iter_mut",
                                                       []
                                                     |),
-                                                    [ (* Unsize *) M.pointer_coercion groups ]
+                                                    [ (* Unsize *) M.pointer_coercion (| groups |) ]
                                                   |)
                                                 ]
                                               |)
@@ -2180,10 +2246,12 @@ Module net.
                                                                             |),
                                                                             [
                                                                               M.read (| p |);
-                                                                              Value.UnicodeChar 46;
+                                                                              M.of_value (|
+                                                                                Value.UnicodeChar 46
+                                                                              |);
                                                                               M.read (| i |);
-                                                                              M.closure
-                                                                                (fun γ =>
+                                                                              M.closure (|
+                                                                                fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     match γ with
                                                                                     | [ α0 ] =>
@@ -2213,25 +2281,33 @@ Module net.
                                                                                                   M.read (|
                                                                                                     p
                                                                                                   |);
-                                                                                                  Value.Integer
-                                                                                                    Integer.U32
-                                                                                                    10;
-                                                                                                  Value.StructTuple
-                                                                                                    "core::option::Option::Some"
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        Integer.Usize
-                                                                                                        3
-                                                                                                    ];
-                                                                                                  Value.Bool
-                                                                                                    false
+                                                                                                  M.of_value (|
+                                                                                                    Value.Integer
+                                                                                                      10
+                                                                                                  |);
+                                                                                                  M.of_value (|
+                                                                                                    Value.StructTuple
+                                                                                                      "core::option::Option::Some"
+                                                                                                      [
+                                                                                                        A.to_value
+                                                                                                          (M.of_value (|
+                                                                                                            Value.Integer
+                                                                                                              3
+                                                                                                          |))
+                                                                                                      ]
+                                                                                                  |);
+                                                                                                  M.of_value (|
+                                                                                                    Value.Bool
+                                                                                                      false
+                                                                                                  |)
                                                                                                 ]
                                                                                               |)))
                                                                                         ]
                                                                                       |)
                                                                                     | _ =>
                                                                                       M.impossible (||)
-                                                                                    end))
+                                                                                    end)
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -2299,34 +2375,40 @@ Module net.
                                                                   |)
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              M.of_value (| Value.Tuple [] |)
+                                                            |)))
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               |)))
                                         ]
                                       |)) in
                                   M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::convert::Into",
-                                            Ty.apply (Ty.path "array") [ Ty.path "u8" ],
-                                            [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
-                                            "into",
-                                            []
-                                          |),
-                                          [ M.read (| groups |) ]
-                                        |)
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::convert::Into",
+                                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                                [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
+                                                "into",
+                                                []
+                                              |),
+                                              [ M.read (| groups |) ]
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2402,7 +2484,7 @@ Module net.
               })
           }
       *)
-      Definition read_ipv6_addr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_ipv6_addr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2423,8 +2505,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2436,7 +2518,9 @@ Module net.
                                 (let p := M.copy (| γ |) in
                                 M.read (|
                                   let head :=
-                                    M.alloc (| repeat (Value.Integer Integer.U16 0) 8 |) in
+                                    M.alloc (|
+                                      repeat (| M.of_value (| Value.Integer 0 |), 8 |)
+                                    |) in
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2445,7 +2529,8 @@ Module net.
                                           "read_groups.read_ipv6_addr",
                                           []
                                         |),
-                                        [ M.read (| p |); (* Unsize *) M.pointer_coercion head ]
+                                        [ M.read (| p |); (* Unsize *) M.pointer_coercion (| head |)
+                                        ]
                                       |)
                                     |),
                                     [
@@ -2457,16 +2542,17 @@ Module net.
                                           let head_ipv4 := M.copy (| γ0_1 |) in
                                           let _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.eq
-                                                            (M.read (| head_size |))
-                                                            (Value.Integer Integer.Usize 8)
+                                                          BinOp.Pure.eq (|
+                                                            M.read (| head_size |),
+                                                            M.of_value (| Value.Integer 8 |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -2477,36 +2563,40 @@ Module net.
                                                       M.never_to_any (|
                                                         M.read (|
                                                           M.return_ (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::Some"
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::convert::Into",
-                                                                    Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [ Ty.path "u16" ],
-                                                                    [
-                                                                      Ty.path
-                                                                        "core::net::ip_addr::Ipv6Addr"
-                                                                    ],
-                                                                    "into",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| head |) ]
-                                                                |)
-                                                              ]
+                                                            M.of_value (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::Some"
+                                                                [
+                                                                  A.to_value
+                                                                    (M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::Into",
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [ Ty.path "u16" ],
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::net::ip_addr::Ipv6Addr"
+                                                                        ],
+                                                                        "into",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| head |) ]
+                                                                    |))
+                                                                ]
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               ]
                                             |) in
                                           let _ :=
                                             M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -2520,15 +2610,18 @@ Module net.
                                                       M.never_to_any (|
                                                         M.read (|
                                                           M.return_ (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::None"
-                                                              []
+                                                            M.of_value (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                               ]
                                             |) in
                                           let _ :=
@@ -2551,7 +2644,10 @@ Module net.
                                                         "read_given_char",
                                                         []
                                                       |),
-                                                      [ M.read (| p |); Value.UnicodeChar 58 ]
+                                                      [
+                                                        M.read (| p |);
+                                                        M.of_value (| Value.UnicodeChar 58 |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -2628,7 +2724,10 @@ Module net.
                                                         "read_given_char",
                                                         []
                                                       |),
-                                                      [ M.read (| p |); Value.UnicodeChar 58 ]
+                                                      [
+                                                        M.read (| p |);
+                                                        M.of_value (| Value.UnicodeChar 58 |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -2686,14 +2785,18 @@ Module net.
                                               ]
                                             |) in
                                           let tail :=
-                                            M.alloc (| repeat (Value.Integer Integer.U16 0) 7 |) in
+                                            M.alloc (|
+                                              repeat (| M.of_value (| Value.Integer 0 |), 7 |)
+                                            |) in
                                           let limit :=
                                             M.alloc (|
                                               BinOp.Panic.sub (|
-                                                Value.Integer Integer.Usize 8,
+                                                Integer.Usize,
+                                                M.of_value (| Value.Integer 8 |),
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| head_size |),
-                                                  Value.Integer Integer.Usize 1
+                                                  M.of_value (| Value.Integer 1 |)
                                                 |)
                                               |)
                                             |) in
@@ -2721,9 +2824,14 @@ Module net.
                                                     |),
                                                     [
                                                       tail;
-                                                      Value.StructRecord
-                                                        "core::ops::range::RangeTo"
-                                                        [ ("end_", M.read (| limit |)) ]
+                                                      M.of_value (|
+                                                        Value.StructRecord
+                                                          "core::ops::range::RangeTo"
+                                                          [
+                                                            ("end_",
+                                                              A.to_value (M.read (| limit |)))
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -2765,17 +2873,26 @@ Module net.
                                                             |),
                                                             [
                                                               head;
-                                                              Value.StructRecord
-                                                                "core::ops::range::Range"
-                                                                [
-                                                                  ("start",
-                                                                    BinOp.Panic.sub (|
-                                                                      Value.Integer Integer.Usize 8,
-                                                                      M.read (| tail_size |)
-                                                                    |));
-                                                                  ("end_",
-                                                                    Value.Integer Integer.Usize 8)
-                                                                ]
+                                                              M.of_value (|
+                                                                Value.StructRecord
+                                                                  "core::ops::range::Range"
+                                                                  [
+                                                                    ("start",
+                                                                      A.to_value
+                                                                        (BinOp.Panic.sub (|
+                                                                          Integer.Usize,
+                                                                          M.of_value (|
+                                                                            Value.Integer 8
+                                                                          |),
+                                                                          M.read (| tail_size |)
+                                                                        |)));
+                                                                    ("end_",
+                                                                      A.to_value
+                                                                        (M.of_value (|
+                                                                          Value.Integer 8
+                                                                        |)))
+                                                                  ]
+                                                              |)
                                                             ]
                                                           |);
                                                           M.call_closure (|
@@ -2795,32 +2912,43 @@ Module net.
                                                             |),
                                                             [
                                                               tail;
-                                                              Value.StructRecord
-                                                                "core::ops::range::RangeTo"
-                                                                [ ("end_", M.read (| tail_size |)) ]
+                                                              M.of_value (|
+                                                                Value.StructRecord
+                                                                  "core::ops::range::RangeTo"
+                                                                  [
+                                                                    ("end_",
+                                                                      A.to_value
+                                                                        (M.read (| tail_size |)))
+                                                                  ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
                                                       |)
                                                     |) in
                                                   M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::Some"
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::convert::Into",
-                                                            Ty.apply
-                                                              (Ty.path "array")
-                                                              [ Ty.path "u16" ],
-                                                            [ Ty.path "core::net::ip_addr::Ipv6Addr"
-                                                            ],
-                                                            "into",
-                                                            []
-                                                          |),
-                                                          [ M.read (| head |) ]
-                                                        |)
-                                                      ]
+                                                    M.of_value (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::Some"
+                                                        [
+                                                          A.to_value
+                                                            (M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::Into",
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Ty.path "u16" ],
+                                                                [
+                                                                  Ty.path
+                                                                    "core::net::ip_addr::Ipv6Addr"
+                                                                ],
+                                                                "into",
+                                                                []
+                                                              |),
+                                                              [ M.read (| head |) ]
+                                                            |))
+                                                        ]
+                                                    |)
                                                   |)))
                                             ]
                                           |)))
@@ -2830,7 +2958,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2844,7 +2973,7 @@ Module net.
               self.read_ipv4_addr().map(IpAddr::V4).or_else(move || self.read_ipv6_addr().map(IpAddr::V6))
           }
       *)
-      Definition read_ip_addr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_ip_addr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2884,11 +3013,11 @@ Module net.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    M.constructor_as_closure "core::net::ip_addr::IpAddr::V4"
+                    M.constructor_as_closure (| "core::net::ip_addr::IpAddr::V4" |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2919,13 +3048,14 @@ Module net.
                                       |),
                                       [ M.read (| self |) ]
                                     |);
-                                    M.constructor_as_closure "core::net::ip_addr::IpAddr::V6"
+                                    M.constructor_as_closure (| "core::net::ip_addr::IpAddr::V6" |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2942,7 +3072,7 @@ Module net.
               })
           }
       *)
-      Definition read_port (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_port (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -2961,8 +3091,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -2993,7 +3123,10 @@ Module net.
                                                 "read_given_char",
                                                 []
                                               |),
-                                              [ M.read (| p |); Value.UnicodeChar 58 ]
+                                              [
+                                                M.read (| p |);
+                                                M.of_value (| Value.UnicodeChar 58 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3053,9 +3186,11 @@ Module net.
                                       |),
                                       [
                                         M.read (| p |);
-                                        Value.Integer Integer.U32 10;
-                                        Value.StructTuple "core::option::Option::None" [];
-                                        Value.Bool true
+                                        M.of_value (| Value.Integer 10 |);
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |);
+                                        M.of_value (| Value.Bool true |)
                                       ]
                                     |)
                                   |)
@@ -3063,7 +3198,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3079,7 +3215,7 @@ Module net.
               })
           }
       *)
-      Definition read_scope_id (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_scope_id (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3098,8 +3234,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3130,7 +3266,10 @@ Module net.
                                                 "read_given_char",
                                                 []
                                               |),
-                                              [ M.read (| p |); Value.UnicodeChar 37 ]
+                                              [
+                                                M.read (| p |);
+                                                M.of_value (| Value.UnicodeChar 37 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3190,9 +3329,11 @@ Module net.
                                       |),
                                       [
                                         M.read (| p |);
-                                        Value.Integer Integer.U32 10;
-                                        Value.StructTuple "core::option::Option::None" [];
-                                        Value.Bool true
+                                        M.of_value (| Value.Integer 10 |);
+                                        M.of_value (|
+                                          Value.StructTuple "core::option::Option::None" []
+                                        |);
+                                        M.of_value (| Value.Bool true |)
                                       ]
                                     |)
                                   |)
@@ -3200,7 +3341,8 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3218,7 +3360,7 @@ Module net.
               })
           }
       *)
-      Definition read_socket_addr_v4 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_socket_addr_v4 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3239,8 +3381,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3406,24 +3548,28 @@ Module net.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::net::socket_addr::SocketAddrV4",
-                                            "new",
-                                            []
-                                          |),
-                                          [ M.read (| ip |); M.read (| port |) ]
-                                        |)
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::net::socket_addr::SocketAddrV4",
+                                                "new",
+                                                []
+                                              |),
+                                              [ M.read (| ip |); M.read (| port |) ]
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3445,7 +3591,7 @@ Module net.
               })
           }
       *)
-      Definition read_socket_addr_v6 (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_socket_addr_v6 (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3466,8 +3612,8 @@ Module net.
               |),
               [
                 M.read (| self |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3498,7 +3644,10 @@ Module net.
                                                 "read_given_char",
                                                 []
                                               |),
-                                              [ M.read (| p |); Value.UnicodeChar 91 ]
+                                              [
+                                                M.read (| p |);
+                                                M.of_value (| Value.UnicodeChar 91 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3648,7 +3797,7 @@ Module net.
                                             |),
                                             [ M.read (| p |) ]
                                           |);
-                                          Value.Integer Integer.U32 0
+                                          M.of_value (| Value.Integer 0 |)
                                         ]
                                       |)
                                     |) in
@@ -3672,7 +3821,10 @@ Module net.
                                                 "read_given_char",
                                                 []
                                               |),
-                                              [ M.read (| p |); Value.UnicodeChar 93 ]
+                                              [
+                                                M.read (| p |);
+                                                M.of_value (| Value.UnicodeChar 93 |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -3804,29 +3956,33 @@ Module net.
                                       |)
                                     |) in
                                   M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::net::socket_addr::SocketAddrV6",
-                                            "new",
-                                            []
-                                          |),
-                                          [
-                                            M.read (| ip |);
-                                            M.read (| port |);
-                                            Value.Integer Integer.U32 0;
-                                            M.read (| scope_id |)
-                                          ]
-                                        |)
-                                      ]
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::net::socket_addr::SocketAddrV6",
+                                                "new",
+                                                []
+                                              |),
+                                              [
+                                                M.read (| ip |);
+                                                M.read (| port |);
+                                                M.of_value (| Value.Integer 0 |);
+                                                M.read (| scope_id |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)
                                   |)
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3842,7 +3998,7 @@ Module net.
                   .or_else(|| self.read_socket_addr_v6().map(SocketAddr::V6))
           }
       *)
-      Definition read_socket_addr (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_socket_addr (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -3884,11 +4040,11 @@ Module net.
                       |),
                       [ M.read (| self |) ]
                     |);
-                    M.constructor_as_closure "core::net::socket_addr::SocketAddr::V4"
+                    M.constructor_as_closure (| "core::net::socket_addr::SocketAddr::V4" |)
                   ]
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3919,14 +4075,16 @@ Module net.
                                       |),
                                       [ M.read (| self |) ]
                                     |);
-                                    M.constructor_as_closure
+                                    M.constructor_as_closure (|
                                       "core::net::socket_addr::SocketAddr::V6"
+                                    |)
                                   ]
                                 |)))
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end))
+                      end)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -3944,7 +4102,7 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_ip_addr(), AddrKind::Ip)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -3970,8 +4128,8 @@ Module net.
                     [ M.read (| b |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -3992,8 +4150,9 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end));
-                Value.StructTuple "core::net::parser::AddrKind::Ip" []
+                      end)
+                |);
+                M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4013,7 +4172,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4056,40 +4215,51 @@ Module net.
               }
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.Pure.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| b |) ]
-                              |))
-                              (Value.Integer Integer.Usize 15)
+                              |),
+                              M.of_value (| Value.Integer 15 |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          [
-                            Value.StructTuple
-                              "core::net::parser::AddrParseError"
-                              [ Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] ]
-                          ]
+                        M.of_value (|
+                          Value.StructTuple
+                            "core::result::Result::Err"
+                            [
+                              A.to_value
+                                (M.of_value (|
+                                  Value.StructTuple
+                                    "core::net::parser::AddrParseError"
+                                    [
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::net::parser::AddrKind::Ipv4" []
+                                        |))
+                                    ]
+                                |))
+                            ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4125,8 +4295,8 @@ Module net.
                                 [ M.read (| b |) ]
                               |)
                             |);
-                            M.closure
-                              (fun γ =>
+                            M.closure (|
+                              fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
@@ -4147,8 +4317,11 @@ Module net.
                                       ]
                                     |)
                                   | _ => M.impossible (||)
-                                  end));
-                            Value.StructTuple "core::net::parser::AddrKind::Ipv4" []
+                                  end)
+                            |);
+                            M.of_value (|
+                              Value.StructTuple "core::net::parser::AddrKind::Ipv4" []
+                            |)
                           ]
                         |)
                       |)))
@@ -4172,7 +4345,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4210,7 +4383,7 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_ipv6_addr(), AddrKind::Ipv6)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -4236,8 +4409,8 @@ Module net.
                     [ M.read (| b |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4258,8 +4431,9 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end));
-                Value.StructTuple "core::net::parser::AddrKind::Ipv6" []
+                      end)
+                |);
+                M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4279,7 +4453,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4317,7 +4491,7 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr_v4(), AddrKind::SocketV4)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -4343,8 +4517,8 @@ Module net.
                     [ M.read (| b |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4365,8 +4539,9 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end));
-                Value.StructTuple "core::net::parser::AddrKind::SocketV4" []
+                      end)
+                |);
+                M.of_value (| Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4386,7 +4561,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4424,7 +4599,7 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr_v6(), AddrKind::SocketV6)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -4450,8 +4625,8 @@ Module net.
                     [ M.read (| b |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4472,8 +4647,9 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end));
-                Value.StructTuple "core::net::parser::AddrKind::SocketV6" []
+                      end)
+                |);
+                M.of_value (| Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4493,7 +4669,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4531,7 +4707,7 @@ Module net.
               Parser::new(b).parse_with(|p| p.read_socket_addr(), AddrKind::Socket)
           }
       *)
-      Definition parse_ascii (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition parse_ascii (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ b ] =>
           ltac:(M.monadic
@@ -4557,8 +4733,8 @@ Module net.
                     [ M.read (| b |) ]
                   |)
                 |);
-                M.closure
-                  (fun γ =>
+                M.closure (|
+                  fun γ =>
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
@@ -4579,8 +4755,9 @@ Module net.
                           ]
                         |)
                       | _ => M.impossible (||)
-                      end));
-                Value.StructTuple "core::net::parser::AddrKind::Socket" []
+                      end)
+                |);
+                M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4600,7 +4777,7 @@ Module net.
               Self::parse_ascii(s.as_bytes())
           }
       *)
-      Definition from_str (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_str (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ s ] =>
           ltac:(M.monadic
@@ -4674,7 +4851,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -4691,27 +4868,27 @@ Module net.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Ip" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Ip" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Ipv4" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Ipv4" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Ipv6" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Ipv6" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Socket" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Socket" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "SocketV4" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "SocketV4" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "SocketV6" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "SocketV6" |) |) |)))
                     ]
                   |)
                 |)
@@ -4732,7 +4909,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -4744,27 +4921,43 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)));
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] |)));
+                      M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple "core::net::parser::AddrKind::SocketV4" []
+                        |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] |)))
+                      M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple "core::net::parser::AddrKind::SocketV6" []
+                        |)
+                      |)))
                 ]
               |)
             |)))
@@ -4794,7 +4987,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4821,7 +5014,7 @@ Module net.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4849,12 +5042,12 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -4878,7 +5071,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -4892,16 +5085,17 @@ Module net.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "AddrParseError" |);
+                M.read (| M.of_value (| Value.String "AddrParseError" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::net::parser::AddrParseError",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -4919,31 +5113,34 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::net::parser::AddrParseError"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "core::net::parser::AddrKind",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::net::parser::AddrParseError",
-                      0
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::net::parser::AddrParseError"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::net::parser::AddrKind",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::net::parser::AddrParseError",
+                          0
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4970,7 +5167,7 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5023,15 +5220,15 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -5054,7 +5251,7 @@ Module net.
               fmt.write_str(self.description())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -5102,7 +5299,7 @@ Module net.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -5117,25 +5314,37 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "invalid IPv4 socket address syntax" |)
+                        M.read (| M.of_value (| Value.String "invalid IP address syntax" |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "invalid IPv6 socket address syntax" |)
+                        M.read (| M.of_value (| Value.String "invalid IPv4 address syntax" |) |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (| M.of_value (| Value.String "invalid IPv6 address syntax" |) |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (| M.of_value (| Value.String "invalid socket address syntax" |) |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (|
+                          M.of_value (| Value.String "invalid IPv4 socket address syntax" |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (|
+                          M.of_value (| Value.String "invalid IPv6 socket address syntax" |)
+                        |)
                       |)))
                 ]
               |)

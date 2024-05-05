@@ -17,7 +17,7 @@ Module ops.
         FromResidual::from_residual(Yeet(yeeted))
     }
     *)
-    Definition from_yeet (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_yeet (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ T; Y ], [ yeeted ] =>
         ltac:(M.monadic
@@ -30,7 +30,11 @@ Module ops.
               "from_residual",
               []
             |),
-            [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
+            [
+              M.of_value (|
+                Value.StructTuple "core::ops::try_trait::Yeet" [ A.to_value (M.read (| yeeted |)) ]
+              |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -58,14 +62,14 @@ Module ops.
               move |a| NeverShortCircuit(f(a))
           }
       *)
-      Definition wrap_mut_1 (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wrap_mut_1 (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ A; impl_FnMut_A__arrow_T ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
@@ -75,24 +79,31 @@ Module ops.
                         fun γ =>
                           ltac:(M.monadic
                             (let a := M.copy (| γ |) in
-                            Value.StructTuple
-                              "core::ops::try_trait::NeverShortCircuit"
-                              [
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnMut",
-                                    impl_FnMut_A__arrow_T,
-                                    [ Ty.tuple [ A ] ],
-                                    "call_mut",
-                                    []
-                                  |),
-                                  [ f; Value.Tuple [ M.read (| a |) ] ]
-                                |)
-                              ]))
+                            M.of_value (|
+                              Value.StructTuple
+                                "core::ops::try_trait::NeverShortCircuit"
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::function::FnMut",
+                                        impl_FnMut_A__arrow_T,
+                                        [ Ty.tuple [ A ] ],
+                                        "call_mut",
+                                        []
+                                      |),
+                                      [
+                                        f;
+                                        M.of_value (| Value.Tuple [ A.to_value (M.read (| a |)) ] |)
+                                      ]
+                                    |))
+                                ]
+                            |)))
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))))
+                  end)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -105,14 +116,14 @@ Module ops.
               move |a, b| NeverShortCircuit(f(a, b))
           }
       *)
-      Definition wrap_mut_2 (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wrap_mut_2 (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ A; B; impl_FnMut_A__B__arrow_T ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
-            M.closure
-              (fun γ =>
+            M.closure (|
+              fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
@@ -128,26 +139,39 @@ Module ops.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let b := M.copy (| γ |) in
-                                    Value.StructTuple
-                                      "core::ops::try_trait::NeverShortCircuit"
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_A__B__arrow_T,
-                                            [ Ty.tuple [ A; B ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [ f; Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                                        |)
-                                      ]))
+                                    M.of_value (|
+                                      Value.StructTuple
+                                        "core::ops::try_trait::NeverShortCircuit"
+                                        [
+                                          A.to_value
+                                            (M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                impl_FnMut_A__B__arrow_T,
+                                                [ Ty.tuple [ A; B ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                f;
+                                                M.of_value (|
+                                                  Value.Tuple
+                                                    [
+                                                      A.to_value (M.read (| a |));
+                                                      A.to_value (M.read (| b |))
+                                                    ]
+                                                |)
+                                              ]
+                                            |))
+                                        ]
+                                    |)))
                               ]
                             |)))
                       ]
                     |)
                   | _ => M.impossible (||)
-                  end))))
+                  end)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -180,23 +204,26 @@ Module ops.
               ControlFlow::Continue(self.0)
           }
       *)
-      Definition branch (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::ops::control_flow::ControlFlow::Continue"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    self,
-                    "core::ops::try_trait::NeverShortCircuit",
-                    0
-                  |)
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::control_flow::ControlFlow::Continue"
+                [
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::ops::try_trait::NeverShortCircuit",
+                        0
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -205,13 +232,17 @@ Module ops.
               NeverShortCircuit(x)
           }
       *)
-      Definition from_output (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple "core::ops::try_trait::NeverShortCircuit" [ M.read (| x |) ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::ops::try_trait::NeverShortCircuit"
+                [ A.to_value (M.read (| x |)) ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -239,7 +270,7 @@ Module ops.
               match never {}
           }
       *)
-      Definition from_residual (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ never ] =>
@@ -286,7 +317,7 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::try_trait::Yeet") [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -301,16 +332,17 @@ Module ops.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Yeet" |);
+                M.read (| M.of_value (| Value.String "Yeet" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::ops::try_trait::Yeet",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible

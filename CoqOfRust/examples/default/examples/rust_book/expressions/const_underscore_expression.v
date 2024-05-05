@@ -16,7 +16,7 @@ Module underscore.
                 self.test
             }
     *)
-    Definition show (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition show (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic

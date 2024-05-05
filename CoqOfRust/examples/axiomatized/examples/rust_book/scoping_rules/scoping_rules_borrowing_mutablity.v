@@ -16,7 +16,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Ty.t) -> (list A.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -33,8 +33,8 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
     M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
-Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.
+Parameter borrow_book : (list Ty.t) -> (list A.t) -> M.
 
-Parameter new_edition : (list Ty.t) -> (list Value.t) -> M.
+Parameter new_edition : (list Ty.t) -> (list A.t) -> M.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

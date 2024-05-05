@@ -10,7 +10,7 @@ Module unit_.
             iter.into_iter().for_each(|()| {})
         }
     *)
-    Definition from_iter (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [ _ as I ], [ iter ] =>
         ltac:(M.monadic
@@ -34,17 +34,18 @@ Module unit_.
                 |),
                 [ M.read (| iter |) ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
                       M.match_operator (|
                         M.alloc (| α0 |),
-                        [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                        [ fun γ => ltac:(M.monadic (M.of_value (| Value.Tuple [] |))) ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible

@@ -9,7 +9,7 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+Definition foo (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ A ], [ o ] =>
     ltac:(M.monadic
@@ -36,15 +36,24 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "some
-" |) ] |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "some
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
@@ -60,15 +69,24 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "nothing
-" |) ] |))
+                            M.pointer_coercion (|
+                              M.alloc (|
+                                M.of_value (|
+                                  Value.Array
+                                    [
+                                      A.to_value
+                                        (M.read (| M.of_value (| Value.String "nothing
+" |) |))
+                                    ]
+                                |)
+                              |)
+                            |)
                           ]
                         |)
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))
@@ -92,7 +110,7 @@ Module tests.
           }
       }
   *)
-  Definition test_file (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition test_file (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -139,16 +157,16 @@ Module tests.
                                   []
                                 |)
                               |);
-                              Value.Bool true
+                              M.of_value (| Value.Bool true |)
                             ]
                           |);
-                          Value.Bool true
+                          M.of_value (| Value.Bool true |)
                         ]
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      M.read (| M.of_value (| Value.String "ferris.txt" |) |)
                     ]
                   |);
-                  M.read (| Value.String "Failed to open ferris.txt" |)
+                  M.read (| M.of_value (| Value.String "Failed to open ferris.txt" |) |)
                 ]
               |)
             |) in
@@ -164,12 +182,14 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 5)
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                          ("end_", A.to_value (M.of_value (| Value.Integer 5 |)))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -232,19 +252,27 @@ Module tests.
                                                   "as_bytes",
                                                   []
                                                 |),
-                                                [ M.read (| Value.String "Ferris
-" |) ]
+                                                [
+                                                  M.read (|
+                                                    M.of_value (| Value.String "Ferris
+" |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |);
-                                          M.read (| Value.String "Could not write to ferris.txt" |)
+                                          M.read (|
+                                            M.of_value (|
+                                              Value.String "Could not write to ferris.txt"
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     |)))
               ]
             |))
@@ -268,7 +296,7 @@ Module tests.
           }
       }
   *)
-  Definition test_file_also (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition test_file_also (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -315,16 +343,16 @@ Module tests.
                                   []
                                 |)
                               |);
-                              Value.Bool true
+                              M.of_value (| Value.Bool true |)
                             ]
                           |);
-                          Value.Bool true
+                          M.of_value (| Value.Bool true |)
                         ]
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      M.read (| M.of_value (| Value.String "ferris.txt" |) |)
                     ]
                   |);
-                  M.read (| Value.String "Failed to open ferris.txt" |)
+                  M.read (| M.of_value (| Value.String "Failed to open ferris.txt" |) |)
                 ]
               |)
             |) in
@@ -340,12 +368,14 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 5)
-                      ]
+                    M.of_value (|
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start", A.to_value (M.of_value (| Value.Integer 0 |)));
+                          ("end_", A.to_value (M.of_value (| Value.Integer 5 |)))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -408,19 +438,27 @@ Module tests.
                                                   "as_bytes",
                                                   []
                                                 |),
-                                                [ M.read (| Value.String "Corro
-" |) ]
+                                                [
+                                                  M.read (|
+                                                    M.of_value (| Value.String "Corro
+" |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
                                           |);
-                                          M.read (| Value.String "Could not write to ferris.txt" |)
+                                          M.read (|
+                                            M.of_value (|
+                                              Value.String "Could not write to ferris.txt"
+                                            |)
+                                          |)
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     |)))
               ]
             |))

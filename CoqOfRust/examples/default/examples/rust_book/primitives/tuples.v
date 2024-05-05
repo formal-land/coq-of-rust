@@ -9,7 +9,7 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
     (bool_param, int_param)
 }
 *)
-Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
+Definition reverse (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [ pair_ ] =>
     ltac:(M.monadic
@@ -24,7 +24,12 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let int_param := M.copy (| γ0_0 |) in
                 let bool_param := M.copy (| γ0_1 |) in
-                M.alloc (| Value.Tuple [ M.read (| bool_param |); M.read (| int_param |) ] |)))
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| bool_param |)); A.to_value (M.read (| int_param |)) ]
+                  |)
+                |)))
           ]
         |)
       |)))
@@ -42,7 +47,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self : Ty.t := Ty.path "tuples::Matrix".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; f ] =>
       ltac:(M.monadic
@@ -56,21 +61,25 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
           |),
           [
             M.read (| f |);
-            M.read (| Value.String "Matrix" |);
+            M.read (| M.of_value (| Value.String "Matrix" |) |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |));
+            M.pointer_coercion (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |)
+            |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |));
+            M.pointer_coercion (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |)
+            |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |));
+            M.pointer_coercion (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |)
+            |);
             (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
+            M.pointer_coercion (|
+              M.alloc (|
                 M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 3 |)
-              |))
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -128,28 +137,30 @@ fn main() {
 
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         let long_tuple :=
           M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer Integer.U8 1;
-                Value.Integer Integer.U16 2;
-                Value.Integer Integer.U32 3;
-                Value.Integer Integer.U64 4;
-                Value.Integer Integer.I8 (-1);
-                Value.Integer Integer.I16 (-2);
-                Value.Integer Integer.I32 (-3);
-                Value.Integer Integer.I64 (-4);
-                M.read (| UnsupportedLiteral |);
-                M.read (| UnsupportedLiteral |);
-                Value.UnicodeChar 97;
-                Value.Bool true
-              ]
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 1 |));
+                  A.to_value (M.of_value (| Value.Integer 2 |));
+                  A.to_value (M.of_value (| Value.Integer 3 |));
+                  A.to_value (M.of_value (| Value.Integer 4 |));
+                  A.to_value (M.of_value (| Value.Integer (-1) |));
+                  A.to_value (M.of_value (| Value.Integer (-2) |));
+                  A.to_value (M.of_value (| Value.Integer (-3) |));
+                  A.to_value (M.of_value (| Value.Integer (-4) |));
+                  A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                  A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                  A.to_value (M.of_value (| Value.UnicodeChar 97 |));
+                  A.to_value (M.of_value (| Value.Bool true |))
+                ]
+            |)
           |) in
         let _ :=
           let _ :=
@@ -161,36 +172,46 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "long tuple first value: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "long tuple first value: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u8" ]
-                                |),
-                                [ M.SubPointer.get_tuple_field (| long_tuple, 0 |) ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [ M.SubPointer.get_tuple_field (| long_tuple, 0 |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -201,49 +222,71 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "long tuple second value: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "long tuple second value: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u16" ]
-                                |),
-                                [ M.SubPointer.get_tuple_field (| long_tuple, 1 |) ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u16" ]
+                                    |),
+                                    [ M.SubPointer.get_tuple_field (| long_tuple, 1 |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let tuple_of_tuples :=
           M.alloc (|
-            Value.Tuple
-              [
-                Value.Tuple
-                  [
-                    Value.Integer Integer.U8 1;
-                    Value.Integer Integer.U16 2;
-                    Value.Integer Integer.U32 2
-                  ];
-                Value.Tuple [ Value.Integer Integer.U64 4; Value.Integer Integer.I8 (-1) ];
-                Value.Integer Integer.I16 (-2)
-              ]
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value
+                    (M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value (M.of_value (| Value.Integer 1 |));
+                          A.to_value (M.of_value (| Value.Integer 2 |));
+                          A.to_value (M.of_value (| Value.Integer 2 |))
+                        ]
+                    |));
+                  A.to_value
+                    (M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value (M.of_value (| Value.Integer 4 |));
+                          A.to_value (M.of_value (| Value.Integer (-1) |))
+                        ]
+                    |));
+                  A.to_value (M.of_value (| Value.Integer (-2) |))
+                ]
+            |)
           |) in
         let _ :=
           let _ :=
@@ -255,44 +298,61 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "tuple of tuples: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "tuple of tuples: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.tuple
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
-                                        Ty.tuple [ Ty.path "u8"; Ty.path "u16"; Ty.path "u32" ];
-                                        Ty.tuple [ Ty.path "u64"; Ty.path "i8" ];
-                                        Ty.path "i16"
+                                        Ty.tuple
+                                          [
+                                            Ty.tuple [ Ty.path "u8"; Ty.path "u16"; Ty.path "u32" ];
+                                            Ty.tuple [ Ty.path "u64"; Ty.path "i8" ];
+                                            Ty.path "i16"
+                                          ]
                                       ]
-                                  ]
-                                |),
-                                [ tuple_of_tuples ]
-                              |)
-                            ]
-                        |))
+                                    |),
+                                    [ tuple_of_tuples ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
-        let pair_ := M.alloc (| Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+        let pair_ :=
+          M.alloc (|
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 1 |));
+                  A.to_value (M.of_value (| Value.Bool true |))
+                ]
+            |)
+          |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -303,33 +363,43 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "pair is " |); M.read (| Value.String "
-" |) ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value (M.read (| M.of_value (| Value.String "pair is " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] ]
-                                |),
-                                [ pair_ ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] ]
+                                    |),
+                                    [ pair_ ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -340,43 +410,53 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "the reversed pair is " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "the reversed pair is " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "tuples::reverse", [] |),
-                                      [ M.read (| pair_ |) ]
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.tuple [ Ty.path "bool"; Ty.path "i32" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_function (| "tuples::reverse", [] |),
+                                          [ M.read (| pair_ |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -387,36 +467,53 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "one element tuple: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (|
+                                    M.of_value (| Value.String "one element tuple: " |)
+                                  |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.tuple [ Ty.path "u32" ] ]
-                                |),
-                                [ M.alloc (| Value.Tuple [ Value.Integer Integer.U32 5 ] |) ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.tuple [ Ty.path "u32" ] ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.of_value (|
+                                          Value.Tuple
+                                            [ A.to_value (M.of_value (| Value.Integer 5 |)) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -427,45 +524,55 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "just an integer: " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.read (| M.of_value (| Value.String "just an integer: " |) |));
+                                A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                              ]
+                          |)
+                        |)
+                      |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ M.alloc (| Value.Integer Integer.U32 5 |) ]
-                              |)
-                            ]
-                        |))
+                      M.pointer_coercion (|
+                        M.alloc (|
+                          M.of_value (|
+                            Value.Array
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ M.alloc (| M.of_value (| Value.Integer 5 |) |) ]
+                                  |))
+                              ]
+                          |)
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |) in
         let tuple :=
           M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer Integer.I32 1;
-                M.read (| Value.String "hello" |);
-                M.read (| UnsupportedLiteral |);
-                Value.Bool true
-              ]
+            M.of_value (|
+              Value.Tuple
+                [
+                  A.to_value (M.of_value (| Value.Integer 1 |));
+                  A.to_value (M.read (| M.of_value (| Value.String "hello" |) |));
+                  A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                  A.to_value (M.of_value (| Value.Bool true |))
+                ]
+            |)
           |) in
         M.match_operator (|
           tuple,
@@ -494,73 +601,88 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "" |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String ", " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String ", " |) |));
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String ", " |) |));
+                                        A.to_value
+                                          (M.read (| M.of_value (| Value.String ", " |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [ a ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                                        |),
-                                        [ b ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "f64" ]
-                                        |),
-                                        [ c ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "bool" ]
-                                        |),
-                                        [ d ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [ Ty.path "i32" ]
+                                            |),
+                                            [ a ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                            |),
+                                            [ b ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [ Ty.path "f64" ]
+                                            |),
+                                            [ c ]
+                                          |));
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [ Ty.path "bool" ]
+                                            |),
+                                            [ d ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
                 let matrix :=
                   M.alloc (|
-                    Value.StructTuple
-                      "tuples::Matrix"
-                      [
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "tuples::Matrix"
+                        [
+                          A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                          A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                          A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |));
+                          A.to_value (M.read (| M.of_value (| UnsupportedLiteral |) |))
+                        ]
+                    |)
                   |) in
                 let _ :=
                   let _ :=
@@ -576,34 +698,44 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "tuples::Matrix" ]
-                                        |),
-                                        [ matrix ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [ Ty.path "tuples::Matrix" ]
+                                            |),
+                                            [ matrix ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |) in
-                M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

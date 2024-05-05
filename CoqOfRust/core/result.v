@@ -50,7 +50,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* PartialEq *)
-    Definition eq (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; other ] =>
@@ -80,11 +80,16 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Tuple
+                            [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                        |)
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -170,7 +175,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* PartialOrd *)
-    Definition partial_cmp (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; other ] =>
@@ -199,7 +204,11 @@ Module result.
                 |)
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+              M.alloc (|
+                M.of_value (|
+                  Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -310,7 +319,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -318,13 +327,13 @@ Module result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              Value.DeclaredButUndefined,
+              M.of_value (| Value.DeclaredButUndefined |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      M.of_value (| Value.DeclaredButUndefined |),
+                      [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
                     |)))
               ]
             |)
@@ -346,7 +355,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* Ord *)
-    Definition cmp (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; other ] =>
@@ -385,7 +394,12 @@ Module result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        M.of_value (|
+                          Value.Tuple
+                            [ A.to_value (M.read (| self |)); A.to_value (M.read (| other |)) ]
+                        |)
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -474,7 +488,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* Debug *)
-    Definition fmt (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; f ] =>
@@ -500,8 +514,8 @@ Module result.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "Ok" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "Ok" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)));
@@ -520,8 +534,8 @@ Module result.
                         |),
                         [
                           M.read (| f |);
-                          M.read (| Value.String "Err" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          M.read (| M.of_value (| Value.String "Err" |) |);
+                          (* Unsize *) M.pointer_coercion (| __self_0 |)
                         ]
                       |)
                     |)))
@@ -544,7 +558,7 @@ Module result.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [ T; E ].
     
     (* Hash *)
-    Definition hash (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ __H ], [ self; state ] =>
@@ -619,7 +633,7 @@ Module result.
             matches!( *self, Ok(_))
         }
     *)
-    Definition is_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ok (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -633,8 +647,8 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| M.of_value (| Value.Bool true |) |)));
+                fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Bool false |) |)))
               ]
             |)
           |)))
@@ -653,7 +667,7 @@ Module result.
             }
         }
     *)
-    Definition is_ok_and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_ok_and (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ impl_FnOnce_T__arrow_bool ], [ self; f ] =>
@@ -668,7 +682,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.Bool false |)));
+                    M.alloc (| M.of_value (| Value.Bool false |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -683,7 +697,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                        [
+                          M.read (| f |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| x |)) ] |)
+                        ]
                       |)
                     |)))
               ]
@@ -701,21 +718,22 @@ Module result.
             !self.is_ok()
         }
     *)
-    Definition is_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.Pure.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::result::Result") [ T; E ],
                 "is_ok",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
+            |)
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -731,7 +749,7 @@ Module result.
             }
         }
     *)
-    Definition is_err_and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_err_and (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ impl_FnOnce_E__arrow_bool ], [ self; f ] =>
@@ -746,7 +764,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.Bool false |)));
+                    M.alloc (| M.of_value (| Value.Bool false |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -761,7 +779,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
+                        [
+                          M.read (| f |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                        ]
                       |)
                     |)))
               ]
@@ -782,7 +803,7 @@ Module result.
             }
         }
     *)
-    Definition ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ok (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -798,13 +819,19 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| x |)) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -823,7 +850,7 @@ Module result.
             }
         }
     *)
-    Definition err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -837,14 +864,20 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let x := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| x |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| x |)) ]
+                      |)
                     |)))
               ]
             |)
@@ -864,7 +897,7 @@ Module result.
             }
         }
     *)
-    Definition as_ref (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -879,13 +912,23 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.alloc (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| x |) ] |)));
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| x |)) ]
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let x := M.alloc (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| x |) ] |)))
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| x |)) ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -904,7 +947,7 @@ Module result.
             }
         }
     *)
-    Definition as_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -919,13 +962,23 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.alloc (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| x |) ] |)));
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| x |)) ]
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let x := M.alloc (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| x |) ] |)))
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| x |)) ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -944,7 +997,7 @@ Module result.
             }
         }
     *)
-    Definition map (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ U; F ], [ self; op ] =>
@@ -961,27 +1014,39 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let t := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [ Ty.tuple [ T ] ],
-                              "call_once",
-                              []
-                            |),
-                            [ M.read (| op |); Value.Tuple [ M.read (| t |) ] ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnOnce",
+                                  F,
+                                  [ Ty.tuple [ T ] ],
+                                  "call_once",
+                                  []
+                                |),
+                                [
+                                  M.read (| op |);
+                                  M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                                ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| e |)) ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -1000,7 +1065,7 @@ Module result.
             }
         }
     *)
-    Definition map_or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_or (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ U; F ], [ self; default; f ] =>
@@ -1026,7 +1091,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                        [
+                          M.read (| f |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1052,7 +1120,7 @@ Module result.
             }
         }
     *)
-    Definition map_or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_or_else (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ U; D; F ], [ self; default; f ] =>
@@ -1078,7 +1146,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                        [
+                          M.read (| f |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1095,7 +1166,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| default |); Value.Tuple [ M.read (| e |) ] ]
+                        [
+                          M.read (| default |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                        ]
                       |)
                     |)))
               ]
@@ -1116,7 +1190,7 @@ Module result.
             }
         }
     *)
-    Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F; _ as O ], [ self; op ] =>
@@ -1132,27 +1206,37 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let t := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] |)));
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| t |)) ]
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              O,
-                              [ Ty.tuple [ E ] ],
-                              "call_once",
-                              []
-                            |),
-                            [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::function::FnOnce",
+                                  O,
+                                  [ Ty.tuple [ E ] ],
+                                  "call_once",
+                                  []
+                                |),
+                                [
+                                  M.read (| op |);
+                                  M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                                ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -1173,7 +1257,7 @@ Module result.
             self
         }
     *)
-    Definition inspect (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inspect (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F ], [ self; f ] =>
@@ -1183,7 +1267,7 @@ Module result.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1205,11 +1289,14 @@ Module result.
                               "call_once",
                               []
                             |),
-                            [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                            [
+                              M.read (| f |);
+                              M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                            ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             self
@@ -1230,7 +1317,7 @@ Module result.
             self
         }
     *)
-    Definition inspect_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inspect_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F ], [ self; f ] =>
@@ -1240,7 +1327,7 @@ Module result.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1262,11 +1349,14 @@ Module result.
                               "call_once",
                               []
                             |),
-                            [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
+                            [
+                              M.read (| f |);
+                              M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                            ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             self
@@ -1286,7 +1376,7 @@ Module result.
             self.as_ref().map(|t| t.deref())
         }
     *)
-    Definition as_deref (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1314,8 +1404,8 @@ Module result.
                 |),
                 [ M.read (| self |) ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -1338,7 +1428,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -1356,7 +1447,7 @@ Module result.
             self.as_mut().map(|t| t.deref_mut())
         }
     *)
-    Definition as_deref_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref_mut (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1384,8 +1475,8 @@ Module result.
                 |),
                 [ M.read (| self |) ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -1408,7 +1499,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -1423,36 +1515,39 @@ Module result.
             Iter { inner: self.as_ref().ok() }
         }
     *)
-    Definition iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition iter (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::result::Iter"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ E ] ],
-                    "ok",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+          M.of_value (|
+            Value.StructRecord
+              "core::result::Iter"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::result::Result") [ T; E ],
-                        "as_ref",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ E ] ],
+                        "ok",
                         []
                       |),
-                      [ M.read (| self |) ]
-                    |)
-                  ]
-                |))
-            ]))
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                            "as_ref",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1465,36 +1560,39 @@ Module result.
             IterMut { inner: self.as_mut().ok() }
         }
     *)
-    Definition iter_mut (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition iter_mut (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::result::IterMut"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ E ] ],
-                    "ok",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+          M.of_value (|
+            Value.StructRecord
+              "core::result::IterMut"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::result::Result") [ T; E ],
-                        "as_mut",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ E ] ],
+                        "ok",
                         []
                       |),
-                      [ M.read (| self |) ]
-                    |)
-                  ]
-                |))
-            ]))
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                            "as_mut",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1513,7 +1611,7 @@ Module result.
             }
         }
     *)
-    Definition expect (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition expect (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; msg ] =>
@@ -1539,7 +1637,7 @@ Module result.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::result::unwrap_failed", [] |),
-                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion e ]
+                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion (| e |) ]
                         |)
                       |)
                     |)))
@@ -1564,7 +1662,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1590,8 +1688,12 @@ Module result.
                         M.call_closure (|
                           M.get_function (| "core::result::unwrap_failed", [] |),
                           [
-                            M.read (| Value.String "called `Result::unwrap()` on an `Err` value" |);
-                            (* Unsize *) M.pointer_coercion e
+                            M.read (|
+                              M.of_value (|
+                                Value.String "called `Result::unwrap()` on an `Err` value"
+                              |)
+                            |);
+                            (* Unsize *) M.pointer_coercion (| e |)
                           ]
                         |)
                       |)
@@ -1617,7 +1719,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or_default (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or_default (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1664,7 +1766,7 @@ Module result.
             }
         }
     *)
-    Definition expect_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition expect_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; msg ] =>
@@ -1684,7 +1786,7 @@ Module result.
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::result::unwrap_failed", [] |),
-                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion t ]
+                          [ M.read (| msg |); (* Unsize *) M.pointer_coercion (| t |) ]
                         |)
                       |)
                     |)));
@@ -1715,7 +1817,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1736,9 +1838,11 @@ Module result.
                           M.get_function (| "core::result::unwrap_failed", [] |),
                           [
                             M.read (|
-                              Value.String "called `Result::unwrap_err()` on an `Ok` value"
+                              M.of_value (|
+                                Value.String "called `Result::unwrap_err()` on an `Ok` value"
+                              |)
                             |);
-                            (* Unsize *) M.pointer_coercion t
+                            (* Unsize *) M.pointer_coercion (| t |)
                           ]
                         |)
                       |)
@@ -1770,7 +1874,7 @@ Module result.
             }
         }
     *)
-    Definition into_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_ok (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1826,7 +1930,7 @@ Module result.
             }
         }
     *)
-    Definition into_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_err (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -1879,7 +1983,7 @@ Module result.
             }
         }
     *)
-    Definition and (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition and (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ U ], [ self; res ] =>
@@ -1900,7 +2004,13 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| e |)) ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -1919,7 +2029,7 @@ Module result.
             }
         }
     *)
-    Definition and_then (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition and_then (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ U; F ], [ self; op ] =>
@@ -1944,7 +2054,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| op |); Value.Tuple [ M.read (| t |) ] ]
+                        [
+                          M.read (| op |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| t |)) ] |)
+                        ]
                       |)
                     |)));
                 fun γ =>
@@ -1952,7 +2065,13 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| e |)) ]
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -1971,7 +2090,7 @@ Module result.
             }
         }
     *)
-    Definition or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition or (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F ], [ self; res ] =>
@@ -1987,7 +2106,11 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let v := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| v |)) ]
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -2011,7 +2134,7 @@ Module result.
             }
         }
     *)
-    Definition or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition or_else (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F; _ as O ], [ self; op ] =>
@@ -2027,7 +2150,11 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let t := M.copy (| γ0_0 |) in
-                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| t |) ] |)));
+                    M.alloc (|
+                      M.of_value (|
+                        Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| t |)) ]
+                      |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -2042,7 +2169,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
+                        [
+                          M.read (| op |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                        ]
                       |)
                     |)))
               ]
@@ -2063,7 +2193,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; default ] =>
@@ -2103,7 +2233,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_or_else (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or_else (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [ F ], [ self; op ] =>
@@ -2134,7 +2264,10 @@ Module result.
                           "call_once",
                           []
                         |),
-                        [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
+                        [
+                          M.read (| op |);
+                          M.of_value (| Value.Tuple [ A.to_value (M.read (| e |)) ] |)
+                        ]
                       |)
                     |)))
               ]
@@ -2157,7 +2290,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2166,30 +2299,31 @@ Module result.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "core::result::Result") [ T; E ],
                                             "is_ok",
                                             []
                                           |),
                                           [ self ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2200,15 +2334,22 @@ Module result.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is_ok()" |) ]
+                                      [
+                                        M.read (|
+                                          M.of_value (|
+                                            Value.String "assertion failed: self.is_ok()"
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.match_operator (|
@@ -2252,7 +2393,7 @@ Module result.
             }
         }
     *)
-    Definition unwrap_err_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_err_unchecked (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2261,30 +2402,31 @@ Module result.
           M.read (|
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "core::result::Result") [ T; E ],
                                             "is_err",
                                             []
                                           |),
                                           [ self ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2295,16 +2437,22 @@ Module result.
                                   M.never_to_any (|
                                     M.call_closure (|
                                       M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is_err()" |)
+                                      [
+                                        M.read (|
+                                          M.of_value (|
+                                            Value.String "assertion failed: self.is_err()"
+                                          |)
+                                        |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             M.match_operator (|
@@ -2351,7 +2499,7 @@ Module result.
             self.map(|&t| t)
         }
     *)
-    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2365,8 +2513,8 @@ Module result.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2381,7 +2529,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2399,7 +2548,7 @@ Module result.
             self.map(|t| t.clone())
         }
     *)
-    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2413,8 +2562,8 @@ Module result.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2431,7 +2580,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2454,7 +2604,7 @@ Module result.
             self.map(|&mut t| t)
         }
     *)
-    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition copied (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2468,8 +2618,8 @@ Module result.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2484,7 +2634,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2502,7 +2653,7 @@ Module result.
             self.map(|t| t.clone())
         }
     *)
-    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cloned (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2516,8 +2667,8 @@ Module result.
             |),
             [
               M.read (| self |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -2534,7 +2685,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -2560,7 +2712,7 @@ Module result.
             }
         }
     *)
-    Definition transpose (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transpose (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2582,24 +2734,44 @@ Module result.
                       |) in
                     let x := M.copy (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ Value.StructTuple "core::result::Result::Ok" [ M.read (| x |) ] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Ok"
+                                  [ A.to_value (M.read (| x |)) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [ A.to_value (M.read (| e |)) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -2623,7 +2795,7 @@ Module result.
             self.and_then(convert::identity)
         }
     *)
-    Definition flatten (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition flatten (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2663,7 +2835,7 @@ Module result.
       panic!("{msg}: {error:?}")
   }
   *)
-  Definition unwrap_failed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition unwrap_failed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ msg; error ] =>
       ltac:(M.monadic
@@ -2676,34 +2848,49 @@ Module result.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
-                  |));
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                          A.to_value (M.read (| M.of_value (| Value.String ": " |) |))
+                        ]
+                    |)
+                  |)
+                |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
-                          |),
-                          [ msg ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_debug",
-                            [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ]
-                          |),
-                          [ error ]
-                        |)
-                      ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                              |),
+                              [ msg ]
+                            |));
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                ]
+                              |),
+                              [ error ]
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -2722,7 +2909,7 @@ Module result.
             }
         }
     *)
-    Definition clone (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2739,14 +2926,17 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let x := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                                [ M.read (| x |) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -2755,14 +2945,17 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let x := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", E, [], "clone", [] |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (| "core::clone::Clone", E, [], "clone", [] |),
+                                [ M.read (| x |) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -2779,7 +2972,7 @@ Module result.
             }
         }
     *)
-    Definition clone_from (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self; source ] =>
@@ -2788,7 +2981,11 @@ Module result.
           let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
+              M.alloc (|
+                M.of_value (|
+                  Value.Tuple [ A.to_value (M.read (| self |)); A.to_value (M.read (| source |)) ]
+                |)
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -2894,25 +3091,28 @@ Module result.
             IntoIter { inner: self.ok() }
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::result::IntoIter"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::result::Result") [ T; E ],
-                    "ok",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::result::IntoIter"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                        "ok",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -2945,7 +3145,7 @@ Module result.
             self.iter()
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -2991,7 +3191,7 @@ Module result.
             self.iter_mut()
         }
     *)
-    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -3034,7 +3234,7 @@ Module result.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Iter") [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -3049,17 +3249,18 @@ Module result.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "Iter" |);
-              M.read (| Value.String "inner" |);
+              M.read (| M.of_value (| Value.String "Iter" |) |);
+              M.read (| M.of_value (| Value.String "inner" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::result::Iter",
                     "inner"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -3085,7 +3286,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3114,7 +3315,7 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3124,7 +3325,7 @@ Module result.
             let n :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -3150,15 +3351,24 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.read (| n |));
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| n |)) ]
+                      |))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3186,7 +3396,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3262,24 +3472,27 @@ Module result.
             Iter { inner: self.inner }
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::result::Iter"
-            [
-              ("inner",
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::result::Iter",
-                    "inner"
-                  |)
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::result::Iter"
+              [
+                ("inner",
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::result::Iter",
+                        "inner"
+                      |)
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3305,7 +3518,7 @@ Module result.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IterMut") [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -3320,17 +3533,18 @@ Module result.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "IterMut" |);
-              M.read (| Value.String "inner" |);
+              M.read (| M.of_value (| Value.String "IterMut" |) |);
+              M.read (| M.of_value (| Value.String "inner" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::result::IterMut",
                     "inner"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -3356,7 +3570,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3385,7 +3599,7 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3395,7 +3609,7 @@ Module result.
             let n :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -3421,15 +3635,24 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.read (| n |));
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| n |)) ]
+                      |))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3457,7 +3680,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3536,33 +3759,36 @@ Module result.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
     
     (* Clone *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::result::IntoIter"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::result::IntoIter",
-                      "inner"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::result::IntoIter"
+              [
+                ("inner",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply (Ty.path "core::option::Option") [ T ],
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::result::IntoIter",
+                          "inner"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3579,7 +3805,7 @@ Module result.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::IntoIter") [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -3594,17 +3820,18 @@ Module result.
             |),
             [
               M.read (| f |);
-              M.read (| Value.String "IntoIter" |);
-              M.read (| Value.String "inner" |);
+              M.read (| M.of_value (| Value.String "IntoIter" |) |);
+              M.read (| M.of_value (| Value.String "inner" |) |);
               (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
+              M.pointer_coercion (|
+                M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::result::IntoIter",
                     "inner"
                   |)
-                |))
+                |)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -3630,7 +3857,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3659,7 +3886,7 @@ Module result.
             (n, Some(n))
         }
     *)
-    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3669,7 +3896,7 @@ Module result.
             let n :=
               M.copy (|
                 M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -3693,15 +3920,24 @@ Module result.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer Integer.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |)))
+                        M.alloc (| M.of_value (| Value.Integer 1 |) |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.Tuple
-                [ M.read (| n |); Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ]
-                ]
+              M.of_value (|
+                Value.Tuple
+                  [
+                    A.to_value (M.read (| n |));
+                    A.to_value
+                      (M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ A.to_value (M.read (| n |)) ]
+                      |))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3729,7 +3965,7 @@ Module result.
             self.inner.take()
         }
     *)
-    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3805,7 +4041,7 @@ Module result.
             iter::try_process(iter.into_iter(), |i| i.collect())
         }
     *)
-    Definition from_iter (A E V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (A E V : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self A E V in
       match τ, α with
       | [ _ as I ], [ iter ] =>
@@ -3849,8 +4085,8 @@ Module result.
                 |),
                 [ M.read (| iter |) ]
               |);
-              M.closure
-                (fun γ =>
+              M.closure (|
+                fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
@@ -3880,7 +4116,8 @@ Module result.
                         ]
                       |)
                     | _ => M.impossible (||)
-                    end))
+                    end)
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -3910,13 +4147,15 @@ Module result.
             Ok(output)
         }
     *)
-    Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ output ] =>
         ltac:(M.monadic
           (let output := M.alloc (| output |) in
-          Value.StructTuple "core::result::Result::Ok" [ M.read (| output |) ]))
+          M.of_value (|
+            Value.StructTuple "core::result::Result::Ok" [ A.to_value (M.read (| output |)) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3928,7 +4167,7 @@ Module result.
             }
         }
     *)
-    Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E in
       match τ, α with
       | [], [ self ] =>
@@ -3944,9 +4183,11 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let v := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::ops::control_flow::ControlFlow::Continue"
-                        [ M.read (| v |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::ops::control_flow::ControlFlow::Continue"
+                          [ A.to_value (M.read (| v |)) ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3954,9 +4195,18 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::ops::control_flow::ControlFlow::Break"
-                        [ Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::ops::control_flow::ControlFlow::Break"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  [ A.to_value (M.read (| e |)) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -3989,7 +4239,7 @@ Module result.
             }
         }
     *)
-    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E F in
       match τ, α with
       | [], [ residual ] =>
@@ -4005,14 +4255,23 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (| "core::convert::From", F, [ E ], "from", [] |),
-                            [ M.read (| e |) ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::convert::From",
+                                  F,
+                                  [ E ],
+                                  "from",
+                                  []
+                                |),
+                                [ M.read (| e |) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -4041,7 +4300,7 @@ Module result.
             Err(From::from(e))
         }
     *)
-    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T E F in
       match τ, α with
       | [], [ β0 ] =>
@@ -4055,14 +4314,17 @@ Module result.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::ops::try_trait::Yeet", 0 |) in
                   let e := M.copy (| γ0_0 |) in
-                  Value.StructTuple
-                    "core::result::Result::Err"
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (| "core::convert::From", F, [ E ], "from", [] |),
-                        [ M.read (| e |) ]
-                      |)
-                    ]))
+                  M.of_value (|
+                    Value.StructTuple
+                      "core::result::Result::Err"
+                      [
+                        A.to_value
+                          (M.call_closure (|
+                            M.get_trait_method (| "core::convert::From", F, [ E ], "from", [] |),
+                            [ M.read (| e |) ]
+                          |))
+                      ]
+                  |)))
             ]
           |)))
       | _, _ => M.impossible

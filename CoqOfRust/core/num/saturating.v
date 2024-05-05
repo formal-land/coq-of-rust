@@ -28,7 +28,7 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -80,7 +80,7 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
@@ -88,8 +88,8 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -110,7 +110,7 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -149,7 +149,7 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; other ] =>
@@ -188,26 +188,29 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
+                      [
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.read (| self |),
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -238,19 +241,22 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [] =>
           ltac:(M.monadic
-            (Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
-                  []
-                |)
-              ]))
+            (M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
+                      []
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -268,7 +274,7 @@ Module num.
         Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [ __H ], [ self; state ] =>
@@ -307,7 +313,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -346,7 +352,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -385,7 +391,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -424,7 +430,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -463,7 +469,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -502,7 +508,7 @@ Module num.
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
         let Self : Ty.t := Self T in
         match τ, α with
         | [], [ self; f ] =>
@@ -545,35 +551,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -595,7 +604,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -617,7 +626,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -639,7 +648,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -660,11 +669,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -690,35 +703,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -740,7 +756,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -762,7 +778,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -784,7 +800,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -805,11 +821,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -835,35 +855,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -885,7 +908,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -907,7 +930,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -929,7 +952,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -950,11 +973,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -980,35 +1007,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1030,7 +1060,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1052,7 +1082,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1074,7 +1104,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1095,11 +1125,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1125,41 +1159,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "usize",
-                    [ Ty.path "usize" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "usize",
+                        [ Ty.path "usize" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1181,7 +1218,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1203,7 +1240,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1225,7 +1262,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1246,11 +1283,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1276,23 +1317,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1318,31 +1363,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1364,7 +1413,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1386,7 +1435,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1408,7 +1457,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1429,11 +1478,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1459,31 +1512,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1505,7 +1562,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1527,7 +1584,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1549,7 +1606,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1570,11 +1627,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1600,31 +1661,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1646,7 +1711,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1668,7 +1733,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1690,7 +1755,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1711,11 +1776,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1741,35 +1810,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1791,7 +1863,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1812,7 +1884,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1834,7 +1906,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1854,11 +1926,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1884,35 +1960,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -1934,7 +2013,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1955,7 +2034,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -1977,7 +2056,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -1997,11 +2076,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2027,35 +2110,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2077,7 +2163,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2098,7 +2184,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2120,7 +2206,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2140,11 +2226,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2170,35 +2260,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2220,7 +2313,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2241,7 +2334,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2263,7 +2356,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2283,11 +2376,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2313,41 +2410,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "u8",
-                    [ Ty.path "u8" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u8",
+                        [ Ty.path "u8" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2369,7 +2469,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2390,7 +2490,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2412,7 +2512,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2432,11 +2532,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2462,23 +2566,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2504,31 +2612,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2550,7 +2662,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2571,7 +2683,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2593,7 +2705,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2613,11 +2725,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2643,31 +2759,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2689,7 +2809,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2710,7 +2830,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2732,7 +2852,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2752,11 +2872,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2782,31 +2906,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2828,7 +2956,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2849,7 +2977,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2871,7 +2999,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2891,11 +3019,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2921,35 +3053,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -2971,7 +3106,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -2992,7 +3127,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3014,7 +3149,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3034,11 +3169,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3064,35 +3203,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3114,7 +3256,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3135,7 +3277,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3157,7 +3299,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3177,11 +3319,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3207,35 +3353,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3257,7 +3406,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3278,7 +3427,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3300,7 +3449,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3320,11 +3469,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3350,35 +3503,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3400,7 +3556,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3421,7 +3577,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3443,7 +3599,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3463,11 +3619,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3493,41 +3653,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "u16",
-                    [ Ty.path "u16" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u16",
+                        [ Ty.path "u16" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3549,7 +3712,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3570,7 +3733,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3592,7 +3755,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3612,11 +3775,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3642,23 +3809,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3684,31 +3855,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3730,7 +3905,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3751,7 +3926,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3773,7 +3948,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3793,11 +3968,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3823,31 +4002,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -3869,7 +4052,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3890,7 +4073,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3912,7 +4095,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -3932,11 +4115,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3962,31 +4149,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4008,7 +4199,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4029,7 +4220,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4051,7 +4242,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4071,11 +4262,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4101,35 +4296,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4151,7 +4349,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4172,7 +4370,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4194,7 +4392,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4214,11 +4412,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4244,35 +4446,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4294,7 +4499,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4315,7 +4520,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4337,7 +4542,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4357,11 +4562,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4387,35 +4596,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4437,7 +4649,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4458,7 +4670,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4480,7 +4692,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4500,11 +4712,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4530,35 +4746,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4580,7 +4799,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4601,7 +4820,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4623,7 +4842,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4643,11 +4862,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4673,41 +4896,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "u32",
-                    [ Ty.path "u32" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u32",
+                        [ Ty.path "u32" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4729,7 +4955,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4750,7 +4976,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4772,7 +4998,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4792,11 +5018,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4822,23 +5052,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4864,31 +5098,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -4910,7 +5148,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4931,7 +5169,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -4953,7 +5191,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -4973,11 +5211,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5003,31 +5245,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5049,7 +5295,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5070,7 +5316,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5092,7 +5338,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5112,11 +5358,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5142,31 +5392,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5188,7 +5442,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5209,7 +5463,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5231,7 +5485,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5251,11 +5505,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5281,35 +5539,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5331,7 +5592,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5352,7 +5613,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5374,7 +5635,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5394,11 +5655,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5424,35 +5689,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5474,7 +5742,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5495,7 +5763,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5517,7 +5785,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5537,11 +5805,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5567,35 +5839,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5617,7 +5892,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5638,7 +5913,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5660,7 +5935,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5680,11 +5955,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5710,35 +5989,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5760,7 +6042,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5781,7 +6063,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5803,7 +6085,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5823,11 +6105,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5853,41 +6139,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "u64",
-                    [ Ty.path "u64" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u64",
+                        [ Ty.path "u64" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -5909,7 +6198,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5930,7 +6219,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -5952,7 +6241,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -5972,11 +6261,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6002,23 +6295,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6044,31 +6341,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6090,7 +6391,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6111,7 +6412,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6133,7 +6434,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6153,11 +6454,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6183,31 +6488,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6229,7 +6538,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6250,7 +6559,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6272,7 +6581,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6292,11 +6601,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6322,31 +6635,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6368,7 +6685,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6389,7 +6706,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6411,7 +6728,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6431,11 +6748,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6461,35 +6782,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6511,7 +6835,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6532,7 +6856,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6554,7 +6878,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6574,11 +6898,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6604,35 +6932,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6654,7 +6985,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6675,7 +7006,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6697,7 +7028,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6717,11 +7048,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6747,35 +7082,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6797,7 +7135,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6818,7 +7156,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6840,7 +7178,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6860,11 +7198,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6890,35 +7232,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -6940,7 +7285,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -6961,7 +7306,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -6983,7 +7328,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7003,11 +7348,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7033,41 +7382,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "u128",
-                    [ Ty.path "u128" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u128",
+                        [ Ty.path "u128" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7089,7 +7441,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7110,7 +7462,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7132,7 +7484,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7152,11 +7504,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7182,23 +7538,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7224,31 +7584,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7270,7 +7634,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7291,7 +7655,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7313,7 +7677,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7333,11 +7697,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7363,31 +7731,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7409,7 +7781,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7430,7 +7802,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7452,7 +7824,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7472,11 +7844,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7502,31 +7878,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7548,7 +7928,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7569,7 +7949,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7591,7 +7971,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7611,11 +7991,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7641,35 +8025,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7691,7 +8078,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7713,7 +8100,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7735,7 +8122,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7756,11 +8143,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7786,35 +8177,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7836,7 +8230,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7858,7 +8252,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7880,7 +8274,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -7901,11 +8295,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -7931,35 +8329,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -7981,7 +8382,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8003,7 +8404,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8025,7 +8426,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8046,11 +8447,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8076,35 +8481,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8126,7 +8534,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8148,7 +8556,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8170,7 +8578,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8191,11 +8599,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8221,41 +8633,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "isize",
-                    [ Ty.path "isize" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "isize",
+                        [ Ty.path "isize" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8277,7 +8692,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8299,7 +8714,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8321,7 +8736,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8342,11 +8757,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8372,23 +8791,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8414,31 +8837,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8460,7 +8887,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8482,7 +8909,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8504,7 +8931,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8525,11 +8952,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8555,31 +8986,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8601,7 +9036,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8623,7 +9058,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8645,7 +9080,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8666,11 +9101,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8696,31 +9135,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8742,7 +9185,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8764,7 +9207,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8786,7 +9229,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8807,11 +9250,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8837,35 +9284,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -8887,7 +9337,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8908,7 +9358,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8930,7 +9380,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -8950,11 +9400,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -8980,35 +9434,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9030,7 +9487,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9051,7 +9508,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9073,7 +9530,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9093,11 +9550,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9123,35 +9584,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9173,7 +9637,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9194,7 +9658,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9216,7 +9680,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9236,11 +9700,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9266,35 +9734,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9316,7 +9787,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9337,7 +9808,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9359,7 +9830,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9379,11 +9850,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9409,41 +9884,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "i8",
-                    [ Ty.path "i8" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "i8",
+                        [ Ty.path "i8" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9465,7 +9943,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9486,7 +9964,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9508,7 +9986,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9528,11 +10006,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9558,23 +10040,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9600,31 +10086,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9646,7 +10136,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9667,7 +10157,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9689,7 +10179,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9709,11 +10199,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9739,31 +10233,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9785,7 +10283,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9806,7 +10304,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9828,7 +10326,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9848,11 +10346,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9878,31 +10380,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -9924,7 +10430,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9945,7 +10451,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -9967,7 +10473,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -9987,11 +10493,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10017,35 +10527,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10067,7 +10580,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10088,7 +10601,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10110,7 +10623,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10130,11 +10643,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10160,35 +10677,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10210,7 +10730,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10231,7 +10751,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10253,7 +10773,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10273,11 +10793,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10303,35 +10827,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10353,7 +10880,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10374,7 +10901,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10396,7 +10923,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10416,11 +10943,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10446,35 +10977,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10496,7 +11030,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10517,7 +11051,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10539,7 +11073,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10559,11 +11093,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10589,41 +11127,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "i16",
-                    [ Ty.path "i16" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "i16",
+                        [ Ty.path "i16" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10645,7 +11186,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10666,7 +11207,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10688,7 +11229,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10708,11 +11249,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10738,23 +11283,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10780,31 +11329,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10826,7 +11379,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10847,7 +11400,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10869,7 +11422,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10889,11 +11442,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -10919,31 +11476,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -10965,7 +11526,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -10986,7 +11547,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11008,7 +11569,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11028,11 +11589,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11058,31 +11623,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11104,7 +11673,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11125,7 +11694,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11147,7 +11716,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11167,11 +11736,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11197,35 +11770,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11247,7 +11823,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11268,7 +11844,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11290,7 +11866,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11310,11 +11886,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11340,35 +11920,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11390,7 +11973,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11411,7 +11994,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11433,7 +12016,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11453,11 +12036,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11483,35 +12070,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11533,7 +12123,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11554,7 +12144,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11576,7 +12166,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11596,11 +12186,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11626,35 +12220,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11676,7 +12273,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11697,7 +12294,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11719,7 +12316,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11739,11 +12336,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11769,41 +12370,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "i32",
-                    [ Ty.path "i32" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "i32",
+                        [ Ty.path "i32" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11825,7 +12429,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11846,7 +12450,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11868,7 +12472,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -11888,11 +12492,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11918,23 +12526,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -11960,31 +12572,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12006,7 +12622,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12027,7 +12643,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12049,7 +12665,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12069,11 +12685,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12099,31 +12719,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12145,7 +12769,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12166,7 +12790,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12188,7 +12812,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12208,11 +12832,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12238,31 +12866,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12284,7 +12916,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12305,7 +12937,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12327,7 +12959,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12347,11 +12979,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12377,35 +13013,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12427,7 +13066,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12448,7 +13087,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12470,7 +13109,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12490,11 +13129,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12520,35 +13163,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12570,7 +13216,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12591,7 +13237,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12613,7 +13259,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12633,11 +13279,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12663,35 +13313,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12713,7 +13366,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12734,7 +13387,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12756,7 +13409,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12776,11 +13429,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12806,35 +13463,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -12856,7 +13516,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12877,7 +13537,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12899,7 +13559,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -12919,11 +13579,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12949,41 +13613,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "i64",
-                    [ Ty.path "i64" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "i64",
+                        [ Ty.path "i64" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13005,7 +13672,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13026,7 +13693,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13048,7 +13715,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13068,11 +13735,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13098,23 +13769,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13140,31 +13815,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13186,7 +13865,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13207,7 +13886,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13229,7 +13908,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13249,11 +13928,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13279,31 +13962,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13325,7 +14012,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13346,7 +14033,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13368,7 +14055,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13388,11 +14075,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13418,31 +14109,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13464,7 +14159,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13485,7 +14180,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13507,7 +14202,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13527,11 +14222,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13557,35 +14256,38 @@ Module num.
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_add", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_add", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13607,7 +14309,7 @@ Module num.
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13628,7 +14330,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13650,7 +14352,7 @@ Module num.
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13670,11 +14372,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13700,35 +14406,38 @@ Module num.
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_sub", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_sub", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13750,7 +14459,7 @@ Module num.
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13771,7 +14480,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13793,7 +14502,7 @@ Module num.
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13813,11 +14522,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13843,35 +14556,38 @@ Module num.
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_mul", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_mul", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -13893,7 +14609,7 @@ Module num.
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13914,7 +14630,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13936,7 +14652,7 @@ Module num.
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition mul_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -13956,11 +14672,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13986,35 +14706,38 @@ Module num.
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_div", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_div", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14036,7 +14759,7 @@ Module num.
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14057,7 +14780,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14079,7 +14802,7 @@ Module num.
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition div_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14099,11 +14822,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14129,41 +14856,44 @@ Module num.
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::arith::Rem",
-                    Ty.path "i128",
-                    [ Ty.path "i128" ],
-                    "rem",
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        other,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "i128",
+                        [ Ty.path "i128" ],
+                        "rem",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14185,7 +14915,7 @@ Module num.
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14206,7 +14936,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14228,7 +14958,7 @@ Module num.
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rem_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14248,11 +14978,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14278,23 +15012,27 @@ Module num.
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                UnOp.Pure.not
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (UnOp.Pure.not (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14320,31 +15058,35 @@ Module num.
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_xor (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14366,7 +15108,7 @@ Module num.
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14387,7 +15129,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14409,7 +15151,7 @@ Module num.
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitxor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14429,11 +15171,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14459,31 +15205,35 @@ Module num.
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_or (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14505,7 +15255,7 @@ Module num.
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14526,7 +15276,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14548,7 +15298,7 @@ Module num.
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitor_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14568,11 +15318,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14598,31 +15352,35 @@ Module num.
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                BinOp.Pure.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (BinOp.Pure.bit_and (|
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          self,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_tuple_field (|
+                          other,
+                          "core::num::saturating::Saturating",
+                          0
+                        |)
+                      |)
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14644,7 +15402,7 @@ Module num.
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14665,7 +15423,7 @@ Module num.
                     [ M.read (| M.read (| self |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14687,7 +15445,7 @@ Module num.
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition bitand_assign (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -14707,11 +15465,15 @@ Module num.
                     |),
                     [
                       M.read (| M.read (| self |) |);
-                      Value.StructTuple "core::num::saturating::Saturating" [ M.read (| other |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::num::saturating::Saturating"
+                          [ A.to_value (M.read (| other |)) ]
+                      |)
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| M.of_value (| Value.Tuple [] |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14730,33 +15492,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -14766,7 +15532,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -14793,7 +15559,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -14820,7 +15586,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -14848,29 +15614,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14881,29 +15650,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14915,27 +15687,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14946,27 +15721,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -14978,27 +15756,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15009,27 +15790,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15040,27 +15824,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15071,27 +15858,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15102,29 +15892,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "usize", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "usize", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15134,7 +15927,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15162,7 +15955,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15192,33 +15985,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -15228,7 +16025,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15255,7 +16052,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15282,7 +16079,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15310,29 +16107,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15343,29 +16143,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15377,27 +16180,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15408,27 +16214,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15440,27 +16249,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15471,27 +16283,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15502,27 +16317,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15533,27 +16351,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15564,29 +16385,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u8", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u8", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15596,7 +16420,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15624,7 +16448,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15654,33 +16478,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -15690,7 +16518,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15717,7 +16545,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15744,7 +16572,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -15772,29 +16600,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15805,29 +16636,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15839,27 +16673,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15870,27 +16707,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15902,27 +16742,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15933,27 +16776,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15964,27 +16810,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -15995,27 +16844,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16026,29 +16878,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u16", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16058,7 +16913,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16086,7 +16941,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16116,33 +16971,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -16152,7 +17011,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16179,7 +17038,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16206,7 +17065,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16234,29 +17093,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16267,29 +17129,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16301,27 +17166,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16332,27 +17200,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16364,27 +17235,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16395,27 +17269,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16426,27 +17303,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16457,27 +17337,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16488,29 +17371,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u32", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16520,7 +17406,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16548,7 +17434,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16578,33 +17464,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -16614,7 +17504,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16641,7 +17531,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16668,7 +17558,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -16696,29 +17586,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16729,29 +17622,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16763,27 +17659,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16794,27 +17693,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16826,27 +17728,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16857,27 +17762,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16888,27 +17796,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16919,27 +17830,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16950,29 +17864,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -16982,7 +17899,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17010,7 +17927,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17040,33 +17957,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -17076,7 +17997,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17103,7 +18024,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17130,7 +18051,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17158,29 +18079,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17191,29 +18115,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17225,27 +18152,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17256,27 +18186,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17288,27 +18221,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17319,27 +18255,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17350,27 +18289,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17381,27 +18323,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17412,29 +18357,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "u128", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17444,7 +18392,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17472,7 +18420,7 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_power_of_two (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17502,33 +18450,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -17538,7 +18490,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17565,7 +18517,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17592,7 +18544,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17620,29 +18572,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17653,29 +18608,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17687,27 +18645,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17718,27 +18679,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17750,27 +18714,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17781,27 +18748,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17812,27 +18782,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17843,27 +18816,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17874,29 +18850,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17906,7 +18885,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -17934,27 +18913,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17965,27 +18947,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -17996,7 +18981,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18023,7 +19008,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18052,33 +19037,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -18088,7 +19077,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18115,7 +19104,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18142,7 +19131,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18170,29 +19159,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18203,29 +19195,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18237,27 +19232,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18268,27 +19266,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18300,27 +19301,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18331,27 +19335,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18362,27 +19369,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18393,27 +19403,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18424,29 +19437,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18456,7 +19472,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18484,27 +19500,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18515,27 +19534,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18546,7 +19568,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18573,7 +19595,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18602,33 +19624,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -18638,7 +19664,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18665,7 +19691,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18692,7 +19718,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -18720,29 +19746,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18753,29 +19782,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18787,27 +19819,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18818,27 +19853,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18850,27 +19888,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18881,27 +19922,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18912,27 +19956,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18943,27 +19990,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -18974,29 +20024,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19006,7 +20059,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19034,27 +20087,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19065,27 +20121,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19096,7 +20155,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19123,7 +20182,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19152,33 +20211,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -19188,7 +20251,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19215,7 +20278,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19242,7 +20305,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19270,29 +20333,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19303,29 +20369,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19337,27 +20406,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19368,27 +20440,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19400,27 +20475,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19431,27 +20509,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19462,27 +20543,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19493,27 +20577,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19524,29 +20611,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19556,7 +20646,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19584,27 +20674,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19615,27 +20708,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19646,7 +20742,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19673,7 +20769,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19702,33 +20798,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -19738,7 +20838,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19765,7 +20865,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19792,7 +20892,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -19820,29 +20920,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19853,29 +20956,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19887,27 +20993,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19918,27 +21027,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19950,27 +21062,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -19981,27 +21096,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20012,27 +21130,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20043,27 +21164,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20074,29 +21198,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20106,7 +21233,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20134,27 +21261,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20165,27 +21295,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20196,7 +21329,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20223,7 +21356,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20252,33 +21385,37 @@ Module num.
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] *)
-      Definition value_MIN : Value.t :=
+      Definition value_MIN : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MIN" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MIN" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
       (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] *)
-      Definition value_MAX : Value.t :=
+      Definition value_MAX : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructTuple
-                "core::num::saturating::Saturating"
-                [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
+              M.of_value (|
+                Value.StructTuple
+                  "core::num::saturating::Saturating"
+                  [ A.to_value (M.read (| M.get_constant (| "core::num::MAX" |) |)) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
       
       (*             pub const BITS: u32 = <$t>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
+      Definition value_BITS : A.t :=
         M.run ltac:(M.monadic (M.get_constant (| "core::num::BITS" |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
@@ -20288,7 +21425,7 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_ones (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20315,7 +21452,7 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20342,7 +21479,7 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition trailing_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20370,29 +21507,32 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_left (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "rotate_left", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "rotate_left", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20403,29 +21543,32 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rotate_right (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "rotate_right", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| n |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "rotate_right", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| n |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20437,27 +21580,30 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap_bytes (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "swap_bytes", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20468,27 +21614,30 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reverse_bits (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "reverse_bits", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "reverse_bits", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20500,27 +21649,30 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "from_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "from_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20531,27 +21683,30 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "from_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        x,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "from_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            x,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20562,27 +21717,30 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_be (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "to_be", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "to_be", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20593,27 +21751,30 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_le (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "to_le", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "to_le", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20624,29 +21785,32 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pow (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_pow", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |);
-                    M.read (| exp |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_pow", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |);
+                        M.read (| exp |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20656,7 +21820,7 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition leading_zeros (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20684,27 +21848,30 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition abs (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_abs", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_abs", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20715,27 +21882,30 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition signum (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "signum", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "signum", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20746,7 +21916,7 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_positive (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20773,7 +21943,7 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_negative (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -20810,27 +21980,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "isize", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "isize", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20857,27 +22030,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i8", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i8", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20904,27 +22080,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i16", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i16", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20951,27 +22130,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i32", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i32", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -20998,27 +22180,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i64", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i64", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -21045,27 +22230,30 @@ Module num.
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition neg (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::saturating::Saturating"
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "i128", "saturating_neg", [] |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "core::num::saturating::Saturating",
-                        0
-                      |)
-                    |)
-                  ]
-                |)
-              ]))
+            M.of_value (|
+              Value.StructTuple
+                "core::num::saturating::Saturating"
+                [
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (| Ty.path "i128", "saturating_neg", [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            self,
+                            "core::num::saturating::Saturating",
+                            0
+                          |)
+                        |)
+                      ]
+                    |))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       

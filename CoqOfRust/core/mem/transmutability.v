@@ -34,7 +34,7 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -43,71 +43,75 @@ Module mem.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.Pure.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.Pure.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.Pure.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
         | _, _ => M.impossible
         end.
@@ -135,15 +139,15 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -162,14 +166,14 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -199,7 +203,7 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -213,41 +217,45 @@ Module mem.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "Assume" |);
-                M.read (| Value.String "alignment" |);
+                M.read (| M.of_value (| Value.String "Assume" |) |);
+                M.read (| M.of_value (| Value.String "alignment" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::mem::transmutability::Assume",
                     "alignment"
-                  |));
-                M.read (| Value.String "lifetimes" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "lifetimes" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::mem::transmutability::Assume",
                     "lifetimes"
-                  |));
-                M.read (| Value.String "safety" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "safety" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.pointer_coercion (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::mem::transmutability::Assume",
                     "safety"
-                  |));
-                M.read (| Value.String "validity" |);
+                  |)
+                |);
+                M.read (| M.of_value (| Value.String "validity" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -280,18 +288,20 @@ Module mem.
               Self { alignment: false, lifetimes: false, safety: false, validity: false };
       *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_NOTHING : Value.t :=
+      Definition value_NOTHING : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              Value.StructRecord
-                "core::mem::transmutability::Assume"
-                [
-                  ("alignment", Value.Bool false);
-                  ("lifetimes", Value.Bool false);
-                  ("safety", Value.Bool false);
-                  ("validity", Value.Bool false)
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::mem::transmutability::Assume"
+                  [
+                    ("alignment", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("lifetimes", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("safety", A.to_value (M.of_value (| Value.Bool false |)));
+                    ("validity", A.to_value (M.of_value (| Value.Bool false |)))
+                  ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_NOTHING :
@@ -299,13 +309,15 @@ Module mem.
       
       (*     pub const ALIGNMENT: Self = Self { alignment: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_ALIGNMENT : Value.t :=
+      Definition value_ALIGNMENT : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
-                [ ("alignment", Value.Bool true) ]
+              M.of_value (|
+                M.struct_record_update
+                  (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                  [ ("alignment", A.to_value (M.of_value (| Value.Bool true |))) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_ALIGNMENT :
@@ -313,13 +325,15 @@ Module mem.
       
       (*     pub const LIFETIMES: Self = Self { lifetimes: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_LIFETIMES : Value.t :=
+      Definition value_LIFETIMES : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
-                [ ("lifetimes", Value.Bool true) ]
+              M.of_value (|
+                M.struct_record_update
+                  (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                  [ ("lifetimes", A.to_value (M.of_value (| Value.Bool true |))) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_LIFETIMES :
@@ -327,13 +341,15 @@ Module mem.
       
       (*     pub const SAFETY: Self = Self { safety: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_SAFETY : Value.t :=
+      Definition value_SAFETY : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
-                [ ("safety", Value.Bool true) ]
+              M.of_value (|
+                M.struct_record_update
+                  (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                  [ ("safety", A.to_value (M.of_value (| Value.Bool true |))) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_SAFETY :
@@ -341,13 +357,15 @@ Module mem.
       
       (*     pub const VALIDITY: Self = Self { validity: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
-      Definition value_VALIDITY : Value.t :=
+      Definition value_VALIDITY : A.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              M.struct_record_update
-                (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
-                [ ("validity", Value.Bool true) ]
+              M.of_value (|
+                M.struct_record_update
+                  (M.read (| M.get_constant (| "core::mem::transmutability::NOTHING" |) |))
+                  [ ("validity", A.to_value (M.of_value (| Value.Bool true |))) ]
+              |)
             |))).
       
       Axiom AssociatedConstant_value_VALIDITY :
@@ -363,88 +381,94 @@ Module mem.
               }
           }
       *)
-      Definition and (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition and (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
-            Value.StructRecord
-              "core::mem::transmutability::Assume"
-              [
-                ("alignment",
-                  LogicalOp.or (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "alignment"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          other_assumptions,
-                          "core::mem::transmutability::Assume",
-                          "alignment"
-                        |)
+            M.of_value (|
+              Value.StructRecord
+                "core::mem::transmutability::Assume"
+                [
+                  ("alignment",
+                    A.to_value
+                      (LogicalOp.or (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::mem::transmutability::Assume",
+                            "alignment"
+                          |)
+                        |),
+                        ltac:(M.monadic
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "alignment"
+                            |)
+                          |)))
+                      |)));
+                  ("lifetimes",
+                    A.to_value
+                      (LogicalOp.or (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::mem::transmutability::Assume",
+                            "lifetimes"
+                          |)
+                        |),
+                        ltac:(M.monadic
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "lifetimes"
+                            |)
+                          |)))
+                      |)));
+                  ("safety",
+                    A.to_value
+                      (LogicalOp.or (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::mem::transmutability::Assume",
+                            "safety"
+                          |)
+                        |),
+                        ltac:(M.monadic
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "safety"
+                            |)
+                          |)))
+                      |)));
+                  ("validity",
+                    A.to_value
+                      (LogicalOp.or (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::mem::transmutability::Assume",
+                            "validity"
+                          |)
+                        |),
+                        ltac:(M.monadic
+                          (M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "validity"
+                            |)
+                          |)))
                       |)))
-                  |));
-                ("lifetimes",
-                  LogicalOp.or (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "lifetimes"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          other_assumptions,
-                          "core::mem::transmutability::Assume",
-                          "lifetimes"
-                        |)
-                      |)))
-                  |));
-                ("safety",
-                  LogicalOp.or (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "safety"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          other_assumptions,
-                          "core::mem::transmutability::Assume",
-                          "safety"
-                        |)
-                      |)))
-                  |));
-                ("validity",
-                  LogicalOp.or (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "validity"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          other_assumptions,
-                          "core::mem::transmutability::Assume",
-                          "validity"
-                        |)
-                      |)))
-                  |))
-              ]))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -460,92 +484,102 @@ Module mem.
               }
           }
       *)
-      Definition but_not (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition but_not (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
-            Value.StructRecord
-              "core::mem::transmutability::Assume"
-              [
-                ("alignment",
-                  LogicalOp.and (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "alignment"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+            M.of_value (|
+              Value.StructRecord
+                "core::mem::transmutability::Assume"
+                [
+                  ("alignment",
+                    A.to_value
+                      (LogicalOp.and (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
+                            self,
                             "core::mem::transmutability::Assume",
                             "alignment"
                           |)
-                        |))))
-                  |));
-                ("lifetimes",
-                  LogicalOp.and (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "lifetimes"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                        |),
+                        ltac:(M.monadic
+                          (UnOp.Pure.not (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                other_assumptions,
+                                "core::mem::transmutability::Assume",
+                                "alignment"
+                              |)
+                            |)
+                          |)))
+                      |)));
+                  ("lifetimes",
+                    A.to_value
+                      (LogicalOp.and (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
+                            self,
                             "core::mem::transmutability::Assume",
                             "lifetimes"
                           |)
-                        |))))
-                  |));
-                ("safety",
-                  LogicalOp.and (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "safety"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                        |),
+                        ltac:(M.monadic
+                          (UnOp.Pure.not (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                other_assumptions,
+                                "core::mem::transmutability::Assume",
+                                "lifetimes"
+                              |)
+                            |)
+                          |)))
+                      |)));
+                  ("safety",
+                    A.to_value
+                      (LogicalOp.and (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
+                            self,
                             "core::mem::transmutability::Assume",
                             "safety"
                           |)
-                        |))))
-                  |));
-                ("validity",
-                  LogicalOp.and (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::mem::transmutability::Assume",
-                        "validity"
-                      |)
-                    |),
-                    ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                        |),
+                        ltac:(M.monadic
+                          (UnOp.Pure.not (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                other_assumptions,
+                                "core::mem::transmutability::Assume",
+                                "safety"
+                              |)
+                            |)
+                          |)))
+                      |)));
+                  ("validity",
+                    A.to_value
+                      (LogicalOp.and (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
+                            self,
                             "core::mem::transmutability::Assume",
                             "validity"
                           |)
-                        |))))
-                  |))
-              ]))
+                        |),
+                        ltac:(M.monadic
+                          (UnOp.Pure.not (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                other_assumptions,
+                                "core::mem::transmutability::Assume",
+                                "validity"
+                              |)
+                            |)
+                          |)))
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -563,7 +597,7 @@ Module mem.
               self.and(other_assumptions)
           }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other_assumptions ] =>
           ltac:(M.monadic
@@ -600,7 +634,7 @@ Module mem.
               self.but_not(other_assumptions)
           }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other_assumptions ] =>
           ltac:(M.monadic

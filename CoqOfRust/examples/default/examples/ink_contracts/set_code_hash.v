@@ -14,7 +14,19 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
 }
 *)
-Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
+Definition set_code_hash (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [ E ], [ code_hash ] =>
+    ltac:(M.monadic
+      (let code_hash := M.alloc (| code_hash |) in
+      M.never_to_any (|
+        M.call_closure (|
+          M.get_function (| "core::panicking::panic", [] |),
+          [ M.read (| M.of_value (| Value.String "not implemented" |) |) ]
+        |)
+      |)))
+  | _, _ => M.impossible
+  end.
 
 (* StructRecord
   {
@@ -27,19 +39,28 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Definition Self : Ty.t := Ty.path "set_code_hash::Incrementer".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
-          "set_code_hash::Incrementer"
-          [
-            ("count",
-              M.call_closure (|
-                M.get_trait_method (| "core::default::Default", Ty.path "u32", [], "default", [] |),
-                []
-              |))
-          ]))
+        (M.of_value (|
+          Value.StructRecord
+            "set_code_hash::Incrementer"
+            [
+              ("count",
+                A.to_value
+                  (M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "u32",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)))
+            ]
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -59,7 +80,7 @@ Module Impl_set_code_hash_Incrementer.
           Default::default()
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition new (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -87,7 +108,7 @@ Module Impl_set_code_hash_Incrementer.
           );
       }
   *)
-  Definition inc (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inc (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -100,7 +121,10 @@ Module Impl_set_code_hash_Incrementer.
                 "set_code_hash::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U32, M.read (| β |), M.of_value (| Value.Integer 1 |) |)
+            |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -111,46 +135,59 @@ Module Impl_set_code_hash_Incrementer.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The new count is " |);
-                                M.read (|
-                                  Value.String
-                                    ", it was modified using the original contract code.
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "The new count is " |)
+                                    |));
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (|
+                                        Value.String
+                                          ", it was modified using the original contract code.
 "
-                                |)
-                              ]
-                          |));
+                                      |)
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "set_code_hash::Incrementer",
-                                      "count"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "u32" ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "set_code_hash::Incrementer",
+                                          "count"
+                                        |)
+                                      ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.
@@ -162,7 +199,7 @@ Module Impl_set_code_hash_Incrementer.
           self.count
       }
   *)
-  Definition get (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self ] =>
       ltac:(M.monadic
@@ -187,7 +224,7 @@ Module Impl_set_code_hash_Incrementer.
           println!("Switched code hash to {:?}.", code_hash);
       }
   *)
-  Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition set_code (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ self; code_hash ] =>
       ltac:(M.monadic
@@ -212,8 +249,8 @@ Module Impl_set_code_hash_Incrementer.
                     |),
                     [ code_hash ]
                   |);
-                  M.closure
-                    (fun γ =>
+                  M.closure (|
+                    fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
@@ -231,8 +268,10 @@ Module Impl_set_code_hash_Incrementer.
                                       |),
                                       [
                                         M.read (|
-                                          Value.String
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          M.of_value (|
+                                            Value.String
+                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -240,7 +279,8 @@ Module Impl_set_code_hash_Incrementer.
                             ]
                           |)
                         | _ => M.impossible (||)
-                        end))
+                        end)
+                  |)
                 ]
               |)
             |) in
@@ -254,37 +294,47 @@ Module Impl_set_code_hash_Incrementer.
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Switched code hash to " |);
-                                M.read (| Value.String ".
-" |)
-                              ]
-                          |));
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.read (|
+                                      M.of_value (| Value.String "Switched code hash to " |)
+                                    |));
+                                  A.to_value (M.read (| M.of_value (| Value.String ".
+" |) |))
+                                ]
+                            |)
+                          |)
+                        |);
                         (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
-                                  |),
-                                  [ code_hash ]
-                                |)
-                              ]
-                          |))
+                        M.pointer_coercion (|
+                          M.alloc (|
+                            M.of_value (|
+                              Value.Array
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ]
+                                      |),
+                                      [ code_hash ]
+                                    |))
+                                ]
+                            |)
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+          M.alloc (| M.of_value (| Value.Tuple [] |) |)
         |)))
     | _, _ => M.impossible
     end.

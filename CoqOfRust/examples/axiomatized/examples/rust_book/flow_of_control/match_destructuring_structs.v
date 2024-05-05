@@ -8,4 +8,4 @@ Require Import CoqOfRust.CoqOfRust.
     fields := [ ("x", Ty.tuple [ Ty.path "u32"; Ty.path "u32" ]); ("y", Ty.path "u32") ];
   } *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Ty.t) -> (list A.t) -> M.

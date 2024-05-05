@@ -25,27 +25,30 @@ Module pin.
     Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
     
     (* Clone *)
-    Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::pin::Pin"
-            [
-              ("pointer",
-                M.call_closure (|
-                  M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::pin::Pin",
-                      "pointer"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::pin::Pin"
+              [
+                ("pointer",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (| "core::clone::Clone", P, [], "clone", [] |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::pin::Pin",
+                          "pointer"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -66,7 +69,7 @@ Module pin.
             P::Target::eq(self, other)
         }
     *)
-    Definition eq (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -112,7 +115,7 @@ Module pin.
             P::Target::ne(self, other)
         }
     *)
-    Definition ne (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -179,7 +182,7 @@ Module pin.
             P::Target::partial_cmp(self, other)
         }
     *)
-    Definition partial_cmp (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -225,7 +228,7 @@ Module pin.
             P::Target::lt(self, other)
         }
     *)
-    Definition lt (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -271,7 +274,7 @@ Module pin.
             P::Target::le(self, other)
         }
     *)
-    Definition le (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -317,7 +320,7 @@ Module pin.
             P::Target::gt(self, other)
         }
     *)
-    Definition gt (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -363,7 +366,7 @@ Module pin.
             P::Target::ge(self, other)
         }
     *)
-    Definition ge (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (P Q : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P Q in
       match τ, α with
       | [], [ self; other ] =>
@@ -428,7 +431,7 @@ Module pin.
             P::Target::cmp(self, other)
         }
     *)
-    Definition cmp (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self; other ] =>
@@ -480,7 +483,7 @@ Module pin.
             P::Target::hash(self, state);
         }
     *)
-    Definition hash (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [ H ], [ self; state ] =>
@@ -507,7 +510,7 @@ Module pin.
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -531,7 +534,7 @@ Module pin.
             unsafe { Pin::new_unchecked(pointer) }
         }
     *)
-    Definition new (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ pointer ] =>
@@ -555,7 +558,7 @@ Module pin.
             pin.pointer
         }
     *)
-    Definition into_inner (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ pin ] =>
@@ -573,13 +576,15 @@ Module pin.
             Pin { pointer }
         }
     *)
-    Definition new_unchecked (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_unchecked (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ pointer ] =>
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
-          Value.StructRecord "core::pin::Pin" [ ("pointer", M.read (| pointer |)) ]))
+          M.of_value (|
+            Value.StructRecord "core::pin::Pin" [ ("pointer", A.to_value (M.read (| pointer |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -593,7 +598,7 @@ Module pin.
             unsafe { Pin::new_unchecked(&*self.pointer) }
         }
     *)
-    Definition as_ref (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
@@ -630,7 +635,7 @@ Module pin.
             pin.pointer
         }
     *)
-    Definition into_inner_unchecked (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner_unchecked (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ pin ] =>
@@ -649,7 +654,7 @@ Module pin.
             unsafe { Pin::new_unchecked(&mut *self.pointer) }
         }
     *)
-    Definition as_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
@@ -689,7 +694,7 @@ Module pin.
             *(self.pointer) = value;
         }
     *)
-    Definition set (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self; value ] =>
@@ -711,7 +716,7 @@ Module pin.
                 |),
                 M.read (| value |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -739,7 +744,7 @@ Module pin.
             unsafe { Pin::new_unchecked(new_pointer) }
         }
     *)
-    Definition map_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_unchecked (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ self; func ] =>
@@ -763,7 +768,10 @@ Module pin.
                     "call_once",
                     []
                   |),
-                  [ M.read (| func |); Value.Tuple [ M.read (| pointer |) ] ]
+                  [
+                    M.read (| func |);
+                    M.of_value (| Value.Tuple [ A.to_value (M.read (| pointer |)) ] |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -789,7 +797,7 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -811,7 +819,7 @@ Module pin.
             unsafe { Pin::new_unchecked(r) }
         }
     *)
-    Definition static_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition static_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ r ] =>
@@ -842,20 +850,23 @@ Module pin.
             Pin { pointer: self.pointer }
         }
     *)
-    Definition into_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_ref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          Value.StructRecord
-            "core::pin::Pin"
-            [
-              ("pointer",
-                M.read (|
-                  M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::pin::Pin"
+              [
+                ("pointer",
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -871,7 +882,7 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -892,7 +903,7 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -923,7 +934,7 @@ Module pin.
             unsafe { Pin::new_unchecked(new_pointer) }
         }
     *)
-    Definition map_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ self; func ] =>
@@ -952,7 +963,10 @@ Module pin.
                     "call_once",
                     []
                   |),
-                  [ M.read (| func |); Value.Tuple [ M.read (| pointer |) ] ]
+                  [
+                    M.read (| func |);
+                    M.of_value (| Value.Tuple [ A.to_value (M.read (| pointer |)) ] |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -979,7 +993,7 @@ Module pin.
             unsafe { Pin::new_unchecked(r) }
         }
     *)
-    Definition static_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition static_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ r ] =>
@@ -1036,7 +1050,7 @@ Module pin.
             unsafe { self.get_unchecked_mut() }.as_mut()
         }
     *)
-    Definition as_deref_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref_mut (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
@@ -1077,7 +1091,7 @@ Module pin.
             Pin::get_ref(Pin::as_ref(self))
         }
     *)
-    Definition deref (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
@@ -1121,7 +1135,7 @@ Module pin.
             Pin::get_mut(Pin::as_mut(self))
         }
     *)
-    Definition deref_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self ] =>
@@ -1176,7 +1190,7 @@ Module pin.
             fmt::Debug::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self; f ] =>
@@ -1214,7 +1228,7 @@ Module pin.
             fmt::Display::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self; f ] =>
@@ -1252,7 +1266,7 @@ Module pin.
             fmt::Pointer::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self P in
       match τ, α with
       | [], [ self; f ] =>

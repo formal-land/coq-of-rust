@@ -12,5 +12,13 @@ warning: Foreign modules are not supported
    |
    = note: We will work on it! 🐣
 
-warning: 1 warning emitted
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/std_misc/foreign_function_interface.rs:43:42
+   |
+43 |             write!(f, "{}-{}i", self.re, -self.im)
+   |                                          ^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: 2 warnings emitted
 

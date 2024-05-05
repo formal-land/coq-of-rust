@@ -10,7 +10,7 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
+Definition read_lines (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [ P ], [ filename ] =>
     ltac:(M.monadic
@@ -100,33 +100,36 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (|
-              Value.StructTuple
-                "core::result::Result::Ok"
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "std::io::BufRead",
-                      Ty.apply
-                        (Ty.path "std::io::buffered::bufreader::BufReader")
-                        [ Ty.path "std::fs::File" ],
-                      [],
-                      "lines",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
+              M.of_value (|
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  [
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "std::io::BufRead",
                           Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
                             [ Ty.path "std::fs::File" ],
-                          "new",
+                          [],
+                          "lines",
                           []
                         |),
-                        [ M.read (| file |) ]
-                      |)
-                    ]
-                  |)
-                ]
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "std::io::buffered::bufreader::BufReader")
+                                [ Ty.path "std::fs::File" ],
+                              "new",
+                              []
+                            |),
+                            [ M.read (| file |) ]
+                          |)
+                        ]
+                      |))
+                  ]
+              |)
             |)
           |)))
       |)))
@@ -146,13 +149,13 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| M.of_value (| Value.Tuple [] |) |),
           [
             fun γ =>
               ltac:(M.monadic
@@ -163,7 +166,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "file_io_read_lines_efficient_method::read_lines",
                         [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "./hosts" |) ]
+                      [ M.read (| M.of_value (| Value.String "./hosts" |) |) ]
                     |)
                   |) in
                 let γ0_0 :=
@@ -231,7 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           |) in
                                         let line := M.copy (| γ0_0 |) in
                                         M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -260,51 +263,70 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             |),
                                                             [
                                                               (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (| Value.String "" |);
-                                                                      M.read (| Value.String "
-" |)
-                                                                    ]
-                                                                |));
+                                                              M.pointer_coercion (|
+                                                                M.alloc (|
+                                                                  M.of_value (|
+                                                                    Value.Array
+                                                                      [
+                                                                        A.to_value
+                                                                          (M.read (|
+                                                                            M.of_value (|
+                                                                              Value.String ""
+                                                                            |)
+                                                                          |));
+                                                                        A.to_value
+                                                                          (M.read (|
+                                                                            M.of_value (|
+                                                                              Value.String "
+"
+                                                                            |)
+                                                                          |))
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |);
                                                               (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::rt::Argument",
-                                                                          "new_display",
-                                                                          [
-                                                                            Ty.path
-                                                                              "alloc::string::String"
-                                                                          ]
-                                                                        |),
-                                                                        [ ip ]
-                                                                      |)
-                                                                    ]
-                                                                |))
+                                                              M.pointer_coercion (|
+                                                                M.alloc (|
+                                                                  M.of_value (|
+                                                                    Value.Array
+                                                                      [
+                                                                        A.to_value
+                                                                          (M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_display",
+                                                                              [
+                                                                                Ty.path
+                                                                                  "alloc::string::String"
+                                                                              ]
+                                                                            |),
+                                                                            [ ip ]
+                                                                          |))
+                                                                      ]
+                                                                  |)
+                                                                |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| M.of_value (| Value.Tuple [] |) |) in
+                                                M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                                           ]
                                         |)))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           |)))
                     ]
                   |))));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
           ]
         |)
       |)))

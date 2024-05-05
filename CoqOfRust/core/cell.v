@@ -41,7 +41,7 @@ Module cell.
             Cell::new(self.get())
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -80,7 +80,7 @@ Module cell.
             Cell::new(Default::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
@@ -114,7 +114,7 @@ Module cell.
             self.get() == other.get()
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -174,7 +174,7 @@ Module cell.
             self.get().partial_cmp(&other.get())
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -214,7 +214,7 @@ Module cell.
             self.get() < other.get()
         }
     *)
-    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -254,7 +254,7 @@ Module cell.
             self.get() <= other.get()
         }
     *)
-    Definition le (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -294,7 +294,7 @@ Module cell.
             self.get() > other.get()
         }
     *)
-    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -334,7 +334,7 @@ Module cell.
             self.get() >= other.get()
         }
     *)
-    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -393,7 +393,7 @@ Module cell.
             self.get().cmp(&other.get())
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -445,7 +445,7 @@ Module cell.
             Cell::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ t ] =>
@@ -475,25 +475,28 @@ Module cell.
             Cell { value: UnsafeCell::new(value) }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructRecord
-            "core::cell::Cell"
-            [
-              ("value",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| value |) ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::Cell"
+              [
+                ("value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
+                        "new",
+                        []
+                      |),
+                      [ M.read (| value |) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -504,7 +507,7 @@ Module cell.
             self.replace(val);
         }
     *)
-    Definition set (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; val ] =>
@@ -523,7 +526,7 @@ Module cell.
                   [ M.read (| self |); M.read (| val |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -550,7 +553,7 @@ Module cell.
             }
         }
     *)
-    Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition swap (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -562,7 +565,7 @@ Module cell.
               (M.read (|
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -580,22 +583,24 @@ Module cell.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
+                            M.never_to_any (|
+                              M.read (| M.return_ (| M.of_value (| Value.Tuple [] |) |) |)
+                            |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.Pure.not (|
+                                  M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::is_nonoverlapping",
                                       [ Ty.apply (Ty.path "core::cell::Cell") [ T ] ]
@@ -603,9 +608,10 @@ Module cell.
                                     [
                                       M.read (| self |);
                                       M.read (| other |);
-                                      Value.Integer Integer.Usize 1
+                                      M.of_value (| Value.Integer 1 |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -622,23 +628,29 @@ Module cell.
                                     |),
                                     [
                                       (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "`Cell::swap` on overlapping non-identical `Cell`s"
-                                              |)
-                                            ]
-                                        |))
+                                      M.pointer_coercion (|
+                                        M.alloc (|
+                                          M.of_value (|
+                                            Value.Array
+                                              [
+                                                A.to_value
+                                                  (M.read (|
+                                                    M.of_value (|
+                                                      Value.String
+                                                        "`Cell::swap` on overlapping non-identical `Cell`s"
+                                                    |)
+                                                  |))
+                                              ]
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 ]
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
@@ -677,7 +689,7 @@ Module cell.
                       ]
                     |)
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| M.of_value (| Value.Tuple [] |) |)
               |)))
           |)))
       | _, _ => M.impossible
@@ -694,7 +706,7 @@ Module cell.
             mem::replace(unsafe { &mut *self.value.get() }, val)
         }
     *)
-    Definition replace (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition replace (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; val ] =>
@@ -733,7 +745,7 @@ Module cell.
             self.value.into_inner()
         }
     *)
-    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -764,7 +776,7 @@ Module cell.
             unsafe { *self.value.get() }
         }
     *)
-    Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -802,7 +814,7 @@ Module cell.
             new
         }
     *)
-    Definition update (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition update (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ F ], [ self; f ] =>
@@ -831,7 +843,7 @@ Module cell.
                     "call_once",
                     []
                   |),
-                  [ M.read (| f |); Value.Tuple [ M.read (| old |) ] ]
+                  [ M.read (| f |); M.of_value (| Value.Tuple [ A.to_value (M.read (| old |)) ] |) ]
                 |)
               |) in
             let _ :=
@@ -858,7 +870,7 @@ Module cell.
             self.value.get()
         }
     *)
-    Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -890,7 +902,7 @@ Module cell.
             self.value.get_mut()
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -923,13 +935,13 @@ Module cell.
             unsafe { &*(t as *mut T as *const Cell<T>) }
         }
     *)
-    Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| t |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| t |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -941,7 +953,7 @@ Module cell.
             self.replace(Default::default())
         }
     *)
-    Definition take (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition take (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1006,13 +1018,13 @@ Module cell.
             unsafe { &*(self as *const Cell<[T]> as *const [Cell<T>]) }
         }
     *)
-    Definition as_slice_of_cells (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_slice_of_cells (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -1031,13 +1043,13 @@ Module cell.
             unsafe { &*(self as *const Cell<[T; N]> as *const [Cell<T>; N]) }
         }
     *)
-    Definition as_array_of_cells (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_array_of_cells (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -1077,7 +1089,7 @@ Module cell.
             builder.finish()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -1092,7 +1104,7 @@ Module cell.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "BorrowError" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "BorrowError" |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -1125,7 +1137,7 @@ Module cell.
             Display::fmt("already mutably borrowed", f)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -1133,7 +1145,8 @@ Module cell.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
-            [ M.read (| Value.String "already mutably borrowed" |); M.read (| f |) ]
+            [ M.read (| M.of_value (| Value.String "already mutably borrowed" |) |); M.read (| f |)
+            ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1166,7 +1179,7 @@ Module cell.
             builder.finish()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -1181,7 +1194,7 @@ Module cell.
                     "debug_struct",
                     []
                   |),
-                  [ M.read (| f |); M.read (| Value.String "BorrowMutError" |) ]
+                  [ M.read (| f |); M.read (| M.of_value (| Value.String "BorrowMutError" |) |) ]
                 |)
               |) in
             M.alloc (|
@@ -1214,7 +1227,7 @@ Module cell.
             Display::fmt("already borrowed", f)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -1222,7 +1235,7 @@ Module cell.
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
-            [ M.read (| Value.String "already borrowed" |); M.read (| f |) ]
+            [ M.read (| M.of_value (| Value.String "already borrowed" |) |); M.read (| f |) ]
           |)))
       | _, _ => M.impossible
       end.
@@ -1240,7 +1253,7 @@ Module cell.
       panic!("already borrowed: {:?}", err)
   }
   *)
-  Definition panic_already_borrowed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_already_borrowed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ err ] =>
       ltac:(M.monadic
@@ -1252,23 +1265,36 @@ Module cell.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (| Value.Array [ M.read (| Value.String "already borrowed: " |) ] |));
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.read (| M.of_value (| Value.String "already borrowed: " |) |))
+                        ]
+                    |)
+                  |)
+                |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_debug",
-                            [ Ty.path "core::cell::BorrowMutError" ]
-                          |),
-                          [ err ]
-                        |)
-                      ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "core::cell::BorrowMutError" ]
+                              |),
+                              [ err ]
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -1281,7 +1307,7 @@ Module cell.
       panic!("already mutably borrowed: {:?}", err)
   }
   *)
-  Definition panic_already_mutably_borrowed (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition panic_already_mutably_borrowed (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ err ] =>
       ltac:(M.monadic
@@ -1293,25 +1319,38 @@ Module cell.
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array [ M.read (| Value.String "already mutably borrowed: " |) ]
-                  |));
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.read (|
+                              M.of_value (| Value.String "already mutably borrowed: " |)
+                            |))
+                        ]
+                    |)
+                  |)
+                |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_debug",
-                            [ Ty.path "core::cell::BorrowError" ]
-                          |),
-                          [ err ]
-                        |)
-                      ]
-                  |))
+                M.pointer_coercion (|
+                  M.alloc (|
+                    M.of_value (|
+                      Value.Array
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "core::cell::BorrowError" ]
+                              |),
+                              [ err ]
+                            |))
+                        ]
+                    |)
+                  |)
+                |)
               ]
             |)
           ]
@@ -1321,20 +1360,20 @@ Module cell.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
-  Definition value_UNUSED : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Isize 0 |))).
+  Definition value_UNUSED : A.t :=
+    M.run ltac:(M.monadic (M.alloc (| M.of_value (| Value.Integer 0 |) |))).
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {
       x < UNUSED
   }
   *)
-  Definition is_writing (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_writing (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.Pure.lt (M.read (| x |)) (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))))
+        BinOp.Pure.lt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
     | _, _ => M.impossible
     end.
   
@@ -1343,12 +1382,12 @@ Module cell.
       x > UNUSED
   }
   *)
-  Definition is_reading (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition is_reading (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.Pure.gt (M.read (| x |)) (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))))
+        BinOp.Pure.gt (| M.read (| x |), M.read (| M.get_constant (| "core::cell::UNUSED" |) |) |)))
     | _, _ => M.impossible
     end.
   
@@ -1365,34 +1404,38 @@ Module cell.
             }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructRecord
-            "core::cell::RefCell"
-            [
-              ("value",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| value |) ]
-                |));
-              ("borrow",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "isize" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| M.get_constant (| "core::cell::UNUSED" |) |) ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::RefCell"
+              [
+                ("value",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
+                        "new",
+                        []
+                      |),
+                      [ M.read (| value |) ]
+                    |)));
+                ("borrow",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "isize" ],
+                        "new",
+                        []
+                      |),
+                      [ M.read (| M.get_constant (| "core::cell::UNUSED" |) |) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -1405,7 +1448,7 @@ Module cell.
             self.value.into_inner()
         }
     *)
-    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1435,7 +1478,7 @@ Module cell.
             mem::replace(&mut *self.borrow_mut(), t)
         }
     *)
-    Definition replace (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition replace (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; t ] =>
@@ -1483,7 +1526,7 @@ Module cell.
             mem::replace(mut_borrow, replacement)
         }
     *)
-    Definition replace_with (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition replace_with (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ F ], [ self; f ] =>
@@ -1525,7 +1568,10 @@ Module cell.
                     "call_once",
                     []
                   |),
-                  [ M.read (| f |); Value.Tuple [ M.read (| mut_borrow |) ] ]
+                  [
+                    M.read (| f |);
+                    M.of_value (| Value.Tuple [ A.to_value (M.read (| mut_borrow |)) ] |)
+                  ]
                 |)
               |) in
             M.alloc (|
@@ -1547,7 +1593,7 @@ Module cell.
             mem::swap(&mut *self.borrow_mut(), &mut *other.borrow_mut())
         }
     *)
-    Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition swap (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -1615,7 +1661,7 @@ Module cell.
             }
         }
     *)
-    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1689,7 +1735,7 @@ Module cell.
             }
         }
     *)
-    Definition try_borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_borrow (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1746,20 +1792,33 @@ Module cell.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          Value.StructRecord
-                            "core::cell::Ref"
-                            [ ("value", M.read (| value |)); ("borrow", M.read (| b |)) ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::Ref"
+                                  [
+                                    ("value", A.to_value (M.read (| value |)));
+                                    ("borrow", A.to_value (M.read (| b |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowError" [] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.of_value (| Value.StructTuple "core::cell::BorrowError" [] |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -1779,7 +1838,7 @@ Module cell.
             }
         }
     *)
-    Definition borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1849,7 +1908,7 @@ Module cell.
             }
         }
     *)
-    Definition try_borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1906,24 +1965,38 @@ Module cell.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          Value.StructRecord
-                            "core::cell::RefMut"
-                            [
-                              ("value", M.read (| value |));
-                              ("borrow", M.read (| b |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::RefMut"
+                                  [
+                                    ("value", A.to_value (M.read (| value |)));
+                                    ("borrow", A.to_value (M.read (| b |)));
+                                    ("marker",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::marker::PhantomData" []
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowMutError" [] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.of_value (| Value.StructTuple "core::cell::BorrowMutError" [] |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -1940,7 +2013,7 @@ Module cell.
             self.value.get()
         }
     *)
-    Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -1972,7 +2045,7 @@ Module cell.
             self.value.get_mut()
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -2005,7 +2078,7 @@ Module cell.
             self.get_mut()
         }
     *)
-    Definition undo_leak (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition undo_leak (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -2067,7 +2140,7 @@ Module cell.
             }
         }
     *)
-    Definition try_borrow_unguarded (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_borrow_unguarded (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -2075,15 +2148,15 @@ Module cell.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (| "core::cell::is_writing", [] |),
                               [
                                 M.call_closure (|
@@ -2101,35 +2174,44 @@ Module cell.
                                   ]
                                 |)
                               ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
-                              "get",
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::cell::RefCell",
-                                "value"
-                              |)
-                            ]
-                          |)
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [ T ],
+                                  "get",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::cell::RefCell",
+                                    "value"
+                                  |)
+                                ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "core::cell::BorrowError" [] ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [
+                            A.to_value
+                              (M.of_value (| Value.StructTuple "core::cell::BorrowError" [] |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -2145,7 +2227,7 @@ Module cell.
             self.replace(Default::default())
         }
     *)
-    Definition take (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition take (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -2207,7 +2289,7 @@ Module cell.
             RefCell::new(self.borrow().clone())
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -2256,7 +2338,7 @@ Module cell.
             self.get_mut().clone_from(&other.borrow())
         }
     *)
-    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2321,7 +2403,7 @@ Module cell.
             RefCell::new(Default::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
@@ -2359,7 +2441,7 @@ Module cell.
             *self.borrow() == *other.borrow()
         }
     *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2441,7 +2523,7 @@ Module cell.
             self.borrow().partial_cmp(&*other.borrow())
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2503,7 +2585,7 @@ Module cell.
             *self.borrow() < *other.borrow()
         }
     *)
-    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2565,7 +2647,7 @@ Module cell.
             *self.borrow() <= *other.borrow()
         }
     *)
-    Definition le (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2627,7 +2709,7 @@ Module cell.
             *self.borrow() > *other.borrow()
         }
     *)
-    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2689,7 +2771,7 @@ Module cell.
             *self.borrow() >= *other.borrow()
         }
     *)
-    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2770,7 +2852,7 @@ Module cell.
             self.borrow().cmp(&*other.borrow())
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; other ] =>
@@ -2844,7 +2926,7 @@ Module cell.
             RefCell::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ t ] =>
@@ -2919,7 +3001,7 @@ Module cell.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ borrow ] =>
         ltac:(M.monadic
@@ -2938,26 +3020,29 @@ Module cell.
                       |),
                       [ M.read (| borrow |) ]
                     |);
-                    Value.Integer Integer.Isize 1
+                    M.of_value (| Value.Integer 1 |)
                   ]
                 |)
               |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| M.of_value (| Value.Tuple [] |) |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (M.call_closure (|
+                          UnOp.Pure.not (|
+                            M.call_closure (|
                               M.get_function (| "core::cell::is_reading", [] |),
                               [ M.read (| b |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -2972,13 +3057,18 @@ Module cell.
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          Value.StructRecord
-                            "core::cell::BorrowRef"
-                            [ ("borrow", M.read (| borrow |)) ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::BorrowRef"
+                                  [ ("borrow", A.to_value (M.read (| borrow |))) ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -2999,7 +3089,7 @@ Module cell.
             self.borrow.set(borrow - 1);
         }
     *)
-    Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3026,26 +3116,27 @@ Module cell.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_reading", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3058,17 +3149,20 @@ Module cell.
                                       M.get_function (| "core::panicking::panic", [] |),
                                       [
                                         M.read (|
-                                          Value.String "assertion failed: is_reading(borrow)"
+                                          M.of_value (|
+                                            Value.String "assertion failed: is_reading(borrow)"
+                                          |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
@@ -3087,11 +3181,15 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.sub (|
+                      Integer.Isize,
+                      M.read (| borrow |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -3120,7 +3218,7 @@ Module cell.
             BorrowRef { borrow: self.borrow }
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -3147,26 +3245,27 @@ Module cell.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_reading", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3179,32 +3278,37 @@ Module cell.
                                       M.get_function (| "core::panicking::panic", [] |),
                                       [
                                         M.read (|
-                                          Value.String "assertion failed: is_reading(borrow)"
+                                          M.of_value (|
+                                            Value.String "assertion failed: is_reading(borrow)"
+                                          |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| borrow |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                            UnOp.Pure.not (|
+                              BinOp.Pure.ne (|
+                                M.read (| borrow |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3213,13 +3317,15 @@ Module cell.
                             M.get_function (| "core::panicking::panic", [] |),
                             [
                               M.read (|
-                                Value.String "assertion failed: borrow != BorrowFlag::MAX"
+                                M.of_value (|
+                                  Value.String "assertion failed: borrow != BorrowFlag::MAX"
+                                |)
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
@@ -3238,23 +3344,30 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.add (|
+                      Integer.Isize,
+                      M.read (| borrow |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::cell::BorrowRef"
-                [
-                  ("borrow",
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::cell::BorrowRef",
-                        "borrow"
-                      |)
-                    |))
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::cell::BorrowRef"
+                  [
+                    ("borrow",
+                      A.to_value
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::cell::BorrowRef",
+                            "borrow"
+                          |)
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3291,7 +3404,7 @@ Module cell.
             unsafe { self.value.as_ref() }
         }
     *)
-    Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -3332,41 +3445,45 @@ Module cell.
             Ref { value: orig.value, borrow: orig.borrow.clone() }
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ orig ] =>
         ltac:(M.monadic
           (let orig := M.alloc (| orig |) in
-          Value.StructRecord
-            "core::cell::Ref"
-            [
-              ("value",
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| orig |),
-                    "core::cell::Ref",
-                    "value"
-                  |)
-                |));
-              ("borrow",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.path "core::cell::BorrowRef",
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| orig |),
-                      "core::cell::Ref",
-                      "borrow"
-                    |)
-                  ]
-                |))
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::Ref"
+              [
+                ("value",
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| orig |),
+                        "core::cell::Ref",
+                        "value"
+                      |)
+                    |)));
+                ("borrow",
+                  A.to_value
+                    (M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::cell::BorrowRef",
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| orig |),
+                          "core::cell::Ref",
+                          "borrow"
+                        |)
+                      ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3382,58 +3499,65 @@ Module cell.
             Ref { value: NonNull::from(f(&*orig)), borrow: orig.borrow }
         }
     *)
-    Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ orig; f ] =>
         ltac:(M.monadic
           (let orig := M.alloc (| orig |) in
           let f := M.alloc (| f |) in
-          Value.StructRecord
-            "core::cell::Ref"
-            [
-              ("value",
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
-                    [ Ty.apply (Ty.path "&") [ U ] ],
-                    "from",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::Ref"
+              [
+                ("value",
+                  A.to_value
+                    (M.call_closure (|
                       M.get_trait_method (|
-                        "core::ops::function::FnOnce",
-                        F,
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
-                        "call_once",
+                        "core::convert::From",
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                        [ Ty.apply (Ty.path "&") [ U ] ],
+                        "from",
                         []
                       |),
                       [
-                        M.read (| f |);
-                        Value.Tuple
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::function::FnOnce",
+                            F,
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                            "call_once",
+                            []
+                          |),
                           [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply (Ty.path "core::cell::Ref") [ T ],
-                                [],
-                                "deref",
-                                []
-                              |),
-                              [ orig ]
+                            M.read (| f |);
+                            M.of_value (|
+                              Value.Tuple
+                                [
+                                  A.to_value
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply (Ty.path "core::cell::Ref") [ T ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ orig ]
+                                    |))
+                                ]
                             |)
                           ]
+                        |)
                       ]
-                    |)
-                  ]
-                |));
-              ("borrow",
-                M.read (|
-                  M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
-                |))
-            ]))
+                    |)));
+                ("borrow",
+                  A.to_value
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (| orig, "core::cell::Ref", "borrow" |)
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -3450,7 +3574,7 @@ Module cell.
             }
         }
     *)
-    Definition filter_map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition filter_map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ orig; f ] =>
@@ -3470,19 +3594,22 @@ Module cell.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply (Ty.path "core::cell::Ref") [ T ],
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [ orig ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply (Ty.path "core::cell::Ref") [ T ],
+                                [],
+                                "deref",
+                                []
+                              |),
+                              [ orig ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -3497,38 +3624,49 @@ Module cell.
                       |) in
                     let value := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          Value.StructRecord
-                            "core::cell::Ref"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
-                                    [ Ty.apply (Ty.path "&") [ U ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| value |) ]
-                                |));
-                              ("borrow",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    orig,
-                                    "core::cell::Ref",
-                                    "borrow"
-                                  |)
-                                |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::Ref"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                                            [ Ty.apply (Ty.path "&") [ U ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)));
+                                    ("borrow",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            orig,
+                                            "core::cell::Ref",
+                                            "borrow"
+                                          |)
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| orig |)) ]
+                      |)
                     |)))
               ]
             |)
@@ -3553,7 +3691,7 @@ Module cell.
             )
         }
     *)
-    Definition map_split (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_split (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; V; F ], [ orig; f ] =>
@@ -3573,19 +3711,22 @@ Module cell.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply (Ty.path "core::cell::Ref") [ T ],
-                            [],
-                            "deref",
-                            []
-                          |),
-                          [ orig ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply (Ty.path "core::cell::Ref") [ T ],
+                                [],
+                                "deref",
+                                []
+                              |),
+                              [ orig ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -3616,48 +3757,59 @@ Module cell.
                         |)
                       |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          Value.StructRecord
-                            "core::cell::Ref"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
-                                    [ Ty.apply (Ty.path "&") [ U ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| a |) ]
-                                |));
-                              ("borrow", M.read (| borrow |))
-                            ];
-                          Value.StructRecord
-                            "core::cell::Ref"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ V ],
-                                    [ Ty.apply (Ty.path "&") [ V ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| b |) ]
-                                |));
-                              ("borrow",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    orig,
-                                    "core::cell::Ref",
-                                    "borrow"
-                                  |)
-                                |))
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.Tuple
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::Ref"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                                            [ Ty.apply (Ty.path "&") [ U ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| a |) ]
+                                        |)));
+                                    ("borrow", A.to_value (M.read (| borrow |)))
+                                  ]
+                              |));
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::Ref"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ V ],
+                                            [ Ty.apply (Ty.path "&") [ V ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| b |) ]
+                                        |)));
+                                    ("borrow",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            orig,
+                                            "core::cell::Ref",
+                                            "borrow"
+                                          |)
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -3680,7 +3832,7 @@ Module cell.
             unsafe { orig.value.as_ref() }
         }
     *)
-    Definition leak (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition leak (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ orig ] =>
@@ -3737,7 +3889,7 @@ Module cell.
             ( **self).fmt(f)
         }
     *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -3784,7 +3936,7 @@ Module cell.
             RefMut { value, borrow: orig.borrow, marker: PhantomData }
         }
     *)
-    Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ orig; f ] =>
@@ -3813,39 +3965,47 @@ Module cell.
                       |),
                       [
                         M.read (| f |);
-                        Value.Tuple
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply (Ty.path "core::cell::RefMut") [ T ],
-                                [],
-                                "deref_mut",
-                                []
-                              |),
-                              [ orig ]
-                            |)
-                          ]
+                        M.of_value (|
+                          Value.Tuple
+                            [
+                              A.to_value
+                                (M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    Ty.apply (Ty.path "core::cell::RefMut") [ T ],
+                                    [],
+                                    "deref_mut",
+                                    []
+                                  |),
+                                  [ orig ]
+                                |))
+                            ]
+                        |)
                       ]
                     |)
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::cell::RefMut"
-                [
-                  ("value", M.read (| value |));
-                  ("borrow",
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        orig,
-                        "core::cell::RefMut",
-                        "borrow"
-                      |)
-                    |));
-                  ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::cell::RefMut"
+                  [
+                    ("value", A.to_value (M.read (| value |)));
+                    ("borrow",
+                      A.to_value
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            orig,
+                            "core::cell::RefMut",
+                            "borrow"
+                          |)
+                        |)));
+                    ("marker",
+                      A.to_value
+                        (M.of_value (| Value.StructTuple "core::marker::PhantomData" [] |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -3870,7 +4030,7 @@ Module cell.
             }
         }
     *)
-    Definition filter_map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition filter_map (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; F ], [ orig; f ] =>
@@ -3890,19 +4050,22 @@ Module cell.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::DerefMut",
-                            Ty.apply (Ty.path "core::cell::RefMut") [ T ],
-                            [],
-                            "deref_mut",
-                            []
-                          |),
-                          [ orig ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::DerefMut",
+                                Ty.apply (Ty.path "core::cell::RefMut") [ T ],
+                                [],
+                                "deref_mut",
+                                []
+                              |),
+                              [ orig ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -3917,39 +4080,54 @@ Module cell.
                       |) in
                     let value := M.copy (| γ0_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          Value.StructRecord
-                            "core::cell::RefMut"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
-                                    [ Ty.apply (Ty.path "&mut") [ U ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| value |) ]
-                                |));
-                              ("borrow",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    orig,
-                                    "core::cell::RefMut",
-                                    "borrow"
-                                  |)
-                                |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::RefMut"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                                            [ Ty.apply (Ty.path "&mut") [ U ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| value |) ]
+                                        |)));
+                                    ("borrow",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            orig,
+                                            "core::cell::RefMut",
+                                            "borrow"
+                                          |)
+                                        |)));
+                                    ("marker",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::marker::PhantomData" []
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ A.to_value (M.read (| orig |)) ]
+                      |)
                     |)))
               ]
             |)
@@ -3977,7 +4155,7 @@ Module cell.
             )
         }
     *)
-    Definition map_split (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_split (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [ U; V; F ], [ orig; f ] =>
@@ -4005,19 +4183,22 @@ Module cell.
                   |),
                   [
                     M.read (| f |);
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::deref::DerefMut",
-                            Ty.apply (Ty.path "core::cell::RefMut") [ T ],
-                            [],
-                            "deref_mut",
-                            []
-                          |),
-                          [ orig ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.Tuple
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::DerefMut",
+                                Ty.apply (Ty.path "core::cell::RefMut") [ T ],
+                                [],
+                                "deref_mut",
+                                []
+                              |),
+                              [ orig ]
+                            |))
+                        ]
+                    |)
                   ]
                 |)
               |),
@@ -4029,50 +4210,69 @@ Module cell.
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     M.alloc (|
-                      Value.Tuple
-                        [
-                          Value.StructRecord
-                            "core::cell::RefMut"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
-                                    [ Ty.apply (Ty.path "&mut") [ U ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| a |) ]
-                                |));
-                              ("borrow", M.read (| borrow |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ];
-                          Value.StructRecord
-                            "core::cell::RefMut"
-                            [
-                              ("value",
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ V ],
-                                    [ Ty.apply (Ty.path "&mut") [ V ] ],
-                                    "from",
-                                    []
-                                  |),
-                                  [ M.read (| b |) ]
-                                |));
-                              ("borrow",
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    orig,
-                                    "core::cell::RefMut",
-                                    "borrow"
-                                  |)
-                                |));
-                              ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                            ]
-                        ]
+                      M.of_value (|
+                        Value.Tuple
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::RefMut"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                                            [ Ty.apply (Ty.path "&mut") [ U ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| a |) ]
+                                        |)));
+                                    ("borrow", A.to_value (M.read (| borrow |)));
+                                    ("marker",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::marker::PhantomData" []
+                                        |)))
+                                  ]
+                              |));
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::RefMut"
+                                  [
+                                    ("value",
+                                      A.to_value
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::From",
+                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ V ],
+                                            [ Ty.apply (Ty.path "&mut") [ V ] ],
+                                            "from",
+                                            []
+                                          |),
+                                          [ M.read (| b |) ]
+                                        |)));
+                                    ("borrow",
+                                      A.to_value
+                                        (M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            orig,
+                                            "core::cell::RefMut",
+                                            "borrow"
+                                          |)
+                                        |)));
+                                    ("marker",
+                                      A.to_value
+                                        (M.of_value (|
+                                          Value.StructTuple "core::marker::PhantomData" []
+                                        |)))
+                                  ]
+                              |))
+                          ]
+                      |)
                     |)))
               ]
             |)
@@ -4096,7 +4296,7 @@ Module cell.
             unsafe { orig.value.as_mut() }
         }
     *)
-    Definition leak (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition leak (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ orig ] =>
@@ -4158,7 +4358,7 @@ Module cell.
             self.borrow.set(borrow + 1);
         }
     *)
-    Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -4185,26 +4385,27 @@ Module cell.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_writing", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4217,17 +4418,20 @@ Module cell.
                                       M.get_function (| "core::panicking::panic", [] |),
                                       [
                                         M.read (|
-                                          Value.String "assertion failed: is_writing(borrow)"
+                                          M.of_value (|
+                                            Value.String "assertion failed: is_writing(borrow)"
+                                          |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
@@ -4246,11 +4450,15 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.add (|
+                      Integer.Isize,
+                      M.read (| borrow |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
                   ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| M.of_value (| Value.Tuple [] |) |)
           |)))
       | _, _ => M.impossible
       end.
@@ -4281,7 +4489,7 @@ Module cell.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ borrow ] =>
         ltac:(M.monadic
@@ -4301,11 +4509,7 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.Isize 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     let _ :=
                       M.alloc (|
                         M.call_closure (|
@@ -4317,23 +4521,32 @@ Module cell.
                           [
                             M.read (| borrow |);
                             BinOp.Panic.sub (|
+                              Integer.Isize,
                               M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
-                              Value.Integer Integer.Isize 1
+                              M.of_value (| Value.Integer 1 |)
                             |)
                           ]
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          Value.StructRecord
-                            "core::cell::BorrowRefMut"
-                            [ ("borrow", M.read (| borrow |)) ]
-                        ]
+                      M.of_value (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            A.to_value
+                              (M.of_value (|
+                                Value.StructRecord
+                                  "core::cell::BorrowRefMut"
+                                  [ ("borrow", A.to_value (M.read (| borrow |))) ]
+                              |))
+                          ]
+                      |)
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.of_value (| Value.StructTuple "core::option::Option::None" [] |)
+                    |)))
               ]
             |)
           |)))
@@ -4352,7 +4565,7 @@ Module cell.
             BorrowRefMut { borrow: self.borrow }
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
@@ -4379,26 +4592,27 @@ Module cell.
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| M.of_value (| Value.Bool true |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.Pure.not (|
+                                        M.call_closure (|
                                           M.get_function (| "core::cell::is_writing", [] |),
                                           [ M.read (| borrow |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -4411,32 +4625,37 @@ Module cell.
                                       M.get_function (| "core::panicking::panic", [] |),
                                       [
                                         M.read (|
-                                          Value.String "assertion failed: is_writing(borrow)"
+                                          M.of_value (|
+                                            Value.String "assertion failed: is_writing(borrow)"
+                                          |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| M.of_value (| Value.Tuple [] |) |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| M.of_value (| Value.Tuple [] |) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.ne
-                                (M.read (| borrow |))
-                                (M.read (| M.get_constant (| "core::num::MIN" |) |)))
+                            UnOp.Pure.not (|
+                              BinOp.Pure.ne (|
+                                M.read (| borrow |),
+                                M.read (| M.get_constant (| "core::num::MIN" |) |)
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4445,13 +4664,15 @@ Module cell.
                             M.get_function (| "core::panicking::panic", [] |),
                             [
                               M.read (|
-                                Value.String "assertion failed: borrow != BorrowFlag::MIN"
+                                M.of_value (|
+                                  Value.String "assertion failed: borrow != BorrowFlag::MIN"
+                                |)
                               |)
                             ]
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                 ]
               |) in
             let _ :=
@@ -4470,23 +4691,30 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| M.read (| borrow |), Value.Integer Integer.Isize 1 |)
+                    BinOp.Panic.sub (|
+                      Integer.Isize,
+                      M.read (| borrow |),
+                      M.of_value (| Value.Integer 1 |)
+                    |)
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
-                "core::cell::BorrowRefMut"
-                [
-                  ("borrow",
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::cell::BorrowRefMut",
-                        "borrow"
-                      |)
-                    |))
-                ]
+              M.of_value (|
+                Value.StructRecord
+                  "core::cell::BorrowRefMut"
+                  [
+                    ("borrow",
+                      A.to_value
+                        (M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::cell::BorrowRefMut",
+                            "borrow"
+                          |)
+                        |)))
+                  ]
+              |)
             |)
           |)))
       | _, _ => M.impossible
@@ -4520,7 +4748,7 @@ Module cell.
             unsafe { self.value.as_ref() }
         }
     *)
-    Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -4562,7 +4790,7 @@ Module cell.
             unsafe { self.value.as_mut() }
         }
     *)
-    Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -4614,7 +4842,7 @@ Module cell.
             ( **self).fmt(f)
         }
     *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self; f ] =>
@@ -4676,13 +4904,17 @@ Module cell.
             UnsafeCell { value }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::UnsafeCell"
+              [ ("value", A.to_value (M.read (| value |))) ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -4693,7 +4925,7 @@ Module cell.
             self.value
         }
     *)
-    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -4714,13 +4946,13 @@ Module cell.
             unsafe { &mut *(value as *mut T as *mut UnsafeCell<T>) }
         }
     *)
-    Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          M.rust_cast (M.read (| M.use (M.alloc (| M.read (| value |) |)) |))))
+          M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| value |) |)) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -4736,13 +4968,13 @@ Module cell.
             self as *const UnsafeCell<T> as *const T as *mut T
         }
     *)
-    Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.rust_cast (M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)))))
+          M.rust_cast (| M.rust_cast (| M.read (| M.use (M.alloc (| M.read (| self |) |)) |) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -4753,7 +4985,7 @@ Module cell.
             &mut self.value
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -4779,13 +5011,13 @@ Module cell.
             this as *const T as *mut T
         }
     *)
-    Definition raw_get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition raw_get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.rust_cast (M.rust_cast (M.read (| this |)))))
+          M.rust_cast (| M.rust_cast (| M.read (| this |) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -4803,7 +5035,7 @@ Module cell.
             UnsafeCell::new(Default::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
@@ -4841,7 +5073,7 @@ Module cell.
             UnsafeCell::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ t ] =>
@@ -4918,18 +5150,25 @@ Module cell.
             Self { value: UnsafeCell { value } }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
-          Value.StructRecord
-            "core::cell::SyncUnsafeCell"
-            [
-              ("value",
-                Value.StructRecord "core::cell::UnsafeCell" [ ("value", M.read (| value |)) ])
-            ]))
+          M.of_value (|
+            Value.StructRecord
+              "core::cell::SyncUnsafeCell"
+              [
+                ("value",
+                  A.to_value
+                    (M.of_value (|
+                      Value.StructRecord
+                        "core::cell::UnsafeCell"
+                        [ ("value", A.to_value (M.read (| value |))) ]
+                    |)))
+              ]
+          |)))
       | _, _ => M.impossible
       end.
     
@@ -4940,7 +5179,7 @@ Module cell.
             self.value.into_inner()
         }
     *)
-    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -4973,7 +5212,7 @@ Module cell.
             self.value.get()
         }
     *)
-    Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -5003,7 +5242,7 @@ Module cell.
             self.value.get_mut()
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ self ] =>
@@ -5038,13 +5277,13 @@ Module cell.
             this as *const T as *mut T
         }
     *)
-    Definition raw_get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition raw_get (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          M.rust_cast (M.rust_cast (M.read (| this |)))))
+          M.rust_cast (| M.rust_cast (| M.read (| this |) |) |)))
       | _, _ => M.impossible
       end.
     
@@ -5062,7 +5301,7 @@ Module cell.
             SyncUnsafeCell::new(Default::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [] =>
@@ -5100,7 +5339,7 @@ Module cell.
             SyncUnsafeCell::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
       let Self : Ty.t := Self T in
       match τ, α with
       | [], [ t ] =>
@@ -5165,7 +5404,7 @@ Module cell.
       let _: RefCell<&dyn Send> = d;
   }
   *)
-  Definition assert_coerce_unsized (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition assert_coerce_unsized (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ a; b; c; d ] =>
       ltac:(M.monadic
@@ -5175,23 +5414,29 @@ Module cell.
         let d := M.alloc (| d |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| a |)) |),
+            M.alloc (| (* Unsize *) M.pointer_coercion (| M.read (| a |) |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
-                    M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| b |)) |),
+                    M.alloc (| (* Unsize *) M.pointer_coercion (| M.read (| b |) |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| c |)) |),
+                            M.alloc (| (* Unsize *) M.pointer_coercion (| M.read (| c |) |) |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| d |)) |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                    M.alloc (|
+                                      (* Unsize *) M.pointer_coercion (| M.read (| d |) |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
+                                    ]
                                   |)))
                             ]
                           |)))

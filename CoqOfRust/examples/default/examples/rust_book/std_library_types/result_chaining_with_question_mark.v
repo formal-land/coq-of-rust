@@ -31,7 +31,7 @@ Module checked.
     Definition Self : Ty.t := Ty.path "result_chaining_with_question_mark::checked::MathError".
     
     (*     Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
       match τ, α with
       | [], [ self; f ] =>
         ltac:(M.monadic
@@ -48,15 +48,19 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
+                        M.alloc (| M.read (| M.of_value (| Value.String "DivisionByZero" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
+                        M.alloc (|
+                          M.read (| M.of_value (| Value.String "NonPositiveLogarithm" |) |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
-                        M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
+                        M.alloc (|
+                          M.read (| M.of_value (| Value.String "NegativeSquareRoot" |) |)
+                        |)))
                   ]
                 |)
               |)
@@ -88,7 +92,7 @@ Module checked.
           }
       }
   *)
-  Definition div (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition div (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x; y ] =>
       ltac:(M.monadic
@@ -96,31 +100,44 @@ Module checked.
         let y := M.alloc (| y |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.eq (M.read (| y |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.Pure.eq (|
+                          M.read (| y |),
+                          M.read (| M.of_value (| UnsupportedLiteral |) |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      [
-                        Value.StructTuple
-                          "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
-                          []
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructTuple
+                                "result_chaining_with_question_mark::checked::MathError::DivisionByZero"
+                                []
+                            |))
+                        ]
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [ BinOp.Panic.div (| M.read (| x |), M.read (| y |) |) ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (BinOp.Panic.div (| Integer.Usize, M.read (| x |), M.read (| y |) |))
+                        ]
+                    |)
                   |)))
             ]
           |)
@@ -137,43 +154,54 @@ Module checked.
           }
       }
   *)
-  Definition sqrt (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition sqrt (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.lt (M.read (| x |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.Pure.lt (|
+                          M.read (| x |),
+                          M.read (| M.of_value (| UnsupportedLiteral |) |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      [
-                        Value.StructTuple
-                          "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
-                          []
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructTuple
+                                "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot"
+                                []
+                            |))
+                        ]
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "sqrt", [] |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (| Ty.path "f64", "sqrt", [] |),
+                              [ M.read (| x |) ]
+                            |))
+                        ]
+                    |)
                   |)))
             ]
           |)
@@ -190,43 +218,54 @@ Module checked.
           }
       }
   *)
-  Definition ln (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition ln (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (|
           M.match_operator (|
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| M.of_value (| Value.Tuple [] |) |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.le (M.read (| x |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.Pure.le (|
+                          M.read (| x |),
+                          M.read (| M.of_value (| UnsupportedLiteral |) |)
+                        |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      [
-                        Value.StructTuple
-                          "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
-                          []
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        [
+                          A.to_value
+                            (M.of_value (|
+                              Value.StructTuple
+                                "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+                                []
+                            |))
+                        ]
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "f64", "ln", [] |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
+                    M.of_value (|
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        [
+                          A.to_value
+                            (M.call_closure (|
+                              M.get_associated_function (| Ty.path "f64", "ln", [] |),
+                              [ M.read (| x |) ]
+                            |))
+                        ]
+                    |)
                   |)))
             ]
           |)
@@ -245,7 +284,7 @@ Module checked.
           sqrt(ln)
       }
   *)
-  Definition op_ (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition op_ (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x; y ] =>
       ltac:(M.monadic
@@ -446,7 +485,7 @@ Module checked.
           }
       }
   *)
-  Definition op (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition op (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [ x; y ] =>
       ltac:(M.monadic
@@ -478,14 +517,21 @@ Module checked.
                             why,
                             [
                               fun γ =>
-                                ltac:(M.monadic (Value.String "logarithm of non-positive number"));
-                              fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.read (| Value.String "division by zero" |) |)));
+                                  (M.of_value (|
+                                    Value.String "logarithm of non-positive number"
+                                  |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
-                                    M.read (| Value.String "square root of negative number" |)
+                                    M.read (| M.of_value (| Value.String "division by zero" |) |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.read (|
+                                      M.of_value (| Value.String "square root of negative number" |)
+                                    |)
                                   |)))
                             ]
                           |)
@@ -511,33 +557,43 @@ Module checked.
                             |),
                             [
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                                |));
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value (M.read (| M.of_value (| Value.String "" |) |));
+                                        A.to_value (M.read (| M.of_value (| Value.String "
+" |) |))
+                                      ]
+                                  |)
+                                |)
+                              |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "f64" ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              M.pointer_coercion (|
+                                M.alloc (|
+                                  M.of_value (|
+                                    Value.Array
+                                      [
+                                        A.to_value
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_display",
+                                              [ Ty.path "f64" ]
+                                            |),
+                                            [ value ]
+                                          |))
+                                      ]
+                                  |)
+                                |)
+                              |)
                             ]
                           |)
                         ]
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| M.of_value (| Value.Tuple [] |) |)))
             ]
           |)
         |)))
@@ -550,7 +606,7 @@ fn main() {
     checked::op(1.0, 10.0);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
   match τ, α with
   | [], [] =>
     ltac:(M.monadic
@@ -559,10 +615,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "result_chaining_with_question_mark::checked::op", [] |),
-              [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
+              [
+                M.read (| M.of_value (| UnsupportedLiteral |) |);
+                M.read (| M.of_value (| UnsupportedLiteral |) |)
+              ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| M.of_value (| Value.Tuple [] |) |)
       |)))
   | _, _ => M.impossible
   end.

@@ -8,8 +8,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (τ : list Ty.t) (α : list A.t) : M :=
+  match τ, α with
+  | [], [] => ltac:(M.monadic (M.of_value (| Value.Tuple [] |)))
+  | _, _ => M.impossible
+  end.
 
 Module main.
   (*
@@ -17,7 +20,7 @@ Module main.
           panic!("This call never returns.");
       }
   *)
-  Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition foo (τ : list Ty.t) (α : list A.t) : M :=
     match τ, α with
     | [], [] =>
       ltac:(M.monadic
@@ -26,7 +29,7 @@ Module main.
             "std::panicking::begin_panic",
             [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
           |),
-          [ M.read (| Value.String "This call never returns." |) ]
+          [ M.read (| M.of_value (| Value.String "This call never returns." |) |) ]
         |)))
     | _, _ => M.impossible
     end.

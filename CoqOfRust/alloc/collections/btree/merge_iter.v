@@ -44,7 +44,7 @@ Module collections.
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ].
         
         (* Clone *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -65,20 +65,23 @@ Module collections.
                           |) in
                         let __self_0 := M.alloc (| γ1_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::merge_iter::Peeked::A"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated,
-                                  [],
-                                  "clone",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |) ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::merge_iter::Peeked::A"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      Ty.associated,
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [ M.read (| __self_0 |) ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -91,20 +94,23 @@ Module collections.
                           |) in
                         let __self_0 := M.alloc (| γ1_0 |) in
                         M.alloc (|
-                          Value.StructTuple
-                            "alloc::collections::btree::merge_iter::Peeked::B"
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.associated,
-                                  [],
-                                  "clone",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |) ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.StructTuple
+                              "alloc::collections::btree::merge_iter::Peeked::B"
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      Ty.associated,
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [ M.read (| __self_0 |) ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)
@@ -126,7 +132,7 @@ Module collections.
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ].
         
         (* Debug *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -156,8 +162,8 @@ Module collections.
                             |),
                             [
                               M.read (| f |);
-                              M.read (| Value.String "A" |);
-                              (* Unsize *) M.pointer_coercion __self_0
+                              M.read (| M.of_value (| Value.String "A" |) |);
+                              (* Unsize *) M.pointer_coercion (| __self_0 |)
                             ]
                           |)
                         |)));
@@ -180,8 +186,8 @@ Module collections.
                             |),
                             [
                               M.read (| f |);
-                              M.read (| Value.String "B" |);
-                              (* Unsize *) M.pointer_coercion __self_0
+                              M.read (| M.of_value (| Value.String "B" |) |);
+                              (* Unsize *) M.pointer_coercion (| __self_0 |)
                             ]
                           |)
                         |)))
@@ -209,58 +215,66 @@ Module collections.
                 Self { a: self.a.clone(), b: self.b.clone(), peeked: self.peeked.clone() }
             }
         *)
-        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "alloc::collections::btree::merge_iter::MergeIterInner"
-                [
-                  ("a",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "a"
-                        |)
-                      ]
-                    |));
-                  ("b",
-                    M.call_closure (|
-                      M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "b"
-                        |)
-                      ]
-                    |));
-                  ("peeked",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [ I ]
-                          ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "peeked"
-                        |)
-                      ]
-                    |))
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "alloc::collections::btree::merge_iter::MergeIterInner"
+                  [
+                    ("a",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                              "a"
+                            |)
+                          ]
+                        |)));
+                    ("b",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (| "core::clone::Clone", I, [], "clone", [] |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                              "b"
+                            |)
+                          ]
+                        |)));
+                    ("peeked",
+                      A.to_value
+                        (M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                                  [ I ]
+                              ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                              "peeked"
+                            |)
+                          ]
+                        |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -282,7 +296,7 @@ Module collections.
                 f.debug_tuple("MergeIterInner").field(&self.a).field(&self.b).field(&self.peeked).finish()
             }
         *)
-        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self; f ] =>
@@ -324,34 +338,40 @@ Module collections.
                                     "debug_tuple",
                                     []
                                   |),
-                                  [ M.read (| f |); M.read (| Value.String "MergeIterInner" |) ]
+                                  [
+                                    M.read (| f |);
+                                    M.read (| M.of_value (| Value.String "MergeIterInner" |) |)
+                                  ]
                                 |)
                               |);
                               (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
+                              M.pointer_coercion (|
+                                M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::btree::merge_iter::MergeIterInner",
                                   "a"
-                                |))
+                                |)
+                              |)
                             ]
                           |);
                           (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
+                          M.pointer_coercion (|
+                            M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "alloc::collections::btree::merge_iter::MergeIterInner",
                               "b"
-                            |))
+                            |)
+                          |)
                         ]
                       |);
                       (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
+                      M.pointer_coercion (|
+                        M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::collections::btree::merge_iter::MergeIterInner",
                           "peeked"
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -377,20 +397,24 @@ Module collections.
                 MergeIterInner { a, b, peeked: None }
             }
         *)
-        Definition new (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ a; b ] =>
             ltac:(M.monadic
               (let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
-              Value.StructRecord
-                "alloc::collections::btree::merge_iter::MergeIterInner"
-                [
-                  ("a", M.read (| a |));
-                  ("b", M.read (| b |));
-                  ("peeked", Value.StructTuple "core::option::Option::None" [])
-                ]))
+              M.of_value (|
+                Value.StructRecord
+                  "alloc::collections::btree::merge_iter::MergeIterInner"
+                  [
+                    ("a", A.to_value (M.read (| a |)));
+                    ("b", A.to_value (M.read (| b |)));
+                    ("peeked",
+                      A.to_value
+                        (M.of_value (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ]
+              |)))
           | _, _ => M.impossible
           end.
         
@@ -432,7 +456,7 @@ Module collections.
                 (a_next, b_next)
             }
         *)
-        Definition nexts (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nexts (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [ Cmp ], [ self; cmp ] =>
@@ -440,8 +464,8 @@ Module collections.
               (let self := M.alloc (| self |) in
               let cmp := M.alloc (| cmp |) in
               M.read (|
-                let a_next := M.copy (| Value.DeclaredButUndefined |) in
-                let b_next := M.copy (| Value.DeclaredButUndefined |) in
+                let a_next := M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
+                let b_next := M.copy (| M.of_value (| Value.DeclaredButUndefined |) |) in
                 let _ :=
                   M.match_operator (|
                     M.alloc (|
@@ -485,7 +509,11 @@ Module collections.
                           let _ :=
                             M.write (|
                               a_next,
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ A.to_value (M.read (| next |)) ]
+                              |)
                             |) in
                           let _ :=
                             M.write (|
@@ -507,7 +535,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
@@ -526,7 +554,11 @@ Module collections.
                           let _ :=
                             M.write (|
                               b_next,
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                              M.of_value (|
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [ A.to_value (M.read (| next |)) ]
+                              |)
                             |) in
                           let _ :=
                             M.write (|
@@ -548,7 +580,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -591,16 +623,19 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
                 let _ :=
                   M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| M.of_value (| Value.Tuple [] |) |),
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.alloc (| Value.Tuple [ a_next; b_next ] |) in
+                          (let γ :=
+                            M.alloc (|
+                              M.of_value (| Value.Tuple [ A.to_value a_next; A.to_value b_next ] |)
+                            |) in
                           let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let γ0_0 := M.read (| γ0_0 |) in
@@ -635,7 +670,13 @@ Module collections.
                                   "call",
                                   []
                                 |),
-                                [ cmp; Value.Tuple [ M.read (| a1 |); M.read (| b1 |) ] ]
+                                [
+                                  cmp;
+                                  M.of_value (|
+                                    Value.Tuple
+                                      [ A.to_value (M.read (| a1 |)); A.to_value (M.read (| b1 |)) ]
+                                  |)
+                                ]
                               |)
                             |),
                             [
@@ -675,8 +716,9 @@ Module collections.
                                           |),
                                           [ b_next ]
                                         |);
-                                        M.constructor_as_closure
+                                        M.constructor_as_closure (|
                                           "alloc::collections::btree::merge_iter::Peeked::B"
+                                        |)
                                       ]
                                     |)
                                   |)));
@@ -716,18 +758,25 @@ Module collections.
                                           |),
                                           [ a_next ]
                                         |);
-                                        M.constructor_as_closure
+                                        M.constructor_as_closure (|
                                           "alloc::collections::btree::merge_iter::Peeked::A"
+                                        |)
                                       ]
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                             ]
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |)))
                     ]
                   |) in
-                M.alloc (| Value.Tuple [ M.read (| a_next |); M.read (| b_next |) ] |)
+                M.alloc (|
+                  M.of_value (|
+                    Value.Tuple
+                      [ A.to_value (M.read (| a_next |)); A.to_value (M.read (| b_next |)) ]
+                  |)
+                |)
               |)))
           | _, _ => M.impossible
           end.
@@ -748,7 +797,7 @@ Module collections.
                 }
             }
         *)
-        Definition lens (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition lens (I : Ty.t) (τ : list Ty.t) (α : list A.t) : M :=
           let Self : Ty.t := Self I in
           match τ, α with
           | [], [ self ] =>
@@ -777,44 +826,49 @@ Module collections.
                             0
                           |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              BinOp.Panic.add (|
-                                Value.Integer Integer.Usize 1,
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::iter::traits::exact_size::ExactSizeIterator",
-                                    I,
-                                    [],
-                                    "len",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "a"
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (BinOp.Panic.add (|
+                                    Integer.Usize,
+                                    M.of_value (| Value.Integer 1 |),
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::exact_size::ExactSizeIterator",
+                                        I,
+                                        [],
+                                        "len",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                                          "a"
+                                        |)
+                                      ]
                                     |)
-                                  ]
-                                |)
-                              |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::exact_size::ExactSizeIterator",
-                                  I,
-                                  [],
-                                  "len",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
-                                  |)
-                                ]
-                              |)
-                            ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      "len",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "b"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -831,83 +885,92 @@ Module collections.
                             0
                           |) in
                         M.alloc (|
-                          Value.Tuple
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::exact_size::ExactSizeIterator",
-                                  I,
-                                  [],
-                                  "len",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
-                                  |)
-                                ]
-                              |);
-                              BinOp.Panic.add (|
-                                Value.Integer Integer.Usize 1,
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::iter::traits::exact_size::ExactSizeIterator",
-                                    I,
-                                    [],
-                                    "len",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "b"
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      "len",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "a"
+                                      |)
+                                    ]
+                                  |));
+                                A.to_value
+                                  (BinOp.Panic.add (|
+                                    Integer.Usize,
+                                    M.of_value (| Value.Integer 1 |),
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::exact_size::ExactSizeIterator",
+                                        I,
+                                        [],
+                                        "len",
+                                        []
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                                          "b"
+                                        |)
+                                      ]
                                     |)
-                                  ]
-                                |)
-                              |)
-                            ]
+                                  |))
+                              ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          Value.Tuple
-                            [
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::exact_size::ExactSizeIterator",
-                                  I,
-                                  [],
-                                  "len",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "a"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::exact_size::ExactSizeIterator",
-                                  I,
-                                  [],
-                                  "len",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "b"
-                                  |)
-                                ]
-                              |)
-                            ]
+                          M.of_value (|
+                            Value.Tuple
+                              [
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      "len",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "a"
+                                      |)
+                                    ]
+                                  |));
+                                A.to_value
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      "len",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "b"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          |)
                         |)))
                   ]
                 |)

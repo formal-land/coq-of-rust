@@ -14,7 +14,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -28,16 +28,17 @@ Module num.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "TryFromIntError" |);
+                M.read (| M.of_value (| Value.String "TryFromIntError" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_tuple_field (|
                       M.read (| self |),
                       "core::num::error::TryFromIntError",
                       0
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -66,14 +67,14 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
+                M.of_value (| Value.DeclaredButUndefined |),
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
@@ -103,7 +104,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -156,15 +157,15 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -188,7 +189,7 @@ Module num.
               self.description().fmt(fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; fmt ] =>
           ltac:(M.monadic
@@ -229,12 +230,14 @@ Module num.
               "out of range integral type conversion attempted"
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (| Value.String "out of range integral type conversion attempted" |)))
+            M.read (|
+              M.of_value (| Value.String "out of range integral type conversion attempted" |)
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -254,7 +257,7 @@ Module num.
               match x {}
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ x ] =>
           ltac:(M.monadic
@@ -282,7 +285,7 @@ Module num.
               match never {}
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ never ] =>
           ltac:(M.monadic
@@ -310,7 +313,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -324,17 +327,18 @@ Module num.
               |),
               [
                 M.read (| f |);
-                M.read (| Value.String "ParseIntError" |);
-                M.read (| Value.String "kind" |);
+                M.read (| M.of_value (| Value.String "ParseIntError" |) |);
+                M.read (| M.of_value (| Value.String "kind" |) |);
                 (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
+                M.pointer_coercion (|
+                  M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::error::ParseIntError",
                       "kind"
                     |)
-                  |))
+                  |)
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -352,32 +356,35 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructRecord
-              "core::num::error::ParseIntError"
-              [
-                ("kind",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::num::error::IntErrorKind",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::error::ParseIntError",
-                        "kind"
-                      |)
-                    ]
-                  |))
-              ]))
+            M.of_value (|
+              Value.StructRecord
+                "core::num::error::ParseIntError"
+                [
+                  ("kind",
+                    A.to_value
+                      (M.call_closure (|
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "core::num::error::IntErrorKind",
+                          [],
+                          "clone",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::num::error::ParseIntError",
+                            "kind"
+                          |)
+                        ]
+                      |)))
+                ]
+            |)))
         | _, _ => M.impossible
         end.
       
@@ -404,7 +411,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -457,15 +464,15 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                M.of_value (| Value.DeclaredButUndefined |),
+                [ fun γ => ltac:(M.monadic (M.alloc (| M.of_value (| Value.Tuple [] |) |))) ]
               |)
             |)))
         | _, _ => M.impossible
@@ -519,7 +526,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -536,23 +543,23 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Empty" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "Empty" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "InvalidDigit" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "InvalidDigit" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "PosOverflow" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "PosOverflow" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "NegOverflow" |) |)));
+                          M.alloc (| M.read (| M.of_value (| Value.String "NegOverflow" |) |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          M.alloc (| M.read (| Value.String "Zero" |) |)))
+                          M.alloc (| M.read (| M.of_value (| Value.String "Zero" |) |) |)))
                     ]
                   |)
                 |)
@@ -573,7 +580,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -585,29 +592,41 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Empty" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" []
+                        M.of_value (|
+                          Value.StructTuple "core::num::error::IntErrorKind::Empty" []
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" []
+                        M.of_value (|
+                          Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" []
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       M.alloc (|
-                        Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" []
+                        M.of_value (|
+                          Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" []
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Zero" [] |)))
+                      M.alloc (|
+                        M.of_value (|
+                          Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" []
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      M.alloc (|
+                        M.of_value (| Value.StructTuple "core::num::error::IntErrorKind::Zero" [] |)
+                      |)))
                 ]
               |)
             |)))
@@ -637,7 +656,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; other ] =>
           ltac:(M.monadic
@@ -664,7 +683,7 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (| M.read (| __self_tag |), M.read (| __arg1_tag |) |) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -692,12 +711,12 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple []))
+            M.of_value (| Value.Tuple [] |)))
         | _, _ => M.impossible
         end.
       
@@ -718,7 +737,7 @@ Module num.
               &self.kind
           }
       *)
-      Definition kind (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition kind (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -743,7 +762,7 @@ Module num.
               self.description().fmt(f)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self; f ] =>
           ltac:(M.monadic
@@ -790,7 +809,7 @@ Module num.
               }
           }
       *)
-      Definition description (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition description (τ : list Ty.t) (α : list A.t) : M :=
         match τ, α with
         | [], [ self ] =>
           ltac:(M.monadic
@@ -806,25 +825,35 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "cannot parse integer from empty string" |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid digit found in string" |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.read (| Value.String "number too large to fit in target type" |)
+                        M.read (|
+                          M.of_value (| Value.String "cannot parse integer from empty string" |)
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "number too small to fit in target type" |)
+                        M.read (| M.of_value (| Value.String "invalid digit found in string" |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.read (| Value.String "number would be zero for non-zero type" |)
+                        M.read (|
+                          M.of_value (| Value.String "number too large to fit in target type" |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (|
+                          M.of_value (| Value.String "number too small to fit in target type" |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.read (|
+                          M.of_value (| Value.String "number would be zero for non-zero type" |)
+                        |)
                       |)))
                 ]
               |)
