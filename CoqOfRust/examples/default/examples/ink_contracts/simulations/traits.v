@@ -18,16 +18,17 @@ Import simulations.M.Notations.
 } *)
 Module Sheep.
   Record t : Set := {
-    naked: bool,
-    name: string,
+    naked: bool;
+    name: string;
   }.
 
   Global Instance IsToValue : ToValue t := {
     Φ := Ty.path "traits::Sheep";
     φ x :=
       Value.StructRecord "traits::Sheep" [
-        ("naked", φ x.(naked));
-        ("name", φ x.(name));
+      (* TODO: figure out the correct way to fill this *)
+        (* ("naked", φ x.(naked));
+        ("name", φ x.(name)) *)
       ];
   }.
 End Sheep.
@@ -53,6 +54,16 @@ fn name(&self) -> &'static str {
 Definition name (self: traits.Sheep.t) : string := 
   self.(Sheep.name).
 
+(*
+impl Sheep {
+  fn is_naked(&self) -> bool {
+      self.naked
+  }
+}
+*)
+Definition is_naked (self: traits.Sheep.t) : bool :=
+  self.(Sheep.naked).
+
 (* 
 fn noise(&self) -> &'static str {
     if self.is_naked() {
@@ -69,16 +80,6 @@ Definition noise (self: traits.Sheep.t) : string :=
     println!("{} pauses briefly... {}", self.name, self.noise());
 } *)
 Definition talk (self: traits.Sheep.t): unit := tt.
-
-(*
-impl Sheep {
-  fn is_naked(&self) -> bool {
-      self.naked
-  }
-}
-*)
-Definition is_naked (self: traits.Sheep.t) : bool :=
-  self.(Sheep.naked).
 
 (* ** Simulation of a function that modifies a variable ** *)
 
@@ -100,11 +101,11 @@ impl Sheep {
   }
 }
 *)
-Definition shear (self: traits.Sheep.t) : MS? unit := 
+Definition shear (self: traits.Sheep.t) : MS? State.t string unit := 
   letS? storage := readS? in
-  if is_naked(self) then tt else 
-  letS? _ = writeS? (
-    storage <| traits.Animal.naked := true |>,
+  if is_naked(self) then (returnS? tt) else 
+  letS? _ := writeS? (
+    storage <| traits.Sheep.naked := true |>
   )
   in
   returnS? tt.
@@ -149,10 +150,9 @@ fn main() {
 } *)
 
 Definition main : 
-  MS? State.t unit := 
+  MS? State.t string unit := 
   let dolly := new "Dolly" in
-  let _ = talk dolly in
-  let _ = shear dolly in
-  let _ = talk dolly in
+  let _ := talk dolly in
+  let _ := shear dolly in
+  let _ := talk dolly in
   returnS? tt.
-  
