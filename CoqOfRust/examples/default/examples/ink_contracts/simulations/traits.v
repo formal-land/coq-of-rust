@@ -1,16 +1,14 @@
 (* traits/traits.rs *)
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
-Require CoqOfRust.core.simulations.option.
-Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
+Require Import CoqOfRust.core.simulations.option.
+Require Import CoqOfRust.core.simulations.result.
+Require Import CoqOfRust.core.simulations.integer.
+Require Import CoqOfRust.core.simulations.bool.
 Require Import CoqOfRust.simulations.M.
 
 Import simulations.M.Notations.
-
-(* TODO:
-1. Check (if it's necessary) how to implement `TraitHasRun` for `Animal` and `Sheep`
-2. Check if the `main` function has defined correctly
-*)
+Import simulations.bool.Notations.
 
 (* struct Sheep {
   naked: bool,
@@ -26,14 +24,13 @@ Module Sheep.
     Φ := Ty.path "traits::Sheep";
     φ x :=
       Value.StructRecord "traits::Sheep" [
-      (* TODO: figure out the correct way to fill this *)
-        (* ("naked", φ x.(naked));
-        ("name", φ x.(name)) *)
+        ("naked", Value.Bool x.(naked));
+        ("name", Value.String x.(name))
       ];
   }.
 End Sheep.
 
-(*  ** Simulation of functions ** *)
+(* ** Simulation of functions ** *)
 (* 
 fn new(name: &'static str) -> Sheep {
   Sheep {
@@ -81,7 +78,7 @@ Definition noise (self: traits.Sheep.t) : string :=
 } *)
 Definition talk (self: traits.Sheep.t): unit := tt.
 
-(* ** Simulation of a function that modifies a variable ** *)
+(* ** Simulation of function that modifies a variable ** *)
 
 Module State.
   Definition t : Set := traits.Sheep.t.
