@@ -58,7 +58,7 @@ Module Env.
   }.
 End Env.
 
-(* TODO *)
+(* ******** IN PROGRESS ******** *)
 
 (* 
 fn zero_address() -> AccountId {
@@ -123,7 +123,7 @@ Module Result.
   Definition t (T : Set) : Set := core.result.Result T Error.
 End Result.
 
-(* pub trait Erc1155 { *)
+(* pub trait Erc1155 { .. }*)
 Module Erc1155.
   Class Trait (Self : Set) : Set := {
   (* 
@@ -156,3 +156,59 @@ Module Erc1155.
 
   }.
 End Erc1155.
+
+(* pub trait Erc1155TokenReceiver { .. } *)
+Module Erc1155TokenReceiver.
+  Class Trait (Self : Set) : Set := { 
+  (* fn on_received(
+      &mut self,
+      operator: AccountId,
+      from: AccountId,
+      token_id: TokenId,
+      value: Balance,
+      data: Vec<u8>,
+  ) -> Vec<u8>; *)
+
+  (* fn on_batch_received(
+      &mut self,
+      operator: AccountId,
+      from: AccountId,
+      token_ids: Vec<TokenId>,
+      values: Vec<Balance>,
+      data: Vec<u8>,
+  ) -> Vec<u8>; *)
+  }.
+End Erc1155TokenReceiver.
+
+(* type Owner = AccountId;
+type Operator = AccountId; *)
+
+(* pub struct TransferSingle {
+    operator: Option<AccountId>,
+    from: Option<AccountId>,
+    to: Option<AccountId>,
+    token_id: TokenId,
+    value: Balance,
+} *)
+Module TransferSingle.
+  Record t : Set := {
+
+  }.
+End TransferSingle.
+
+(* pub struct ApprovalForAll {
+    owner: AccountId,
+    operator: AccountId,
+    approved: bool,
+}
+
+pub struct Uri {
+    value: String,
+    token_id: TokenId,
+}
+
+enum Event {
+    TransferSingle(TransferSingle),
+    ApprovalForAll(ApprovalForAll),
+    Uri(Uri),
+} *)
