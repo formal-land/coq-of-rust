@@ -1015,13 +1015,9 @@ Proof.
   destruct Integer.normalize_with_error as [sum |] eqn:H_sum_eq; cbn; [|easy].
   constructor; cbn.
   destruct state.
-  assert (H_sum : Integer.Valid.t Integer.U128 sum). {
-    set (balance := erc20.balance_of_impl _ _) in H_sum_eq.
-    unfold Integer.normalize_with_error in H_sum_eq.
-    unfold Integer.Valid.t; cbn in *.
-    repeat destruct (_ <? _) eqn:? in H_sum_eq; try congruence.
-    hauto lq: on solve: lia.
-  }
+  destruct (lib.Integer.normalize_with_error_eq Integer.U128 _ _ H_sum_eq) as [H_sum H_sum_eq'].
+  clear H_sum_eq.
+  rewrite H_sum_eq'.
   constructor; cbn.
   { repeat (
       apply Mapping.insert_balances_is_valid ||
@@ -1029,25 +1025,26 @@ Proof.
       apply H_state
     ).
   }
-  { unfold sum_of_money; cbn.
-    (* rewrite H_sum_eq; clear H_sum_eq.
+  { clear H_sum H_sum_eq'.
+    unfold sum_of_money; cbn.
     repeat rewrite lib.Mapping.sum_insert.
-    pose proof H_storage.(Erc20.Valid.sum _) as H_sum_eq.
+    destruct H_state as [H_storage].
+    pose proof H_storage.(Erc20.Valid.sum _) as H_sum_eq; cbn in H_sum_eq.
     unfold sum_of_money in H_sum_eq; cbn in H_sum_eq; rewrite <- H_sum_eq.
     clear H_sum_eq.
+    unfold id.
     destruct (AccountId.eq_or_neq to from) as [H_to_from_eq | H_to_from_neq].
     { rewrite H_to_from_eq in *; clear H_to_from_eq.
       unfold erc20.balance_of_impl in *; cbn.
-      rewrite lib.Mapping.get_insert_eq; cbn.
-      destruct lib.Mapping.get; lia.
+      repeat rewrite lib.Mapping.get_insert_eq; cbn.
+      destruct simulations.lib.Mapping.get; lia.
     }
-    { unfold erc20.balance_of_impl in *; cbn.
-      rewrite lib.Mapping.get_insert_neq; [|assumption]; cbn.
-      repeat destruct lib.Mapping.get in |- *; lia.
-    } *)
-    admit.
+    { unfold diff, erc20.balance_of_impl in *; cbn.
+      repeat (rewrite lib.Mapping.get_insert_neq; [|assumption]); cbn.
+      repeat destruct simulations.lib.Mapping.get in |- *; lia.
+    }
   }
-Admitted.
+Qed.
 
 Lemma transfer_is_valid
     (env : erc20.Env.t)

@@ -32,6 +32,16 @@ Module Integer.
     Definition t (kind : Integer.t) (z : Z) : Prop :=
       Integer.min kind <= z <= Integer.max kind.
   End Valid.
+
+  Lemma normalize_with_error_eq (kind : Integer.t) (z z' : Z) :
+    Integer.normalize_with_error kind z = inl z' ->
+    Valid.t kind z /\
+    z' = z.
+  Proof.
+    unfold Integer.normalize_with_error, Valid.t.
+    repeat destruct (_ <? _) eqn:? in |- *; try congruence.
+    split; [lia | congruence].
+  Qed.
 End Integer.
 
 Module BinOp.
