@@ -408,82 +408,6 @@ Module extension.
             (* Instance *) [].
       End Impl_core_marker_Copy_for_spl_token_2022_extension_group_member_pointer_instruction_InitializeInstructionData.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::group_member_pointer::instruction::InitializeInstructionData";
-                                          Ty.path
-                                            "spl_token_2022::extension::group_member_pointer::instruction::_::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_group_member_pointer_instruction_InitializeInstructionData.
         Definition Self : Ty.t :=
           Ty.path
@@ -496,44 +420,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_group_member_pointer_instruction_InitializeInstructionData.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_group_member_pointer_instruction_InitializeInstructionData.
         Definition Self : Ty.t :=
@@ -596,63 +482,6 @@ Module extension.
             (* Instance *) [].
       End Impl_core_marker_Copy_for_spl_token_2022_extension_group_member_pointer_instruction_UpdateInstructionData.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::group_member_pointer::instruction::UpdateInstructionData";
-                                          Ty.path
-                                            "spl_token_2022::extension::group_member_pointer::instruction::_'5::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_group_member_pointer_instruction_UpdateInstructionData.
         Definition Self : Ty.t :=
           Ty.path
@@ -665,25 +494,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_group_member_pointer_instruction_UpdateInstructionData.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_group_member_pointer_instruction_UpdateInstructionData.
         Definition Self : Ty.t :=

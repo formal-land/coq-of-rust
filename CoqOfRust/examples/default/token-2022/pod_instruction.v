@@ -215,81 +215,6 @@ Module pod_instruction.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_spl_token_2022_pod_instruction_InitializeMintData.
   
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.get_function (|
-                                    "core::intrinsics::transmute",
-                                    [
-                                      Ty.path "spl_token_2022::pod_instruction::InitializeMintData";
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::_::{{closure}}::TypeWithoutPadding"
-                                    ]
-                                  |)
-                                |),
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
   Module Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_InitializeMintData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::InitializeMintData".
     
@@ -300,44 +225,6 @@ Module pod_instruction.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_InitializeMintData.
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
   
   Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_pod_instruction_InitializeMintData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::InitializeMintData".
@@ -514,63 +401,6 @@ Module pod_instruction.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_spl_token_2022_pod_instruction_InitializeMultisigData.
   
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.get_function (|
-                                    "core::intrinsics::transmute",
-                                    [
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::InitializeMultisigData";
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::_'5::{{closure}}::TypeWithoutPadding"
-                                    ]
-                                  |)
-                                |),
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
   Module Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_InitializeMultisigData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::InitializeMultisigData".
     
@@ -581,25 +411,6 @@ Module pod_instruction.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_InitializeMultisigData.
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
   
   Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_pod_instruction_InitializeMultisigData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::InitializeMultisigData".
@@ -782,62 +593,6 @@ Module pod_instruction.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_spl_token_2022_pod_instruction_AmountData.
   
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.get_function (|
-                                    "core::intrinsics::transmute",
-                                    [
-                                      Ty.path "spl_token_2022::pod_instruction::AmountData";
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::_'8::{{closure}}::TypeWithoutPadding"
-                                    ]
-                                  |)
-                                |),
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
   Module Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_AmountData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::AmountData".
     
@@ -848,25 +603,6 @@ Module pod_instruction.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_AmountData.
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
   
   Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_pod_instruction_AmountData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::AmountData".
@@ -1090,81 +826,6 @@ Module pod_instruction.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_spl_token_2022_pod_instruction_AmountCheckedData.
   
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.get_function (|
-                                    "core::intrinsics::transmute",
-                                    [
-                                      Ty.path "spl_token_2022::pod_instruction::AmountCheckedData";
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::_'11::{{closure}}::TypeWithoutPadding"
-                                    ]
-                                  |)
-                                |),
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
   Module Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_AmountCheckedData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::AmountCheckedData".
     
@@ -1175,44 +836,6 @@ Module pod_instruction.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_AmountCheckedData.
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
   
   Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_pod_instruction_AmountCheckedData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::AmountCheckedData".
@@ -1389,62 +1012,6 @@ Module pod_instruction.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_spl_token_2022_pod_instruction_SetAuthorityData.
   
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.read (|
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.get_function (|
-                                    "core::intrinsics::transmute",
-                                    [
-                                      Ty.path "spl_token_2022::pod_instruction::SetAuthorityData";
-                                      Ty.path
-                                        "spl_token_2022::pod_instruction::_'16::{{closure}}::TypeWithoutPadding"
-                                    ]
-                                  |)
-                                |),
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
-  
   Module Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_SetAuthorityData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::SetAuthorityData".
     
@@ -1455,25 +1022,6 @@ Module pod_instruction.
         (* Trait polymorphic types *) []
         (* Instance *) [].
   End Impl_bytemuck_pod_Pod_for_spl_token_2022_pod_instruction_SetAuthorityData.
-  
-  Definition underscore : Value.t :=
-    M.run
-      ltac:(M.monadic
-        (M.alloc (|
-          (* ClosureFnPointer(Normal) *)
-          M.pointer_coercion
-            (M.closure
-              (fun γ =>
-                ltac:(M.monadic
-                  match γ with
-                  | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                    |)
-                  | _ => M.impossible (||)
-                  end)))
-        |))).
   
   Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_pod_instruction_SetAuthorityData.
     Definition Self : Ty.t := Ty.path "spl_token_2022::pod_instruction::SetAuthorityData".

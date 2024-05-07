@@ -192,63 +192,6 @@ Module extension.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_spl_token_2022_extension_confidential_transfer_account_info_EmptyAccountAccountInfo.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::EmptyAccountAccountInfo";
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::_::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_EmptyAccountAccountInfo.
         Definition Self : Ty.t :=
           Ty.path
@@ -261,25 +204,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_EmptyAccountAccountInfo.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_confidential_transfer_account_info_EmptyAccountAccountInfo.
         Definition Self : Ty.t :=
@@ -891,120 +815,6 @@ Module extension.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_spl_token_2022_extension_confidential_transfer_account_info_ApplyPendingBalanceAccountInfo.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::ApplyPendingBalanceAccountInfo";
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::_'3::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_ApplyPendingBalanceAccountInfo.
         Definition Self : Ty.t :=
           Ty.path
@@ -1017,82 +827,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_ApplyPendingBalanceAccountInfo.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_confidential_transfer_account_info_ApplyPendingBalanceAccountInfo.
         Definition Self : Ty.t :=
@@ -2430,82 +2164,6 @@ Module extension.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_spl_token_2022_extension_confidential_transfer_account_info_WithdrawAccountInfo.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::WithdrawAccountInfo";
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::_'12::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_WithdrawAccountInfo.
         Definition Self : Ty.t :=
           Ty.path
@@ -2518,44 +2176,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_WithdrawAccountInfo.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_confidential_transfer_account_info_WithdrawAccountInfo.
         Definition Self : Ty.t :=
@@ -3589,82 +3209,6 @@ Module extension.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_spl_token_2022_extension_confidential_transfer_account_info_TransferAccountInfo.
       
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.read (|
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.get_function (|
-                                        "core::intrinsics::transmute",
-                                        [
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::TransferAccountInfo";
-                                          Ty.path
-                                            "spl_token_2022::extension::confidential_transfer::account_info::_'17::{{closure}}::TypeWithoutPadding"
-                                        ]
-                                      |)
-                                    |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
       Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_TransferAccountInfo.
         Definition Self : Ty.t :=
           Ty.path
@@ -3677,44 +3221,6 @@ Module extension.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_confidential_transfer_account_info_TransferAccountInfo.
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
-      
-      Definition underscore : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |))).
       
       Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_confidential_transfer_account_info_TransferAccountInfo.
         Definition Self : Ty.t :=

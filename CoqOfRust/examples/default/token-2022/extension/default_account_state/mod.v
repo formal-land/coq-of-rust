@@ -173,63 +173,6 @@ Module extension.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_spl_token_2022_extension_default_account_state_DefaultAccountState.
     
-    Definition underscore : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            (* ClosureFnPointer(Normal) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.read (|
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.get_function (|
-                                      "core::intrinsics::transmute",
-                                      [
-                                        Ty.path
-                                          "spl_token_2022::extension::default_account_state::DefaultAccountState";
-                                        Ty.path
-                                          "spl_token_2022::extension::default_account_state::_::{{closure}}::TypeWithoutPadding"
-                                      ]
-                                    |)
-                                  |),
-                                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
-                    end)))
-          |))).
-    
-    Definition underscore : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            (* ClosureFnPointer(Normal) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                      |)
-                    | _ => M.impossible (||)
-                    end)))
-          |))).
-    
     Module Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_default_account_state_DefaultAccountState.
       Definition Self : Ty.t :=
         Ty.path "spl_token_2022::extension::default_account_state::DefaultAccountState".
@@ -241,25 +184,6 @@ Module extension.
           (* Trait polymorphic types *) []
           (* Instance *) [].
     End Impl_bytemuck_pod_Pod_for_spl_token_2022_extension_default_account_state_DefaultAccountState.
-    
-    Definition underscore : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            (* ClosureFnPointer(Normal) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                      |)
-                    | _ => M.impossible (||)
-                    end)))
-          |))).
     
     Module Impl_bytemuck_zeroable_Zeroable_for_spl_token_2022_extension_default_account_state_DefaultAccountState.
       Definition Self : Ty.t :=
