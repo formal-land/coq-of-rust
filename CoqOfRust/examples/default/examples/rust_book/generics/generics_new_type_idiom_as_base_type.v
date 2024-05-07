@@ -22,9 +22,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let years :=
           M.alloc (|
-            Value.StructTuple
-              "generics_new_type_idiom_as_base_type::Years"
-              [ Value.Integer Integer.I64 42 ]
+            Value.StructTuple "generics_new_type_idiom_as_base_type::Years" [ Value.Integer 42 ]
           |) in
         let years_as_primitive_1 :=
           M.copy (|

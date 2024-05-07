@@ -319,8 +319,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     ("area_code",
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.Integer Integer.U8 61 ]);
-                                    ("number", Value.Integer Integer.U32 439222222)
+                                        [ Value.Integer 61 ]);
+                                    ("number", Value.Integer 439222222)
                                   ]
                               ])
                         ]
@@ -342,9 +342,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ p ]
                     |)
                   |);
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.U8 61 ]
-                  |)
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 61 ] |)
                 ]
             |),
             [

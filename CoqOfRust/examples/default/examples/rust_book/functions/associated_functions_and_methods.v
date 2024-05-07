@@ -152,8 +152,17 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               M.get_associated_function (| Ty.path "f64", "abs", [] |),
                               [
                                 BinOp.Panic.mul (|
-                                  BinOp.Panic.sub (| M.read (| x1 |), M.read (| x2 |) |),
-                                  BinOp.Panic.sub (| M.read (| y1 |), M.read (| y2 |) |)
+                                  Integer.Usize,
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| x1 |),
+                                    M.read (| x2 |)
+                                  |),
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| y1 |),
+                                    M.read (| y2 |)
+                                  |)
                                 |)
                               ]
                             |)
@@ -230,15 +239,29 @@ Module Impl_associated_functions_and_methods_Rectangle.
                           let y2 := M.copy (| γ0_1 |) in
                           M.alloc (|
                             BinOp.Panic.mul (|
+                              Integer.Usize,
                               M.read (| UnsupportedLiteral |),
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "f64", "abs", [] |),
-                                  [ BinOp.Panic.sub (| M.read (| x1 |), M.read (| x2 |) |) ]
+                                  [
+                                    BinOp.Panic.sub (|
+                                      Integer.Usize,
+                                      M.read (| x1 |),
+                                      M.read (| x2 |)
+                                    |)
+                                  ]
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (| Ty.path "f64", "abs", [] |),
-                                  [ BinOp.Panic.sub (| M.read (| y1 |), M.read (| y2 |) |) ]
+                                  [
+                                    BinOp.Panic.sub (|
+                                      Integer.Usize,
+                                      M.read (| y1 |),
+                                      M.read (| y2 |)
+                                    |)
+                                  ]
                                 |)
                               |)
                             |)
@@ -281,7 +304,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "x"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
+            M.write (| β, BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -293,7 +316,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "x"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |) |) in
+            M.write (| β, BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| x |) |) |) in
           let _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -305,7 +328,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "y"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
+            M.write (| β, BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| y |) |) |) in
           let _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
@@ -317,7 +340,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "associated_functions_and_methods::Point",
                 "y"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |) |) in
+            M.write (| β, BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| y |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -663,7 +686,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer Integer.I32 1 ]
+                  [ Value.Integer 1 ]
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
@@ -673,7 +696,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "new",
                     []
                   |),
-                  [ Value.Integer Integer.I32 2 ]
+                  [ Value.Integer 2 ]
                 |)
               ]
           |) in

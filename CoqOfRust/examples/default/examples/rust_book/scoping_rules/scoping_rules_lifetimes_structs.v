@@ -227,8 +227,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 18 |) in
-        let y := M.alloc (| Value.Integer Integer.I32 15 |) in
+        let x := M.alloc (| Value.Integer 18 |) in
+        let y := M.alloc (| Value.Integer 15 |) in
         let single :=
           M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Borrowed" [ x ] |) in
         let double :=

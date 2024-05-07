@@ -93,7 +93,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| M.rust_cast (Value.Integer Integer.Isize 0) |) ]
+                                [ M.alloc (| M.rust_cast (Value.Integer 0) |) ]
                               |)
                             ]
                         |))
@@ -130,7 +130,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "i32" ]
                                 |),
-                                [ M.alloc (| M.rust_cast (Value.Integer Integer.Isize 1) |) ]
+                                [ M.alloc (| M.rust_cast (Value.Integer 1) |) ]
                               |)
                             ]
                         |))
@@ -176,10 +176,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.rust_cast
                                       (BinOp.Panic.add (|
+                                        Integer.Isize,
                                         M.get_constant (|
                                           "enums_c_like::Color::Red_discriminant"
                                         |),
-                                        Value.Integer Integer.Isize 0
+                                        Value.Integer 0
                                       |))
                                   |)
                                 ]
@@ -198,14 +199,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer Integer.Usize 0;
+                                  Value.Integer 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer Integer.U32 8;
+                                  Value.Integer 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 6 ]
+                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
                                 ]
                               |)
                             ]
@@ -262,10 +261,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.rust_cast
                                       (BinOp.Panic.add (|
+                                        Integer.Isize,
                                         M.get_constant (|
                                           "enums_c_like::Color::Blue_discriminant"
                                         |),
-                                        Value.Integer Integer.Isize 0
+                                        Value.Integer 0
                                       |))
                                   |)
                                 ]
@@ -284,14 +284,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  Value.Integer Integer.Usize 0;
+                                  Value.Integer 0;
                                   Value.UnicodeChar 32;
                                   Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                  Value.Integer Integer.U32 8;
+                                  Value.Integer 8;
                                   Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                  Value.StructTuple
-                                    "core::fmt::rt::Count::Is"
-                                    [ Value.Integer Integer.Usize 6 ]
+                                  Value.StructTuple "core::fmt::rt::Count::Is" [ Value.Integer 6 ]
                                 ]
                               |)
                             ]

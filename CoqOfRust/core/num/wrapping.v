@@ -4029,7 +4029,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.Usize 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -5220,7 +5220,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U8 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -6437,7 +6437,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U16 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -7654,7 +7654,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U32 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -8871,7 +8871,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U64 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -10088,7 +10088,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.U128 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -11305,7 +11305,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.Isize 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -12496,7 +12496,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I8 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -13713,7 +13713,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I16 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -14930,7 +14930,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I32 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -16147,7 +16147,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I64 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -17364,7 +17364,7 @@ Module num.
                 []
               |),
               [
-                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer Integer.I128 0 ];
+                Value.StructTuple "core::num::wrapping::Wrapping" [ Value.Integer 0 ];
                 M.read (| self |)
               ]
             |)))
@@ -23404,8 +23404,9 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
-                BinOp.Panic.shl (| Value.Integer Integer.U32 1, Value.Integer Integer.I32 3 |),
-                Value.Integer Integer.U32 1
+                Integer.U32,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 3 |),
+                Value.Integer 1
               |)
             |))).
       
@@ -23414,8 +23415,9 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
-                BinOp.Panic.shl (| Value.Integer Integer.U32 1, Value.Integer Integer.I32 4 |),
-                Value.Integer Integer.U32 1
+                Integer.U32,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 4 |),
+                Value.Integer 1
               |)
             |))).
       
@@ -23424,8 +23426,9 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
-                BinOp.Panic.shl (| Value.Integer Integer.U32 1, Value.Integer Integer.I32 5 |),
-                Value.Integer Integer.U32 1
+                Integer.U32,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 5 |),
+                Value.Integer 1
               |)
             |))).
       
@@ -23434,8 +23437,9 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
-                BinOp.Panic.shl (| Value.Integer Integer.U32 1, Value.Integer Integer.I32 6 |),
-                Value.Integer Integer.U32 1
+                Integer.U32,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 6 |),
+                Value.Integer 1
               |)
             |))).
       
@@ -23444,8 +23448,9 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               BinOp.Panic.sub (|
-                BinOp.Panic.shl (| Value.Integer Integer.U32 1, Value.Integer Integer.I32 7 |),
-                Value.Integer Integer.U32 1
+                Integer.U32,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 7 |),
+                Value.Integer 1
               |)
             |))).
       

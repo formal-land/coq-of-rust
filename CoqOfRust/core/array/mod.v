@@ -5018,10 +5018,7 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::array::Guard"
-                    [
-                      ("array_mut", M.read (| buffer |));
-                      ("initialized", Value.Integer Integer.Usize 0)
-                    ]
+                    [ ("array_mut", M.read (| buffer |)); ("initialized", Value.Integer 0) ]
                 |) in
               let _ :=
                 M.loop (|
@@ -5311,7 +5308,7 @@ Module array.
                         "initialized"
                       |)
                     |);
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   ]
                 |)
               |) in
@@ -5570,10 +5567,7 @@ Module array.
                             M.read (| array |);
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [
-                                ("start", Value.Integer Integer.Usize 0);
-                                ("end_", M.read (| initialized |))
-                              ]
+                              [ ("start", Value.Integer 0); ("end_", M.read (| initialized |)) ]
                           ]
                         |)
                       ]
@@ -5618,8 +5612,7 @@ Module array.
             M.alloc (|
               Value.StructRecord
                 "core::array::Guard"
-                [ ("array_mut", M.read (| buffer |)); ("initialized", Value.Integer Integer.Usize 0)
-                ]
+                [ ("array_mut", M.read (| buffer |)); ("initialized", Value.Integer 0) ]
             |) in
           let _ :=
             M.loop (|

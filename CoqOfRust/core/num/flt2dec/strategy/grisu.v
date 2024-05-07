@@ -6,10 +6,10 @@ Module num.
     Module strategy.
       Module grisu.
         Definition value_ALPHA : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I16 (-60) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-60) |))).
         
         Definition value_GAMMA : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I16 (-32) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-32) |))).
         
         Definition value_CACHED_POW10 : Value.t :=
           M.run
@@ -20,499 +20,360 @@ Module num.
                     [
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 16580792590934885855;
-                          Value.Integer Integer.I16 (-1087);
-                          Value.Integer Integer.I16 (-308)
+                          Value.Integer 16580792590934885855;
+                          Value.Integer (-1087);
+                          Value.Integer (-308)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 12353653155963782858;
-                          Value.Integer Integer.I16 (-1060);
-                          Value.Integer Integer.I16 (-300)
+                          Value.Integer 12353653155963782858;
+                          Value.Integer (-1060);
+                          Value.Integer (-300)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 18408377700990114895;
-                          Value.Integer Integer.I16 (-1034);
-                          Value.Integer Integer.I16 (-292)
+                          Value.Integer 18408377700990114895;
+                          Value.Integer (-1034);
+                          Value.Integer (-292)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 13715310171984221708;
-                          Value.Integer Integer.I16 (-1007);
-                          Value.Integer Integer.I16 (-284)
+                          Value.Integer 13715310171984221708;
+                          Value.Integer (-1007);
+                          Value.Integer (-284)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 10218702384817765436;
-                          Value.Integer Integer.I16 (-980);
-                          Value.Integer Integer.I16 (-276)
+                          Value.Integer 10218702384817765436;
+                          Value.Integer (-980);
+                          Value.Integer (-276)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 15227053142812498563;
-                          Value.Integer Integer.I16 (-954);
-                          Value.Integer Integer.I16 (-268)
+                          Value.Integer 15227053142812498563;
+                          Value.Integer (-954);
+                          Value.Integer (-268)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 11345038669416679861;
-                          Value.Integer Integer.I16 (-927);
-                          Value.Integer Integer.I16 (-260)
+                          Value.Integer 11345038669416679861;
+                          Value.Integer (-927);
+                          Value.Integer (-260)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 16905424996341287883;
-                          Value.Integer Integer.I16 (-901);
-                          Value.Integer Integer.I16 (-252)
+                          Value.Integer 16905424996341287883;
+                          Value.Integer (-901);
+                          Value.Integer (-252)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 12595523146049147757;
-                          Value.Integer Integer.I16 (-874);
-                          Value.Integer Integer.I16 (-244)
+                          Value.Integer 12595523146049147757;
+                          Value.Integer (-874);
+                          Value.Integer (-244)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 9384396036005875287;
-                          Value.Integer Integer.I16 (-847);
-                          Value.Integer Integer.I16 (-236)
+                          Value.Integer 9384396036005875287;
+                          Value.Integer (-847);
+                          Value.Integer (-236)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 13983839803942852151;
-                          Value.Integer Integer.I16 (-821);
-                          Value.Integer Integer.I16 (-228)
+                          Value.Integer 13983839803942852151;
+                          Value.Integer (-821);
+                          Value.Integer (-228)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 10418772551374772303;
-                          Value.Integer Integer.I16 (-794);
-                          Value.Integer Integer.I16 (-220)
+                          Value.Integer 10418772551374772303;
+                          Value.Integer (-794);
+                          Value.Integer (-220)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 15525180923007089351;
-                          Value.Integer Integer.I16 (-768);
-                          Value.Integer Integer.I16 (-212)
+                          Value.Integer 15525180923007089351;
+                          Value.Integer (-768);
+                          Value.Integer (-212)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 11567161174868858868;
-                          Value.Integer Integer.I16 (-741);
-                          Value.Integer Integer.I16 (-204)
+                          Value.Integer 11567161174868858868;
+                          Value.Integer (-741);
+                          Value.Integer (-204)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 17236413322193710309;
-                          Value.Integer Integer.I16 (-715);
-                          Value.Integer Integer.I16 (-196)
+                          Value.Integer 17236413322193710309;
+                          Value.Integer (-715);
+                          Value.Integer (-196)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 12842128665889583758;
-                          Value.Integer Integer.I16 (-688);
-                          Value.Integer Integer.I16 (-188)
+                          Value.Integer 12842128665889583758;
+                          Value.Integer (-688);
+                          Value.Integer (-188)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 9568131466127621947;
-                          Value.Integer Integer.I16 (-661);
-                          Value.Integer Integer.I16 (-180)
+                          Value.Integer 9568131466127621947;
+                          Value.Integer (-661);
+                          Value.Integer (-180)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 14257626930069360058;
-                          Value.Integer Integer.I16 (-635);
-                          Value.Integer Integer.I16 (-172)
+                          Value.Integer 14257626930069360058;
+                          Value.Integer (-635);
+                          Value.Integer (-172)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 10622759856335341974;
-                          Value.Integer Integer.I16 (-608);
-                          Value.Integer Integer.I16 (-164)
+                          Value.Integer 10622759856335341974;
+                          Value.Integer (-608);
+                          Value.Integer (-164)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 15829145694278690180;
-                          Value.Integer Integer.I16 (-582);
-                          Value.Integer Integer.I16 (-156)
+                          Value.Integer 15829145694278690180;
+                          Value.Integer (-582);
+                          Value.Integer (-156)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 11793632577567316726;
-                          Value.Integer Integer.I16 (-555);
-                          Value.Integer Integer.I16 (-148)
+                          Value.Integer 11793632577567316726;
+                          Value.Integer (-555);
+                          Value.Integer (-148)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 17573882009934360870;
-                          Value.Integer Integer.I16 (-529);
-                          Value.Integer Integer.I16 (-140)
+                          Value.Integer 17573882009934360870;
+                          Value.Integer (-529);
+                          Value.Integer (-140)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 13093562431584567480;
-                          Value.Integer Integer.I16 (-502);
-                          Value.Integer Integer.I16 (-132)
+                          Value.Integer 13093562431584567480;
+                          Value.Integer (-502);
+                          Value.Integer (-132)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 9755464219737475723;
-                          Value.Integer Integer.I16 (-475);
-                          Value.Integer Integer.I16 (-124)
+                          Value.Integer 9755464219737475723;
+                          Value.Integer (-475);
+                          Value.Integer (-124)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 14536774485912137811;
-                          Value.Integer Integer.I16 (-449);
-                          Value.Integer Integer.I16 (-116)
+                          Value.Integer 14536774485912137811;
+                          Value.Integer (-449);
+                          Value.Integer (-116)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 10830740992659433045;
-                          Value.Integer Integer.I16 (-422);
-                          Value.Integer Integer.I16 (-108)
+                          Value.Integer 10830740992659433045;
+                          Value.Integer (-422);
+                          Value.Integer (-108)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 16139061738043178685;
-                          Value.Integer Integer.I16 (-396);
-                          Value.Integer Integer.I16 (-100)
+                          Value.Integer 16139061738043178685;
+                          Value.Integer (-396);
+                          Value.Integer (-100)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 12024538023802026127;
-                          Value.Integer Integer.I16 (-369);
-                          Value.Integer Integer.I16 (-92)
+                          Value.Integer 12024538023802026127;
+                          Value.Integer (-369);
+                          Value.Integer (-92)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 17917957937422433684;
-                          Value.Integer Integer.I16 (-343);
-                          Value.Integer Integer.I16 (-84)
+                          Value.Integer 17917957937422433684;
+                          Value.Integer (-343);
+                          Value.Integer (-84)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 13349918974505688015;
-                          Value.Integer Integer.I16 (-316);
-                          Value.Integer Integer.I16 (-76)
+                          Value.Integer 13349918974505688015;
+                          Value.Integer (-316);
+                          Value.Integer (-76)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 9946464728195732843;
-                          Value.Integer Integer.I16 (-289);
-                          Value.Integer Integer.I16 (-68)
+                          Value.Integer 9946464728195732843;
+                          Value.Integer (-289);
+                          Value.Integer (-68)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 14821387422376473014;
-                          Value.Integer Integer.I16 (-263);
-                          Value.Integer Integer.I16 (-60)
+                          Value.Integer 14821387422376473014;
+                          Value.Integer (-263);
+                          Value.Integer (-60)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 11042794154864902060;
-                          Value.Integer Integer.I16 (-236);
-                          Value.Integer Integer.I16 (-52)
+                          Value.Integer 11042794154864902060;
+                          Value.Integer (-236);
+                          Value.Integer (-52)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 16455045573212060422;
-                          Value.Integer Integer.I16 (-210);
-                          Value.Integer Integer.I16 (-44)
+                          Value.Integer 16455045573212060422;
+                          Value.Integer (-210);
+                          Value.Integer (-44)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 12259964326927110867;
-                          Value.Integer Integer.I16 (-183);
-                          Value.Integer Integer.I16 (-36)
+                          Value.Integer 12259964326927110867;
+                          Value.Integer (-183);
+                          Value.Integer (-36)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 18268770466636286478;
-                          Value.Integer Integer.I16 (-157);
-                          Value.Integer Integer.I16 (-28)
+                          Value.Integer 18268770466636286478;
+                          Value.Integer (-157);
+                          Value.Integer (-28)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 13611294676837538539;
-                          Value.Integer Integer.I16 (-130);
-                          Value.Integer Integer.I16 (-20)
+                          Value.Integer 13611294676837538539;
+                          Value.Integer (-130);
+                          Value.Integer (-20)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 10141204801825835212;
-                          Value.Integer Integer.I16 (-103);
-                          Value.Integer Integer.I16 (-12)
+                          Value.Integer 10141204801825835212;
+                          Value.Integer (-103);
+                          Value.Integer (-12)
                         ];
                       Value.Tuple
                         [
-                          Value.Integer Integer.U64 15111572745182864684;
-                          Value.Integer Integer.I16 (-77);
-                          Value.Integer Integer.I16 (-4)
+                          Value.Integer 15111572745182864684;
+                          Value.Integer (-77);
+                          Value.Integer (-4)
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11258999068426240000;
-                          Value.Integer Integer.I16 (-50);
-                          Value.Integer Integer.I16 4
+                        [ Value.Integer 11258999068426240000; Value.Integer (-50); Value.Integer 4
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 16777216000000000000;
-                          Value.Integer Integer.I16 (-24);
-                          Value.Integer Integer.I16 12
+                        [ Value.Integer 16777216000000000000; Value.Integer (-24); Value.Integer 12
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 12500000000000000000;
-                          Value.Integer Integer.I16 3;
-                          Value.Integer Integer.I16 20
-                        ];
+                        [ Value.Integer 12500000000000000000; Value.Integer 3; Value.Integer 20 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 9313225746154785156;
-                          Value.Integer Integer.I16 30;
-                          Value.Integer Integer.I16 28
-                        ];
+                        [ Value.Integer 9313225746154785156; Value.Integer 30; Value.Integer 28 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 13877787807814456755;
-                          Value.Integer Integer.I16 56;
-                          Value.Integer Integer.I16 36
-                        ];
+                        [ Value.Integer 13877787807814456755; Value.Integer 56; Value.Integer 36 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10339757656912845936;
-                          Value.Integer Integer.I16 83;
-                          Value.Integer Integer.I16 44
-                        ];
+                        [ Value.Integer 10339757656912845936; Value.Integer 83; Value.Integer 44 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 15407439555097886824;
-                          Value.Integer Integer.I16 109;
-                          Value.Integer Integer.I16 52
-                        ];
+                        [ Value.Integer 15407439555097886824; Value.Integer 109; Value.Integer 52 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11479437019748901445;
-                          Value.Integer Integer.I16 136;
-                          Value.Integer Integer.I16 60
-                        ];
+                        [ Value.Integer 11479437019748901445; Value.Integer 136; Value.Integer 60 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 17105694144590052135;
-                          Value.Integer Integer.I16 162;
-                          Value.Integer Integer.I16 68
-                        ];
+                        [ Value.Integer 17105694144590052135; Value.Integer 162; Value.Integer 68 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 12744735289059618216;
-                          Value.Integer Integer.I16 189;
-                          Value.Integer Integer.I16 76
-                        ];
+                        [ Value.Integer 12744735289059618216; Value.Integer 189; Value.Integer 76 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 9495567745759798747;
-                          Value.Integer Integer.I16 216;
-                          Value.Integer Integer.I16 84
-                        ];
+                        [ Value.Integer 9495567745759798747; Value.Integer 216; Value.Integer 84 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 14149498560666738074;
-                          Value.Integer Integer.I16 242;
-                          Value.Integer Integer.I16 92
-                        ];
+                        [ Value.Integer 14149498560666738074; Value.Integer 242; Value.Integer 92 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10542197943230523224;
-                          Value.Integer Integer.I16 269;
-                          Value.Integer Integer.I16 100
+                        [ Value.Integer 10542197943230523224; Value.Integer 269; Value.Integer 100
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 15709099088952724970;
-                          Value.Integer Integer.I16 295;
-                          Value.Integer Integer.I16 108
+                        [ Value.Integer 15709099088952724970; Value.Integer 295; Value.Integer 108
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11704190886730495818;
-                          Value.Integer Integer.I16 322;
-                          Value.Integer Integer.I16 116
+                        [ Value.Integer 11704190886730495818; Value.Integer 322; Value.Integer 116
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 17440603504673385349;
-                          Value.Integer Integer.I16 348;
-                          Value.Integer Integer.I16 124
+                        [ Value.Integer 17440603504673385349; Value.Integer 348; Value.Integer 124
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 12994262207056124023;
-                          Value.Integer Integer.I16 375;
-                          Value.Integer Integer.I16 132
+                        [ Value.Integer 12994262207056124023; Value.Integer 375; Value.Integer 132
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 9681479787123295682;
-                          Value.Integer Integer.I16 402;
-                          Value.Integer Integer.I16 140
-                        ];
+                        [ Value.Integer 9681479787123295682; Value.Integer 402; Value.Integer 140 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 14426529090290212157;
-                          Value.Integer Integer.I16 428;
-                          Value.Integer Integer.I16 148
+                        [ Value.Integer 14426529090290212157; Value.Integer 428; Value.Integer 148
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10748601772107342003;
-                          Value.Integer Integer.I16 455;
-                          Value.Integer Integer.I16 156
+                        [ Value.Integer 10748601772107342003; Value.Integer 455; Value.Integer 156
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 16016664761464807395;
-                          Value.Integer Integer.I16 481;
-                          Value.Integer Integer.I16 164
+                        [ Value.Integer 16016664761464807395; Value.Integer 481; Value.Integer 164
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11933345169920330789;
-                          Value.Integer Integer.I16 508;
-                          Value.Integer Integer.I16 172
+                        [ Value.Integer 11933345169920330789; Value.Integer 508; Value.Integer 172
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 17782069995880619868;
-                          Value.Integer Integer.I16 534;
-                          Value.Integer Integer.I16 180
+                        [ Value.Integer 17782069995880619868; Value.Integer 534; Value.Integer 180
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 13248674568444952270;
-                          Value.Integer Integer.I16 561;
-                          Value.Integer Integer.I16 188
+                        [ Value.Integer 13248674568444952270; Value.Integer 561; Value.Integer 188
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 9871031767461413346;
-                          Value.Integer Integer.I16 588;
-                          Value.Integer Integer.I16 196
-                        ];
+                        [ Value.Integer 9871031767461413346; Value.Integer 588; Value.Integer 196 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 14708983551653345445;
-                          Value.Integer Integer.I16 614;
-                          Value.Integer Integer.I16 204
+                        [ Value.Integer 14708983551653345445; Value.Integer 614; Value.Integer 204
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10959046745042015199;
-                          Value.Integer Integer.I16 641;
-                          Value.Integer Integer.I16 212
+                        [ Value.Integer 10959046745042015199; Value.Integer 641; Value.Integer 212
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 16330252207878254650;
-                          Value.Integer Integer.I16 667;
-                          Value.Integer Integer.I16 220
+                        [ Value.Integer 16330252207878254650; Value.Integer 667; Value.Integer 220
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 12166986024289022870;
-                          Value.Integer Integer.I16 694;
-                          Value.Integer Integer.I16 228
+                        [ Value.Integer 12166986024289022870; Value.Integer 694; Value.Integer 228
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 18130221999122236476;
-                          Value.Integer Integer.I16 720;
-                          Value.Integer Integer.I16 236
+                        [ Value.Integer 18130221999122236476; Value.Integer 720; Value.Integer 236
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 13508068024458167312;
-                          Value.Integer Integer.I16 747;
-                          Value.Integer Integer.I16 244
+                        [ Value.Integer 13508068024458167312; Value.Integer 747; Value.Integer 244
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10064294952495520794;
-                          Value.Integer Integer.I16 774;
-                          Value.Integer Integer.I16 252
+                        [ Value.Integer 10064294952495520794; Value.Integer 774; Value.Integer 252
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 14996968138956309548;
-                          Value.Integer Integer.I16 800;
-                          Value.Integer Integer.I16 260
+                        [ Value.Integer 14996968138956309548; Value.Integer 800; Value.Integer 260
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11173611982879273257;
-                          Value.Integer Integer.I16 827;
-                          Value.Integer Integer.I16 268
+                        [ Value.Integer 11173611982879273257; Value.Integer 827; Value.Integer 268
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 16649979327439178909;
-                          Value.Integer Integer.I16 853;
-                          Value.Integer Integer.I16 276
+                        [ Value.Integer 16649979327439178909; Value.Integer 853; Value.Integer 276
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 12405201291620119593;
-                          Value.Integer Integer.I16 880;
-                          Value.Integer Integer.I16 284
+                        [ Value.Integer 12405201291620119593; Value.Integer 880; Value.Integer 284
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 9242595204427927429;
-                          Value.Integer Integer.I16 907;
-                          Value.Integer Integer.I16 292
-                        ];
+                        [ Value.Integer 9242595204427927429; Value.Integer 907; Value.Integer 292 ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 13772540099066387757;
-                          Value.Integer Integer.I16 933;
-                          Value.Integer Integer.I16 300
+                        [ Value.Integer 13772540099066387757; Value.Integer 933; Value.Integer 300
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 10261342003245940623;
-                          Value.Integer Integer.I16 960;
-                          Value.Integer Integer.I16 308
+                        [ Value.Integer 10261342003245940623; Value.Integer 960; Value.Integer 308
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 15290591125556738113;
-                          Value.Integer Integer.I16 986;
-                          Value.Integer Integer.I16 316
+                        [ Value.Integer 15290591125556738113; Value.Integer 986; Value.Integer 316
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 11392378155556871081;
-                          Value.Integer Integer.I16 1013;
-                          Value.Integer Integer.I16 324
+                        [ Value.Integer 11392378155556871081; Value.Integer 1013; Value.Integer 324
                         ];
                       Value.Tuple
-                        [
-                          Value.Integer Integer.U64 16975966327722178521;
-                          Value.Integer Integer.I16 1039;
-                          Value.Integer Integer.I16 332
+                        [ Value.Integer 16975966327722178521; Value.Integer 1039; Value.Integer 332
                         ]
                     ]
                 |)
               |))).
         
         Definition value_CACHED_POW10_FIRST_E : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I16 (-1087) |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer (-1087) |))).
         
         Definition value_CACHED_POW10_LAST_E : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.I16 1039 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 1039 |))).
         
         (*
         pub fn cached_power(alpha: i16, gamma: i16) -> (i16, Fp) {
@@ -544,6 +405,7 @@ Module num.
                 let range :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.I32,
                       M.rust_cast
                         (M.call_closure (|
                           M.get_associated_function (|
@@ -563,13 +425,14 @@ Module num.
                               |))
                           ]
                         |)),
-                      Value.Integer Integer.I32 1
+                      Value.Integer 1
                     |)
                   |) in
                 let domain :=
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Panic.sub (|
+                        Integer.I16,
                         M.read (|
                           M.get_constant (|
                             "core::num::flt2dec::strategy::grisu::CACHED_POW10_LAST_E"
@@ -585,8 +448,14 @@ Module num.
                 let idx :=
                   M.alloc (|
                     BinOp.Panic.div (|
+                      Integer.I32,
                       BinOp.Panic.mul (|
-                        BinOp.Panic.sub (| M.rust_cast (M.read (| gamma |)), M.read (| offset |) |),
+                        Integer.I32,
+                        BinOp.Panic.sub (|
+                          Integer.I32,
+                          M.rust_cast (M.read (| gamma |)),
+                          M.read (| offset |)
+                        |),
                         M.read (| range |)
                       |),
                       M.read (| domain |)
@@ -736,9 +605,7 @@ Module num.
                                       M.use
                                         (M.alloc (|
                                           UnOp.Pure.not
-                                            (BinOp.Pure.gt
-                                              (M.read (| x |))
-                                              (Value.Integer Integer.U32 0))
+                                            (BinOp.Pure.gt (M.read (| x |)) (Value.Integer 0))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -821,18 +688,14 @@ Module num.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
-                                          Value.Tuple
-                                            [
-                                              Value.Integer Integer.U8 0;
-                                              Value.Integer Integer.U32 1
-                                            ]
+                                          Value.Tuple [ Value.Integer 0; Value.Integer 1 ]
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
                                           Value.Tuple
                                             [
-                                              Value.Integer Integer.U8 1;
+                                              Value.Integer 1;
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X1"
@@ -868,7 +731,7 @@ Module num.
                                         M.alloc (|
                                           Value.Tuple
                                             [
-                                              Value.Integer Integer.U8 2;
+                                              Value.Integer 2;
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X2"
@@ -881,7 +744,7 @@ Module num.
                                         (M.alloc (|
                                           Value.Tuple
                                             [
-                                              Value.Integer Integer.U8 3;
+                                              Value.Integer 3;
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X3"
@@ -940,7 +803,7 @@ Module num.
                                         M.alloc (|
                                           Value.Tuple
                                             [
-                                              Value.Integer Integer.U8 4;
+                                              Value.Integer 4;
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X4"
@@ -953,7 +816,7 @@ Module num.
                                         (M.alloc (|
                                           Value.Tuple
                                             [
-                                              Value.Integer Integer.U8 5;
+                                              Value.Integer 5;
                                               M.read (|
                                                 M.get_constant (|
                                                   "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X5"
@@ -1010,7 +873,7 @@ Module num.
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      Value.Integer Integer.U8 6;
+                                                      Value.Integer 6;
                                                       M.read (|
                                                         M.get_constant (|
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X6"
@@ -1023,7 +886,7 @@ Module num.
                                                 (M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      Value.Integer Integer.U8 7;
+                                                      Value.Integer 7;
                                                       M.read (|
                                                         M.get_constant (|
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X7"
@@ -1059,7 +922,7 @@ Module num.
                                                 M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      Value.Integer Integer.U8 8;
+                                                      Value.Integer 8;
                                                       M.read (|
                                                         M.get_constant (|
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X8"
@@ -1072,7 +935,7 @@ Module num.
                                                 (M.alloc (|
                                                   Value.Tuple
                                                     [
-                                                      Value.Integer Integer.U8 9;
+                                                      Value.Integer 9;
                                                       M.read (|
                                                         M.get_constant (|
                                                           "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than::X9"
@@ -1094,31 +957,29 @@ Module num.
         
         Module max_pow10_no_more_than.
           Definition value_X9 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 1000000000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 1000000000 |))).
           
           Definition value_X8 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 100000000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 100000000 |))).
           
           Definition value_X7 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 10000000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 10000000 |))).
           
           Definition value_X6 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 1000000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 1000000 |))).
           
           Definition value_X5 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 100000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 100000 |))).
           
           Definition value_X4 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 10000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 10000 |))).
           
           Definition value_X3 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 1000 |))).
+            M.run ltac:(M.monadic (M.alloc (| Value.Integer 1000 |))).
           
-          Definition value_X2 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 100 |))).
+          Definition value_X2 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 100 |))).
           
-          Definition value_X1 : Value.t :=
-            M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 10 |))).
+          Definition value_X1 : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
         End max_pow10_no_more_than.
         
         (*
@@ -1436,7 +1297,7 @@ Module num.
                                               "mant"
                                             |)
                                           |))
-                                          (Value.Integer Integer.U64 0))
+                                          (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1472,7 +1333,7 @@ Module num.
                                               "minus"
                                             |)
                                           |))
-                                          (Value.Integer Integer.U64 0))
+                                          (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1508,7 +1369,7 @@ Module num.
                                               "plus"
                                             |)
                                           |))
-                                          (Value.Integer Integer.U64 0))
+                                          (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1726,6 +1587,7 @@ Module num.
                                       UnOp.Pure.not
                                         (BinOp.Pure.lt
                                           (BinOp.Panic.add (|
+                                            Integer.U64,
                                             M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| d |),
@@ -1741,10 +1603,7 @@ Module num.
                                               |)
                                             |)
                                           |))
-                                          (BinOp.Panic.shl (|
-                                            Value.Integer Integer.U64 1,
-                                            Value.Integer Integer.I32 61
-                                          |)))
+                                          (BinOp.Panic.shl (| Value.Integer 1, Value.Integer 61 |)))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1782,6 +1641,7 @@ Module num.
                                   [
                                     ("f",
                                       BinOp.Panic.add (|
+                                        Integer.U64,
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| d |),
@@ -1825,6 +1685,7 @@ Module num.
                                   [
                                     ("f",
                                       BinOp.Panic.sub (|
+                                        Integer.U64,
                                         M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| d |),
@@ -1910,7 +1771,9 @@ Module num.
                             |),
                             [
                               BinOp.Panic.sub (|
+                                Integer.I16,
                                 BinOp.Panic.sub (|
+                                  Integer.I16,
                                   M.read (|
                                     M.get_constant (|
                                       "core::num::flt2dec::strategy::grisu::ALPHA"
@@ -1924,10 +1787,12 @@ Module num.
                                     |)
                                   |)
                                 |),
-                                Value.Integer Integer.I16 64
+                                Value.Integer 64
                               |);
                               BinOp.Panic.sub (|
+                                Integer.I16,
                                 BinOp.Panic.sub (|
+                                  Integer.I16,
                                   M.read (|
                                     M.get_constant (|
                                       "core::num::flt2dec::strategy::grisu::GAMMA"
@@ -1941,7 +1806,7 @@ Module num.
                                     |)
                                   |)
                                 |),
-                                Value.Integer Integer.I16 64
+                                Value.Integer 64
                               |)
                             ]
                           |)
@@ -2189,6 +2054,7 @@ Module num.
                               let plus1 :=
                                 M.alloc (|
                                   BinOp.Panic.add (|
+                                    Integer.U64,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         plus,
@@ -2196,12 +2062,13 @@ Module num.
                                         "f"
                                       |)
                                     |),
-                                    Value.Integer Integer.U64 1
+                                    Value.Integer 1
                                   |)
                                 |) in
                               let minus1 :=
                                 M.alloc (|
                                   BinOp.Panic.sub (|
+                                    Integer.U64,
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         minus,
@@ -2209,13 +2076,14 @@ Module num.
                                         "f"
                                       |)
                                     |),
-                                    Value.Integer Integer.U64 1
+                                    Value.Integer 1
                                   |)
                                 |) in
                               let e :=
                                 M.alloc (|
                                   M.rust_cast
                                     (UnOp.Panic.neg (|
+                                      Integer.I16,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           plus,
@@ -2235,11 +2103,9 @@ Module num.
                                   BinOp.Pure.bit_and
                                     (M.read (| plus1 |))
                                     (BinOp.Panic.sub (|
-                                      BinOp.Panic.shl (|
-                                        Value.Integer Integer.U64 1,
-                                        M.read (| e |)
-                                      |),
-                                      Value.Integer Integer.U64 1
+                                      Integer.U64,
+                                      BinOp.Panic.shl (| Value.Integer 1, M.read (| e |) |),
+                                      Value.Integer 1
                                     |))
                                 |) in
                               M.match_operator (|
@@ -2259,20 +2125,23 @@ Module num.
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let max_kappa := M.copy (| γ0_0 |) in
                                       let max_ten_kappa := M.copy (| γ0_1 |) in
-                                      let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                                      let i := M.alloc (| Value.Integer 0 |) in
                                       let exp :=
                                         M.alloc (|
                                           BinOp.Panic.add (|
+                                            Integer.I16,
                                             BinOp.Panic.sub (|
+                                              Integer.I16,
                                               M.rust_cast (M.read (| max_kappa |)),
                                               M.read (| minusk |)
                                             |),
-                                            Value.Integer Integer.I16 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       let delta1 :=
                                         M.alloc (|
                                           BinOp.Panic.sub (|
+                                            Integer.U64,
                                             M.read (| plus1 |),
                                             M.read (| minus1 |)
                                           |)
@@ -2282,11 +2151,9 @@ Module num.
                                           BinOp.Pure.bit_and
                                             (M.read (| delta1 |))
                                             (BinOp.Panic.sub (|
-                                              BinOp.Panic.shl (|
-                                                Value.Integer Integer.U64 1,
-                                                M.read (| e |)
-                                              |),
-                                              Value.Integer Integer.U64 1
+                                              Integer.U64,
+                                              BinOp.Panic.shl (| Value.Integer 1, M.read (| e |) |),
+                                              Value.Integer 1
                                             |))
                                         |) in
                                       let ten_kappa := M.copy (| max_ten_kappa |) in
@@ -2297,6 +2164,7 @@ Module num.
                                             (let q :=
                                               M.alloc (|
                                                 BinOp.Panic.div (|
+                                                  Integer.U32,
                                                   M.read (| remainder |),
                                                   M.read (| ten_kappa |)
                                                 |)
@@ -2304,6 +2172,7 @@ Module num.
                                             let r :=
                                               M.alloc (|
                                                 BinOp.Panic.rem (|
+                                                  Integer.U32,
                                                   M.read (| remainder |),
                                                   M.read (| ten_kappa |)
                                                 |)
@@ -2333,9 +2202,7 @@ Module num.
                                                                       UnOp.Pure.not
                                                                         (BinOp.Pure.lt
                                                                           (M.read (| q |))
-                                                                          (Value.Integer
-                                                                            Integer.U32
-                                                                            10))
+                                                                          (Value.Integer 10))
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -2385,6 +2252,7 @@ Module num.
                                                   |),
                                                   [
                                                     BinOp.Panic.add (|
+                                                      Integer.U8,
                                                       M.read (| UnsupportedLiteral |),
                                                       M.rust_cast (M.read (| q |))
                                                     |)
@@ -2396,13 +2264,15 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               |) in
                                             let plus1rem :=
                                               M.alloc (|
                                                 BinOp.Panic.add (|
+                                                  Integer.U64,
                                                   BinOp.Panic.shl (|
                                                     M.rust_cast (M.read (| r |)),
                                                     M.read (| e |)
@@ -2492,6 +2362,7 @@ Module num.
                                                                   M.read (| plus1rem |);
                                                                   M.read (| delta1 |);
                                                                   BinOp.Panic.sub (|
+                                                                    Integer.U64,
                                                                     M.read (| plus1 |),
                                                                     M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
@@ -2502,7 +2373,7 @@ Module num.
                                                                     |)
                                                                   |);
                                                                   M.read (| ten_kappa |);
-                                                                  Value.Integer Integer.U64 1
+                                                                  Value.Integer 1
                                                                 ]
                                                               |)
                                                             |)
@@ -2557,9 +2428,7 @@ Module num.
                                                                               [
                                                                                 ten_kappa;
                                                                                 M.alloc (|
-                                                                                  Value.Integer
-                                                                                    Integer.U32
-                                                                                    1
+                                                                                  Value.Integer 1
                                                                                 |)
                                                                               ]
                                                                           |),
@@ -2688,8 +2557,9 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.div (|
+                                                  Integer.U32,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.U32 10
+                                                  Value.Integer 10
                                                 |)
                                               |) in
                                             let _ := M.write (| remainder, M.read (| r |) |) in
@@ -2697,7 +2567,7 @@ Module num.
                                         |) in
                                       let remainder := M.copy (| plus1frac |) in
                                       let threshold := M.copy (| delta1frac |) in
-                                      let ulp := M.alloc (| Value.Integer Integer.U64 1 |) in
+                                      let ulp := M.alloc (| Value.Integer 1 |) in
                                       let _ :=
                                         M.alloc (|
                                           M.never_to_any (|
@@ -2709,8 +2579,9 @@ Module num.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.mul (|
+                                                        Integer.U64,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.U64 10
+                                                        Value.Integer 10
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2718,8 +2589,9 @@ Module num.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.mul (|
+                                                        Integer.U64,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.U64 10
+                                                        Value.Integer 10
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2727,8 +2599,9 @@ Module num.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.mul (|
+                                                        Integer.U64,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.U64 10
+                                                        Value.Integer 10
                                                       |)
                                                     |) in
                                                   let q :=
@@ -2743,11 +2616,12 @@ Module num.
                                                       BinOp.Pure.bit_and
                                                         (M.read (| remainder |))
                                                         (BinOp.Panic.sub (|
+                                                          Integer.U64,
                                                           BinOp.Panic.shl (|
-                                                            Value.Integer Integer.U64 1,
+                                                            Value.Integer 1,
                                                             M.read (| e |)
                                                           |),
-                                                          Value.Integer Integer.U64 1
+                                                          Value.Integer 1
                                                         |))
                                                     |) in
                                                   let _ :=
@@ -2776,9 +2650,7 @@ Module num.
                                                                             UnOp.Pure.not
                                                                               (BinOp.Pure.lt
                                                                                 (M.read (| q |))
-                                                                                (Value.Integer
-                                                                                  Integer.U64
-                                                                                  10))
+                                                                                (Value.Integer 10))
                                                                           |)) in
                                                                       let _ :=
                                                                         M.is_constant_or_break_match (|
@@ -2831,6 +2703,7 @@ Module num.
                                                         |),
                                                         [
                                                           BinOp.Panic.add (|
+                                                            Integer.U8,
                                                             M.read (| UnsupportedLiteral |),
                                                             M.rust_cast (M.read (| q |))
                                                           |)
@@ -2842,8 +2715,9 @@ Module num.
                                                     M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.Usize,
                                                         M.read (| β |),
-                                                        Value.Integer Integer.Usize 1
+                                                        Value.Integer 1
                                                       |)
                                                     |) in
                                                   let _ :=
@@ -2870,7 +2744,7 @@ Module num.
                                                                   let ten_kappa :=
                                                                     M.alloc (|
                                                                       BinOp.Panic.shl (|
-                                                                        Value.Integer Integer.U64 1,
+                                                                        Value.Integer 1,
                                                                         M.read (| e |)
                                                                       |)
                                                                     |) in
@@ -2933,7 +2807,9 @@ Module num.
                                                                         M.read (| r |);
                                                                         M.read (| threshold |);
                                                                         BinOp.Panic.mul (|
+                                                                          Integer.U64,
                                                                           BinOp.Panic.sub (|
+                                                                            Integer.U64,
                                                                             M.read (| plus1 |),
                                                                             M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
@@ -3126,9 +3002,13 @@ Module num.
                           ]
                         |) in
                       let plus1v_down :=
-                        M.alloc (| BinOp.Panic.add (| M.read (| plus1v |), M.read (| ulp |) |) |) in
+                        M.alloc (|
+                          BinOp.Panic.add (| Integer.U64, M.read (| plus1v |), M.read (| ulp |) |)
+                        |) in
                       let plus1v_up :=
-                        M.alloc (| BinOp.Panic.sub (| M.read (| plus1v |), M.read (| ulp |) |) |) in
+                        M.alloc (|
+                          BinOp.Panic.sub (| Integer.U64, M.read (| plus1v |), M.read (| ulp |) |)
+                        |) in
                       let plus1w := M.copy (| remainder |) in
                       let _ :=
                         let last :=
@@ -3171,6 +3051,7 @@ Module num.
                                               ltac:(M.monadic
                                                 (BinOp.Pure.ge
                                                   (BinOp.Panic.sub (|
+                                                    Integer.U64,
                                                     M.read (| threshold |),
                                                     M.read (| plus1w |)
                                                   |))
@@ -3180,6 +3061,7 @@ Module num.
                                               (LogicalOp.or (|
                                                 BinOp.Pure.lt
                                                   (BinOp.Panic.add (|
+                                                    Integer.U64,
                                                     M.read (| plus1w |),
                                                     M.read (| ten_kappa |)
                                                   |))
@@ -3187,11 +3069,14 @@ Module num.
                                                 ltac:(M.monadic
                                                   (BinOp.Pure.ge
                                                     (BinOp.Panic.sub (|
+                                                      Integer.U64,
                                                       M.read (| plus1v_up |),
                                                       M.read (| plus1w |)
                                                     |))
                                                     (BinOp.Panic.sub (|
+                                                      Integer.U64,
                                                       BinOp.Panic.add (|
+                                                        Integer.U64,
                                                         M.read (| plus1w |),
                                                         M.read (| ten_kappa |)
                                                       |),
@@ -3210,8 +3095,9 @@ Module num.
                                       M.write (|
                                         β,
                                         BinOp.Panic.sub (|
+                                          Integer.U8,
                                           M.read (| β |),
-                                          Value.Integer Integer.U8 1
+                                          Value.Integer 1
                                         |)
                                       |) in
                                     let _ :=
@@ -3274,7 +3160,11 @@ Module num.
                                       let β := plus1w in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (| M.read (| β |), M.read (| ten_kappa |) |)
+                                        BinOp.Panic.add (|
+                                          Integer.U64,
+                                          M.read (| β |),
+                                          M.read (| ten_kappa |)
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -3310,6 +3200,7 @@ Module num.
                                           ltac:(M.monadic
                                             (BinOp.Pure.ge
                                               (BinOp.Panic.sub (|
+                                                Integer.U64,
                                                 M.read (| threshold |),
                                                 M.read (| plus1w |)
                                               |))
@@ -3319,6 +3210,7 @@ Module num.
                                           (LogicalOp.or (|
                                             BinOp.Pure.lt
                                               (BinOp.Panic.add (|
+                                                Integer.U64,
                                                 M.read (| plus1w |),
                                                 M.read (| ten_kappa |)
                                               |))
@@ -3326,11 +3218,14 @@ Module num.
                                             ltac:(M.monadic
                                               (BinOp.Pure.ge
                                                 (BinOp.Panic.sub (|
+                                                  Integer.U64,
                                                   M.read (| plus1v_down |),
                                                   M.read (| plus1w |)
                                                 |))
                                                 (BinOp.Panic.sub (|
+                                                  Integer.U64,
                                                   BinOp.Panic.add (|
+                                                    Integer.U64,
                                                     M.read (| plus1w |),
                                                     M.read (| ten_kappa |)
                                                   |),
@@ -3367,7 +3262,8 @@ Module num.
                                     LogicalOp.and (|
                                       BinOp.Pure.le
                                         (BinOp.Panic.mul (|
-                                          Value.Integer Integer.U64 2,
+                                          Integer.U64,
+                                          Value.Integer 2,
                                           M.read (| ulp |)
                                         |))
                                         (M.read (| plus1w |)),
@@ -3375,9 +3271,11 @@ Module num.
                                         (BinOp.Pure.le
                                           (M.read (| plus1w |))
                                           (BinOp.Panic.sub (|
+                                            Integer.U64,
                                             M.read (| threshold |),
                                             BinOp.Panic.mul (|
-                                              Value.Integer Integer.U64 4,
+                                              Integer.U64,
+                                              Value.Integer 4,
                                               M.read (| ulp |)
                                             |)
                                           |))))
@@ -3783,7 +3681,7 @@ Module num.
                                               "mant"
                                             |)
                                           |))
-                                          (Value.Integer Integer.U64 0))
+                                          (Value.Integer 0))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3819,10 +3717,7 @@ Module num.
                                               "mant"
                                             |)
                                           |))
-                                          (BinOp.Panic.shl (|
-                                            Value.Integer Integer.U64 1,
-                                            Value.Integer Integer.I32 61
-                                          |)))
+                                          (BinOp.Panic.shl (| Value.Integer 1, Value.Integer 61 |)))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -3933,7 +3828,9 @@ Module num.
                             |),
                             [
                               BinOp.Panic.sub (|
+                                Integer.I16,
                                 BinOp.Panic.sub (|
+                                  Integer.I16,
                                   M.read (|
                                     M.get_constant (|
                                       "core::num::flt2dec::strategy::grisu::ALPHA"
@@ -3947,10 +3844,12 @@ Module num.
                                     |)
                                   |)
                                 |),
-                                Value.Integer Integer.I16 64
+                                Value.Integer 64
                               |);
                               BinOp.Panic.sub (|
+                                Integer.I16,
                                 BinOp.Panic.sub (|
+                                  Integer.I16,
                                   M.read (|
                                     M.get_constant (|
                                       "core::num::flt2dec::strategy::grisu::GAMMA"
@@ -3964,7 +3863,7 @@ Module num.
                                     |)
                                   |)
                                 |),
-                                Value.Integer Integer.I16 64
+                                Value.Integer 64
                               |)
                             ]
                           |)
@@ -3991,6 +3890,7 @@ Module num.
                                 M.alloc (|
                                   M.rust_cast
                                     (UnOp.Panic.neg (|
+                                      Integer.I16,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           v,
@@ -4025,11 +3925,9 @@ Module num.
                                       |)
                                     |))
                                     (BinOp.Panic.sub (|
-                                      BinOp.Panic.shl (|
-                                        Value.Integer Integer.U64 1,
-                                        M.read (| e |)
-                                      |),
-                                      Value.Integer Integer.U64 1
+                                      Integer.U64,
+                                      BinOp.Panic.shl (| Value.Integer 1, M.read (| e |) |),
+                                      Value.Integer 1
                                     |))
                                 |) in
                               let requested_digits :=
@@ -4061,12 +3959,12 @@ Module num.
                                               LogicalOp.and (|
                                                 BinOp.Pure.eq
                                                   (M.read (| vfrac |))
-                                                  (Value.Integer Integer.U64 0),
+                                                  (Value.Integer 0),
                                                 ltac:(M.monadic
                                                   (LogicalOp.or (|
                                                     BinOp.Pure.ge
                                                       (M.read (| requested_digits |))
-                                                      (Value.Integer Integer.Usize 11),
+                                                      (Value.Integer 11),
                                                     ltac:(M.monadic
                                                       (BinOp.Pure.lt
                                                         (M.read (| vint |))
@@ -4077,8 +3975,9 @@ Module num.
                                                             |),
                                                             M.alloc (|
                                                               BinOp.Panic.sub (|
+                                                                Integer.Usize,
                                                                 M.read (| requested_digits |),
-                                                                Value.Integer Integer.Usize 1
+                                                                Value.Integer 1
                                                               |)
                                                             |)
                                                           |)
@@ -4103,7 +4002,7 @@ Module num.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let err := M.alloc (| Value.Integer Integer.U64 1 |) in
+                              let err := M.alloc (| Value.Integer 1 |) in
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -4121,15 +4020,17 @@ Module num.
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let max_kappa := M.copy (| γ0_0 |) in
                                       let max_ten_kappa := M.copy (| γ0_1 |) in
-                                      let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                                      let i := M.alloc (| Value.Integer 0 |) in
                                       let exp :=
                                         M.alloc (|
                                           BinOp.Panic.add (|
+                                            Integer.I16,
                                             BinOp.Panic.sub (|
+                                              Integer.I16,
                                               M.rust_cast (M.read (| max_kappa |)),
                                               M.read (| minusk |)
                                             |),
-                                            Value.Integer Integer.I16 1
+                                            Value.Integer 1
                                           |)
                                         |) in
                                       let len :=
@@ -4162,10 +4063,11 @@ Module num.
                                                             |),
                                                             [
                                                               M.read (| buf |);
-                                                              Value.Integer Integer.Usize 0;
+                                                              Value.Integer 0;
                                                               M.read (| exp |);
                                                               M.read (| limit |);
                                                               BinOp.Panic.div (|
+                                                                Integer.U64,
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
                                                                     v,
@@ -4173,7 +4075,7 @@ Module num.
                                                                     "f"
                                                                   |)
                                                                 |),
-                                                                Value.Integer Integer.U64 10
+                                                                Value.Integer 10
                                                               |);
                                                               BinOp.Panic.shl (|
                                                                 M.rust_cast
@@ -4203,6 +4105,7 @@ Module num.
                                                                 BinOp.Pure.lt
                                                                   (M.rust_cast
                                                                     (BinOp.Panic.sub (|
+                                                                      Integer.I32,
                                                                       M.rust_cast
                                                                         (M.read (| exp |)),
                                                                       M.rust_cast
@@ -4232,6 +4135,7 @@ Module num.
                                                           M.alloc (|
                                                             M.rust_cast
                                                               (BinOp.Panic.sub (|
+                                                                Integer.I16,
                                                                 M.read (| exp |),
                                                                 M.read (| limit |)
                                                               |))
@@ -4284,7 +4188,7 @@ Module num.
                                                                 UnOp.Pure.not
                                                                   (BinOp.Pure.gt
                                                                     (M.read (| len |))
-                                                                    (Value.Integer Integer.Usize 0))
+                                                                    (Value.Integer 0))
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -4326,6 +4230,7 @@ Module num.
                                             (let q :=
                                               M.alloc (|
                                                 BinOp.Panic.div (|
+                                                  Integer.U32,
                                                   M.read (| remainder |),
                                                   M.read (| ten_kappa |)
                                                 |)
@@ -4333,6 +4238,7 @@ Module num.
                                             let r :=
                                               M.alloc (|
                                                 BinOp.Panic.rem (|
+                                                  Integer.U32,
                                                   M.read (| remainder |),
                                                   M.read (| ten_kappa |)
                                                 |)
@@ -4362,9 +4268,7 @@ Module num.
                                                                       UnOp.Pure.not
                                                                         (BinOp.Pure.lt
                                                                           (M.read (| q |))
-                                                                          (Value.Integer
-                                                                            Integer.U32
-                                                                            10))
+                                                                          (Value.Integer 10))
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -4414,6 +4318,7 @@ Module num.
                                                   |),
                                                   [
                                                     BinOp.Panic.add (|
+                                                      Integer.U8,
                                                       M.read (| UnsupportedLiteral |),
                                                       M.rust_cast (M.read (| q |))
                                                     |)
@@ -4425,8 +4330,9 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               |) in
                                             let _ :=
@@ -4453,6 +4359,7 @@ Module num.
                                                             let vrem :=
                                                               M.alloc (|
                                                                 BinOp.Panic.add (|
+                                                                  Integer.U64,
                                                                   BinOp.Panic.shl (|
                                                                     M.rust_cast (M.read (| r |)),
                                                                     M.read (| e |)
@@ -4535,9 +4442,7 @@ Module num.
                                                                               [
                                                                                 ten_kappa;
                                                                                 M.alloc (|
-                                                                                  Value.Integer
-                                                                                    Integer.U32
-                                                                                    1
+                                                                                  Value.Integer 1
                                                                                 |)
                                                                               ]
                                                                           |),
@@ -4676,9 +4581,7 @@ Module num.
                                                                               [
                                                                                 kappa;
                                                                                 M.alloc (|
-                                                                                  Value.Integer
-                                                                                    Integer.I16
-                                                                                    0
+                                                                                  Value.Integer 0
                                                                                 |)
                                                                               ]
                                                                           |),
@@ -4807,8 +4710,9 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.sub (|
+                                                  Integer.I16,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.I16 1
+                                                  Value.Integer 1
                                                 |)
                                               |) in
                                             let _ :=
@@ -4816,8 +4720,9 @@ Module num.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.div (|
+                                                  Integer.U32,
                                                   M.read (| β |),
-                                                  Value.Integer Integer.U32 10
+                                                  Value.Integer 10
                                                 |)
                                               |) in
                                             let _ := M.write (| remainder, M.read (| r |) |) in
@@ -4827,10 +4732,11 @@ Module num.
                                       let maxerr :=
                                         M.alloc (|
                                           BinOp.Panic.shl (|
-                                            Value.Integer Integer.U64 1,
+                                            Value.Integer 1,
                                             BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.read (| e |),
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             |)
                                           |)
                                         |) in
@@ -4859,8 +4765,9 @@ Module num.
                                                       M.write (|
                                                         β,
                                                         BinOp.Panic.mul (|
+                                                          Integer.U64,
                                                           M.read (| β |),
-                                                          Value.Integer Integer.U64 10
+                                                          Value.Integer 10
                                                         |)
                                                       |) in
                                                     let _ :=
@@ -4868,8 +4775,9 @@ Module num.
                                                       M.write (|
                                                         β,
                                                         BinOp.Panic.mul (|
+                                                          Integer.U64,
                                                           M.read (| β |),
-                                                          Value.Integer Integer.U64 10
+                                                          Value.Integer 10
                                                         |)
                                                       |) in
                                                     let q :=
@@ -4884,11 +4792,12 @@ Module num.
                                                         BinOp.Pure.bit_and
                                                           (M.read (| remainder |))
                                                           (BinOp.Panic.sub (|
+                                                            Integer.U64,
                                                             BinOp.Panic.shl (|
-                                                              Value.Integer Integer.U64 1,
+                                                              Value.Integer 1,
                                                               M.read (| e |)
                                                             |),
-                                                            Value.Integer Integer.U64 1
+                                                            Value.Integer 1
                                                           |))
                                                       |) in
                                                     let _ :=
@@ -4918,7 +4827,6 @@ Module num.
                                                                                 (BinOp.Pure.lt
                                                                                   (M.read (| q |))
                                                                                   (Value.Integer
-                                                                                    Integer.U64
                                                                                     10))
                                                                             |)) in
                                                                         let _ :=
@@ -4972,6 +4880,7 @@ Module num.
                                                           |),
                                                           [
                                                             BinOp.Panic.add (|
+                                                              Integer.U8,
                                                               M.read (| UnsupportedLiteral |),
                                                               M.rust_cast (M.read (| q |))
                                                             |)
@@ -4983,8 +4892,9 @@ Module num.
                                                       M.write (|
                                                         β,
                                                         BinOp.Panic.add (|
+                                                          Integer.Usize,
                                                           M.read (| β |),
-                                                          Value.Integer Integer.Usize 1
+                                                          Value.Integer 1
                                                         |)
                                                       |) in
                                                     let _ :=
@@ -5021,9 +4931,7 @@ Module num.
                                                                           M.read (| limit |);
                                                                           M.read (| r |);
                                                                           BinOp.Panic.shl (|
-                                                                            Value.Integer
-                                                                              Integer.U64
-                                                                              1,
+                                                                            Value.Integer 1,
                                                                             M.read (| e |)
                                                                           |);
                                                                           M.read (| err |)
@@ -5079,16 +4987,16 @@ Module num.
                 (M.alloc (|
                   Value.Array
                     [
-                      Value.Integer Integer.U32 1;
-                      Value.Integer Integer.U32 10;
-                      Value.Integer Integer.U32 100;
-                      Value.Integer Integer.U32 1000;
-                      Value.Integer Integer.U32 10000;
-                      Value.Integer Integer.U32 100000;
-                      Value.Integer Integer.U32 1000000;
-                      Value.Integer Integer.U32 10000000;
-                      Value.Integer Integer.U32 100000000;
-                      Value.Integer Integer.U32 1000000000
+                      Value.Integer 1;
+                      Value.Integer 10;
+                      Value.Integer 100;
+                      Value.Integer 1000;
+                      Value.Integer 10000;
+                      Value.Integer 100000;
+                      Value.Integer 1000000;
+                      Value.Integer 10000000;
+                      Value.Integer 100000000;
+                      Value.Integer 1000000000
                     ]
                 |))).
           
@@ -5308,6 +5216,7 @@ Module num.
                                     (M.alloc (|
                                       BinOp.Pure.le
                                         (BinOp.Panic.sub (|
+                                          Integer.U64,
                                           M.read (| ten_kappa |),
                                           M.read (| ulp |)
                                         |))
@@ -5342,6 +5251,7 @@ Module num.
                                       LogicalOp.and (|
                                         BinOp.Pure.gt
                                           (BinOp.Panic.sub (|
+                                            Integer.U64,
                                             M.read (| ten_kappa |),
                                             M.read (| remainder |)
                                           |))
@@ -5349,14 +5259,17 @@ Module num.
                                         ltac:(M.monadic
                                           (BinOp.Pure.ge
                                             (BinOp.Panic.sub (|
+                                              Integer.U64,
                                               M.read (| ten_kappa |),
                                               BinOp.Panic.mul (|
-                                                Value.Integer Integer.U64 2,
+                                                Integer.U64,
+                                                Value.Integer 2,
                                                 M.read (| remainder |)
                                               |)
                                             |))
                                             (BinOp.Panic.mul (|
-                                              Value.Integer Integer.U64 2,
+                                              Integer.U64,
+                                              Value.Integer 2,
                                               M.read (| ulp |)
                                             |))))
                                       |)
@@ -5437,13 +5350,16 @@ Module num.
                                         ltac:(M.monadic
                                           (BinOp.Pure.le
                                             (BinOp.Panic.sub (|
+                                              Integer.U64,
                                               M.read (| ten_kappa |),
                                               BinOp.Panic.sub (|
+                                                Integer.U64,
                                                 M.read (| remainder |),
                                                 M.read (| ulp |)
                                               |)
                                             |))
                                             (BinOp.Panic.sub (|
+                                              Integer.U64,
                                               M.read (| remainder |),
                                               M.read (| ulp |)
                                             |))))
@@ -5525,8 +5441,9 @@ Module num.
                                                   M.write (|
                                                     β,
                                                     BinOp.Panic.add (|
+                                                      Integer.I16,
                                                       M.read (| β |),
-                                                      Value.Integer Integer.I16 1
+                                                      Value.Integer 1
                                                     |)
                                                   |) in
                                                 M.match_operator (|
@@ -5589,8 +5506,9 @@ Module num.
                                                           M.write (|
                                                             β,
                                                             BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               M.read (| β |),
-                                                              Value.Integer Integer.Usize 1
+                                                              Value.Integer 1
                                                             |)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)));

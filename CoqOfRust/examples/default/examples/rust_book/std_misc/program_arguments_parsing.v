@@ -42,8 +42,9 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.add (|
+                                      Integer.I32,
                                       M.read (| number |),
-                                      Value.Integer Integer.I32 1
+                                      Value.Integer 1
                                     |)
                                   |)
                                 ]
@@ -102,8 +103,9 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.sub (|
+                                      Integer.I32,
                                       M.read (| number |),
-                                      Value.Integer Integer.I32 1
+                                      Value.Integer 1
                                     |)
                                   |)
                                 ]
@@ -258,11 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.Usize 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     let _ :=
                       let _ :=
                         M.alloc (|
@@ -297,11 +295,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.Usize 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -329,7 +323,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     "index",
                                     []
                                   |),
-                                  [ args; Value.Integer Integer.Usize 1 ]
+                                  [ args; Value.Integer 1 ]
                                 |)
                               ]
                             |)
@@ -348,7 +342,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             let _ :=
                               M.is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
-                                Value.Integer Integer.I32 42
+                                Value.Integer 42
                               |) in
                             let _ :=
                               M.alloc (|
@@ -407,11 +401,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.Usize 3
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
                     let cmd :=
                       M.alloc (|
                         M.call_closure (|
@@ -424,7 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer Integer.Usize 1 ]
+                          [ args; Value.Integer 1 ]
                         |)
                       |) in
                     let num :=
@@ -439,7 +429,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer Integer.Usize 2 ]
+                          [ args; Value.Integer 2 ]
                         |)
                       |) in
                     let number :=

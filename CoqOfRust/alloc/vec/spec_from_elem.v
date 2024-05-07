@@ -204,7 +204,7 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer Integer.I8 0)
+                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -326,7 +326,7 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer Integer.U8 0)
+                                  BinOp.Pure.eq (M.read (| elem |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

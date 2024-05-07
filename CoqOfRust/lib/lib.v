@@ -112,19 +112,19 @@ Module UnOp.
     Definition not (v : Value.t) : Value.t :=
       match v with
       | Value.Bool b => Value.Bool (negb b)
-      | Value.Integer kind i => Value.Integer kind (Z.lnot i)
-      | _ => v
+      | Value.Integer i => Value.Integer (Z.lnot i)
+      | _ => Value.Error "unexpected parameter for not"
       end.
   End Pure.
 
   Module Panic.
-    Definition neg (v : Value.t) : M :=
+    Definition neg (kind : Integer.t) (v : Value.t) : M :=
       match v with
-      | Value.Integer kind i =>
+      | Value.Integer i =>
         if Z.eqb i (Integer.min kind) then
           M.panic "overflow"
         else
-          M.pure (Value.Integer kind (- i))
+          M.pure (Value.Integer (- i))
       | _ => M.panic "not implemented"
       end.
   End Panic.
@@ -144,77 +144,78 @@ Module BinOp.
 
     Definition lt (v1 v2 : Value.t) : Value.t :=
       match v1, v2 with
-      | Value.Integer _ i1, Value.Integer _ i2 => Value.Bool (Z.ltb i1 i2)
-      | _, _ => Value.Bool false
+      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.ltb i1 i2)
+      | _, _ => Value.Error "unexpected parameter for lt"
       end.
 
     Definition le (v1 v2 : Value.t) : Value.t :=
       match v1, v2 with
-      | Value.Integer _ i1, Value.Integer _ i2 => Value.Bool (Z.leb i1 i2)
-      | _, _ => Value.Bool true
+      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.leb i1 i2)
+      | _, _ => Value.Error "unexpected parameter for le"
       end.
 
     Definition ge (v1 v2 : Value.t) : Value.t :=
       match v1, v2 with
-      | Value.Integer _ i1, Value.Integer _ i2 => Value.Bool (Z.geb i1 i2)
-      | _, _ => Value.Bool true
+      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.geb i1 i2)
+      | _, _ => Value.Error "unexpected parameter for ge"
       end.
 
     Definition gt (v1 v2 : Value.t) : Value.t :=
       match v1, v2 with
-      | Value.Integer _ i1, Value.Integer _ i2 => Value.Bool (Z.gtb i1 i2)
-      | _, _ => Value.Bool false
+      | Value.Integer i1, Value.Integer i2 => Value.Bool (Z.gtb i1 i2)
+      | _, _ => Value.Error "unexpected parameter for gt"
       end.
   End Pure.
 
   Module Error.
     Definition make_arithmetic
         (bin_op : Z -> Z -> Z)
+        (kind : Integer.t)
         (v1 v2 : Value.t) :
         Value.t + string :=
       match v1, v2 with
-      | Value.Integer kind z1, Value.Integer _ z2 =>
+      | Value.Integer z1, Value.Integer z2 =>
         match Integer.normalize_with_error kind (bin_op z1 z2) with
-        | inl v => inl (Value.Integer kind v)
+        | inl v => inl (Value.Integer v)
         | inr err => inr err
         end
       | _, _ => inr "expected integers"
       end.
 
-    Definition add (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.add v1 v2.
+    Definition add (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
+      make_arithmetic Z.add kind v1 v2.
 
-    Definition sub (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.sub v1 v2.
+    Definition sub (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
+      make_arithmetic Z.sub kind v1 v2.
 
-    Definition mul (v1 v2 : Value.t) : Value.t + string :=
-      make_arithmetic Z.mul v1 v2.
+    Definition mul (kind : Integer.t) (v1 v2 : Value.t) : Value.t + string :=
+      make_arithmetic Z.mul kind v1 v2.
 
-    Parameter div :  Value.t -> Value.t -> Value.t + string.
-    Parameter rem :  Value.t -> Value.t -> Value.t + string.
+    Parameter div : Integer.t -> Value.t -> Value.t -> Value.t + string.
+    Parameter rem : Integer.t -> Value.t -> Value.t -> Value.t + string.
     
     Parameter shl : Value.t -> Value.t -> Value.t + string.
     Parameter shr : Value.t -> Value.t -> Value.t + string.
   End Error.
 
   Module Panic.
-    Definition make_arithmetic (bin_op : Z -> Z -> Z) (v1 v2 : Value.t) : M :=
-      match Error.make_arithmetic bin_op v1 v2 with
+    Definition make_arithmetic (bin_op : Z -> Z -> Z) (kind : Integer.t) (v1 v2 : Value.t) : M :=
+      match Error.make_arithmetic bin_op kind v1 v2 with
       | inl v => M.pure v
       | inr err => M.panic err
       end.
 
-    Definition add : Value.t -> Value.t -> M :=
-      make_arithmetic Z.add.
+    Definition add (kind : Integer.t) : Value.t -> Value.t -> M :=
+      make_arithmetic Z.add kind.
 
-    Definition sub : Value.t -> Value.t -> M :=
-      make_arithmetic Z.sub.
+    Definition sub (kind : Integer.t) : Value.t -> Value.t -> M :=
+      make_arithmetic Z.sub kind.
 
-    Definition mul : Value.t -> Value.t -> M :=
-      make_arithmetic Z.mul.
+    Definition mul (kind : Integer.t) : Value.t -> Value.t -> M :=
+      make_arithmetic Z.mul kind.
 
-    Parameter div : Value.t -> Value.t -> M.
-    Parameter rem : Value.t -> Value.t -> M.
+    Parameter div : Integer.t -> Value.t -> Value.t -> M.
+    Parameter rem : Integer.t -> Value.t -> Value.t -> M.
     
     Parameter shl : Value.t -> Value.t -> M.
     Parameter shr : Value.t -> Value.t -> M.
@@ -223,26 +224,27 @@ Module BinOp.
   Module Wrap.
     Definition make_arithmetic
         (bin_op : Z -> Z -> Z)
+        (kind : Integer.t)
         (v1 v2 : Value.t) :
         Value.t :=
       match v1, v2 with
-      | Value.Integer kind v1, Value.Integer _ v2 =>
+      | Value.Integer v1, Value.Integer v2 =>
         let z := Integer.normalize_wrap kind (bin_op v1 v2) in
-        Value.Integer kind z
+        Value.Integer z
       | _, _ => Value.Error "expected integers"
       end.
 
-    Definition add (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.add v1 v2.
+    Definition add (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
+      make_arithmetic Z.add kind v1 v2.
 
-    Definition sub (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.sub v1 v2.
+    Definition sub (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
+      make_arithmetic Z.sub kind v1 v2.
 
-    Definition mul (v1 v2 : Value.t) : Value.t :=
-      make_arithmetic Z.mul v1 v2.
+    Definition mul (kind : Integer.t) (v1 v2 : Value.t) : Value.t :=
+      make_arithmetic Z.mul kind v1 v2.
 
-    Parameter div : Value.t -> Value.t -> Value.t.
-    Parameter rem : Value.t -> Value.t -> Value.t.
+    Parameter div : Integer.t -> Value.t -> Value.t -> Value.t.
+    Parameter rem : Integer.t -> Value.t -> Value.t -> Value.t.
     
     Parameter shl : Value.t -> Value.t -> Value.t.
     Parameter shr : Value.t -> Value.t -> Value.t.
@@ -257,9 +259,9 @@ Module BinOp.
         (v1 v2 : Value.t) :
         Value.t :=
       match v1, v2 with
-      | Value.Integer kind v1, Value.Integer _ v2 =>
+      | Value.Integer v1, Value.Integer v2 =>
         let z := bin_op v1 v2 in
-        Value.Integer kind z
+        Value.Integer z
       | _, _ => Value.Error "expected integers"
       end.
 

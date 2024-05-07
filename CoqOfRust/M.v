@@ -177,7 +177,7 @@ End Pointer.
 Module Value.
   Inductive t : Set :=
   | Bool : bool -> t
-  | Integer : Integer.t -> Z -> t
+  | Integer : Z -> t
   (** For now we do not know how to represent floats so we use a string *)
   | Float : string -> t
   | UnicodeChar : Z -> t
@@ -328,7 +328,7 @@ Module Value.
   Definition eqb (v1 v2 : Value.t) : bool :=
     match v1, v2 with
     | Value.Bool b1, Value.Bool b2 => Bool.eqb b1 b2
-    | Value.Integer _ i1, Value.Integer _ i2 => Z.eqb i1 i2
+    | Value.Integer i1, Value.Integer i2 => Z.eqb i1 i2
     | Value.Float f1, Value.Float f2 => String.eqb f1 f2
     | Value.UnicodeChar c1, Value.UnicodeChar c2 => Z.eqb c1 c2
     | Value.String s1, Value.String s2 => String.eqb s1 s2
@@ -750,8 +750,7 @@ Module SubPointer.
 
   Definition get_array_field (value : Value.t) (index : Value.t) : M :=
     match index with
-    | Value.Integer Integer.Usize index =>
-      get_sub_pointer value (Pointer.Index.Array index)
+    | Value.Integer index => get_sub_pointer value (Pointer.Index.Array index)
     | _ => impossible
     end.
 

@@ -119,7 +119,7 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ BinOp.Panic.div (| M.read (| x |), M.read (| y |) |) ]
+                      [ BinOp.Panic.div (| Integer.Usize, M.read (| x |), M.read (| y |) |) ]
                   |)))
             ]
           |)

@@ -73,11 +73,7 @@ Module escape.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 9
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -86,11 +82,7 @@ Module escape.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 13
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -99,11 +91,7 @@ Module escape.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 10
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -112,11 +100,7 @@ Module escape.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 92
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 92 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -126,11 +110,7 @@ Module escape.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 39
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 39 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -139,11 +119,7 @@ Module escape.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 34
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 34 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::escape::escape_ascii_into.backslash", [] |),
@@ -202,7 +178,7 @@ Module escape.
                                         "core::ascii::ascii_char::AsciiChar::Null"
                                         []
                                     ];
-                                  Value.Integer Integer.U8 1
+                                  Value.Integer 1
                                 ]
                             |)));
                         fun γ =>
@@ -220,12 +196,7 @@ Module escape.
                                         "from",
                                         []
                                       |),
-                                      [
-                                        BinOp.Panic.shr (|
-                                          M.read (| byte |),
-                                          Value.Integer Integer.I32 4
-                                        |)
-                                      ]
+                                      [ BinOp.Panic.shr (| M.read (| byte |), Value.Integer 4 |) ]
                                     |)
                                   |)
                                 |)
@@ -243,11 +214,7 @@ Module escape.
                                         "from",
                                         []
                                       |),
-                                      [
-                                        BinOp.Pure.bit_and
-                                          (M.read (| byte |))
-                                          (Value.Integer Integer.U8 15)
-                                      ]
+                                      [ BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 15) ]
                                     |)
                                   |)
                                 |)
@@ -266,7 +233,7 @@ Module escape.
                                       M.read (| hi |);
                                       M.read (| lo |)
                                     ];
-                                  Value.Integer Integer.U8 4
+                                  Value.Integer 4
                                 ]
                             |)))
                       ]
@@ -284,7 +251,7 @@ Module escape.
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer Integer.U8 0); ("end_", M.read (| len |)) ]
+                      [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
                   |)))
             ]
           |)
@@ -312,7 +279,7 @@ Module escape.
                   Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [];
                   Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []
                 ];
-              Value.Integer Integer.U8 2
+              Value.Integer 2
             ]))
       | _, _ => M.impossible
       end.
@@ -348,117 +315,96 @@ Module escape.
         M.read (|
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 9 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 9 |) |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" []
             |) in
           let ch := M.alloc (| M.rust_cast (M.read (| ch |)) |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 3 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 3 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 20 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 20 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 4 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 4 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 16 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 16 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 5 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 5 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 12 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 12 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 6 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 6 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 8 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 8 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 7 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 7 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 4 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 4 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
           let _ :=
             M.write (|
-              M.SubPointer.get_array_field (|
-                M.read (| output |),
-                M.alloc (| Value.Integer Integer.Usize 8 |)
-              |),
+              M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 8 |) |),
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant (| "core::escape::HEX_DIGITS" |),
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer Integer.I32 0 |))
-                        (Value.Integer Integer.U32 15))
+                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 0 |))
+                        (Value.Integer 15))
                   |)
                 |)
               |)
@@ -466,15 +412,17 @@ Module escape.
           let start :=
             M.alloc (|
               BinOp.Panic.sub (|
+                Integer.Usize,
                 BinOp.Panic.div (|
+                  Integer.Usize,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
-                      [ BinOp.Pure.bit_or (M.read (| ch |)) (Value.Integer Integer.U32 1) ]
+                      [ BinOp.Pure.bit_or (M.read (| ch |)) (Value.Integer 1) ]
                     |)),
-                  Value.Integer Integer.Usize 4
+                  Value.Integer 4
                 |),
-                Value.Integer Integer.Usize 2
+                Value.Integer 2
               |)
             |) in
           let _ :=
@@ -512,9 +460,7 @@ Module escape.
                             [ ("start", M.read (| start |)) ]
                         ]
                       |);
-                      Value.StructRecord
-                        "core::ops::range::RangeTo"
-                        [ ("end_", Value.Integer Integer.Usize 3) ]
+                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 3) ]
                     ]
                   |);
                   (* Unsize *)
@@ -530,7 +476,7 @@ Module escape.
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
-              [ ("start", M.rust_cast (M.read (| start |))); ("end_", Value.Integer Integer.U8 10) ]
+              [ ("start", M.rust_cast (M.read (| start |))); ("end_", Value.Integer 10) ]
           |)
         |)))
     | _, _ => M.impossible
@@ -888,7 +834,7 @@ Module escape.
                   Value.StructRecord
                     "core::ops::range::Range"
                     [
-                      ("start", Value.Integer Integer.U8 0);
+                      ("start", Value.Integer 0);
                       ("end_",
                         M.rust_cast
                           (M.read (| M.get_constant (| "core::escape::from_array::M" |) |)))
@@ -1035,6 +981,7 @@ Module escape.
             |),
             [
               BinOp.Panic.sub (|
+                Integer.U8,
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|

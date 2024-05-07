@@ -472,7 +472,7 @@ Module iter.
                       "core::iter::adapters::filter_map::next_chunk::Guard"
                       [
                         ("array", (* Unsize *) M.pointer_coercion array);
-                        ("initialized", Value.Integer Integer.Usize 0)
+                        ("initialized", Value.Integer 0)
                       ]
                   |) in
                 let result :=
@@ -548,6 +548,7 @@ Module iter.
                                                 "initialized"
                                               |),
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| idx |),
                                                 M.rust_cast
                                                   (M.call_closure (|
@@ -672,7 +673,7 @@ Module iter.
                                                   [
                                                     M.read (| opt_payload_at |);
                                                     M.read (| dst |);
-                                                    Value.Integer Integer.Usize 1
+                                                    Value.Integer 1
                                                   ]
                                                 |)
                                               |) in
@@ -828,9 +829,7 @@ Module iter.
                                   M.read (| array |);
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [
-                                      ("start", Value.Integer Integer.Usize 0);
-                                      ("end_", M.read (| initialized |))
+                                    [ ("start", Value.Integer 0); ("end_", M.read (| initialized |))
                                     ]
                                 ]
                               |)
@@ -880,9 +879,7 @@ Module iter.
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let upper := M.copy (| γ0_1 |) in
-                        M.alloc (|
-                          Value.Tuple [ Value.Integer Integer.Usize 0; M.read (| upper |) ]
-                        |)))
+                        M.alloc (| Value.Tuple [ Value.Integer 0; M.read (| upper |) ] |)))
                   ]
                 |)
               |)))

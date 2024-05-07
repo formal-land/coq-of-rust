@@ -187,7 +187,7 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| radix |)) (Value.Integer Integer.U32 10)
+                                  BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 10)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -203,7 +203,7 @@ Module char.
                                             UnOp.Pure.not
                                               (BinOp.Pure.le
                                                 (M.read (| radix |))
-                                                (Value.Integer Integer.U32 36))
+                                                (Value.Integer 36))
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -251,9 +251,7 @@ Module char.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt
-                                              (M.read (| digit |))
-                                              (Value.Integer Integer.U32 10)
+                                            BinOp.Pure.lt (M.read (| digit |)) (Value.Integer 10)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -293,11 +291,11 @@ Module char.
                                       [
                                         BinOp.Pure.bit_or
                                           (M.rust_cast (M.read (| self |)))
-                                          (Value.Integer Integer.U32 32);
+                                          (Value.Integer 32);
                                         M.rust_cast (Value.UnicodeChar 97)
                                       ]
                                     |);
-                                    Value.Integer Integer.U32 10
+                                    Value.Integer 10
                                   ]
                                 |)
                               |) in
@@ -830,14 +828,12 @@ Module char.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.eq
-                              (BinOp.Pure.bit_and
-                                (M.read (| ch |))
-                                (Value.Integer Integer.U32 65535))
+                              (BinOp.Pure.bit_and (M.read (| ch |)) (Value.Integer 65535))
                               (M.read (| ch |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.Integer Integer.Usize 1 |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 2 |)))
+                      M.alloc (| Value.Integer 1 |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 2 |)))
                 ]
               |)
             |)))
@@ -1275,9 +1271,7 @@ Module char.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.le
-              (M.rust_cast (M.read (| M.read (| self |) |)))
-              (Value.Integer Integer.U32 127)))
+            BinOp.Pure.le (M.rust_cast (M.read (| M.read (| self |) |))) (Value.Integer 127)))
         | _, _ => M.impossible
         end.
       
@@ -2037,7 +2031,7 @@ Module char.
                             (M.read (| M.get_constant (| "core::char::MAX_ONE_B" |) |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer Integer.Usize 1 |)));
+                    M.alloc (| Value.Integer 1 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2054,7 +2048,7 @@ Module char.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer Integer.Usize 2 |)));
+                            M.alloc (| Value.Integer 2 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -2076,9 +2070,8 @@ Module char.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| Value.Integer Integer.Usize 3 |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 4 |)))
+                                    M.alloc (| Value.Integer 3 |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 4 |)))
                               ]
                             |)))
                       ]
@@ -2159,10 +2152,7 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.Usize 1
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
@@ -2174,10 +2164,7 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.Usize 2
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 2 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2190,11 +2177,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 6
-                                |))
-                                (Value.Integer Integer.U32 31)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (Value.Integer 31)))
                             (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
                         |) in
                       let _ :=
@@ -2202,9 +2186,7 @@ Module char.
                           M.read (| b |),
                           BinOp.Pure.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (M.read (| code |))
-                                (Value.Integer Integer.U32 63)))
+                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2213,10 +2195,7 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.Usize 3
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2231,11 +2210,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 12
-                                |))
-                                (Value.Integer Integer.U32 15)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
+                                (Value.Integer 15)))
                             (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
                         |) in
                       let _ :=
@@ -2244,11 +2220,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 6
-                                |))
-                                (Value.Integer Integer.U32 63)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let _ :=
@@ -2256,9 +2229,7 @@ Module char.
                           M.read (| c |),
                           BinOp.Pure.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (M.read (| code |))
-                                (Value.Integer Integer.U32 63)))
+                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2267,10 +2238,7 @@ Module char.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.Usize 4
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 4 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
@@ -2287,11 +2255,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 18
-                                |))
-                                (Value.Integer Integer.U32 7)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 18 |))
+                                (Value.Integer 7)))
                             (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
                         |) in
                       let _ :=
@@ -2300,11 +2265,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 12
-                                |))
-                                (Value.Integer Integer.U32 63)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
+                                (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let _ :=
@@ -2313,11 +2275,8 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (|
-                                  M.read (| code |),
-                                  Value.Integer Integer.I32 6
-                                |))
-                                (Value.Integer Integer.U32 63)))
+                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       let _ :=
@@ -2325,9 +2284,7 @@ Module char.
                           M.read (| d |),
                           BinOp.Pure.bit_or
                             (M.rust_cast
-                              (BinOp.Pure.bit_and
-                                (M.read (| code |))
-                                (Value.Integer Integer.U32 63)))
+                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2466,9 +2423,7 @@ Module char.
                         (M.alloc (|
                           LogicalOp.and (|
                             BinOp.Pure.eq
-                              (BinOp.Pure.bit_and
-                                (M.read (| code |))
-                                (Value.Integer Integer.U32 65535))
+                              (BinOp.Pure.bit_and (M.read (| code |)) (Value.Integer 65535))
                               (M.read (| code |)),
                             ltac:(M.monadic
                               (UnOp.Pure.not
@@ -2493,7 +2448,7 @@ Module char.
                                 "get_unchecked_mut",
                                 [ Ty.path "usize" ]
                               |),
-                              [ M.read (| dst |); Value.Integer Integer.Usize 0 ]
+                              [ M.read (| dst |); Value.Integer 0 ]
                             |),
                             M.rust_cast (M.read (| code |))
                           |) in
@@ -2512,7 +2467,7 @@ Module char.
                                 |),
                                 [ M.read (| dst |) ]
                               |);
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             ]
                           |)
                         |)
@@ -2537,7 +2492,7 @@ Module char.
                                       |),
                                       [ M.read (| dst |) ]
                                     |))
-                                    (Value.Integer Integer.Usize 2)
+                                    (Value.Integer 2)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2548,8 +2503,9 @@ Module char.
                                   M.write (|
                                     β,
                                     BinOp.Panic.sub (|
+                                      Integer.U32,
                                       M.read (| β |),
-                                      Value.Integer Integer.U32 65536
+                                      Value.Integer 65536
                                     |)
                                   |) in
                                 let _ :=
@@ -2560,15 +2516,12 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer Integer.Usize 0 ]
+                                      [ M.read (| dst |); Value.Integer 0 ]
                                     |),
                                     BinOp.Pure.bit_or
-                                      (Value.Integer Integer.U16 55296)
+                                      (Value.Integer 55296)
                                       (M.rust_cast
-                                        (BinOp.Panic.shr (|
-                                          M.read (| code |),
-                                          Value.Integer Integer.I32 10
-                                        |)))
+                                        (BinOp.Panic.shr (| M.read (| code |), Value.Integer 10 |)))
                                   |) in
                                 let _ :=
                                   M.write (|
@@ -2578,13 +2531,13 @@ Module char.
                                         "get_unchecked_mut",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ M.read (| dst |); Value.Integer Integer.Usize 1 ]
+                                      [ M.read (| dst |); Value.Integer 1 ]
                                     |),
                                     BinOp.Pure.bit_or
-                                      (Value.Integer Integer.U16 56320)
+                                      (Value.Integer 56320)
                                       (BinOp.Pure.bit_and
                                         (M.rust_cast (M.read (| code |)))
-                                        (Value.Integer Integer.U16 1023))
+                                        (Value.Integer 1023))
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
@@ -2601,7 +2554,7 @@ Module char.
                                         |),
                                         [ M.read (| dst |) ]
                                       |);
-                                      Value.Integer Integer.Usize 2
+                                      Value.Integer 2
                                     ]
                                   |)
                                 |)

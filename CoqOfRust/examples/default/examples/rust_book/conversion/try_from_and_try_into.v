@@ -126,8 +126,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                     M.use
                       (M.alloc (|
                         BinOp.Pure.eq
-                          (BinOp.Panic.rem (| M.read (| value |), Value.Integer Integer.I32 2 |))
-                          (Value.Integer Integer.I32 0)
+                          (BinOp.Panic.rem (| Integer.I32, M.read (| value |), Value.Integer 2 |))
+                          (Value.Integer 0)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -188,17 +188,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer Integer.I32 8 ]
+                      [ Value.Integer 8 ]
                     |)
                   |);
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer Integer.I32 8 ]
-                      ]
+                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
                   |)
                 ]
             |),
@@ -291,7 +287,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer Integer.I32 5 ]
+                      [ Value.Integer 5 ]
                     |)
                   |);
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
@@ -382,7 +378,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer Integer.I32 8 ]
+              [ Value.Integer 8 ]
             |)
           |) in
         let _ :=
@@ -394,11 +390,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer Integer.I32 8 ]
-                      ]
+                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
                   |)
                 ]
             |),
@@ -487,7 +479,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer Integer.I32 5 ]
+              [ Value.Integer 5 ]
             |)
           |) in
         let _ :=

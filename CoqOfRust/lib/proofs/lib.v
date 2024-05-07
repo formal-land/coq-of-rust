@@ -37,8 +37,7 @@ End Integer.
 Module BinOp.
   Module Error.
     Lemma add_eq (kind : Integer.t) (z1 z2 z : Z) :
-      BinOp.Error.add (Value.Integer kind z1) (Value.Integer kind z2) =
-        inl (Value.Integer kind z) ->
+      BinOp.Error.add kind (Value.Integer z1) (Value.Integer z2) = inl (Value.Integer z) ->
       z = (z1 + z2)%Z.
     Proof.
       unfold
@@ -51,11 +50,9 @@ Module BinOp.
     Lemma add_is_valid (kind : Integer.t) (z1 z2 : Z) (v : Value.t)
       (H_z1 : Integer.Valid.t kind z1)
       (H_z2 : Integer.Valid.t kind z2)
-      (H_v :
-        BinOp.Error.add (Value.Integer kind z1) (Value.Integer kind z2) =
-          inl v) :
+      (H_v : BinOp.Error.add kind (Value.Integer z1) (Value.Integer z2) = inl v) :
       match v with
-      | Value.Integer _ z => Integer.Valid.t kind z
+      | Value.Integer z => Integer.Valid.t kind z
       | _ => False
       end.
     Proof.

@@ -79,6 +79,7 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                                             ltac:(M.monadic
                                               (let second_number := M.copy (| γ |) in
                                               BinOp.Panic.mul (|
+                                                Integer.I32,
                                                 M.read (| first_number |),
                                                 M.read (| second_number |)
                                               |)))

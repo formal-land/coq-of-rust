@@ -24,7 +24,7 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 3 ]
+              [ Value.Integer 3 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
@@ -69,7 +69,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 5 ]
+              [ Value.Integer 5 ]
             |)
           |) in
         let _ :=
@@ -83,7 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   "new",
                   []
                 |),
-                [ Value.Integer Integer.I32 4 ]
+                [ Value.Integer 4 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
@@ -101,10 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [
-                      ("start", Value.Integer Integer.U32 0);
-                      ("end_", Value.Integer Integer.U32 1000)
-                    ]
+                    [ ("start", Value.Integer 0); ("end_", Value.Integer 1000) ]
                 ]
               |)
             |),

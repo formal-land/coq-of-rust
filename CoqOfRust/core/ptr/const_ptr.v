@@ -703,9 +703,7 @@ Module ptr.
                             (M.alloc (|
                               UnOp.Pure.not
                                 (LogicalOp.and (|
-                                  BinOp.Pure.lt
-                                    (Value.Integer Integer.Usize 0)
-                                    (M.read (| pointee_size |)),
+                                  BinOp.Pure.lt (Value.Integer 0) (M.read (| pointee_size |)),
                                   ltac:(M.monadic
                                     (BinOp.Pure.le
                                       (M.read (| pointee_size |))
@@ -881,9 +879,7 @@ Module ptr.
                             (M.alloc (|
                               UnOp.Pure.not
                                 (LogicalOp.and (|
-                                  BinOp.Pure.lt
-                                    (Value.Integer Integer.Usize 0)
-                                    (M.read (| pointee_size |)),
+                                  BinOp.Pure.lt (Value.Integer 0) (M.read (| pointee_size |)),
                                   ltac:(M.monadic
                                     (BinOp.Pure.le
                                       (M.read (| pointee_size |))
@@ -953,10 +949,7 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.U8 2
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -964,7 +957,7 @@ Module ptr.
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ BinOp.Pure.eq (M.read (| other |)) (Value.Integer Integer.U8 1) ]
+                          [ BinOp.Pure.eq (M.read (| other |)) (Value.Integer 1) ]
                       |)))
                 ]
               |)
@@ -1161,7 +1154,7 @@ Module ptr.
                                 "core::intrinsics::unchecked_sub",
                                 [ Ty.path "isize" ]
                               |),
-                              [ Value.Integer Integer.Isize 0; M.rust_cast (M.read (| count |)) ]
+                              [ Value.Integer 0; M.rust_cast (M.read (| count |)) ]
                             |)
                           ]
                         |)
@@ -1824,7 +1817,7 @@ Module ptr.
                 |),
                 [ M.read (| self |) ]
               |))
-              (Value.Integer Integer.Usize 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       

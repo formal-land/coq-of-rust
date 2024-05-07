@@ -336,7 +336,7 @@ Module vec.
                                         "tail_len"
                                       |)
                                     |))
-                                    (Value.Integer Integer.Usize 0)
+                                    (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -479,9 +479,7 @@ Module vec.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| lower_bound |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.gt (M.read (| lower_bound |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -623,7 +621,7 @@ Module vec.
                                             |),
                                             [ collected ]
                                           |))
-                                          (Value.Integer Integer.Usize 0)
+                                          (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -772,7 +770,7 @@ Module vec.
                                                           [ collected ]
                                                         |)
                                                       |);
-                                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                                      M.alloc (| Value.Integer 0 |)
                                                     ]
                                                 |),
                                                 [
@@ -959,7 +957,11 @@ Module vec.
                               M.read (| range_start |)
                             ]
                           |);
-                          BinOp.Panic.sub (| M.read (| range_end |), M.read (| range_start |) |)
+                          BinOp.Panic.sub (|
+                            Integer.Usize,
+                            M.read (| range_end |),
+                            M.read (| range_start |)
+                          |)
                         ]
                       |)
                     |) in
@@ -1061,8 +1063,9 @@ Module vec.
                                                       M.write (|
                                                         β,
                                                         BinOp.Panic.add (|
+                                                          Integer.Usize,
                                                           M.read (| β |),
-                                                          Value.Integer Integer.Usize 1
+                                                          Value.Integer 1
                                                         |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
@@ -1138,6 +1141,7 @@ Module vec.
               let len :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1176,6 +1180,7 @@ Module vec.
               let new_tail_start :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),

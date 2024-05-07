@@ -1128,7 +1128,7 @@ Module slice.
                 M.get_constant (| "core::slice::ascii::contains_nonascii::NONASCII_MASK" |)
               |))
               (M.read (| v |)))
-            (Value.Integer Integer.Usize 0)))
+            (Value.Integer 0)))
       | _, _ => M.impossible
       end.
     
@@ -1139,7 +1139,7 @@ Module slice.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer Integer.U8 128 ]
+                [ Value.Integer 128 ]
               |)
             |))).
     End contains_nonascii.
@@ -1425,9 +1425,7 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| align_offset |))
-                                    (Value.Integer Integer.Usize 0)
+                                  BinOp.Pure.eq (M.read (| align_offset |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1617,6 +1615,7 @@ Module slice.
                                     BinOp.Pure.lt
                                       (M.read (| byte_pos |))
                                       (BinOp.Panic.sub (|
+                                        Integer.Usize,
                                         M.read (| len |),
                                         M.read (|
                                           M.get_constant (|
@@ -1654,6 +1653,7 @@ Module slice.
                                                         UnOp.Pure.not
                                                           (BinOp.Pure.le
                                                             (BinOp.Panic.add (|
+                                                              Integer.Usize,
                                                               M.read (| byte_pos |),
                                                               M.read (|
                                                                 M.get_constant (|
@@ -1872,6 +1872,7 @@ Module slice.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
                                     M.read (|
                                       M.get_constant (|
@@ -1889,7 +1890,7 @@ Module slice.
                                       "add",
                                       []
                                     |),
-                                    [ M.read (| word_ptr |); Value.Integer Integer.Usize 1 ]
+                                    [ M.read (| word_ptr |); Value.Integer 1 ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1935,6 +1936,7 @@ Module slice.
                                               ltac:(M.monadic
                                                 (BinOp.Pure.le
                                                   (BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.read (| len |),
                                                     M.read (| byte_pos |)
                                                   |))
@@ -1989,6 +1991,7 @@ Module slice.
                             [
                               M.read (| start |);
                               BinOp.Panic.sub (|
+                                Integer.Usize,
                                 M.read (| len |),
                                 M.read (|
                                   M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)

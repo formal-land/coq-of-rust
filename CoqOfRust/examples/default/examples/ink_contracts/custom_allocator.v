@@ -115,7 +115,7 @@ Module Impl_custom_allocator_CustomAllocator.
                     "custom_allocator::CustomAllocator",
                     "value"
                   |);
-                  Value.Integer Integer.Usize 0
+                  Value.Integer 0
                 ]
               |),
               UnOp.Pure.not
@@ -136,7 +136,7 @@ Module Impl_custom_allocator_CustomAllocator.
                         "custom_allocator::CustomAllocator",
                         "value"
                       |);
-                      Value.Integer Integer.Usize 0
+                      Value.Integer 0
                     ]
                   |)
                 |))
@@ -175,7 +175,7 @@ Module Impl_custom_allocator_CustomAllocator.
                 "custom_allocator::CustomAllocator",
                 "value"
               |);
-              Value.Integer Integer.Usize 0
+              Value.Integer 0
             ]
           |)
         |)))

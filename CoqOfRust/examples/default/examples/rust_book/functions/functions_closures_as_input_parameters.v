@@ -58,7 +58,7 @@ Definition apply_to_3 (τ : list Ty.t) (α : list Value.t) : M :=
           "call",
           []
         |),
-        [ f; Value.Tuple [ Value.Integer Integer.I32 3 ] ]
+        [ f; Value.Tuple [ Value.Integer 3 ] ]
       |)))
   | _, _ => M.impossible
   end.
@@ -293,7 +293,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let x := M.copy (| γ |) in
-                            BinOp.Panic.mul (| Value.Integer Integer.I32 2, M.read (| x |) |)))
+                            BinOp.Panic.mul (| Integer.I32, Value.Integer 2, M.read (| x |) |)))
                       ]
                     |)
                   | _ => M.impossible (||)

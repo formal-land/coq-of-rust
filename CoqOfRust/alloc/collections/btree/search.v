@@ -1331,7 +1331,7 @@ Module collections.
                         "find_upper_bound_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| bound |); Value.Integer Integer.Usize 0 ]
+                      [ self; M.read (| bound |); Value.Integer 0 ]
                     |)
                   |),
                   [
@@ -1418,7 +1418,7 @@ Module collections.
                         "find_key_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| key |); Value.Integer Integer.Usize 0 ]
+                      [ self; M.read (| key |); Value.Integer 0 ]
                     |)
                   |),
                   [
@@ -1755,6 +1755,7 @@ Module collections.
                                                                 "alloc::collections::btree::search::IndexResult::KV"
                                                                 [
                                                                   BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| start_index |),
                                                                     M.read (| offset |)
                                                                   |)
@@ -1773,6 +1774,7 @@ Module collections.
                                                                 "alloc::collections::btree::search::IndexResult::Edge"
                                                                 [
                                                                   BinOp.Panic.add (|
+                                                                    Integer.Usize,
                                                                     M.read (| start_index |),
                                                                     M.read (| offset |)
                                                                   |)
@@ -1872,7 +1874,7 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer Integer.Usize 0 ]
+                              [ M.read (| self |); M.read (| key |); Value.Integer 0 ]
                             |)
                           |),
                           [
@@ -1925,7 +1927,7 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer Integer.Usize 0 ]
+                              [ M.read (| self |); M.read (| key |); Value.Integer 0 ]
                             |)
                           |),
                           [
@@ -1942,8 +1944,9 @@ Module collections.
                                   Value.Tuple
                                     [
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| idx |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllIncluded"
@@ -1967,7 +1970,7 @@ Module collections.
                         (M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer Integer.Usize 0;
+                              Value.Integer 0;
                               Value.StructTuple
                                 "alloc::collections::btree::search::SearchBound::AllIncluded"
                                 []
@@ -2082,8 +2085,9 @@ Module collections.
                                   Value.Tuple
                                     [
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| idx |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllExcluded"

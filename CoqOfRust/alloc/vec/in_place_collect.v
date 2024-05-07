@@ -78,6 +78,7 @@ Module vec.
                         M.alloc (|
                           BinOp.Pure.ge
                             (BinOp.Panic.mul (|
+                              Integer.Usize,
                               M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ SRC ] |),
                                 []
@@ -92,6 +93,7 @@ Module vec.
                               |)
                             |))
                             (BinOp.Panic.mul (|
+                              Integer.Usize,
                               M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ DEST ] |),
                                 []
@@ -163,9 +165,7 @@ Module vec.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    BinOp.Pure.gt
-                                      (M.read (| src_cap |))
-                                      (Value.Integer Integer.Usize 0)
+                                    BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0)
                                   |)
                                 |)
                               |)
@@ -194,10 +194,11 @@ Module vec.
                     |) in
                   M.return_ (|
                     LogicalOp.and (|
-                      BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer Integer.Usize 0),
+                      BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0),
                       ltac:(M.monadic
                         (BinOp.Pure.ne
                           (BinOp.Panic.mul (|
+                            Integer.Usize,
                             M.read (| src_cap |),
                             M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ SRC ] |),
@@ -205,6 +206,7 @@ Module vec.
                             |)
                           |))
                           (BinOp.Panic.mul (|
+                            Integer.Usize,
                             M.read (| dst_cap |),
                             M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ DEST ] |),
@@ -461,7 +463,9 @@ Module vec.
                               |)
                             |));
                           BinOp.Panic.div (|
+                            Integer.Usize,
                             BinOp.Panic.mul (|
+                              Integer.Usize,
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| inner |),
@@ -828,10 +832,7 @@ Module vec.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
-                                                      [
-                                                        src_cap;
-                                                        M.alloc (| Value.Integer Integer.Usize 0 |)
-                                                      ]
+                                                      [ src_cap; M.alloc (| Value.Integer 0 |) ]
                                                   |),
                                                   [
                                                     fun γ =>
@@ -921,10 +922,7 @@ Module vec.
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     Value.Tuple
-                                                      [
-                                                        dst_cap;
-                                                        M.alloc (| Value.Integer Integer.Usize 0 |)
-                                                      ]
+                                                      [ dst_cap; M.alloc (| Value.Integer 0 |) ]
                                                   |),
                                                   [
                                                     fun γ =>
@@ -1156,6 +1154,7 @@ Module vec.
                                                       [
                                                         M.alloc (|
                                                           BinOp.Panic.mul (|
+                                                            Integer.Usize,
                                                             M.read (| src_cap |),
                                                             M.call_closure (|
                                                               M.get_function (|
@@ -1168,6 +1167,7 @@ Module vec.
                                                         |);
                                                         M.alloc (|
                                                           BinOp.Panic.mul (|
+                                                            Integer.Usize,
                                                             M.read (| dst_cap |),
                                                             M.call_closure (|
                                                               M.get_function (|
@@ -1462,7 +1462,7 @@ Module vec.
                                                   "dst"
                                                 |)
                                               |);
-                                              Value.Integer Integer.Usize 1
+                                              Value.Integer 1
                                             ]
                                           |)
                                         |) in
@@ -1689,7 +1689,7 @@ Module vec.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer Integer.Usize 0); ("end_", M.read (| len |)) ]
+                            [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
                         ]
                       |)
                     |),
@@ -1850,7 +1850,7 @@ Module vec.
                                                 "add",
                                                 []
                                               |),
-                                              [ M.read (| dst |); Value.Integer Integer.Usize 1 ]
+                                              [ M.read (| dst |); Value.Integer 1 ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))

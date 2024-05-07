@@ -714,7 +714,11 @@ Module collections.
                                     "alloc::collections::vec_deque::iter_mut::IterMut",
                                     "i2"
                                   |);
-                                  BinOp.Panic.sub (| M.read (| idx |), M.read (| i1_len |) |)
+                                  BinOp.Panic.sub (|
+                                    Integer.Usize,
+                                    M.read (| idx |),
+                                    M.read (| i1_len |)
+                                  |)
                                 ]
                               |)
                             |)))
@@ -1192,6 +1196,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Panic.add (|
+                Integer.Usize,
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",

@@ -41,7 +41,7 @@ Module net.
                     |),
                     []
                   |));
-                ("len", Value.Integer Integer.Usize 0)
+                ("len", Value.Integer 0)
               ]))
         | _, _ => M.impossible
         end.
@@ -193,6 +193,7 @@ Module net.
                                     |));
                                   ("end_",
                                     BinOp.Panic.add (|
+                                      Integer.Usize,
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -243,6 +244,7 @@ Module net.
                         M.write (|
                           β,
                           BinOp.Panic.add (|
+                            Integer.Usize,
                             M.read (| β |),
                             M.call_closure (|
                               M.get_associated_function (|

@@ -385,8 +385,7 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
 
-Definition value_MAX_OWNERS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 50 |))).
+Definition value_MAX_OWNERS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 50 |))).
 
 Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
@@ -1046,9 +1045,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
                         UnOp.Pure.not
                           (LogicalOp.and (|
                             LogicalOp.and (|
-                              BinOp.Pure.lt
-                                (Value.Integer Integer.U32 0)
-                                (M.read (| requirement |)),
+                              BinOp.Pure.lt (Value.Integer 0) (M.read (| requirement |)),
                               ltac:(M.monadic
                                 (BinOp.Pure.le (M.read (| requirement |)) (M.read (| owners |))))
                             |),
@@ -1801,6 +1798,7 @@ Module Impl_multisig_Multisig.
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [
                   BinOp.Panic.add (|
+                    Integer.U32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
@@ -1818,7 +1816,7 @@ Module Impl_multisig_Multisig.
                           |)
                         ]
                       |)),
-                    Value.Integer Integer.U32 1
+                    Value.Integer 1
                   |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -2186,10 +2184,7 @@ Module Impl_multisig_Multisig.
                                                       M.read (| trans_id |)
                                                     ]
                                                   |);
-                                                  M.read (|
-                                                    M.use
-                                                      (M.alloc (| Value.Integer Integer.U32 0 |))
-                                                  |)
+                                                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
                                                 ]
                                               |)
                                             |) in
@@ -2198,8 +2193,9 @@ Module Impl_multisig_Multisig.
                                             M.write (|
                                               β,
                                               BinOp.Panic.sub (|
+                                                Integer.U32,
                                                 M.read (| β |),
-                                                Value.Integer Integer.U32 1
+                                                Value.Integer 1
                                               |)
                                             |) in
                                           let _ :=
@@ -2284,6 +2280,7 @@ Module Impl_multisig_Multisig.
           let len :=
             M.alloc (|
               BinOp.Panic.sub (|
+                Integer.U32,
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
@@ -2301,7 +2298,7 @@ Module Impl_multisig_Multisig.
                       |)
                     ]
                   |)),
-                Value.Integer Integer.U32 1
+                Value.Integer 1
               |)
             |) in
           let requirement :=
@@ -2760,7 +2757,7 @@ Module Impl_multisig_Multisig.
                       transaction
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer Integer.U32 0 |)) |)
+                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
                 ]
               |)
             |) in
@@ -2799,7 +2796,7 @@ Module Impl_multisig_Multisig.
                       let β := count in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |)
+                        BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -2879,6 +2876,7 @@ Module Impl_multisig_Multisig.
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
                           [
                             BinOp.Panic.sub (|
+                              Integer.U32,
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -3013,10 +3011,7 @@ Module Impl_multisig_Multisig.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "checked_add", [] |),
-                    [
-                      M.read (| trans_id |);
-                      M.read (| M.use (M.alloc (| Value.Integer Integer.U32 1 |)) |)
-                    ]
+                    [ M.read (| trans_id |); M.read (| M.use (M.alloc (| Value.Integer 1 |)) |) ]
                   |);
                   M.read (| Value.String "Transaction ids exhausted." |)
                 ]
@@ -3775,7 +3770,7 @@ Module Impl_multisig_Multisig.
                     let β := confirmation_count in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (| M.read (| β |), Value.Integer Integer.U32 1 |)
+                      BinOp.Panic.sub (| Integer.U32, M.read (| β |), Value.Integer 1 |)
                     |) in
                   let _ :=
                     M.alloc (|

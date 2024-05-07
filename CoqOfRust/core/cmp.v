@@ -2972,6 +2972,7 @@ Module cmp.
               M.match_operator (|
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.I8,
                     M.rust_cast (M.read (| M.read (| self |) |)),
                     M.rust_cast (M.read (| M.read (| other |) |))
                   |)
@@ -2980,26 +2981,17 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.I8 (-1)
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer (-1) |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.I8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ |),
-                          Value.Integer Integer.I8 1
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                       M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
                   fun γ =>
                     ltac:(M.monadic

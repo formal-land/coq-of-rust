@@ -18,14 +18,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U64 3 |) in
+        let x := M.alloc (| Value.Integer 3 |) in
         let y := M.copy (| Value.DeclaredButUndefined |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ y; M.alloc (| Value.Integer Integer.U64 8 |) ] |),
+            M.alloc (| Value.Tuple [ y; M.alloc (| Value.Integer 8 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic

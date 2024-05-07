@@ -48,12 +48,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.alloc (|
                           Value.Array
                             [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 9;
-                              Value.Integer Integer.I32 3;
-                              Value.Integer Integer.I32 3;
-                              Value.Integer Integer.I32 13;
-                              Value.Integer Integer.I32 2
+                              Value.Integer 1;
+                              Value.Integer 9;
+                              Value.Integer 3;
+                              Value.Integer 3;
+                              Value.Integer 13;
+                              Value.Integer 2
                             ]
                         |)
                       ]
@@ -114,10 +114,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 let x := M.copy (| γ |) in
                                 BinOp.Pure.eq
                                   (BinOp.Panic.rem (|
+                                    Integer.I32,
                                     M.read (| x |),
-                                    Value.Integer Integer.I32 2
+                                    Value.Integer 2
                                   |))
-                                  (Value.Integer Integer.I32 0)))
+                                  (Value.Integer 0)))
                           ]
                         |)
                       | _ => M.impossible (||)
@@ -131,9 +132,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Tuple
                 [
                   index_of_first_even_number;
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.Usize 5 ]
-                  |)
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |)
                 ]
             |),
             [
@@ -243,7 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               ltac:(M.monadic
                                 (let x := M.copy (| γ |) in
-                                BinOp.Pure.lt (M.read (| x |)) (Value.Integer Integer.I32 0)))
+                                BinOp.Pure.lt (M.read (| x |)) (Value.Integer 0)))
                           ]
                         |)
                       | _ => M.impossible (||)

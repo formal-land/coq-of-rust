@@ -24,7 +24,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let elem := M.alloc (| Value.Integer Integer.U8 5 |) in
+        let elem := M.alloc (| Value.Integer 5 |) in
         let vec :=
           M.alloc (|
             M.call_closure (|

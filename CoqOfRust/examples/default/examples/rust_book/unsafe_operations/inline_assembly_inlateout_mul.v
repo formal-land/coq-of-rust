@@ -61,7 +61,8 @@ Module main.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (|
             BinOp.Panic.add (|
-              BinOp.Panic.shl (| M.rust_cast (M.read (| hi |)), Value.Integer Integer.I32 64 |),
+              Integer.U128,
+              BinOp.Panic.shl (| M.rust_cast (M.read (| hi |)), Value.Integer 64 |),
               M.rust_cast (M.read (| lo |))
             |)
           |)

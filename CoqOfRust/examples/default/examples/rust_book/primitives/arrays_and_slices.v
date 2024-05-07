@@ -46,7 +46,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     M.read (| slice |),
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| Value.Integer 0 |)
                                   |)
                                 ]
                               |)
@@ -171,15 +171,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let xs :=
           M.alloc (|
             Value.Array
-              [
-                Value.Integer Integer.I32 1;
-                Value.Integer Integer.I32 2;
-                Value.Integer Integer.I32 3;
-                Value.Integer Integer.I32 4;
-                Value.Integer Integer.I32 5
+              [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
               ]
           |) in
-        let ys := M.alloc (| repeat (Value.Integer Integer.I32 0) 500 |) in
+        let ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -213,7 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     xs,
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| Value.Integer 0 |)
                                   |)
                                 ]
                               |)
@@ -258,7 +253,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.SubPointer.get_array_field (|
                                     xs,
-                                    M.alloc (| Value.Integer Integer.Usize 1 |)
+                                    M.alloc (| Value.Integer 1 |)
                                   |)
                                 ]
                               |)
@@ -440,10 +435,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ys;
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.Usize 1);
-                        ("end_", Value.Integer Integer.Usize 4)
-                      ]
+                      [ ("start", Value.Integer 1); ("end_", Value.Integer 4) ]
                   ]
                 |)
               ]
@@ -635,9 +627,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.StructRecord
                     "core::ops::range::Range"
                     [
-                      ("start", Value.Integer Integer.Usize 0);
+                      ("start", Value.Integer 0);
                       ("end_",
                         BinOp.Panic.add (|
+                          Integer.Usize,
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
@@ -646,7 +639,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             |),
                             [ (* Unsize *) M.pointer_coercion xs ]
                           |),
-                          Value.Integer Integer.Usize 1
+                          Value.Integer 1
                         |))
                     ]
                 ]

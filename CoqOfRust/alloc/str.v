@@ -535,7 +535,11 @@ Module str.
                           "core::ops::range::RangeTo"
                           [
                             ("end_",
-                              BinOp.Panic.sub (| M.read (| reserved_len |), M.read (| pos |) |))
+                              BinOp.Panic.sub (|
+                                Integer.Usize,
+                                M.read (| reserved_len |),
+                                M.read (| pos |)
+                              |))
                           ]
                       ]
                     |)
@@ -721,7 +725,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer Integer.Usize 0
+                                    Value.Integer 0
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1053,7 +1057,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1385,7 +1389,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer Integer.Usize 2
+                                    Value.Integer 2
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -1717,7 +1721,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer Integer.Usize 3
+                                    Value.Integer 3
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -2049,7 +2053,7 @@ Module str.
                                 (let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
-                                    Value.Integer Integer.Usize 4
+                                    Value.Integer 4
                                   |) in
                                 M.use
                                   (M.match_operator (|
@@ -2711,6 +2715,7 @@ Module str.
                 let result_len :=
                   M.alloc (|
                     BinOp.Panic.sub (|
+                      Integer.Usize,
                       M.read (| reserved_len |),
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2989,7 +2994,7 @@ Module str.
                   []
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer Integer.Usize 0 |) in
+            let last_end := M.alloc (| Value.Integer 0 |) in
             let _ :=
               M.use
                 (M.match_operator (|
@@ -3096,6 +3101,7 @@ Module str.
                                         M.write (|
                                           last_end,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| start |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -3181,10 +3187,10 @@ Module str.
                     "with_capacity",
                     []
                   |),
-                  [ Value.Integer Integer.Usize 32 ]
+                  [ Value.Integer 32 ]
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer Integer.Usize 0 |) in
+            let last_end := M.alloc (| Value.Integer 0 |) in
             let _ :=
               M.use
                 (M.match_operator (|
@@ -3308,6 +3314,7 @@ Module str.
                                         M.write (|
                                           last_end,
                                           BinOp.Panic.add (|
+                                            Integer.Usize,
                                             M.read (| start |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -4324,7 +4331,7 @@ Module str.
                 ]
               |)
             |) in
-          let i := M.alloc (| Value.Integer Integer.Usize 0 |) in
+          let i := M.alloc (| Value.Integer 0 |) in
           let _ :=
             let _ :=
               M.loop (|
@@ -4339,6 +4346,7 @@ Module str.
                               (M.alloc (|
                                 BinOp.Pure.le
                                   (BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| i |),
                                     M.read (|
                                       M.get_constant (| "alloc::str::convert_while_ascii::N" |)
@@ -4372,6 +4380,7 @@ Module str.
                                       ("start", M.read (| i |));
                                       ("end_",
                                         BinOp.Panic.add (|
+                                          Integer.Usize,
                                           M.read (| i |),
                                           M.read (|
                                             M.get_constant (|
@@ -4415,6 +4424,7 @@ Module str.
                                       ("start", M.read (| i |));
                                       ("end_",
                                         BinOp.Panic.add (|
+                                          Integer.Usize,
                                           M.read (| i |),
                                           M.read (|
                                             M.get_constant (|
@@ -4426,7 +4436,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let bits := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                          let bits := M.alloc (| Value.Integer 0 |) in
                           let _ :=
                             M.use
                               (M.match_operator (|
@@ -4445,7 +4455,7 @@ Module str.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer Integer.Usize 0);
+                                          ("start", Value.Integer 0);
                                           ("end_",
                                             M.read (|
                                               M.get_constant (|
@@ -4568,7 +4578,7 @@ Module str.
                                                   "alloc::str::convert_while_ascii::NONASCII_MASK"
                                                 |)
                                               |)))
-                                            (Value.Integer Integer.Usize 0)
+                                            (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4597,7 +4607,7 @@ Module str.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer Integer.Usize 0);
+                                          ("start", Value.Integer 0);
                                           ("end_",
                                             M.read (|
                                               M.get_constant (|
@@ -4709,6 +4719,7 @@ Module str.
                             M.write (|
                               β,
                               BinOp.Panic.add (|
+                                Integer.Usize,
                                 M.read (| β |),
                                 M.read (|
                                   M.get_constant (| "alloc::str::convert_while_ascii::N" |)
@@ -4758,13 +4769,14 @@ Module str.
           |))).
     
     Definition value_MAGIC_UNROLL : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 2 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
     
     Definition value_N : Value.t :=
       M.run
         ltac:(M.monadic
           (M.alloc (|
             BinOp.Panic.mul (|
+              Integer.Usize,
               M.read (| M.get_constant (| "alloc::str::convert_while_ascii::USIZE_SIZE" |) |),
               M.read (| M.get_constant (| "alloc::str::convert_while_ascii::MAGIC_UNROLL" |) |)
             |)
@@ -4776,7 +4788,7 @@ Module str.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [] |),
-              [ repeat (Value.Integer Integer.U8 128) 8 ]
+              [ repeat (Value.Integer 128) 8 ]
             |)
           |))).
   End convert_while_ascii.

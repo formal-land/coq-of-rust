@@ -53,8 +53,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructTuple "generics::SingleGen" [ Value.StructTuple "generics::A" [] ]
           |) in
-        let _i32 :=
-          M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.Integer Integer.I32 6 ] |) in
+        let _i32 := M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.Integer 6 ] |) in
         let _char :=
           M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ] |) in
         M.alloc (| Value.Tuple [] |)

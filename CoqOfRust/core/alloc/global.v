@@ -64,7 +64,7 @@ Module alloc.
                                 "core::intrinsics::write_bytes",
                                 [ Ty.path "u8" ]
                               |),
-                              [ M.read (| ptr |); Value.Integer Integer.U8 0; M.read (| size |) ]
+                              [ M.read (| ptr |); Value.Integer 0; M.read (| size |) ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));

@@ -310,7 +310,9 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| BinOp.Panic.sub (| M.read (| n |), M.read (| len |) |) |)));
+                            M.alloc (|
+                              BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| len |) |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -339,7 +341,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Integer Integer.Usize 0 |)))
+                            M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
@@ -469,7 +471,7 @@ Module collections.
                                 "alloc::collections::vec_deque::into_iter::IntoIter",
                                 "inner"
                               |));
-                            ("consumed", Value.Integer Integer.Usize 0)
+                            ("consumed", Value.Integer 0)
                           ]
                       |) in
                     M.match_operator (|
@@ -579,10 +581,9 @@ Module collections.
                                                                         M.write (|
                                                                           β,
                                                                           BinOp.Panic.add (|
+                                                                            Integer.Usize,
                                                                             M.read (| β |),
-                                                                            Value.Integer
-                                                                              Integer.Usize
-                                                                              1
+                                                                            Value.Integer 1
                                                                           |)
                                                                         |) in
                                                                       M.alloc (|
@@ -711,8 +712,9 @@ Module collections.
                                                             M.write (|
                                                               β,
                                                               BinOp.Panic.add (|
+                                                                Integer.Usize,
                                                                 M.read (| β |),
-                                                                Value.Integer Integer.Usize 1
+                                                                Value.Integer 1
                                                               |)
                                                             |) in
                                                           M.alloc (|
@@ -1106,6 +1108,7 @@ Module collections.
                                               M.write (|
                                                 β,
                                                 BinOp.Panic.sub (|
+                                                  Integer.Usize,
                                                   M.read (| β |),
                                                   M.read (|
                                                     M.get_constant (|
@@ -1184,6 +1187,7 @@ Module collections.
                             let remaining :=
                               M.alloc (|
                                 BinOp.Panic.sub (|
+                                  Integer.Usize,
                                   M.read (|
                                     M.get_constant (|
                                       "alloc::collections::vec_deque::into_iter::next_chunk::N"
@@ -1308,6 +1312,7 @@ Module collections.
                                       M.write (|
                                         β,
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (| β |),
                                           M.read (|
                                             M.get_constant (|
@@ -1398,6 +1403,7 @@ Module collections.
                                     let init :=
                                       M.alloc (|
                                         BinOp.Panic.add (|
+                                          Integer.Usize,
                                           M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
@@ -1427,7 +1433,7 @@ Module collections.
                                           "alloc::collections::vec_deque::VecDeque",
                                           "head"
                                         |),
-                                        Value.Integer Integer.Usize 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.write (|
@@ -1440,7 +1446,7 @@ Module collections.
                                           "alloc::collections::vec_deque::VecDeque",
                                           "len"
                                         |),
-                                        Value.Integer Integer.Usize 0
+                                        Value.Integer 0
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple
@@ -1459,7 +1465,7 @@ Module collections.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer Integer.Usize 0);
+                                                  ("start", Value.Integer 0);
                                                   ("end_", M.read (| init |))
                                                 ]
                                             ]
@@ -1591,7 +1597,9 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| BinOp.Panic.sub (| M.read (| n |), M.read (| len |) |) |)));
+                            M.alloc (|
+                              BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| len |) |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1610,11 +1618,15 @@ Module collections.
                                       "alloc::collections::vec_deque::into_iter::IntoIter",
                                       "inner"
                                     |);
-                                    BinOp.Panic.sub (| M.read (| len |), M.read (| n |) |)
+                                    BinOp.Panic.sub (|
+                                      Integer.Usize,
+                                      M.read (| len |),
+                                      M.read (| n |)
+                                    |)
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Integer Integer.Usize 0 |)))
+                            M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
@@ -1716,7 +1728,7 @@ Module collections.
                                 "alloc::collections::vec_deque::into_iter::IntoIter",
                                 "inner"
                               |));
-                            ("consumed", Value.Integer Integer.Usize 0)
+                            ("consumed", Value.Integer 0)
                           ]
                       |) in
                     M.match_operator (|
@@ -1826,10 +1838,9 @@ Module collections.
                                                                         M.write (|
                                                                           β,
                                                                           BinOp.Panic.add (|
+                                                                            Integer.Usize,
                                                                             M.read (| β |),
-                                                                            Value.Integer
-                                                                              Integer.Usize
-                                                                              1
+                                                                            Value.Integer 1
                                                                           |)
                                                                         |) in
                                                                       M.alloc (|
@@ -1958,8 +1969,9 @@ Module collections.
                                                             M.write (|
                                                               β,
                                                               BinOp.Panic.add (|
+                                                                Integer.Usize,
                                                                 M.read (| β |),
-                                                                Value.Integer Integer.Usize 1
+                                                                Value.Integer 1
                                                               |)
                                                             |) in
                                                           M.alloc (|

@@ -87,9 +87,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let y :=
           M.alloc (|
-            Value.StructRecord
-              "generics_implementation::GenVal"
-              [ ("gen_val", Value.Integer Integer.I32 3) ]
+            Value.StructRecord "generics_implementation::GenVal" [ ("gen_val", Value.Integer 3) ]
           |) in
         let _ :=
           let _ :=

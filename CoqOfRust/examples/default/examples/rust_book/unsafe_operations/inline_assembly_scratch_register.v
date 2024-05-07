@@ -25,7 +25,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U64 4 |) in
+        let x := M.alloc (| Value.Integer 4 |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
@@ -35,9 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Tuple
                 [
                   x;
-                  M.alloc (|
-                    BinOp.Panic.mul (| Value.Integer Integer.U64 4, Value.Integer Integer.U64 6 |)
-                  |)
+                  M.alloc (| BinOp.Panic.mul (| Integer.U64, Value.Integer 4, Value.Integer 6 |) |)
                 ]
             |),
             [

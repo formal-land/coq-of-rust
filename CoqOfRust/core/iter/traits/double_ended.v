@@ -30,10 +30,7 @@ Module iter.
                               [
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [
-                                    ("start", Value.Integer Integer.Usize 0);
-                                    ("end_", M.read (| n |))
-                                  ]
+                                  [ ("start", Value.Integer 0); ("end_", M.read (| n |)) ]
                               ]
                             |)
                           |),
@@ -127,6 +124,7 @@ Module iter.
                                                                     |),
                                                                     [
                                                                       BinOp.Panic.sub (|
+                                                                        Integer.Usize,
                                                                         M.read (| n |),
                                                                         M.read (| i |)
                                                                       |)

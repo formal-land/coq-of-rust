@@ -166,10 +166,7 @@ Module tests.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 5)
-                      ]
+                      [ ("start", Value.Integer 0); ("end_", Value.Integer 5) ]
                   ]
                 |)
               |),
@@ -342,10 +339,7 @@ Module tests.
                   [
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer Integer.I32 0);
-                        ("end_", Value.Integer Integer.I32 5)
-                      ]
+                      [ ("start", Value.Integer 0); ("end_", Value.Integer 5) ]
                   ]
                 |)
               |),

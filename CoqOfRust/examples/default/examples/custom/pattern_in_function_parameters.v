@@ -20,7 +20,7 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
               let x := M.copy (| γ0_0 |) in
               let y := M.copy (| γ0_1 |) in
-              BinOp.Panic.add (| M.read (| x |), M.read (| y |) |)))
+              BinOp.Panic.add (| Integer.I32, M.read (| x |), M.read (| y |) |)))
         ]
       |)))
   | _, _ => M.impossible
@@ -82,7 +82,11 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                   |) in
                                 let count :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (| M.read (| end_ |), M.read (| start |) |)
+                                    BinOp.Panic.sub (|
+                                      Integer.U32,
+                                      M.read (| end_ |),
+                                      M.read (| start |)
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -95,10 +99,10 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                               LogicalOp.and (|
                                                 BinOp.Pure.lt
                                                   (M.read (| start |))
-                                                  (Value.Integer Integer.U32 55296),
+                                                  (Value.Integer 55296),
                                                 ltac:(M.monadic
                                                   (BinOp.Pure.le
-                                                    (Value.Integer Integer.U32 57344)
+                                                    (Value.Integer 57344)
                                                     (M.read (| end_ |))))
                                               |)
                                             |)) in
@@ -130,8 +134,9 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                                 |),
                                                 [
                                                   BinOp.Panic.sub (|
+                                                    Integer.U32,
                                                     M.read (| count |),
-                                                    Value.Integer Integer.U32 2048
+                                                    Value.Integer 2048
                                                   |)
                                                 ]
                                               |)

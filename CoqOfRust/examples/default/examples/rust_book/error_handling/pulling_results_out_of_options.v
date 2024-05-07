@@ -93,7 +93,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                             ltac:(M.monadic
                                               (let n := M.copy (| γ |) in
                                               BinOp.Panic.mul (|
-                                                Value.Integer Integer.I32 2,
+                                                Integer.I32,
+                                                Value.Integer 2,
                                                 M.read (| n |)
                                               |)))
                                         ]

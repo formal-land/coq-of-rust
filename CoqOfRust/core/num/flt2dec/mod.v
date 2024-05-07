@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module num.
   Module flt2dec.
     Definition value_MAX_SIG_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 17 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 17 |))).
     
     (*
     pub fn round_up(d: &mut [u8]) -> Option<u8> {
@@ -99,7 +99,7 @@ Module num.
                       let β := M.SubPointer.get_array_field (| M.read (| d |), i |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U8 1 |)
+                        BinOp.Panic.add (| Integer.U8, M.read (| β |), Value.Integer 1 |)
                       |) in
                     let _ :=
                       M.use
@@ -119,8 +119,9 @@ Module num.
                                   [
                                     ("start",
                                       BinOp.Panic.add (|
+                                        Integer.Usize,
                                         M.read (| i |),
-                                        Value.Integer Integer.Usize 1
+                                        Value.Integer 1
                                       |));
                                     ("end_",
                                       M.call_closure (|
@@ -201,14 +202,14 @@ Module num.
                             |),
                             [ M.read (| d |) ]
                           |))
-                          (Value.Integer Integer.Usize 0)
+                          (Value.Integer 0)
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| d |),
-                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                          M.alloc (| Value.Integer 0 |)
                         |),
                         M.read (| UnsupportedLiteral |)
                       |) in
@@ -228,7 +229,7 @@ Module num.
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
-                                    ("start", Value.Integer Integer.Usize 1);
+                                    ("start", Value.Integer 1);
                                     ("end_",
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -437,7 +438,7 @@ Module num.
                                 (M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.read (| buf |),
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| Value.Integer 0 |)
                                   |)
                                 |))
                                 (M.read (| UnsupportedLiteral |)))
@@ -479,7 +480,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 4))
+                                (Value.Integer 4))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -499,20 +500,18 @@ Module num.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.Pure.le (M.read (| exp |)) (Value.Integer Integer.I16 0)
-                        |)) in
+                      M.use (M.alloc (| BinOp.Pure.le (M.read (| exp |)) (Value.Integer 0) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let minus_exp :=
                       M.alloc (|
-                        M.rust_cast (UnOp.Panic.neg (| M.rust_cast (M.read (| exp |)) |))
+                        M.rust_cast
+                          (UnOp.Panic.neg (| Integer.I32, M.rust_cast (M.read (| exp |)) |))
                       |) in
                     let _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| parts |),
-                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                          M.alloc (| Value.Integer 0 |)
                         |),
                         M.call_closure (|
                           M.get_associated_function (|
@@ -533,7 +532,7 @@ Module num.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| parts |),
-                          M.alloc (| Value.Integer Integer.Usize 1 |)
+                          M.alloc (| Value.Integer 1 |)
                         |),
                         M.call_closure (|
                           M.get_associated_function (|
@@ -554,7 +553,7 @@ Module num.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| parts |),
-                          M.alloc (| Value.Integer Integer.Usize 2 |)
+                          M.alloc (| Value.Integer 2 |)
                         |),
                         M.call_closure (|
                           M.get_associated_function (|
@@ -589,6 +588,7 @@ Module num.
                                     ltac:(M.monadic
                                       (BinOp.Pure.gt
                                         (BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (| frac_digits |),
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -608,7 +608,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 3 |)
+                                  M.alloc (| Value.Integer 3 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -623,7 +623,9 @@ Module num.
                                       "core::num::fmt::Part::Zero"
                                       [
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           BinOp.Panic.sub (|
+                                            Integer.Usize,
                                             M.read (| frac_digits |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -672,7 +674,7 @@ Module num.
                                       M.read (| parts |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
-                                        [ ("end_", Value.Integer Integer.Usize 4) ]
+                                        [ ("end_", Value.Integer 4) ]
                                     ]
                                   |)
                                 ]
@@ -712,7 +714,7 @@ Module num.
                                       M.read (| parts |);
                                       Value.StructRecord
                                         "core::ops::range::RangeTo"
-                                        [ ("end_", Value.Integer Integer.Usize 3) ]
+                                        [ ("end_", Value.Integer 3) ]
                                     ]
                                   |)
                                 ]
@@ -748,7 +750,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -789,7 +791,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 1 |)
+                                  M.alloc (| Value.Integer 1 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -813,7 +815,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 2 |)
+                                  M.alloc (| Value.Integer 2 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -861,6 +863,7 @@ Module num.
                                           BinOp.Pure.gt
                                             (M.read (| frac_digits |))
                                             (BinOp.Panic.sub (|
+                                              Integer.Usize,
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -881,7 +884,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 3 |)
+                                          M.alloc (| Value.Integer 3 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -896,8 +899,10 @@ Module num.
                                               "core::num::fmt::Part::Zero"
                                               [
                                                 BinOp.Panic.sub (|
+                                                  Integer.Usize,
                                                   M.read (| frac_digits |),
                                                   BinOp.Panic.sub (|
+                                                    Integer.Usize,
                                                     M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -945,7 +950,7 @@ Module num.
                                               M.read (| parts |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
-                                                [ ("end_", Value.Integer Integer.Usize 4) ]
+                                                [ ("end_", Value.Integer 4) ]
                                             ]
                                           |)
                                         ]
@@ -985,7 +990,7 @@ Module num.
                                               M.read (| parts |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
-                                                [ ("end_", Value.Integer Integer.Usize 3) ]
+                                                [ ("end_", Value.Integer 3) ]
                                             ]
                                           |)
                                         ]
@@ -999,7 +1004,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1020,7 +1025,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 1 |)
+                                  M.alloc (| Value.Integer 1 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1035,6 +1040,7 @@ Module num.
                                       "core::num::fmt::Part::Zero"
                                       [
                                         BinOp.Panic.sub (|
+                                          Integer.Usize,
                                           M.read (| exp |),
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1057,9 +1063,7 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| frac_digits |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.gt (M.read (| frac_digits |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1070,7 +1074,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 2 |)
+                                          M.alloc (| Value.Integer 2 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1094,7 +1098,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 3 |)
+                                          M.alloc (| Value.Integer 3 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1143,7 +1147,7 @@ Module num.
                                               M.read (| parts |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
-                                                [ ("end_", Value.Integer Integer.Usize 4) ]
+                                                [ ("end_", Value.Integer 4) ]
                                             ]
                                           |)
                                         ]
@@ -1183,7 +1187,7 @@ Module num.
                                               M.read (| parts |);
                                               Value.StructRecord
                                                 "core::ops::range::RangeTo"
-                                                [ ("end_", Value.Integer Integer.Usize 2) ]
+                                                [ ("end_", Value.Integer 2) ]
                                             ]
                                           |)
                                         ]
@@ -1295,7 +1299,7 @@ Module num.
                                 (M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.read (| buf |),
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| Value.Integer 0 |)
                                   |)
                                 |))
                                 (M.read (| UnsupportedLiteral |)))
@@ -1337,7 +1341,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 6))
+                                (Value.Integer 6))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1351,7 +1355,7 @@ Module num.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let n := M.alloc (| Value.Integer Integer.Usize 0 |) in
+            let n := M.alloc (| Value.Integer 0 |) in
             let _ :=
               M.write (|
                 M.SubPointer.get_array_field (| M.read (| parts |), n |),
@@ -1379,7 +1383,7 @@ Module num.
                             M.read (| buf |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                              [ ("end_", Value.Integer 1) ]
                           ]
                         |)
                       ]
@@ -1390,7 +1394,7 @@ Module num.
               let β := n in
               M.write (|
                 β,
-                BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
+                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
               |) in
             let _ :=
               M.match_operator (|
@@ -1411,11 +1415,9 @@ Module num.
                                   |),
                                   [ M.read (| buf |) ]
                                 |))
-                                (Value.Integer Integer.Usize 1),
+                                (Value.Integer 1),
                               ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (| min_ndigits |))
-                                  (Value.Integer Integer.Usize 1)))
+                                (BinOp.Pure.gt (M.read (| min_ndigits |)) (Value.Integer 1)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1443,7 +1445,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
                             |)
                           |),
                           M.call_closure (|
@@ -1474,7 +1476,7 @@ Module num.
                                       M.read (| buf |);
                                       Value.StructRecord
                                         "core::ops::range::RangeFrom"
-                                        [ ("start", Value.Integer Integer.Usize 1) ]
+                                        [ ("start", Value.Integer 1) ]
                                     ]
                                   |)
                                 ]
@@ -1485,7 +1487,7 @@ Module num.
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 2 |)
+                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 2 |)
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1527,6 +1529,7 @@ Module num.
                                         "core::num::fmt::Part::Zero"
                                         [
                                           BinOp.Panic.sub (|
+                                            Integer.Usize,
                                             M.read (| min_ndigits |),
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1546,8 +1549,9 @@ Module num.
                                 M.write (|
                                   β,
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| β |),
-                                    Value.Integer Integer.Usize 1
+                                    Value.Integer 1
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1559,7 +1563,7 @@ Module num.
               |) in
             let exp :=
               M.alloc (|
-                BinOp.Panic.sub (| M.rust_cast (M.read (| exp |)), Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, M.rust_cast (M.read (| exp |)), Value.Integer 1 |)
               |) in
             let _ :=
               M.match_operator (|
@@ -1568,10 +1572,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.lt (M.read (| exp |)) (Value.Integer Integer.I32 0)
-                          |)) in
+                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| exp |)) (Value.Integer 0) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let _ :=
                         M.write (|
@@ -1622,7 +1623,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
                             |)
                           |),
                           M.call_closure (|
@@ -1636,7 +1637,7 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Num"
-                                [ M.rust_cast (UnOp.Panic.neg (| M.read (| exp |) |)) ]
+                                [ M.rust_cast (UnOp.Panic.neg (| Integer.I32, M.read (| exp |) |)) ]
                             ]
                           |)
                         |) in
@@ -1692,7 +1693,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 1 |)
+                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
                             |)
                           |),
                           M.call_closure (|
@@ -1743,7 +1744,7 @@ Module num.
                         "core::ops::range::RangeTo"
                         [
                           ("end_",
-                            BinOp.Panic.add (| M.read (| n |), Value.Integer Integer.Usize 2 |))
+                            BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 2 |))
                         ]
                     ]
                   |)
@@ -2102,7 +2103,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 4))
+                                (Value.Integer 4))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2191,7 +2192,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2248,7 +2249,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -2261,7 +2262,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2318,7 +2319,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -2335,9 +2336,7 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| frac_digits |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.gt (M.read (| frac_digits |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2348,7 +2347,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2372,7 +2371,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 1 |)
+                                          M.alloc (| Value.Integer 1 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2427,7 +2426,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 2) ]
+                                                      [ ("end_", Value.Integer 2) ]
                                                   ]
                                                 |)
                                               ]
@@ -2440,7 +2439,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2498,7 +2497,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 1) ]
+                                                      [ ("end_", Value.Integer 1) ]
                                                   ]
                                                 |)
                                               ]
@@ -2677,7 +2676,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 6))
+                                (Value.Integer 6))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2796,7 +2795,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2853,7 +2852,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -2866,7 +2865,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -2923,7 +2922,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -2936,7 +2935,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.read (|
                                   M.match_operator (|
@@ -2955,10 +2954,10 @@ Module num.
                                                         0
                                                       |)
                                                     |))
-                                                    (Value.Integer Integer.I16 0),
+                                                    (Value.Integer 0),
                                                   ltac:(M.monadic
                                                     (BinOp.Pure.lt
-                                                      (Value.Integer Integer.I16 0)
+                                                      (Value.Integer 0)
                                                       (M.read (|
                                                         M.SubPointer.get_tuple_field (|
                                                           dec_bounds,
@@ -3079,7 +3078,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -3139,8 +3138,9 @@ Module num.
                                     let vis_exp :=
                                       M.alloc (|
                                         BinOp.Panic.sub (|
+                                          Integer.I32,
                                           M.rust_cast (M.read (| exp |)),
-                                          Value.Integer Integer.I32 1
+                                          Value.Integer 1
                                         |)
                                       |) in
                                     let parts :=
@@ -3189,7 +3189,7 @@ Module num.
                                                     [
                                                       M.read (| buf |);
                                                       M.read (| exp |);
-                                                      Value.Integer Integer.Usize 0;
+                                                      Value.Integer 0;
                                                       M.read (| parts |)
                                                     ]
                                                   |)
@@ -3205,7 +3205,7 @@ Module num.
                                                     [
                                                       M.read (| buf |);
                                                       M.read (| exp |);
-                                                      Value.Integer Integer.Usize 0;
+                                                      Value.Integer 0;
                                                       M.read (| upper |);
                                                       M.read (| parts |)
                                                     ]
@@ -3241,10 +3241,12 @@ Module num.
         ltac:(M.monadic
           (let exp := M.alloc (| exp |) in
           BinOp.Panic.add (|
-            Value.Integer Integer.Usize 21,
+            Integer.Usize,
+            Value.Integer 21,
             BinOp.Panic.shr (|
               M.rust_cast
                 (BinOp.Panic.mul (|
+                  Integer.I32,
                   M.read (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -3254,18 +3256,18 @@ Module num.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| exp |)) (Value.Integer Integer.I16 0)
+                                  BinOp.Pure.lt (M.read (| exp |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer Integer.I32 (-12) |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 5 |)))
+                            M.alloc (| Value.Integer (-12) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
                       ]
                     |)
                   |),
                   M.rust_cast (M.read (| exp |))
                 |)),
-              Value.Integer Integer.I32 4
+              Value.Integer 4
             |)
           |)))
       | _, _ => M.impossible
@@ -3369,7 +3371,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 6))
+                                (Value.Integer 6))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3392,8 +3394,7 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (BinOp.Pure.gt (M.read (| ndigits |)) (Value.Integer Integer.Usize 0))
+                            UnOp.Pure.not (BinOp.Pure.gt (M.read (| ndigits |)) (Value.Integer 0))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3437,7 +3438,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3494,7 +3495,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -3507,7 +3508,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -3564,7 +3565,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -3581,9 +3582,7 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| ndigits |))
-                                            (Value.Integer Integer.Usize 1)
+                                          BinOp.Pure.gt (M.read (| ndigits |)) (Value.Integer 1)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3594,7 +3593,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -3618,7 +3617,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 1 |)
+                                          M.alloc (| Value.Integer 1 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -3633,8 +3632,9 @@ Module num.
                                               "core::num::fmt::Part::Zero"
                                               [
                                                 BinOp.Panic.sub (|
+                                                  Integer.Usize,
                                                   M.read (| ndigits |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               ]
                                           ]
@@ -3644,7 +3644,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 2 |)
+                                          M.alloc (| Value.Integer 2 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -3727,7 +3727,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 3) ]
+                                                      [ ("end_", Value.Integer 3) ]
                                                   ]
                                                 |)
                                               ]
@@ -3740,7 +3740,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -3823,7 +3823,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 1) ]
+                                                      [ ("end_", Value.Integer 1) ]
                                                   ]
                                                 |)
                                               ]
@@ -4175,7 +4175,7 @@ Module num.
                                   |),
                                   [ M.read (| parts |) ]
                                 |))
-                                (Value.Integer Integer.Usize 4))
+                                (Value.Integer 4))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4219,7 +4219,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -4276,7 +4276,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -4289,7 +4289,7 @@ Module num.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| parts |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -4346,7 +4346,7 @@ Module num.
                                             M.read (| parts |);
                                             Value.StructRecord
                                               "core::ops::range::RangeTo"
-                                              [ ("end_", Value.Integer Integer.Usize 1) ]
+                                              [ ("end_", Value.Integer 1) ]
                                           ]
                                         |)
                                       ]
@@ -4363,9 +4363,7 @@ Module num.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| frac_digits |))
-                                            (Value.Integer Integer.Usize 0)
+                                          BinOp.Pure.gt (M.read (| frac_digits |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4376,7 +4374,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -4400,7 +4398,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 1 |)
+                                          M.alloc (| Value.Integer 1 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -4455,7 +4453,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 2) ]
+                                                      [ ("end_", Value.Integer 2) ]
                                                   ]
                                                 |)
                                               ]
@@ -4468,7 +4466,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| parts |),
-                                          M.alloc (| Value.Integer Integer.Usize 0 |)
+                                          M.alloc (| Value.Integer 0 |)
                                         |),
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -4526,7 +4524,7 @@ Module num.
                                                     M.read (| parts |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", Value.Integer Integer.Usize 1) ]
+                                                      [ ("end_", Value.Integer 1) ]
                                                   ]
                                                 |)
                                               ]
@@ -4622,7 +4620,7 @@ Module num.
                                             (M.alloc (|
                                               BinOp.Pure.lt
                                                 (M.read (| frac_digits |))
-                                                (Value.Integer Integer.Usize 32768)
+                                                (Value.Integer 32768)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -4631,6 +4629,7 @@ Module num.
                                           |) in
                                         M.alloc (|
                                           UnOp.Panic.neg (|
+                                            Integer.I16,
                                             M.rust_cast (M.read (| frac_digits |))
                                           |)
                                         |)));
@@ -4757,9 +4756,7 @@ Module num.
                                                                     [ M.read (| buf |) ]
                                                                   |)
                                                                 |);
-                                                                M.alloc (|
-                                                                  Value.Integer Integer.Usize 0
-                                                                |)
+                                                                M.alloc (| Value.Integer 0 |)
                                                               ]
                                                           |),
                                                           [
@@ -4867,7 +4864,7 @@ Module num.
                                                         (M.alloc (|
                                                           BinOp.Pure.gt
                                                             (M.read (| frac_digits |))
-                                                            (Value.Integer Integer.Usize 0)
+                                                            (Value.Integer 0)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -4878,9 +4875,7 @@ Module num.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
-                                                          M.alloc (|
-                                                            Value.Integer Integer.Usize 0
-                                                          |)
+                                                          M.alloc (| Value.Integer 0 |)
                                                         |),
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -4906,9 +4901,7 @@ Module num.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
-                                                          M.alloc (|
-                                                            Value.Integer Integer.Usize 1
-                                                          |)
+                                                          M.alloc (| Value.Integer 1 |)
                                                         |),
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -4970,12 +4963,7 @@ Module num.
                                                                     M.read (| parts |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeTo"
-                                                                      [
-                                                                        ("end_",
-                                                                          Value.Integer
-                                                                            Integer.Usize
-                                                                            2)
-                                                                      ]
+                                                                      [ ("end_", Value.Integer 2) ]
                                                                   ]
                                                                 |)
                                                               ]
@@ -4988,9 +4976,7 @@ Module num.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| parts |),
-                                                          M.alloc (|
-                                                            Value.Integer Integer.Usize 0
-                                                          |)
+                                                          M.alloc (| Value.Integer 0 |)
                                                         |),
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -5056,12 +5042,7 @@ Module num.
                                                                     M.read (| parts |);
                                                                     Value.StructRecord
                                                                       "core::ops::range::RangeTo"
-                                                                      [
-                                                                        ("end_",
-                                                                          Value.Integer
-                                                                            Integer.Usize
-                                                                            1)
-                                                                      ]
+                                                                      [ ("end_", Value.Integer 1) ]
                                                                   ]
                                                                 |)
                                                               ]

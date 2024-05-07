@@ -221,10 +221,7 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [
-                      ("start", Value.Integer Integer.Usize 0);
-                      ("end_", Value.Integer Integer.Usize 0)
-                    ]
+                    [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -752,6 +749,7 @@ Module array.
               let remaining :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.Usize,
                     M.read (| n |),
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1226,6 +1224,7 @@ Module array.
               let remaining :=
                 M.alloc (|
                   BinOp.Panic.sub (|
+                    Integer.Usize,
                     M.read (| n |),
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1551,7 +1550,7 @@ Module array.
                             "zero_to",
                             []
                           |),
-                          [ Value.Integer Integer.Usize 0 ]
+                          [ Value.Integer 0 ]
                         |))
                     ]
                 |) in
@@ -1701,6 +1700,7 @@ Module array.
                                               |),
                                               [
                                                 BinOp.Panic.add (|
+                                                  Integer.Usize,
                                                   M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
@@ -1715,7 +1715,7 @@ Module array.
                                                       |)
                                                     ]
                                                   |),
-                                                  Value.Integer Integer.Usize 1
+                                                  Value.Integer 1
                                                 |)
                                               ]
                                             |)

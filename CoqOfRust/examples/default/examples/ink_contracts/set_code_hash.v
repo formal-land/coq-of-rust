@@ -100,7 +100,7 @@ Module Impl_set_code_hash_Incrementer.
                 "set_code_hash::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+            M.write (| β, BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |) |) in
           let _ :=
             let _ :=
               M.alloc (|

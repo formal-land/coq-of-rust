@@ -259,10 +259,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -284,7 +281,7 @@ Module alloc.
                                     |),
                                     [ layout ]
                                   |);
-                                  Value.Integer Integer.Usize 0
+                                  Value.Integer 0
                                 ]
                               |)
                             ]
@@ -603,10 +600,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -825,8 +819,9 @@ Module alloc.
                                             |),
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
                                           |);
-                                          Value.Integer Integer.U8 0;
+                                          Value.Integer 0;
                                           BinOp.Panic.sub (|
+                                            Integer.Usize,
                                             M.read (| new_size |),
                                             M.read (| old_size |)
                                           |)
@@ -1080,7 +1075,7 @@ Module alloc.
                               |),
                               [ layout ]
                             |))
-                            (Value.Integer Integer.Usize 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1317,10 +1312,7 @@ Module alloc.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.Usize 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         let _ :=
                           M.alloc (|
                             M.call_closure (|
@@ -1355,7 +1347,7 @@ Module alloc.
                                     |),
                                     [ new_layout ]
                                   |);
-                                  Value.Integer Integer.Usize 0
+                                  Value.Integer 0
                                 ]
                               |)
                             ]
@@ -1944,7 +1936,7 @@ Module alloc.
                                 |)
                               |)
                             |))
-                            (Value.Integer Integer.U8 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -2114,7 +2106,7 @@ Module alloc.
                     "copy_from_nonoverlapping",
                     []
                   |),
-                  [ M.read (| target |); M.read (| self |); Value.Integer Integer.Usize 1 ]
+                  [ M.read (| target |); M.read (| self |); Value.Integer 1 ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

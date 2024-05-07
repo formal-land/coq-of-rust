@@ -11,6 +11,6 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
-      BinOp.Panic.add (| M.read (| x |), Value.Integer Integer.U32 1 |)))
+      BinOp.Panic.add (| Integer.U32, M.read (| x |), Value.Integer 1 |)))
   | _, _ => M.impossible
   end.

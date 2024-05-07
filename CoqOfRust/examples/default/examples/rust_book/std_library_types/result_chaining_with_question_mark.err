@@ -1,0 +1,10 @@
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/std_library_types/result_chaining_with_question_mark.rs:15:16
+   |
+15 |             Ok(x / y)
+   |                ^^^^^
+   |
+   = note: Please report 🙏
+
+warning: 1 warning emitted
+

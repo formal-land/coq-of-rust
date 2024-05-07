@@ -299,7 +299,7 @@ Module alloc.
                             |)
                           ]
                         |);
-                        Value.Integer Integer.U8 0;
+                        Value.Integer 0;
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply

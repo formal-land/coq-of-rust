@@ -2106,6 +2106,7 @@ Module ops.
               let exclusive_end :=
                 M.alloc (|
                   BinOp.Panic.add (|
+                    Integer.Usize,
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -2113,7 +2114,7 @@ Module ops.
                         "end"
                       |)
                     |),
-                    Value.Integer Integer.Usize 1
+                    Value.Integer 1
                   |)
                 |) in
               let start :=

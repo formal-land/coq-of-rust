@@ -149,7 +149,7 @@ Module iter.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (Value.Integer Integer.Usize 0)))
+                (Value.Integer 0)))
           | _, _ => M.impossible
           end.
         

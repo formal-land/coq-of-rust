@@ -68,7 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "diverging_functions_example_sum_odd_numbers::main.sum_odd_numbers",
                                         []
                                       |),
-                                      [ Value.Integer Integer.U32 9 ]
+                                      [ Value.Integer 9 ]
                                     |)
                                   |)
                                 ]
@@ -112,7 +112,7 @@ Module main.
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let acc := M.alloc (| Value.Integer Integer.U32 0 |) in
+          let acc := M.alloc (| Value.Integer 0 |) in
           let _ :=
             M.use
               (M.match_operator (|
@@ -128,7 +128,7 @@ Module main.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [ ("start", Value.Integer Integer.U32 0); ("end_", M.read (| up_to |)) ]
+                        [ ("start", Value.Integer 0); ("end_", M.read (| up_to |)) ]
                     ]
                   |)
                 |),
@@ -171,10 +171,11 @@ Module main.
                                           M.alloc (|
                                             BinOp.Pure.eq
                                               (BinOp.Panic.rem (|
+                                                Integer.U32,
                                                 M.read (| i |),
-                                                Value.Integer Integer.U32 2
+                                                Value.Integer 2
                                               |))
-                                              (Value.Integer Integer.U32 1)
+                                              (Value.Integer 1)
                                           |),
                                           [
                                             fun γ =>
@@ -202,7 +203,11 @@ Module main.
                                       let β := acc in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (| M.read (| β |), M.read (| addition |) |)
+                                        BinOp.Panic.add (|
+                                          Integer.U32,
+                                          M.read (| β |),
+                                          M.read (| addition |)
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]

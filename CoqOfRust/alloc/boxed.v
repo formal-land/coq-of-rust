@@ -1549,9 +1549,7 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.read (| len |))
-                                        (Value.Integer Integer.Usize 0)))
+                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
                                   |)
                                 |)) in
                             let _ :=
@@ -1822,9 +1820,7 @@ Module boxed.
                                       M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.read (| len |))
-                                        (Value.Integer Integer.Usize 0)))
+                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
                                   |)
                                 |)) in
                             let _ :=
@@ -2385,7 +2381,7 @@ Module boxed.
                               |),
                               [ layout ]
                             |))
-                            (Value.Integer Integer.Usize 0)
+                            (Value.Integer 0)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let _ :=

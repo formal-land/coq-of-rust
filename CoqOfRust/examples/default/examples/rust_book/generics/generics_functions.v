@@ -107,7 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "generics_functions::gen_spec_i32", [] |),
-              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer Integer.I32 6 ] ]
+              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer 6 ] ]
             |)
           |) in
         let _ :=

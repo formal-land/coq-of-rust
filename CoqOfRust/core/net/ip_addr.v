@@ -1773,8 +1773,7 @@ Module net.
       
       (*     pub const BITS: u32 = 32; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 32 |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -1837,12 +1836,7 @@ Module net.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
-                [
-                  Value.Integer Integer.U8 127;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 1
-                ]
+                [ Value.Integer 127; Value.Integer 0; Value.Integer 0; Value.Integer 1 ]
               |)
             |))).
       
@@ -1857,12 +1851,7 @@ Module net.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
-                [
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0;
-                  Value.Integer Integer.U8 0
-                ]
+                [ Value.Integer 0; Value.Integer 0; Value.Integer 0; Value.Integer 0 ]
               |)
             |))).
       
@@ -1877,12 +1866,7 @@ Module net.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv4Addr", "new", [] |),
-                [
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255;
-                  Value.Integer Integer.U8 255
-                ]
+                [ Value.Integer 255; Value.Integer 255; Value.Integer 255; Value.Integer 255 ]
               |)
             |))).
       
@@ -1934,7 +1918,7 @@ Module net.
                   |)
                 ]
               |))
-              (Value.Integer Integer.U32 0)))
+              (Value.Integer 0)))
         | _, _ => M.impossible
         end.
       
@@ -1964,10 +1948,10 @@ Module net.
                       [ M.read (| self |) ]
                     |)
                   |),
-                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                  M.alloc (| Value.Integer 0 |)
                 |)
               |))
-              (Value.Integer Integer.U8 127)))
+              (Value.Integer 127)))
         | _, _ => M.impossible
         end.
       
@@ -2006,10 +1990,7 @@ Module net.
                       (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 10
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 10 |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2017,20 +1998,11 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 172
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 172 |) in
                       let b := M.copy (| γ0_1 |) in
-                      let γ :=
-                        M.alloc (|
-                          BinOp.Pure.ge (M.read (| b |)) (Value.Integer Integer.U8 16)
-                        |) in
+                      let γ := M.alloc (| BinOp.Pure.ge (M.read (| b |)) (Value.Integer 16) |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let γ :=
-                        M.alloc (|
-                          BinOp.Pure.le (M.read (| b |)) (Value.Integer Integer.U8 31)
-                        |) in
+                      let γ := M.alloc (| BinOp.Pure.le (M.read (| b |)) (Value.Integer 31) |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ =>
@@ -2039,15 +2011,9 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 192
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 192 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 168
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 168 |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -2087,15 +2053,9 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 169
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 169 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 254
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 254 |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
@@ -2150,10 +2110,10 @@ Module net.
                                           [ M.read (| self |) ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| Value.Integer 0 |)
                                     |)
                                   |))
-                                  (Value.Integer Integer.U8 0),
+                                  (Value.Integer 0),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -2210,10 +2170,10 @@ Module net.
                                         [ M.read (| self |) ]
                                       |)
                                     |),
-                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                    M.alloc (| Value.Integer 0 |)
                                   |)
                                 |))
-                                (Value.Integer Integer.U8 192),
+                                (Value.Integer 192),
                               ltac:(M.monadic
                                 (BinOp.Pure.eq
                                   (M.read (|
@@ -2228,10 +2188,10 @@ Module net.
                                           [ M.read (| self |) ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer Integer.Usize 1 |)
+                                      M.alloc (| Value.Integer 1 |)
                                     |)
                                   |))
-                                  (Value.Integer Integer.U8 0)))
+                                  (Value.Integer 0)))
                             |),
                             ltac:(M.monadic
                               (BinOp.Pure.eq
@@ -2247,10 +2207,10 @@ Module net.
                                         [ M.read (| self |) ]
                                       |)
                                     |),
-                                    M.alloc (| Value.Integer Integer.Usize 2 |)
+                                    M.alloc (| Value.Integer 2 |)
                                   |)
                                 |))
-                                (Value.Integer Integer.U8 0)))
+                                (Value.Integer 0)))
                           |)))
                       |),
                       ltac:(M.monadic
@@ -2322,10 +2282,10 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U8 100),
+                (Value.Integer 100),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (BinOp.Pure.bit_and
@@ -2341,11 +2301,11 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| Value.Integer 1 |)
                       |)
                     |))
-                    (Value.Integer Integer.U8 192))
-                  (Value.Integer Integer.U8 64)))
+                    (Value.Integer 192))
+                  (Value.Integer 64)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2376,10 +2336,10 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U8 198),
+                (Value.Integer 198),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (BinOp.Pure.bit_and
@@ -2395,11 +2355,11 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| Value.Integer 1 |)
                       |)
                     |))
-                    (Value.Integer Integer.U8 254))
-                  (Value.Integer Integer.U8 18)))
+                    (Value.Integer 254))
+                  (Value.Integer 18)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2432,11 +2392,11 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| Value.Integer 0 |)
                     |)
                   |))
-                  (Value.Integer Integer.U8 240))
-                (Value.Integer Integer.U8 240),
+                  (Value.Integer 240))
+                (Value.Integer 240),
               ltac:(M.monadic
                 (UnOp.Pure.not
                   (M.call_closure (|
@@ -2477,10 +2437,10 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U8 224),
+                (Value.Integer 224),
               ltac:(M.monadic
                 (BinOp.Pure.le
                   (M.read (|
@@ -2495,10 +2455,10 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| Value.Integer 0 |)
                     |)
                   |))
-                  (Value.Integer Integer.U8 239)))
+                  (Value.Integer 239)))
             |)))
         | _, _ => M.impossible
         end.
@@ -2586,17 +2546,17 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 192
+                                  Value.Integer 192
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 0
+                                  Value.Integer 0
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 2
+                                  Value.Integer 2
                                 |) in
                               Value.Tuple []));
                           fun γ =>
@@ -2608,17 +2568,17 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 198
+                                  Value.Integer 198
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 51
+                                  Value.Integer 51
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 100
+                                  Value.Integer 100
                                 |) in
                               Value.Tuple []));
                           fun γ =>
@@ -2630,17 +2590,17 @@ Module net.
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
-                                  Value.Integer Integer.U8 203
+                                  Value.Integer 203
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
-                                  Value.Integer Integer.U8 0
+                                  Value.Integer 0
                                 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
-                                  Value.Integer Integer.U8 113
+                                  Value.Integer 113
                                 |) in
                               Value.Tuple []))
                         ],
@@ -2703,18 +2663,18 @@ Module net.
                             ("octets",
                               Value.Array
                                 [
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
                                   M.read (| a |);
                                   M.read (| b |);
                                   M.read (| c |);
@@ -2772,18 +2732,18 @@ Module net.
                             ("octets",
                               Value.Array
                                 [
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 255;
-                                  Value.Integer Integer.U8 255;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 0;
+                                  Value.Integer 255;
+                                  Value.Integer 255;
                                   M.read (| a |);
                                   M.read (| b |);
                                   M.read (| c |);
@@ -3097,7 +3057,7 @@ Module net.
                                           [
                                             M.SubPointer.get_array_field (|
                                               octets,
-                                              M.alloc (| Value.Integer Integer.Usize 0 |)
+                                              M.alloc (| Value.Integer 0 |)
                                             |)
                                           ]
                                         |);
@@ -3110,7 +3070,7 @@ Module net.
                                           [
                                             M.SubPointer.get_array_field (|
                                               octets,
-                                              M.alloc (| Value.Integer Integer.Usize 1 |)
+                                              M.alloc (| Value.Integer 1 |)
                                             |)
                                           ]
                                         |);
@@ -3123,7 +3083,7 @@ Module net.
                                           [
                                             M.SubPointer.get_array_field (|
                                               octets,
-                                              M.alloc (| Value.Integer Integer.Usize 2 |)
+                                              M.alloc (| Value.Integer 2 |)
                                             |)
                                           ]
                                         |);
@@ -3136,7 +3096,7 @@ Module net.
                                           [
                                             M.SubPointer.get_array_field (|
                                               octets,
-                                              M.alloc (| Value.Integer Integer.Usize 3 |)
+                                              M.alloc (| Value.Integer 3 |)
                                             |)
                                           ]
                                         |)
@@ -3213,7 +3173,7 @@ Module net.
                                                 [
                                                   M.SubPointer.get_array_field (|
                                                     octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                                                    M.alloc (| Value.Integer 0 |)
                                                   |)
                                                 ]
                                               |);
@@ -3226,7 +3186,7 @@ Module net.
                                                 [
                                                   M.SubPointer.get_array_field (|
                                                     octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 1 |)
+                                                    M.alloc (| Value.Integer 1 |)
                                                   |)
                                                 ]
                                               |);
@@ -3239,7 +3199,7 @@ Module net.
                                                 [
                                                   M.SubPointer.get_array_field (|
                                                     octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 2 |)
+                                                    M.alloc (| Value.Integer 2 |)
                                                   |)
                                                 ]
                                               |);
@@ -3252,7 +3212,7 @@ Module net.
                                                 [
                                                   M.SubPointer.get_array_field (|
                                                     octets,
-                                                    M.alloc (| Value.Integer Integer.Usize 3 |)
+                                                    M.alloc (| Value.Integer 3 |)
                                                   |)
                                                 ]
                                               |)
@@ -3945,8 +3905,7 @@ Module net.
       
       (*     pub const BITS: u32 = 128; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 128 |))).
+      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
       
       Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
       
@@ -4010,14 +3969,14 @@ Module net.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 1
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 1
                 ]
               |)
             |))).
@@ -4034,14 +3993,14 @@ Module net.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::net::ip_addr::Ipv6Addr", "new", [] |),
                 [
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0;
-                  Value.Integer Integer.U16 0
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0;
+                  Value.Integer 0
                 ]
               |)
             |))).
@@ -4331,32 +4290,32 @@ Module net.
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_0 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_1 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_2 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_3 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_4 |),
-                                            Value.Integer Integer.U16 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ0_5 |),
-                                            Value.Integer Integer.U16 65535
+                                            Value.Integer 65535
                                           |) in
                                         M.alloc (| Value.Bool true |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -4391,17 +4350,17 @@ Module net.
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_0 |),
-                                          Value.Integer Integer.U16 100
+                                          Value.Integer 100
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_1 |),
-                                          Value.Integer Integer.U16 65435
+                                          Value.Integer 65435
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ0_2 |),
-                                          Value.Integer Integer.U16 1
+                                          Value.Integer 1
                                         |) in
                                       M.alloc (| Value.Bool true |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -4436,22 +4395,22 @@ Module net.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
-                                        Value.Integer Integer.U16 256
+                                        Value.Integer 256
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_1 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_2 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_3 |),
-                                        Value.Integer Integer.U16 0
+                                        Value.Integer 0
                                       |) in
                                     M.alloc (| Value.Bool true |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -4487,14 +4446,12 @@ Module net.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ0_0 |),
-                                        Value.Integer Integer.U16 8193
+                                        Value.Integer 8193
                                       |) in
                                     let b := M.copy (| γ0_1 |) in
                                     let γ :=
                                       M.alloc (|
-                                        BinOp.Pure.lt
-                                          (M.read (| b |))
-                                          (Value.Integer Integer.U16 512)
+                                        BinOp.Pure.lt (M.read (| b |)) (Value.Integer 512)
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4530,9 +4487,7 @@ Module net.
                                             |)
                                           ]
                                         |))
-                                        (Value.Integer
-                                          Integer.U128
-                                          42540488241204005274814694018844196865),
+                                        (Value.Integer 42540488241204005274814694018844196865),
                                       ltac:(M.monadic
                                         (BinOp.Pure.eq
                                           (M.call_closure (|
@@ -4552,9 +4507,7 @@ Module net.
                                               |)
                                             ]
                                           |))
-                                          (Value.Integer
-                                            Integer.U128
-                                            42540488241204005274814694018844196866)))
+                                          (Value.Integer 42540488241204005274814694018844196866)))
                                     |),
                                     ltac:(M.monadic
                                       (M.read (|
@@ -4591,12 +4544,12 @@ Module net.
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ0_0 |),
-                                                    Value.Integer Integer.U16 8193
+                                                    Value.Integer 8193
                                                   |) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ0_1 |),
-                                                    Value.Integer Integer.U16 3
+                                                    Value.Integer 3
                                                   |) in
                                                 M.alloc (| Value.Bool true |)));
                                             fun γ =>
@@ -4633,17 +4586,17 @@ Module net.
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_0 |),
-                                                  Value.Integer Integer.U16 8193
+                                                  Value.Integer 8193
                                                 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_1 |),
-                                                  Value.Integer Integer.U16 4
+                                                  Value.Integer 4
                                                 |) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ0_2 |),
-                                                  Value.Integer Integer.U16 274
+                                                  Value.Integer 274
                                                 |) in
                                               M.alloc (| Value.Bool true |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -4678,14 +4631,12 @@ Module net.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ0_0 |),
-                                                Value.Integer Integer.U16 8193
+                                                Value.Integer 8193
                                               |) in
                                             let b := M.copy (| γ0_1 |) in
                                             let γ :=
                                               M.alloc (|
-                                                BinOp.Pure.ge
-                                                  (M.read (| b |))
-                                                  (Value.Integer Integer.U16 32)
+                                                BinOp.Pure.ge (M.read (| b |)) (Value.Integer 32)
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4694,9 +4645,7 @@ Module net.
                                               |) in
                                             let γ :=
                                               M.alloc (|
-                                                BinOp.Pure.le
-                                                  (M.read (| b |))
-                                                  (Value.Integer Integer.U16 47)
+                                                BinOp.Pure.le (M.read (| b |)) (Value.Integer 47)
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -4770,11 +4719,11 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U16 65024))
-              (Value.Integer Integer.U16 64512)))
+                (Value.Integer 65024))
+              (Value.Integer 64512)))
         | _, _ => M.impossible
         end.
       
@@ -4829,11 +4778,11 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U16 65472))
-              (Value.Integer Integer.U16 65152)))
+                (Value.Integer 65472))
+              (Value.Integer 65152)))
         | _, _ => M.impossible
         end.
       
@@ -4864,10 +4813,10 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U16 8193),
+                (Value.Integer 8193),
               ltac:(M.monadic
                 (BinOp.Pure.eq
                   (M.read (|
@@ -4882,10 +4831,10 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 1 |)
+                      M.alloc (| Value.Integer 1 |)
                     |)
                   |))
-                  (Value.Integer Integer.U16 3512)))
+                  (Value.Integer 3512)))
             |)))
         | _, _ => M.impossible
         end.
@@ -4918,10 +4867,10 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                      M.alloc (| Value.Integer 0 |)
                     |)
                   |))
-                  (Value.Integer Integer.U16 8193),
+                  (Value.Integer 8193),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
@@ -4936,10 +4885,10 @@ Module net.
                             [ M.read (| self |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer Integer.Usize 1 |)
+                        M.alloc (| Value.Integer 1 |)
                       |)
                     |))
-                    (Value.Integer Integer.U16 2)))
+                    (Value.Integer 2)))
               |),
               ltac:(M.monadic
                 (BinOp.Pure.eq
@@ -4955,10 +4904,10 @@ Module net.
                           [ M.read (| self |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer Integer.Usize 2 |)
+                      M.alloc (| Value.Integer 2 |)
                     |)
                   |))
-                  (Value.Integer Integer.U16 0)))
+                  (Value.Integer 0)))
             |)))
         | _, _ => M.impossible
         end.
@@ -5125,10 +5074,10 @@ Module net.
                                     [ M.read (| self |) ]
                                   |)
                                 |),
-                                M.alloc (| Value.Integer Integer.Usize 0 |)
+                                M.alloc (| Value.Integer 0 |)
                               |)
                             |))
-                            (Value.Integer Integer.U16 15)
+                            (Value.Integer 15)
                         |),
                         [
                           fun γ =>
@@ -5136,7 +5085,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 1
+                                  Value.Integer 1
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5152,7 +5101,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 2
+                                  Value.Integer 2
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5168,7 +5117,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 3
+                                  Value.Integer 3
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5184,7 +5133,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 4
+                                  Value.Integer 4
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5200,7 +5149,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 5
+                                  Value.Integer 5
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5216,7 +5165,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 8
+                                  Value.Integer 8
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5232,7 +5181,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 14
+                                  Value.Integer 14
                                 |) in
                               M.alloc (|
                                 Value.StructTuple
@@ -5284,11 +5233,11 @@ Module net.
                         [ M.read (| self |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer Integer.Usize 0 |)
+                    M.alloc (| Value.Integer 0 |)
                   |)
                 |))
-                (Value.Integer Integer.U16 65280))
-              (Value.Integer Integer.U16 65280)))
+                (Value.Integer 65280))
+              (Value.Integer 65280)))
         | _, _ => M.impossible
         end.
       
@@ -5342,65 +5291,29 @@ Module net.
                       let γ0_14 := M.SubPointer.get_slice_index (| γ, 14 |) in
                       let γ0_15 := M.SubPointer.get_slice_index (| γ, 15 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_2 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_3 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_4 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_4 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_5 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_5 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_6 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_6 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_7 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_7 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_8 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_8 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_9 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_9 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_10 |),
-                          Value.Integer Integer.U8 255
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_10 |), Value.Integer 255 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_11 |),
-                          Value.Integer Integer.U8 255
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_11 |), Value.Integer 255 |) in
                       let a := M.copy (| γ0_12 |) in
                       let b := M.copy (| γ0_13 |) in
                       let c := M.copy (| γ0_14 |) in
@@ -5473,30 +5386,15 @@ Module net.
                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_1 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_2 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_3 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ0_4 |),
-                          Value.Integer Integer.U16 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ0_4 |), Value.Integer 0 |) in
                       M.find_or_pattern (|
                         γ0_5,
                         [
@@ -5505,7 +5403,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 0
+                                  Value.Integer 0
                                 |) in
                               Value.Tuple []));
                           fun γ =>
@@ -5513,7 +5411,7 @@ Module net.
                               (let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
-                                  Value.Integer Integer.U16 65535
+                                  Value.Integer 65535
                                 |) in
                               Value.Tuple []))
                         ],
@@ -6047,9 +5945,7 @@ Module net.
                                                                                 (M.read (|
                                                                                   segment
                                                                                 |))
-                                                                                (Value.Integer
-                                                                                  Integer.U16
-                                                                                  0)
+                                                                                (Value.Integer 0)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -6076,7 +5972,6 @@ Module net.
                                                                                             |)
                                                                                           |))
                                                                                           (Value.Integer
-                                                                                            Integer.Usize
                                                                                             0)
                                                                                       |)) in
                                                                                   let _ :=
@@ -6116,10 +6011,9 @@ Module net.
                                                                           M.write (|
                                                                             β,
                                                                             BinOp.Panic.add (|
+                                                                              Integer.Usize,
                                                                               M.read (| β |),
-                                                                              Value.Integer
-                                                                                Integer.Usize
-                                                                                1
+                                                                              Value.Integer 1
                                                                             |)
                                                                           |) in
                                                                         M.match_operator (|
@@ -6216,7 +6110,7 @@ Module net.
                                                       "len"
                                                     |)
                                                   |))
-                                                  (Value.Integer Integer.Usize 1)
+                                                  (Value.Integer 1)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -6443,6 +6337,7 @@ Module net.
                                                       [
                                                         ("start",
                                                           BinOp.Panic.add (|
+                                                            Integer.Usize,
                                                             M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 zeroes,

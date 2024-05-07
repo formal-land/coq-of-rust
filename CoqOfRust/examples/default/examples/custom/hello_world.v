@@ -85,9 +85,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let number :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 7 ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 7 ] |) in
         let letter := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let emoticon := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let _ :=
