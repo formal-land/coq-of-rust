@@ -14,11 +14,12 @@ Definition ui_amount_to_amount (τ : list Ty.t) (α : list Value.t) : M :=
       let decimals := M.alloc (| decimals |) in
       M.rust_cast
         (BinOp.Panic.mul (|
+          Integer.Usize,
           M.read (| ui_amount |),
           M.rust_cast
             (M.call_closure (|
               M.get_associated_function (| Ty.path "usize", "pow", [] |),
-              [ Value.Integer Integer.Usize 10; M.rust_cast (M.read (| decimals |)) ]
+              [ Value.Integer 10; M.rust_cast (M.read (| decimals |)) ]
             |))
         |))))
   | _, _ => M.impossible
@@ -36,11 +37,12 @@ Definition amount_to_ui_amount (τ : list Ty.t) (α : list Value.t) : M :=
       (let amount := M.alloc (| amount |) in
       let decimals := M.alloc (| decimals |) in
       BinOp.Panic.div (|
+        Integer.Usize,
         M.rust_cast (M.read (| amount |)),
         M.rust_cast
           (M.call_closure (|
             M.get_associated_function (| Ty.path "usize", "pow", [] |),
-            [ Value.Integer Integer.Usize 10; M.rust_cast (M.read (| decimals |)) ]
+            [ Value.Integer 10; M.rust_cast (M.read (| decimals |)) ]
           |))
       |)))
   | _, _ => M.impossible
@@ -74,10 +76,7 @@ Definition amount_to_ui_amount_string (τ : list Ty.t) (α : list Value.t) : M :
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use
-                    (M.alloc (|
-                      BinOp.Pure.gt (M.read (| decimals |)) (Value.Integer Integer.Usize 0)
-                    |)) in
+                  M.use (M.alloc (| BinOp.Pure.gt (M.read (| decimals |)) (Value.Integer 0) |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 let s :=
                   M.copy (|
@@ -118,8 +117,9 @@ Definition amount_to_ui_amount_string (τ : list Ty.t) (α : list Value.t) : M :
                                           [
                                             M.alloc (|
                                               BinOp.Panic.add (|
+                                                Integer.Usize,
                                                 M.read (| decimals |),
-                                                Value.Integer Integer.Usize 1
+                                                Value.Integer 1
                                               |)
                                             |)
                                           ]
@@ -138,16 +138,16 @@ Definition amount_to_ui_amount_string (τ : list Ty.t) (α : list Value.t) : M :
                                             []
                                           |),
                                           [
-                                            Value.Integer Integer.Usize 0;
+                                            Value.Integer 0;
                                             Value.UnicodeChar 32;
                                             Value.StructTuple
                                               "core::fmt::rt::Alignment::Unknown"
                                               [];
-                                            Value.Integer Integer.U32 8;
+                                            Value.Integer 8;
                                             Value.StructTuple "core::fmt::rt::Count::Implied" [];
                                             Value.StructTuple
                                               "core::fmt::rt::Count::Param"
-                                              [ Value.Integer Integer.Usize 1 ]
+                                              [ Value.Integer 1 ]
                                           ]
                                         |)
                                       ]
@@ -174,6 +174,7 @@ Definition amount_to_ui_amount_string (τ : list Ty.t) (α : list Value.t) : M :
                       [
                         s;
                         BinOp.Panic.sub (|
+                          Integer.Usize,
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
@@ -240,10 +241,7 @@ Definition amount_to_ui_amount_string_trimmed (τ : list Ty.t) (α : list Value.
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
-                    M.use
-                      (M.alloc (|
-                        BinOp.Pure.gt (M.read (| decimals |)) (Value.Integer Integer.U8 0)
-                      |)) in
+                    M.use (M.alloc (| BinOp.Pure.gt (M.read (| decimals |)) (Value.Integer 0) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let zeros_trimmed :=
                     M.alloc (|
@@ -529,7 +527,7 @@ Definition try_ui_amount_into_amount (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.StructRecord
                           "core::ops::range::Range"
                           [
-                            ("start", Value.Integer Integer.Usize 0);
+                            ("start", Value.Integer 0);
                             ("end_",
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -671,38 +669,38 @@ Definition value_ID : Value.t :=
           [
             Value.Array
               [
-                Value.Integer Integer.U8 6;
-                Value.Integer Integer.U8 221;
-                Value.Integer Integer.U8 246;
-                Value.Integer Integer.U8 225;
-                Value.Integer Integer.U8 238;
-                Value.Integer Integer.U8 117;
-                Value.Integer Integer.U8 143;
-                Value.Integer Integer.U8 222;
-                Value.Integer Integer.U8 24;
-                Value.Integer Integer.U8 66;
-                Value.Integer Integer.U8 93;
-                Value.Integer Integer.U8 188;
-                Value.Integer Integer.U8 228;
-                Value.Integer Integer.U8 108;
-                Value.Integer Integer.U8 205;
-                Value.Integer Integer.U8 218;
-                Value.Integer Integer.U8 182;
-                Value.Integer Integer.U8 26;
-                Value.Integer Integer.U8 252;
-                Value.Integer Integer.U8 77;
-                Value.Integer Integer.U8 131;
-                Value.Integer Integer.U8 185;
-                Value.Integer Integer.U8 13;
-                Value.Integer Integer.U8 39;
-                Value.Integer Integer.U8 254;
-                Value.Integer Integer.U8 189;
-                Value.Integer Integer.U8 249;
-                Value.Integer Integer.U8 40;
-                Value.Integer Integer.U8 216;
-                Value.Integer Integer.U8 161;
-                Value.Integer Integer.U8 139;
-                Value.Integer Integer.U8 252
+                Value.Integer 6;
+                Value.Integer 221;
+                Value.Integer 246;
+                Value.Integer 225;
+                Value.Integer 238;
+                Value.Integer 117;
+                Value.Integer 143;
+                Value.Integer 222;
+                Value.Integer 24;
+                Value.Integer 66;
+                Value.Integer 93;
+                Value.Integer 188;
+                Value.Integer 228;
+                Value.Integer 108;
+                Value.Integer 205;
+                Value.Integer 218;
+                Value.Integer 182;
+                Value.Integer 26;
+                Value.Integer 252;
+                Value.Integer 77;
+                Value.Integer 131;
+                Value.Integer 185;
+                Value.Integer 13;
+                Value.Integer 39;
+                Value.Integer 254;
+                Value.Integer 189;
+                Value.Integer 249;
+                Value.Integer 40;
+                Value.Integer 216;
+                Value.Integer 161;
+                Value.Integer 139;
+                Value.Integer 252
               ]
           ]
         |)
@@ -1106,6 +1104,6 @@ Definition cmp_pubkeys (τ : list Ty.t) (α : list Value.t) : M :=
             M.read (| M.get_constant (| "solana_program::pubkey::PUBKEY_BYTES" |) |)
           ]
         |))
-        (Value.Integer Integer.I32 0)))
+        (Value.Integer 0)))
   | _, _ => M.impossible
   end.

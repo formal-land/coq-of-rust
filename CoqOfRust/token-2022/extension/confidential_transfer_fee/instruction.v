@@ -181,10 +181,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -197,10 +194,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 1
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -213,10 +207,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 2
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -229,10 +220,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 3
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -245,10 +233,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 4
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -261,10 +246,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 5
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -1684,7 +1666,7 @@ Module extension.
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Integer Integer.I8 0 |)))
+                              M.alloc (| Value.Integer 0 |)))
                         ]
                       |)
                     |) in
@@ -2136,7 +2118,7 @@ Module extension.
                                           (M.alloc (|
                                             BinOp.Pure.ne
                                               (M.read (| proof_instruction_offset |))
-                                              (Value.Integer Integer.I8 1)
+                                              (Value.Integer 1)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -2668,7 +2650,7 @@ Module extension.
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Integer Integer.I8 0 |)))
+                              M.alloc (| Value.Integer 0 |)))
                         ]
                       |)
                     |) in
@@ -3243,7 +3225,7 @@ Module extension.
                                           (M.alloc (|
                                             BinOp.Pure.ne
                                               (M.read (| proof_instruction_offset |))
-                                              (Value.Integer Integer.I8 1)
+                                              (Value.Integer 1)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|

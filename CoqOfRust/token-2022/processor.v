@@ -3372,7 +3372,7 @@ Module processor.
                         "into",
                         []
                       |),
-                      [ Value.Integer Integer.U64 0 ]
+                      [ Value.Integer 0 ]
                     |)
                   |) in
                 let _ :=
@@ -3656,7 +3656,7 @@ Module processor.
                                   "into",
                                   []
                                 |),
-                                [ Value.Integer Integer.U64 0 ]
+                                [ Value.Integer 0 ]
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
@@ -6514,8 +6514,7 @@ Module processor.
                                               val))
                                         ]
                                       |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Value.Integer Integer.U64 0 |)))
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                                 ]
                               |)
                             |) in
@@ -6730,7 +6729,7 @@ Module processor.
                                   (M.alloc (|
                                     Value.Tuple
                                       [
-                                        Value.Integer Integer.U64 0;
+                                        Value.Integer 0;
                                         Value.StructTuple "core::option::Option::None" [];
                                         Value.StructTuple "core::option::Option::None" []
                                       ]
@@ -7099,22 +7098,22 @@ Module processor.
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ2_0 |),
-                                      Value.Integer Integer.U8 1
+                                      Value.Integer 1
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ2_1 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ2_2 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ2_3 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let delegate := M.copy (| γ1_1 |) in
                                   let γ :=
@@ -7500,7 +7499,7 @@ Module processor.
                                                               |)
                                                             ]
                                                           |))
-                                                          (Value.Integer Integer.U64 0)
+                                                          (Value.Integer 0)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -8868,9 +8867,7 @@ Module processor.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| fee |))
-                                          (Value.Integer Integer.U64 0)
+                                        BinOp.Pure.gt (M.read (| fee |)) (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -11869,22 +11866,22 @@ Module processor.
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ2_0 |),
-                                            Value.Integer Integer.U8 1
+                                            Value.Integer 1
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ2_1 |),
-                                            Value.Integer Integer.U8 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ2_2 |),
-                                            Value.Integer Integer.U8 0
+                                            Value.Integer 0
                                           |) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ2_3 |),
-                                            Value.Integer Integer.U8 0
+                                            Value.Integer 0
                                           |) in
                                         let delegate := M.alloc (| γ1_1 |) in
                                         let γ :=
@@ -12044,7 +12041,7 @@ Module processor.
                         "into",
                         []
                       |),
-                      [ Value.Integer Integer.U64 0 ]
+                      [ Value.Integer 0 ]
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -13116,22 +13113,22 @@ Module processor.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
-                                                Value.Integer Integer.U8 1
+                                                Value.Integer 1
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_1 |),
-                                                Value.Integer Integer.U8 0
+                                                Value.Integer 0
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_2 |),
-                                                Value.Integer Integer.U8 0
+                                                Value.Integer 0
                                               |) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_3 |),
-                                                Value.Integer Integer.U8 0
+                                                Value.Integer 0
                                               |) in
                                             let authority := M.copy (| γ0_1 |) in
                                             let _ :=
@@ -13229,7 +13226,7 @@ Module processor.
                                           "into",
                                           []
                                         |),
-                                        [ Value.Integer Integer.U64 0 ]
+                                        [ Value.Integer 0 ]
                                       |)
                                     |) in
                                   M.match_operator (|
@@ -20169,25 +20166,13 @@ Module processor.
                           let γ2_2 := M.SubPointer.get_slice_index (| γ1_0, 2 |) in
                           let γ2_3 := M.SubPointer.get_slice_index (| γ1_0, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ2_0 |),
-                              Value.Integer Integer.U8 1
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ2_0 |), Value.Integer 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ2_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ2_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ2_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ2_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ2_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ2_3 |), Value.Integer 0 |) in
                           let mint_authority := M.alloc (| γ1_1 |) in
                           M.match_operator (|
                             M.alloc (|
@@ -22038,22 +22023,22 @@ Module processor.
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ3_0 |),
-                                      Value.Integer Integer.U8 1
+                                      Value.Integer 1
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ3_1 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ3_2 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ3_3 |),
-                                      Value.Integer Integer.U8 0
+                                      Value.Integer 0
                                     |) in
                                   let delegate := M.alloc (| γ2_1 |) in
                                   let γ :=
@@ -22440,7 +22425,7 @@ Module processor.
                                                       |)
                                                     ]
                                                   |))
-                                                  (Value.Integer Integer.U64 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -23741,7 +23726,7 @@ Module processor.
                                                     |)
                                                   ]
                                                 |))
-                                                (Value.Integer Integer.U64 0)))
+                                                (Value.Integer 0)))
                                           |)
                                         |)) in
                                     let _ :=
@@ -24900,7 +24885,7 @@ Module processor.
                                                       |)
                                                     ]
                                                   |))
-                                                  (Value.Integer Integer.U64 0)
+                                                  (Value.Integer 0)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -25177,7 +25162,7 @@ Module processor.
                         ]
                       |)
                     |),
-                    Value.Integer Integer.U64 0
+                    Value.Integer 0
                   |) in
                 let _ :=
                   M.alloc (|
@@ -26186,22 +26171,22 @@ Module processor.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ2_0 |),
-                                        Value.Integer Integer.U8 1
+                                        Value.Integer 1
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ2_1 |),
-                                        Value.Integer Integer.U8 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ2_2 |),
-                                        Value.Integer Integer.U8 0
+                                        Value.Integer 0
                                       |) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ2_3 |),
-                                        Value.Integer Integer.U8 0
+                                        Value.Integer 0
                                       |) in
                                     let authority := M.alloc (| γ1_1 |) in
                                     M.alloc (|
@@ -26791,25 +26776,13 @@ Module processor.
                           let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
                           let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ1_0 |),
-                              Value.Integer Integer.U8 1
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ1_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ1_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ1_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 0 |) in
                           let amount := M.copy (| γ0_1 |) in
                           let new_amount :=
                             M.copy (|
@@ -32466,22 +32439,22 @@ Module processor.
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ2_0 |),
-                                              Value.Integer Integer.U8 1
+                                              Value.Integer 1
                                             |) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ2_1 |),
-                                              Value.Integer Integer.U8 0
+                                              Value.Integer 0
                                             |) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ2_2 |),
-                                              Value.Integer Integer.U8 0
+                                              Value.Integer 0
                                             |) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ2_3 |),
-                                              Value.Integer Integer.U8 0
+                                              Value.Integer 0
                                             |) in
                                           let mint_authority := M.alloc (| γ1_1 |) in
                                           let _ :=
@@ -35988,10 +35961,7 @@ Module processor.
                                                             M.read (| input |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeFrom"
-                                                              [
-                                                                ("start",
-                                                                  Value.Integer Integer.Usize 1)
-                                                              ]
+                                                              [ ("start", Value.Integer 1) ]
                                                           ]
                                                         |);
                                                         M.call_closure (|
@@ -36256,7 +36226,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -36289,7 +36259,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -36322,7 +36292,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -36551,8 +36521,7 @@ Module processor.
                                                         M.read (| input |);
                                                         Value.StructRecord
                                                           "core::ops::range::RangeFrom"
-                                                          [ ("start", Value.Integer Integer.Usize 1)
-                                                          ]
+                                                          [ ("start", Value.Integer 1) ]
                                                       ]
                                                     |)
                                                   ]
@@ -36787,10 +36756,7 @@ Module processor.
                                                             M.read (| input |);
                                                             Value.StructRecord
                                                               "core::ops::range::RangeFrom"
-                                                              [
-                                                                ("start",
-                                                                  Value.Integer Integer.Usize 1)
-                                                              ]
+                                                              [ ("start", Value.Integer 1) ]
                                                           ]
                                                         |);
                                                         M.call_closure (|
@@ -36923,7 +36889,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -36998,7 +36964,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37031,7 +36997,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37173,7 +37139,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37206,7 +37172,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37262,7 +37228,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37295,7 +37261,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37328,7 +37294,7 @@ Module processor.
                                           M.read (| input |);
                                           Value.StructRecord
                                             "core::ops::range::RangeFrom"
-                                            [ ("start", Value.Integer Integer.Usize 1) ]
+                                            [ ("start", Value.Integer 1) ]
                                         ]
                                       |)
                                     ]
@@ -37757,7 +37723,7 @@ Module processor.
                                       ]
                                     |)
                                   |) in
-                                let num_signers := M.alloc (| Value.Integer Integer.U8 0 |) in
+                                let num_signers := M.alloc (| Value.Integer 0 |) in
                                 let matched := M.alloc (| repeat (Value.Bool false) 11 |) in
                                 let _ :=
                                   M.use
@@ -37917,7 +37883,6 @@ Module processor.
                                                                                   [
                                                                                     ("start",
                                                                                       Value.Integer
-                                                                                        Integer.Usize
                                                                                         0);
                                                                                     ("end_",
                                                                                       M.rust_cast
@@ -38129,11 +38094,11 @@ Module processor.
                                                                                             M.write (|
                                                                                               β,
                                                                                               BinOp.Panic.add (|
+                                                                                                Integer.U8,
                                                                                                 M.read (|
                                                                                                   β
                                                                                                 |),
                                                                                                 Value.Integer
-                                                                                                  Integer.U8
                                                                                                   1
                                                                                               |)
                                                                                             |) in
@@ -38887,7 +38852,7 @@ Module processor.
                       [ account_data ]
                     |)
                   |);
-                  Value.Integer Integer.U8 0;
+                  Value.Integer 0;
                   M.read (| data_len |)
                 ]
               |)

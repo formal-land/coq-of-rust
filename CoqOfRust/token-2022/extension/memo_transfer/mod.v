@@ -398,7 +398,7 @@ Module extension.
                         "solana_program::instruction::get_processed_sibling_instruction",
                         []
                       |),
-                      [ Value.Integer Integer.Usize 0 ]
+                      [ Value.Integer 0 ]
                     |)
                   |) in
                 let _ :=

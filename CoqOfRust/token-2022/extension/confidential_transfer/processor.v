@@ -2744,7 +2744,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   let _ :=
@@ -2762,7 +2762,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   let _ :=
@@ -2780,7 +2780,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   let _ :=
@@ -6920,9 +6920,7 @@ Module extension.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| amount_lo |))
-                                            (Value.Integer Integer.U64 0)
+                                          BinOp.Pure.gt (M.read (| amount_lo |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -7061,9 +7059,7 @@ Module extension.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt
-                                            (M.read (| amount_hi |))
-                                            (Value.Integer Integer.U64 0)
+                                          BinOp.Pure.gt (M.read (| amount_hi |)) (Value.Integer 0)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -9000,7 +8996,7 @@ Module extension.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| amount |)) (Value.Integer Integer.U64 0)
+                                  BinOp.Pure.gt (M.read (| amount |)) (Value.Integer 0)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19339,7 +19335,7 @@ Module extension.
                                   "into",
                                   []
                                 |),
-                                [ Value.Integer Integer.U64 0 ]
+                                [ Value.Integer 0 ]
                               |)
                             |) in
                           let _ :=
@@ -22417,7 +22413,7 @@ Module extension.
                                     "new_source_decryptable_available_balance"
                                   |)
                                 |);
-                                Value.Integer Integer.I64 0;
+                                Value.Integer 0;
                                 Value.Bool true;
                                 M.call_closure (|
                                   M.get_trait_method (|

@@ -641,7 +641,7 @@ Module extension.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let start_index := M.alloc (| Value.Integer Integer.Usize 0 |) in
+              let start_index := M.alloc (| Value.Integer 0 |) in
               let v_account_type :=
                 M.alloc (|
                   M.call_closure (|
@@ -1496,7 +1496,7 @@ Module extension.
                     []
                   |)
                 |) in
-              let start_index := M.alloc (| Value.Integer Integer.Usize 0 |) in
+              let start_index := M.alloc (| Value.Integer 0 |) in
               let _ :=
                 M.loop (|
                   ltac:(M.monadic
@@ -2138,7 +2138,7 @@ Module extension.
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "spl_token_2022::extension::get_tlv_indices", [] |),
-                            [ Value.Integer Integer.Usize 0 ]
+                            [ Value.Integer 0 ]
                           |)
                         |) in
                       let _ :=
@@ -2509,6 +2509,7 @@ Module extension.
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Panic.add (|
+            Integer.Usize,
             M.read (| M.get_constant (| "spl_token_2022::extension::BASE_ACCOUNT_LENGTH" |) |),
             M.call_closure (|
               M.get_function (|
@@ -2695,10 +2696,7 @@ Module extension.
                                               "alloc::vec::from_elem",
                                               [ Ty.path "u8" ]
                                             |),
-                                            [
-                                              Value.Integer Integer.U8 0;
-                                              M.read (| account_type_index |)
-                                            ]
+                                            [ Value.Integer 0; M.read (| account_type_index |) ]
                                           |)
                                         |)
                                       ]
@@ -2819,7 +2817,7 @@ Module extension.
                           |)
                         |)
                       |))
-                      (Value.Integer Integer.U8 0)
+                      (Value.Integer 0)
                   ]
               |)
             |)))
@@ -2829,7 +2827,7 @@ Module extension.
   
   Module is_initialized_account.
     Definition value_ACCOUNT_INITIALIZED_INDEX : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 108 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 108 |))).
   End is_initialized_account.
   
   (*
@@ -3839,7 +3837,7 @@ Module extension.
                                 end))
                         ]
                       |);
-                      Value.Integer Integer.Usize 0
+                      Value.Integer 0
                     ]
                   |)
                 |) in
@@ -7869,7 +7867,7 @@ Module extension.
                                                 ]
                                             ]
                                           |);
-                                          Value.Integer Integer.U8 0
+                                          Value.Integer 0
                                         ]
                                       |)
                                     |) in
@@ -7907,7 +7905,7 @@ Module extension.
                                                 ]
                                             ]
                                           |);
-                                          Value.Integer Integer.U8 0
+                                          Value.Integer 0
                                         ]
                                       |)
                                     |) in
@@ -9565,7 +9563,7 @@ Module extension.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 M.read (| account_type |),
-                                M.alloc (| Value.Integer Integer.Usize 0 |)
+                                M.alloc (| Value.Integer 0 |)
                               |),
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -14004,11 +14002,7 @@ Module extension.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14020,11 +14014,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14032,11 +14022,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14548,11 +14534,7 @@ Module extension.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14564,11 +14546,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14580,11 +14558,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14596,11 +14570,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 3
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14612,11 +14582,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 4
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14628,11 +14594,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 5
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14644,11 +14606,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 6
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14660,11 +14618,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 7
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14676,11 +14630,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 8
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14692,11 +14642,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 9
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14708,11 +14654,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 10
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14724,11 +14666,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 11
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14737,11 +14675,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 12
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 12 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14753,11 +14687,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 13
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14769,11 +14699,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 14
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 14 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14785,11 +14711,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 15
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 15 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14801,11 +14723,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 16
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 16 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14817,11 +14735,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 17
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 17 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14833,11 +14747,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 18
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 18 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14849,11 +14759,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 19
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 19 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14865,11 +14771,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 20
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 20 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14881,11 +14783,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 21
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 21 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14897,11 +14795,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 22
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 22 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -14913,11 +14807,7 @@ Module extension.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U16 23
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 23 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -15434,7 +15324,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
-                                M.alloc (| Value.Integer Integer.Usize 0 |)));
+                                M.alloc (| Value.Integer 0 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
@@ -19841,7 +19731,7 @@ Module extension.
                                             (M.alloc (|
                                               BinOp.Pure.gt
                                                 (M.read (| removed_bytes |))
-                                                (Value.Integer Integer.Usize 0)
+                                                (Value.Integer 0)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|

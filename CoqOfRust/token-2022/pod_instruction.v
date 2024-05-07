@@ -1594,11 +1594,7 @@ Module pod_instruction.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1610,11 +1606,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1626,11 +1618,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1642,11 +1630,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 3
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1658,11 +1642,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 4
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1674,11 +1654,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 5
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1690,11 +1666,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 6
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1706,11 +1678,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 7
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1722,11 +1690,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 8
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1738,11 +1702,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 9
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1754,11 +1714,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 10
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1770,11 +1726,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 11
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1786,11 +1738,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 12
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 12 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1802,11 +1750,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 13
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1818,11 +1762,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 14
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 14 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1834,11 +1774,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 15
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 15 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1850,11 +1786,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 16
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 16 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1866,11 +1798,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 17
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 17 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1882,11 +1810,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 18
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 18 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1898,11 +1822,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 19
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 19 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1914,11 +1834,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 20
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 20 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1930,11 +1846,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 21
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 21 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1946,11 +1858,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 22
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 22 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1962,11 +1870,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 23
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 23 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1978,11 +1882,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 24
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 24 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -1994,11 +1894,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 25
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 25 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2010,11 +1906,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 26
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 26 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2026,11 +1918,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 27
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 27 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2042,11 +1930,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 28
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 28 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2058,11 +1942,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 29
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 29 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2074,11 +1954,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 30
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 30 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2090,11 +1966,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 31
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 31 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2106,11 +1978,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 32
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 32 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2122,11 +1990,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 33
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 33 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2138,11 +2002,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 34
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 34 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2154,11 +2014,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 35
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 35 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2170,11 +2026,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 36
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 36 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2186,11 +2038,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 37
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 37 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2202,11 +2050,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 38
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 38 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2218,11 +2062,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 39
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 39 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2234,11 +2074,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 40
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 40 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2250,11 +2086,7 @@ Module pod_instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 41
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 41 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2419,10 +2251,7 @@ Module pod_instruction.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let γ1_0 := M.read (| γ1_0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ1_0 |),
-                          Value.Integer Integer.U8 0
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 0 |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -2451,10 +2280,7 @@ Module pod_instruction.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let γ1_0 := M.read (| γ1_0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
-                          M.read (| γ1_0 |),
-                          Value.Integer Integer.U8 1
-                        |) in
+                        M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                       let rest := M.copy (| γ1_1 |) in
                       let pk :=
                         M.copy (|
@@ -2716,7 +2542,7 @@ Module pod_instruction.
                         M.get_function (| "spl_pod::bytemuck::pod_get_packed_len", [ T ] |),
                         []
                       |);
-                      Value.Integer Integer.Usize 1
+                      Value.Integer 1
                     ]
                   |)
                 |) in
@@ -2794,7 +2620,7 @@ Module pod_instruction.
                                       Value.StructRecord
                                         "core::ops::range::Range"
                                         [
-                                          ("start", Value.Integer Integer.Usize 1);
+                                          ("start", Value.Integer 1);
                                           ("end_", M.read (| end_of_t |))
                                         ]
                                     ]

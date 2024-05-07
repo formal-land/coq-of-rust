@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module extension.
   Module transfer_fee.
     Definition value_MAX_FEE_BASIS_POINTS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U16 10000 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 10000 |))).
     
     Definition value_ONE_IN_BASIS_POINTS : Value.t :=
       M.run
@@ -418,7 +418,7 @@ Module extension.
                                       ]
                                     |)
                                   |);
-                                  Value.Integer Integer.U128 1
+                                  Value.Integer 1
                                 ]
                               |)
                             ]
@@ -537,19 +537,15 @@ Module extension.
                                 LogicalOp.or (|
                                   BinOp.Pure.eq
                                     (M.read (| transfer_fee_basis_points |))
-                                    (Value.Integer Integer.U128 0),
+                                    (Value.Integer 0),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| pre_fee_amount |))
-                                      (Value.Integer Integer.U64 0)))
+                                    (BinOp.Pure.eq (M.read (| pre_fee_amount |)) (Value.Integer 0)))
                                 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [ Value.Integer Integer.U64 0 ]
+                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1020,7 +1016,7 @@ Module extension.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (| transfer_fee_basis_points |))
-                                  (Value.Integer Integer.U128 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1050,7 +1046,7 @@ Module extension.
                                           ltac:(M.monadic
                                             (BinOp.Pure.eq
                                               (M.read (| post_fee_amount |))
-                                              (Value.Integer Integer.U64 0)))
+                                              (Value.Integer 0)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -1061,7 +1057,7 @@ Module extension.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
-                                      [ Value.Integer Integer.U64 0 ]
+                                      [ Value.Integer 0 ]
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2384,7 +2380,7 @@ Module extension.
                                       "into",
                                       []
                                     |),
-                                    [ Value.Integer Integer.U64 0 ]
+                                    [ Value.Integer 0 ]
                                   |)
                                 |)
                               ]

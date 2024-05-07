@@ -1470,7 +1470,7 @@ Module extension.
                                                           "new",
                                                           [ Ty.path "u64" ]
                                                         |),
-                                                        [ Value.Integer Integer.U64 0 ]
+                                                        [ Value.Integer 0 ]
                                                       |)
                                                     |),
                                                     [
@@ -1680,7 +1680,6 @@ Module extension.
                                                                                                   transfer_amount_hi
                                                                                                 |);
                                                                                                 Value.Integer
-                                                                                                  Integer.U64
                                                                                                   0
                                                                                               ]
                                                                                           |)
@@ -1958,16 +1957,16 @@ Module extension.
       
       Module transfer_split_proof_data.
         Definition value_REMAINING_BALANCE_BIT_LENGTH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 64 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 64 |))).
         
         Definition value_TRANSFER_AMOUNT_LO_BIT_LENGTH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 16 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
         
         Definition value_TRANSFER_AMOUNT_HI_BIT_LENGTH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 32 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
         
         Definition value_PADDING_BIT_LENGTH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 16 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
       End transfer_split_proof_data.
     End split_proof_generation.
   End confidential_transfer.

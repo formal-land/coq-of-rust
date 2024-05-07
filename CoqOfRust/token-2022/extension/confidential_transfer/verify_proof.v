@@ -56,7 +56,7 @@ Module extension.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (| proof_instruction_offset |))
-                                  (Value.Integer Integer.I64 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -840,7 +840,7 @@ Module extension.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (| proof_instruction_offset |))
-                                  (Value.Integer Integer.I64 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1623,7 +1623,7 @@ Module extension.
                               (M.alloc (|
                                 BinOp.Pure.eq
                                   (M.read (| proof_instruction_offset |))
-                                  (Value.Integer Integer.I64 0)
+                                  (Value.Integer 0)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2530,7 +2530,7 @@ Module extension.
                                 LogicalOp.and (|
                                   BinOp.Pure.eq
                                     (M.read (| proof_instruction_offset |))
-                                    (Value.Integer Integer.I64 0),
+                                    (Value.Integer 0),
                                   ltac:(M.monadic (M.read (| split_proof_context_state_accounts |)))
                                 |)
                               |)) in
@@ -4363,7 +4363,7 @@ Module extension.
                                         LogicalOp.and (|
                                           BinOp.Pure.eq
                                             (M.read (| proof_instruction_offset |))
-                                            (Value.Integer Integer.I64 0),
+                                            (Value.Integer 0),
                                           ltac:(M.monadic
                                             (UnOp.Pure.not
                                               (M.read (| split_proof_context_state_accounts |))))
@@ -5473,7 +5473,7 @@ Module extension.
                                 LogicalOp.and (|
                                   BinOp.Pure.eq
                                     (M.read (| proof_instruction_offset |))
-                                    (Value.Integer Integer.I64 0),
+                                    (Value.Integer 0),
                                   ltac:(M.monadic (M.read (| split_proof_context_state_accounts |)))
                                 |)
                               |)) in
@@ -8236,7 +8236,7 @@ Module extension.
                                         LogicalOp.and (|
                                           BinOp.Pure.eq
                                             (M.read (| proof_instruction_offset |))
-                                            (Value.Integer Integer.I64 0),
+                                            (Value.Integer 0),
                                           ltac:(M.monadic
                                             (UnOp.Pure.not
                                               (M.read (| split_proof_context_state_accounts |))))

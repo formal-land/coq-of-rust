@@ -612,7 +612,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   let _ :=
@@ -1729,7 +1729,7 @@ Module extension.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
-                        [ M.read (| epoch |); Value.Integer Integer.U64 2 ]
+                        [ M.read (| epoch |); Value.Integer 2 ]
                       |)
                     |) in
                   let transfer_fee :=
@@ -2981,7 +2981,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   let _ :=
@@ -3704,7 +3704,7 @@ Module extension.
                           "into",
                           []
                         |),
-                        [ Value.Integer Integer.U64 0 ]
+                        [ Value.Integer 0 ]
                       |)
                     |) in
                   M.alloc (|
@@ -6044,7 +6044,7 @@ Module extension.
                                                             "into",
                                                             []
                                                           |),
-                                                          [ Value.Integer Integer.U64 0 ]
+                                                          [ Value.Integer 0 ]
                                                         |)
                                                       |) in
                                                     let _ :=

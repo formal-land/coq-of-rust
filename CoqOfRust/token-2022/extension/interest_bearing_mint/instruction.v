@@ -230,10 +230,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -246,10 +243,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 1
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"

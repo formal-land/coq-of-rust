@@ -1104,7 +1104,7 @@ Module pod.
                 "state"
               |)
             |))
-            (M.rust_cast (Value.Integer Integer.U8 2))))
+            (M.rust_cast (Value.Integer 2))))
       | _, _ => M.impossible
       end.
     
@@ -1206,7 +1206,7 @@ Module pod.
                 "state"
               |)
             |))
-            (Value.Integer Integer.U8 0)))
+            (Value.Integer 0)))
       | _, _ => M.impossible
       end.
     
@@ -1915,7 +1915,7 @@ Module pod.
     (* Ty.apply (Ty.path "array") [ Ty.path "u8" ] *)
     Definition value_NONE (T : Ty.t) : Value.t :=
       let Self : Ty.t := Self T in
-      M.run ltac:(M.monadic (M.alloc (| repeat (Value.Integer Integer.U8 0) 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| repeat (Value.Integer 0) 4 |))).
     
     Axiom AssociatedConstant_value_NONE :
       forall (T : Ty.t),
@@ -2162,25 +2162,13 @@ Module pod.
                     let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
                     let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_0 |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_1 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_2 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_3 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 0 |) in
                     let value := M.copy (| γ0_1 |) in
                     M.alloc (|
                       Value.StructTuple "core::result::Result::Ok" [ M.read (| value |) ]
@@ -2334,25 +2322,13 @@ Module pod.
                     let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
                     let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_0 |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_1 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_2 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_3 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 0 |) in
                     let value := M.copy (| γ0_1 |) in
                     let γ :=
                       M.alloc (|
@@ -2410,25 +2386,13 @@ Module pod.
                     let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
                     let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_0 |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_1 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_2 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_3 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 0 |) in
                     let value := M.copy (| γ0_1 |) in
                     M.alloc (|
                       Value.StructTuple
@@ -2458,25 +2422,13 @@ Module pod.
                     let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
                     let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_0 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_1 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_2 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 0 |) in
                     let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ1_3 |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                      M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"

@@ -1253,6 +1253,7 @@ Module extension.
                                                           [
                                                             M.alloc (|
                                                               BinOp.Panic.sub (|
+                                                                Integer.Usize,
                                                                 M.read (| needed_account_len |),
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -1510,10 +1511,7 @@ Module extension.
                                                 "unwrap_or",
                                                 []
                                               |),
-                                              [
-                                                M.read (| native_token_amount |);
-                                                Value.Integer Integer.U64 0
-                                              ]
+                                              [ M.read (| native_token_amount |); Value.Integer 0 ]
                                             |)
                                           ]
                                         |);
@@ -1598,9 +1596,7 @@ Module extension.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| lamports_diff |))
-                                          (Value.Integer Integer.U64 0)
+                                        BinOp.Pure.gt (M.read (| lamports_diff |)) (Value.Integer 0)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|

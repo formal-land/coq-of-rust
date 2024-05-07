@@ -72,7 +72,7 @@ Module extension.
                               M.read (| transfer_amount_ciphertext_bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeTo"
-                                [ ("end_", Value.Integer Integer.Usize 32) ]
+                                [ ("end_", Value.Integer 32) ]
                             ]
                           |)
                         ]
@@ -121,7 +121,7 @@ Module extension.
                     [ M.read (| transfer_amount_ciphertext |) ]
                   |)
                 |) in
-              let source_ciphertext_bytes := M.alloc (| repeat (Value.Integer Integer.U8 0) 64 |) in
+              let source_ciphertext_bytes := M.alloc (| repeat (Value.Integer 0) 64 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -143,7 +143,7 @@ Module extension.
                           source_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -158,7 +158,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |)
                     ]
@@ -185,7 +185,7 @@ Module extension.
                           source_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
-                            [ ("start", Value.Integer Integer.Usize 32) ]
+                            [ ("start", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -200,10 +200,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 32);
-                              ("end_", Value.Integer Integer.Usize 64)
-                            ]
+                            [ ("start", Value.Integer 32); ("end_", Value.Integer 64) ]
                         ]
                       |)
                     ]
@@ -250,8 +247,7 @@ Module extension.
                     [ M.read (| transfer_amount_ciphertext |) ]
                   |)
                 |) in
-              let destination_ciphertext_bytes :=
-                M.alloc (| repeat (Value.Integer Integer.U8 0) 64 |) in
+              let destination_ciphertext_bytes := M.alloc (| repeat (Value.Integer 0) 64 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -273,7 +269,7 @@ Module extension.
                           destination_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -288,7 +284,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |)
                     ]
@@ -315,7 +311,7 @@ Module extension.
                           destination_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
-                            [ ("start", Value.Integer Integer.Usize 32) ]
+                            [ ("start", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -330,10 +326,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 64);
-                              ("end_", Value.Integer Integer.Usize 96)
-                            ]
+                            [ ("start", Value.Integer 64); ("end_", Value.Integer 96) ]
                         ]
                       |)
                     ]
@@ -380,7 +373,7 @@ Module extension.
                     [ M.read (| transfer_amount_ciphertext |) ]
                   |)
                 |) in
-              let source_ciphertext_bytes := M.alloc (| repeat (Value.Integer Integer.U8 0) 64 |) in
+              let source_ciphertext_bytes := M.alloc (| repeat (Value.Integer 0) 64 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -402,7 +395,7 @@ Module extension.
                           source_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -417,7 +410,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |)
                     ]
@@ -444,7 +437,7 @@ Module extension.
                           source_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
-                            [ ("start", Value.Integer Integer.Usize 32) ]
+                            [ ("start", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -459,10 +452,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 32);
-                              ("end_", Value.Integer Integer.Usize 64)
-                            ]
+                            [ ("start", Value.Integer 32); ("end_", Value.Integer 64) ]
                         ]
                       |)
                     ]
@@ -512,8 +502,7 @@ Module extension.
                     [ M.read (| transfer_amount_ciphertext |) ]
                   |)
                 |) in
-              let destination_ciphertext_bytes :=
-                M.alloc (| repeat (Value.Integer Integer.U8 0) 64 |) in
+              let destination_ciphertext_bytes := M.alloc (| repeat (Value.Integer 0) 64 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -535,7 +524,7 @@ Module extension.
                           destination_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -550,7 +539,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |)
                     ]
@@ -577,7 +566,7 @@ Module extension.
                           destination_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeFrom"
-                            [ ("start", Value.Integer Integer.Usize 32) ]
+                            [ ("start", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -592,10 +581,7 @@ Module extension.
                           M.read (| transfer_amount_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 64);
-                              ("end_", Value.Integer Integer.Usize 96)
-                            ]
+                            [ ("start", Value.Integer 64); ("end_", Value.Integer 96) ]
                         ]
                       |)
                     ]
@@ -662,8 +648,7 @@ Module extension.
                     [ M.read (| grouped_ciphertext |) ]
                   |)
                 |) in
-              let transfer_amount_ciphertext_bytes :=
-                M.alloc (| repeat (Value.Integer Integer.U8 0) 128 |) in
+              let transfer_amount_ciphertext_bytes := M.alloc (| repeat (Value.Integer 0) 128 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -685,7 +670,7 @@ Module extension.
                           transfer_amount_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |);
                       M.call_closure (|
@@ -700,7 +685,7 @@ Module extension.
                           M.read (| grouped_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 32) ]
+                            [ ("end_", Value.Integer 32) ]
                         ]
                       |)
                     ]
@@ -727,10 +712,7 @@ Module extension.
                           transfer_amount_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 32);
-                              ("end_", Value.Integer Integer.Usize 64)
-                            ]
+                            [ ("start", Value.Integer 32); ("end_", Value.Integer 64) ]
                         ]
                       |);
                       M.read (| source_decrypt_handle_bytes |)
@@ -758,10 +740,7 @@ Module extension.
                           transfer_amount_ciphertext_bytes;
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 64);
-                              ("end_", Value.Integer Integer.Usize 128)
-                            ]
+                            [ ("start", Value.Integer 64); ("end_", Value.Integer 128) ]
                         ]
                       |);
                       M.call_closure (|
@@ -776,10 +755,7 @@ Module extension.
                           M.read (| grouped_ciphertext_bytes |);
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [
-                              ("start", Value.Integer Integer.Usize 32);
-                              ("end_", Value.Integer Integer.Usize 96)
-                            ]
+                            [ ("start", Value.Integer 32); ("end_", Value.Integer 96) ]
                         ]
                       |)
                     ]
@@ -4030,38 +4006,38 @@ Module extension.
                 [
                   Value.Array
                     [
-                      Value.Integer Integer.U8 226;
-                      Value.Integer Integer.U8 242;
-                      Value.Integer Integer.U8 174;
-                      Value.Integer Integer.U8 10;
-                      Value.Integer Integer.U8 106;
-                      Value.Integer Integer.U8 188;
-                      Value.Integer Integer.U8 78;
-                      Value.Integer Integer.U8 113;
-                      Value.Integer Integer.U8 168;
-                      Value.Integer Integer.U8 132;
-                      Value.Integer Integer.U8 169;
-                      Value.Integer Integer.U8 97;
-                      Value.Integer Integer.U8 197;
-                      Value.Integer Integer.U8 0;
-                      Value.Integer Integer.U8 81;
-                      Value.Integer Integer.U8 95;
-                      Value.Integer Integer.U8 88;
-                      Value.Integer Integer.U8 227;
-                      Value.Integer Integer.U8 11;
-                      Value.Integer Integer.U8 106;
-                      Value.Integer Integer.U8 165;
-                      Value.Integer Integer.U8 130;
-                      Value.Integer Integer.U8 221;
-                      Value.Integer Integer.U8 141;
-                      Value.Integer Integer.U8 182;
-                      Value.Integer Integer.U8 166;
-                      Value.Integer Integer.U8 89;
-                      Value.Integer Integer.U8 69;
-                      Value.Integer Integer.U8 224;
-                      Value.Integer Integer.U8 141;
-                      Value.Integer Integer.U8 45;
-                      Value.Integer Integer.U8 118
+                      Value.Integer 226;
+                      Value.Integer 242;
+                      Value.Integer 174;
+                      Value.Integer 10;
+                      Value.Integer 106;
+                      Value.Integer 188;
+                      Value.Integer 78;
+                      Value.Integer 113;
+                      Value.Integer 168;
+                      Value.Integer 132;
+                      Value.Integer 169;
+                      Value.Integer 97;
+                      Value.Integer 197;
+                      Value.Integer 0;
+                      Value.Integer 81;
+                      Value.Integer 95;
+                      Value.Integer 88;
+                      Value.Integer 227;
+                      Value.Integer 11;
+                      Value.Integer 106;
+                      Value.Integer 165;
+                      Value.Integer 130;
+                      Value.Integer 221;
+                      Value.Integer 141;
+                      Value.Integer 182;
+                      Value.Integer 166;
+                      Value.Integer 89;
+                      Value.Integer 69;
+                      Value.Integer 224;
+                      Value.Integer 141;
+                      Value.Integer 45;
+                      Value.Integer 118
                     ]
                 ]
             |))).
@@ -4079,7 +4055,7 @@ Module extension.
           ltac:(M.monadic
             (let amount := M.alloc (| amount |) in
             M.read (|
-              let bytes := M.alloc (| repeat (Value.Integer Integer.U8 0) 32 |) in
+              let bytes := M.alloc (| repeat (Value.Integer 0) 32 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -4101,7 +4077,7 @@ Module extension.
                           bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 2) ]
+                            [ ("end_", Value.Integer 2) ]
                         ]
                       |);
                       (* Unsize *)
@@ -4137,7 +4113,7 @@ Module extension.
           ltac:(M.monadic
             (let amount := M.alloc (| amount |) in
             M.read (|
-              let bytes := M.alloc (| repeat (Value.Integer Integer.U8 0) 32 |) in
+              let bytes := M.alloc (| repeat (Value.Integer 0) 32 |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -4159,7 +4135,7 @@ Module extension.
                           bytes;
                           Value.StructRecord
                             "core::ops::range::RangeTo"
-                            [ ("end_", Value.Integer Integer.Usize 8) ]
+                            [ ("end_", Value.Integer 8) ]
                         ]
                       |);
                       (* Unsize *)
@@ -4312,7 +4288,7 @@ Module extension.
       
       Module combine_lo_hi_pedersen_points.
         Definition value_SCALING_CONSTANT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U64 65536 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 65536 |))).
       End combine_lo_hi_pedersen_points.
       
       (*
@@ -4909,7 +4885,7 @@ Module extension.
       
       Module verify_delta_commitment.
         Definition value_MAX_FEE_BASIS_POINTS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U64 10000 |))).
+          M.run ltac:(M.monadic (M.alloc (| Value.Integer 10000 |))).
       End verify_delta_commitment.
     End ciphertext_extraction.
   End confidential_transfer.

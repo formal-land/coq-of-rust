@@ -230,10 +230,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -246,10 +243,7 @@ Module extension.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer Integer.U8 1
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -396,7 +390,7 @@ Module extension.
                                       |),
                                       [ M.read (| input |) ]
                                     |))
-                                    (Value.Integer Integer.Usize 2)
+                                    (Value.Integer 2)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -485,7 +479,7 @@ Module extension.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.read (| input |),
-                                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                                  M.alloc (| Value.Integer 0 |)
                                                 |)
                                               |)
                                             ]
@@ -605,7 +599,7 @@ Module extension.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.read (| input |),
-                                                  M.alloc (| Value.Integer Integer.Usize 1 |)
+                                                  M.alloc (| Value.Integer 1 |)
                                                 |)
                                               |)
                                             ]

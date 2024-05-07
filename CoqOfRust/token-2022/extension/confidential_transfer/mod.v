@@ -8,16 +8,18 @@ Module extension.
         ltac:(M.monadic
           (M.alloc (|
             BinOp.Panic.add (|
+              Integer.U64,
               M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
               BinOp.Panic.mul (|
-                BinOp.Panic.shl (| Value.Integer Integer.U64 1, Value.Integer Integer.I32 16 |),
+                Integer.U64,
+                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 16 |),
                 M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
               |)
             |)
           |))).
     
     Definition value_PENDING_BALANCE_LO_BIT_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 16 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
     
     Axiom EncryptedBalance :
       (Ty.path "spl_token_2022::extension::confidential_transfer::EncryptedBalance") =
@@ -1718,7 +1720,7 @@ Module extension.
                                           |)
                                         ]
                                       |);
-                                      Value.Integer Integer.U64 1
+                                      Value.Integer 1
                                     ]
                                   |);
                                   Value.StructTuple "spl_token_2022::error::TokenError::Overflow" []
@@ -1931,7 +1933,7 @@ Module extension.
                                                 |)
                                               ]
                                             |);
-                                            Value.Integer Integer.U64 1
+                                            Value.Integer 1
                                           ]
                                         |);
                                         Value.StructTuple

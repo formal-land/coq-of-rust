@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module generic_token_account.
   Definition value_SPL_TOKEN_ACCOUNT_MINT_OFFSET : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 0 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
   
   Definition value_SPL_TOKEN_ACCOUNT_OWNER_OFFSET : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 32 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer 32 |))).
   
   (* Trait *)
   Module GenericTokenAccount.
@@ -102,6 +102,7 @@ Module generic_token_account.
                       ("start", M.read (| offset |));
                       ("end_",
                         BinOp.Panic.add (|
+                          Integer.Usize,
                           M.read (| offset |),
                           M.read (| M.get_constant (| "solana_program::pubkey::PUBKEY_BYTES" |) |)
                         |))
@@ -231,7 +232,7 @@ Module generic_token_account.
   End GenericTokenAccount.
   
   Definition value_ACCOUNT_INITIALIZED_INDEX : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 108 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer 108 |))).
   
   (*
   pub fn is_initialized_account(account_data: &[u8]) -> bool {
@@ -272,11 +273,11 @@ Module generic_token_account.
                     |)
                   ]
                 |);
-                M.alloc (| M.rust_cast (Value.Integer Integer.U8 0) |)
+                M.alloc (| M.rust_cast (Value.Integer 0) |)
               ]
             |)
           |))
-          (M.rust_cast (Value.Integer Integer.U8 0))))
+          (M.rust_cast (Value.Integer 0))))
     | _, _ => M.impossible
     end.
 End generic_token_account.

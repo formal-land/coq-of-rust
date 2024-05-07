@@ -436,8 +436,7 @@ Module state.
     
     (*     const LEN: usize = 82; *)
     (* Ty.path "usize" *)
-    Definition value_LEN : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 82 |))).
+    Definition value_LEN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 82 |))).
     
     (*
         fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
@@ -472,7 +471,7 @@ Module state.
               (M.read (|
                 let src :=
                   M.copy (|
-                    let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    let offset := M.alloc (| Value.Integer 0 |) in
                     let slice :=
                       M.alloc (|
                         M.call_closure (|
@@ -491,8 +490,9 @@ Module state.
                                 ("start", M.read (| offset |));
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| offset |),
-                                    Value.Integer Integer.Usize 82
+                                    Value.Integer 82
                                   |))
                               ]
                           ]
@@ -622,7 +622,7 @@ Module state.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.read (| decimals |),
-                              M.alloc (| Value.Integer Integer.Usize 0 |)
+                              M.alloc (| Value.Integer 0 |)
                             |)
                           |) in
                         let is_initialized :=
@@ -637,7 +637,7 @@ Module state.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ1_0 |),
-                                        Value.Integer Integer.U8 0
+                                        Value.Integer 0
                                       |) in
                                     M.alloc (| Value.Bool false |)));
                                 fun γ =>
@@ -647,7 +647,7 @@ Module state.
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ1_0 |),
-                                        Value.Integer Integer.U8 1
+                                        Value.Integer 1
                                       |) in
                                     M.alloc (| Value.Bool true |)));
                                 fun γ =>
@@ -811,7 +811,7 @@ Module state.
             let dst :=
               M.alloc (|
                 M.read (|
-                  let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let offset := M.alloc (| Value.Integer 0 |) in
                   let slice :=
                     M.alloc (|
                       M.call_closure (|
@@ -830,8 +830,9 @@ Module state.
                               ("start", M.read (| offset |));
                               ("end_",
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| offset |),
-                                  Value.Integer Integer.Usize 82
+                                  Value.Integer 82
                                 |))
                             ]
                         ]
@@ -929,7 +930,7 @@ Module state.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| decimals_dst |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.read (| decimals |)
                               |) in
@@ -937,7 +938,7 @@ Module state.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| is_initialized_dst |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.rust_cast (M.read (| is_initialized |))
                               |) in
@@ -1720,8 +1721,7 @@ Module state.
     
     (*     const LEN: usize = 165; *)
     (* Ty.path "usize" *)
-    Definition value_LEN : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 165 |))).
+    Definition value_LEN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 165 |))).
     
     (*
         fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
@@ -1751,7 +1751,7 @@ Module state.
               (M.read (|
                 let src :=
                   M.copy (|
-                    let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    let offset := M.alloc (| Value.Integer 0 |) in
                     let slice :=
                       M.alloc (|
                         M.call_closure (|
@@ -1770,8 +1770,9 @@ Module state.
                                 ("start", M.read (| offset |));
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| offset |),
-                                    Value.Integer Integer.Usize 165
+                                    Value.Integer 165
                                   |))
                               ]
                           ]
@@ -1984,9 +1985,7 @@ Module state.
                                                       M.read (|
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| state |),
-                                                          M.alloc (|
-                                                            Value.Integer Integer.Usize 0
-                                                          |)
+                                                          M.alloc (| Value.Integer 0 |)
                                                         |)
                                                       |)
                                                     ]
@@ -2297,7 +2296,7 @@ Module state.
             let dst :=
               M.alloc (|
                 M.read (|
-                  let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let offset := M.alloc (| Value.Integer 0 |) in
                   let slice :=
                     M.alloc (|
                       M.call_closure (|
@@ -2316,8 +2315,9 @@ Module state.
                               ("start", M.read (| offset |));
                               ("end_",
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| offset |),
-                                  Value.Integer Integer.Usize 165
+                                  Value.Integer 165
                                 |))
                             ]
                         ]
@@ -2488,7 +2488,7 @@ Module state.
                               M.write (|
                                 M.SubPointer.get_array_field (|
                                   M.read (| state_dst |),
-                                  M.alloc (| Value.Integer Integer.Usize 0 |)
+                                  M.alloc (| Value.Integer 0 |)
                                 |),
                                 M.rust_cast (M.read (| state |))
                               |) in
@@ -2784,11 +2784,7 @@ Module state.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2797,11 +2793,7 @@ Module state.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -2809,11 +2801,7 @@ Module state.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3256,8 +3244,7 @@ Module state.
     
     (*     const LEN: usize = 355; *)
     (* Ty.path "usize" *)
-    Definition value_LEN : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 355 |))).
+    Definition value_LEN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 355 |))).
     
     (*
         fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
@@ -3290,7 +3277,7 @@ Module state.
               (M.read (|
                 let src :=
                   M.copy (|
-                    let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                    let offset := M.alloc (| Value.Integer 0 |) in
                     let slice :=
                       M.alloc (|
                         M.call_closure (|
@@ -3309,8 +3296,9 @@ Module state.
                                 ("start", M.read (| offset |));
                                 ("end_",
                                   BinOp.Panic.add (|
+                                    Integer.Usize,
                                     M.read (| offset |),
-                                    Value.Integer Integer.Usize 355
+                                    Value.Integer 355
                                   |))
                               ]
                           ]
@@ -3351,14 +3339,14 @@ Module state.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.read (| m |),
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| Value.Integer 0 |)
                                     |)
                                   |));
                                 ("n",
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.read (| n |),
-                                      M.alloc (| Value.Integer Integer.Usize 0 |)
+                                      M.alloc (| Value.Integer 0 |)
                                     |)
                                   |));
                                 ("is_initialized",
@@ -3373,7 +3361,7 @@ Module state.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
-                                                Value.Integer Integer.U8 0
+                                                Value.Integer 0
                                               |) in
                                             M.alloc (| Value.Bool false |)));
                                         fun γ =>
@@ -3383,7 +3371,7 @@ Module state.
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ1_0 |),
-                                                Value.Integer Integer.U8 1
+                                                Value.Integer 1
                                               |) in
                                             M.alloc (| Value.Bool true |)));
                                         fun γ =>
@@ -3414,7 +3402,7 @@ Module state.
                                         "new_from_array",
                                         []
                                       |),
-                                      [ repeat (Value.Integer Integer.U8 0) 32 ]
+                                      [ repeat (Value.Integer 0) 32 ]
                                     |))
                                     11)
                               ]
@@ -3465,7 +3453,7 @@ Module state.
                                           [
                                             (* Unsize *)
                                             M.pointer_coercion (M.read (| signers_flat |));
-                                            Value.Integer Integer.Usize 32
+                                            Value.Integer 32
                                           ]
                                         |);
                                         M.call_closure (|
@@ -3732,7 +3720,7 @@ Module state.
             let dst :=
               M.alloc (|
                 M.read (|
-                  let offset := M.alloc (| Value.Integer Integer.Usize 0 |) in
+                  let offset := M.alloc (| Value.Integer 0 |) in
                   let slice :=
                     M.alloc (|
                       M.call_closure (|
@@ -3751,8 +3739,9 @@ Module state.
                               ("start", M.read (| offset |));
                               ("end_",
                                 BinOp.Panic.add (|
+                                  Integer.Usize,
                                   M.read (| offset |),
-                                  Value.Integer Integer.Usize 355
+                                  Value.Integer 355
                                 |))
                             ]
                         ]
@@ -3932,7 +3921,8 @@ Module state.
                                                   let offset :=
                                                     M.alloc (|
                                                       BinOp.Panic.mul (|
-                                                        Value.Integer Integer.Usize 32,
+                                                        Integer.Usize,
+                                                        Value.Integer 32,
                                                         M.read (| i |)
                                                       |)
                                                     |) in
@@ -3960,8 +3950,9 @@ Module state.
                                                               ("start", M.read (| offset |));
                                                               ("end_",
                                                                 BinOp.Panic.add (|
+                                                                  Integer.Usize,
                                                                   M.read (| offset |),
-                                                                  Value.Integer Integer.Usize 32
+                                                                  Value.Integer 32
                                                                 |))
                                                             ]
                                                         ]
@@ -4102,11 +4093,7 @@ Module state.
                             M.write (|
                               M.read (| tag |),
                               Value.Array
-                                [
-                                  Value.Integer Integer.U8 1;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0
+                                [ Value.Integer 1; Value.Integer 0; Value.Integer 0; Value.Integer 0
                                 ]
                             |) in
                           let _ :=
@@ -4136,8 +4123,7 @@ Module state.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.write (| M.read (| tag |), repeat (Value.Integer Integer.U8 0) 4 |) in
+                          let _ := M.write (| M.read (| tag |), repeat (Value.Integer 0) 4 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |)))
@@ -4188,25 +4174,13 @@ Module state.
                           let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                           let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_0 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
@@ -4220,25 +4194,13 @@ Module state.
                           let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                           let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_0 |),
-                              Value.Integer Integer.U8 1
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
@@ -4329,11 +4291,7 @@ Module state.
                             M.write (|
                               M.read (| tag |),
                               Value.Array
-                                [
-                                  Value.Integer Integer.U8 1;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0;
-                                  Value.Integer Integer.U8 0
+                                [ Value.Integer 1; Value.Integer 0; Value.Integer 0; Value.Integer 0
                                 ]
                             |) in
                           let _ :=
@@ -4348,8 +4306,7 @@ Module state.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.write (| M.read (| tag |), repeat (Value.Integer Integer.U8 0) 4 |) in
+                          let _ := M.write (| M.read (| tag |), repeat (Value.Integer 0) 4 |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |)))
@@ -4400,25 +4357,13 @@ Module state.
                           let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                           let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_0 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
@@ -4432,25 +4377,13 @@ Module state.
                           let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                           let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_0 |),
-                              Value.Integer Integer.U8 1
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_1 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_2 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 0 |) in
                           let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ0_3 |),
-                              Value.Integer Integer.U8 0
-                            |) in
+                            M.is_constant_or_break_match (| M.read (| γ0_3 |), Value.Integer 0 |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
@@ -4489,7 +4422,7 @@ Module state.
     end.
   
   Definition value_ACCOUNTTYPE_ACCOUNT : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.rust_cast (Value.Integer Integer.U8 2) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.rust_cast (Value.Integer 2) |))).
   
   Module Impl_spl_token_2022_generic_token_account_GenericTokenAccount_for_spl_token_2022_state_Account.
     Definition Self : Ty.t := Ty.path "spl_token_2022::state::Account".

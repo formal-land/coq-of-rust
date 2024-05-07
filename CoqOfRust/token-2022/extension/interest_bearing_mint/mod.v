@@ -14,8 +14,11 @@ Module extension.
         ltac:(M.monadic
           (M.alloc (|
             BinOp.Panic.mul (|
+              Integer.Usize,
               BinOp.Panic.mul (|
+                Integer.Usize,
                 BinOp.Panic.mul (|
+                  Integer.Usize,
                   M.read (| UnsupportedLiteral |),
                   M.read (| UnsupportedLiteral |)
                 |),
@@ -676,7 +679,9 @@ Module extension.
                   let exponent :=
                     M.alloc (|
                       BinOp.Panic.div (|
+                        Integer.Usize,
                         BinOp.Panic.div (|
+                          Integer.Usize,
                           M.read (| numerator |),
                           M.read (|
                             M.get_constant (|
@@ -943,7 +948,9 @@ Module extension.
                   let exponent :=
                     M.alloc (|
                       BinOp.Panic.div (|
+                        Integer.Usize,
                         BinOp.Panic.div (|
+                          Integer.Usize,
                           M.read (| numerator |),
                           M.read (|
                             M.get_constant (|
@@ -997,7 +1004,9 @@ Module extension.
                   "core::option::Option::Some"
                   [
                     BinOp.Panic.div (|
+                      Integer.Usize,
                       BinOp.Panic.mul (|
+                        Integer.Usize,
                         M.read (|
                           M.match_operator (|
                             M.alloc (|
@@ -1179,6 +1188,7 @@ Module extension.
                   let scaled_amount_with_interest :=
                     M.alloc (|
                       BinOp.Panic.mul (|
+                        Integer.Usize,
                         M.rust_cast (M.read (| amount |)),
                         M.read (|
                           M.match_operator (|
@@ -1435,6 +1445,7 @@ Module extension.
                   let amount :=
                     M.alloc (|
                       BinOp.Panic.div (|
+                        Integer.Usize,
                         M.read (| scaled_amount |),
                         M.read (|
                           M.match_operator (|
@@ -1935,9 +1946,7 @@ Module extension.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (| total_timespan |))
-                                      (Value.Integer Integer.I128 0)
+                                    BinOp.Pure.eq (M.read (| total_timespan |)) (Value.Integer 0)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|

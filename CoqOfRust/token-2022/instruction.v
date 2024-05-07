@@ -2,17 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module instruction.
-  Definition value_MIN_SIGNERS : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 1 |))).
+  Definition value_MIN_SIGNERS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
   
-  Definition value_MAX_SIGNERS : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 11 |))).
+  Definition value_MAX_SIGNERS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 11 |))).
   
-  Definition value_U16_BYTES : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 2 |))).
+  Definition value_U16_BYTES : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
   
-  Definition value_U64_BYTES : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.Usize 8 |))).
+  Definition value_U64_BYTES : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
   
   (*
   Enum TokenInstruction
@@ -3331,7 +3327,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 0
+                                            Value.Integer 0
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -3725,7 +3721,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 1
+                                            Value.Integer 1
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -3737,7 +3733,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 2
+                                            Value.Integer 2
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -3862,7 +3858,7 @@ Module instruction.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer Integer.U8 3
+                                                    Value.Integer 3
                                                   |) in
                                                 Value.Tuple []));
                                             fun γ =>
@@ -3870,7 +3866,7 @@ Module instruction.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer Integer.U8 4
+                                                    Value.Integer 4
                                                   |) in
                                                 Value.Tuple []));
                                             fun γ =>
@@ -3878,7 +3874,7 @@ Module instruction.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer Integer.U8 7
+                                                    Value.Integer 7
                                                   |) in
                                                 Value.Tuple []));
                                             fun γ =>
@@ -3886,7 +3882,7 @@ Module instruction.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer Integer.U8 8
+                                                    Value.Integer 8
                                                   |) in
                                                 Value.Tuple []))
                                           ],
@@ -4187,7 +4183,7 @@ Module instruction.
                                                           (let _ :=
                                                             M.is_constant_or_break_match (|
                                                               M.read (| γ |),
-                                                              Value.Integer Integer.U8 3
+                                                              Value.Integer 3
                                                             |) in
                                                           M.alloc (|
                                                             Value.StructRecord
@@ -4199,7 +4195,7 @@ Module instruction.
                                                           (let _ :=
                                                             M.is_constant_or_break_match (|
                                                               M.read (| γ |),
-                                                              Value.Integer Integer.U8 4
+                                                              Value.Integer 4
                                                             |) in
                                                           M.alloc (|
                                                             Value.StructRecord
@@ -4211,7 +4207,7 @@ Module instruction.
                                                           (let _ :=
                                                             M.is_constant_or_break_match (|
                                                               M.read (| γ |),
-                                                              Value.Integer Integer.U8 7
+                                                              Value.Integer 7
                                                             |) in
                                                           M.alloc (|
                                                             Value.StructRecord
@@ -4223,7 +4219,7 @@ Module instruction.
                                                           (let _ :=
                                                             M.is_constant_or_break_match (|
                                                               M.read (| γ |),
-                                                              Value.Integer Integer.U8 8
+                                                              Value.Integer 8
                                                             |) in
                                                           M.alloc (|
                                                             Value.StructRecord
@@ -4258,7 +4254,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 5
+                                            Value.Integer 5
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -4270,7 +4266,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 6
+                                            Value.Integer 6
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -4810,7 +4806,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 9
+                                            Value.Integer 9
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -4822,7 +4818,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 10
+                                            Value.Integer 10
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -4834,7 +4830,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 11
+                                            Value.Integer 11
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -4846,7 +4842,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 12
+                                            Value.Integer 12
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -4972,7 +4968,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 13
+                                            Value.Integer 13
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5098,7 +5094,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 14
+                                            Value.Integer 14
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5224,7 +5220,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 15
+                                            Value.Integer 15
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5350,7 +5346,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 16
+                                            Value.Integer 16
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5469,7 +5465,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 17
+                                            Value.Integer 17
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -5481,7 +5477,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 18
+                                            Value.Integer 18
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5600,7 +5596,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 19
+                                            Value.Integer 19
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -5720,7 +5716,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 20
+                                            Value.Integer 20
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -6114,7 +6110,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 21
+                                            Value.Integer 21
                                           |) in
                                         let extension_types :=
                                           M.alloc (|
@@ -6369,7 +6365,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 22
+                                            Value.Integer 22
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -6381,7 +6377,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 23
+                                            Value.Integer 23
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -6500,7 +6496,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 24
+                                            Value.Integer 24
                                           |) in
                                         let ui_amount :=
                                           M.copy (|
@@ -6643,7 +6639,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 25
+                                            Value.Integer 25
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -6771,7 +6767,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 26
+                                            Value.Integer 26
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -6783,7 +6779,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 27
+                                            Value.Integer 27
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -6795,7 +6791,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 28
+                                            Value.Integer 28
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -6807,7 +6803,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 29
+                                            Value.Integer 29
                                           |) in
                                         let extension_types :=
                                           M.alloc (|
@@ -7062,7 +7058,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 30
+                                            Value.Integer 30
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7074,7 +7070,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 31
+                                            Value.Integer 31
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7086,7 +7082,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 32
+                                            Value.Integer 32
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7098,7 +7094,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 33
+                                            Value.Integer 33
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7110,7 +7106,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 34
+                                            Value.Integer 34
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7122,7 +7118,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 35
+                                            Value.Integer 35
                                           |) in
                                         M.match_operator (|
                                           M.match_operator (|
@@ -7241,7 +7237,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 36
+                                            Value.Integer 36
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7253,7 +7249,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 37
+                                            Value.Integer 37
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7265,7 +7261,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 38
+                                            Value.Integer 38
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7277,7 +7273,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 39
+                                            Value.Integer 39
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7289,7 +7285,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 40
+                                            Value.Integer 40
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7301,7 +7297,7 @@ Module instruction.
                                         (let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
-                                            Value.Integer Integer.U8 41
+                                            Value.Integer 41
                                           |) in
                                         M.alloc (|
                                           Value.StructTuple
@@ -7588,7 +7584,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 0 ]
+                            [ buf; Value.Integer 0 ]
                           |)
                         |) in
                       let _ :=
@@ -7653,7 +7649,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ buf; Value.Integer Integer.U8 1 ]
+                          [ buf; Value.Integer 1 ]
                         |)
                       |)));
                   fun γ =>
@@ -7676,7 +7672,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 2 ]
+                            [ buf; Value.Integer 2 ]
                           |)
                         |) in
                       let _ :=
@@ -7713,7 +7709,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 3 ]
+                            [ buf; Value.Integer 3 ]
                           |)
                         |) in
                       let _ :=
@@ -7764,7 +7760,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 4 ]
+                            [ buf; Value.Integer 4 ]
                           |)
                         |) in
                       let _ :=
@@ -7815,7 +7811,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 7 ]
+                            [ buf; Value.Integer 7 ]
                           |)
                         |) in
                       let _ :=
@@ -7866,7 +7862,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 8 ]
+                            [ buf; Value.Integer 8 ]
                           |)
                         |) in
                       let _ :=
@@ -7909,7 +7905,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ buf; Value.Integer Integer.U8 5 ]
+                          [ buf; Value.Integer 5 ]
                         |)
                       |)));
                   fun γ =>
@@ -7939,7 +7935,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 6 ]
+                            [ buf; Value.Integer 6 ]
                           |)
                         |) in
                       let _ :=
@@ -7989,7 +7985,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ buf; Value.Integer Integer.U8 9 ]
+                          [ buf; Value.Integer 9 ]
                         |)
                       |)));
                   fun γ =>
@@ -8004,7 +8000,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ buf; Value.Integer Integer.U8 10 ]
+                          [ buf; Value.Integer 10 ]
                         |)
                       |)));
                   fun γ =>
@@ -8019,7 +8015,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ buf; Value.Integer Integer.U8 11 ]
+                          [ buf; Value.Integer 11 ]
                         |)
                       |)));
                   fun γ =>
@@ -8049,7 +8045,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 12 ]
+                            [ buf; Value.Integer 12 ]
                           |)
                         |) in
                       let _ :=
@@ -8120,7 +8116,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 13 ]
+                            [ buf; Value.Integer 13 ]
                           |)
                         |) in
                       let _ :=
@@ -8191,7 +8187,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 14 ]
+                            [ buf; Value.Integer 14 ]
                           |)
                         |) in
                       let _ :=
@@ -8262,7 +8258,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 15 ]
+                            [ buf; Value.Integer 15 ]
                           |)
                         |) in
                       let _ :=
@@ -8326,7 +8322,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 16 ]
+                            [ buf; Value.Integer 16 ]
                           |)
                         |) in
                       let _ :=
@@ -8368,7 +8364,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 17 ]
+                            [ buf; Value.Integer 17 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -8392,7 +8388,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 18 ]
+                            [ buf; Value.Integer 18 ]
                           |)
                         |) in
                       let _ :=
@@ -8441,7 +8437,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 19 ]
+                            [ buf; Value.Integer 19 ]
                           |)
                         |) in
                       let _ :=
@@ -8492,7 +8488,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 20 ]
+                            [ buf; Value.Integer 20 ]
                           |)
                         |) in
                       let _ :=
@@ -8565,7 +8561,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 21 ]
+                            [ buf; Value.Integer 21 ]
                           |)
                         |) in
                       M.use
@@ -8690,7 +8686,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 22 ]
+                            [ buf; Value.Integer 22 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -8714,7 +8710,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 23 ]
+                            [ buf; Value.Integer 23 ]
                           |)
                         |) in
                       let _ :=
@@ -8765,7 +8761,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 24 ]
+                            [ buf; Value.Integer 24 ]
                           |)
                         |) in
                       let _ :=
@@ -8808,7 +8804,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 25 ]
+                            [ buf; Value.Integer 25 ]
                           |)
                         |) in
                       let _ :=
@@ -8836,7 +8832,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 26 ]
+                            [ buf; Value.Integer 26 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -8853,7 +8849,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 27 ]
+                            [ buf; Value.Integer 27 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -8870,7 +8866,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 28 ]
+                            [ buf; Value.Integer 28 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -8894,7 +8890,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 29 ]
+                            [ buf; Value.Integer 29 ]
                           |)
                         |) in
                       M.use
@@ -9019,7 +9015,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 30 ]
+                            [ buf; Value.Integer 30 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9036,7 +9032,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 31 ]
+                            [ buf; Value.Integer 31 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9053,7 +9049,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 32 ]
+                            [ buf; Value.Integer 32 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9070,7 +9066,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 33 ]
+                            [ buf; Value.Integer 33 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9087,7 +9083,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 34 ]
+                            [ buf; Value.Integer 34 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9111,7 +9107,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 35 ]
+                            [ buf; Value.Integer 35 ]
                           |)
                         |) in
                       let _ :=
@@ -9153,7 +9149,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 36 ]
+                            [ buf; Value.Integer 36 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9170,7 +9166,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 37 ]
+                            [ buf; Value.Integer 37 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9187,7 +9183,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 38 ]
+                            [ buf; Value.Integer 38 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9204,7 +9200,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 39 ]
+                            [ buf; Value.Integer 39 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9221,7 +9217,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 40 ]
+                            [ buf; Value.Integer 40 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -9238,7 +9234,7 @@ Module instruction.
                               "push",
                               []
                             |),
-                            [ buf; Value.Integer Integer.U8 41 ]
+                            [ buf; Value.Integer 41 ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -9549,10 +9545,7 @@ Module instruction.
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ1_0 |),
-                            Value.Integer Integer.U8 0
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 0 |) in
                         let rest := M.copy (| γ1_1 |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9579,10 +9572,7 @@ Module instruction.
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                         let γ1_0 := M.read (| γ1_0 |) in
                         let _ :=
-                          M.is_constant_or_break_match (|
-                            M.read (| γ1_0 |),
-                            Value.Integer Integer.U8 1
-                          |) in
+                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
                         let rest := M.copy (| γ1_1 |) in
                         M.match_operator (|
                           M.match_operator (|
@@ -9780,7 +9770,7 @@ Module instruction.
                             "push",
                             []
                           |),
-                          [ M.read (| buf |); Value.Integer Integer.U8 1 ]
+                          [ M.read (| buf |); Value.Integer 1 ]
                         |)
                       |) in
                     let _ :=
@@ -9822,7 +9812,7 @@ Module instruction.
                           "push",
                           []
                         |),
-                        [ M.read (| buf |); Value.Integer Integer.U8 0 ]
+                        [ M.read (| buf |); Value.Integer 0 ]
                       |)
                     |)))
               ]
@@ -11057,63 +11047,63 @@ Module instruction.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 0 |)));
+                    M.alloc (| Value.Integer 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 1 |)));
+                    M.alloc (| Value.Integer 1 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 2 |)));
+                    M.alloc (| Value.Integer 2 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 3 |)));
+                    M.alloc (| Value.Integer 3 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 4 |)));
+                    M.alloc (| Value.Integer 4 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 5 |)));
+                    M.alloc (| Value.Integer 5 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 6 |)));
+                    M.alloc (| Value.Integer 6 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 7 |)));
+                    M.alloc (| Value.Integer 7 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 8 |)));
+                    M.alloc (| Value.Integer 8 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 9 |)));
+                    M.alloc (| Value.Integer 9 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 10 |)));
+                    M.alloc (| Value.Integer 10 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 11 |)));
+                    M.alloc (| Value.Integer 11 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 12 |)));
+                    M.alloc (| Value.Integer 12 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 13 |)));
+                    M.alloc (| Value.Integer 13 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
-                    M.alloc (| Value.Integer Integer.U8 14 |)))
+                    M.alloc (| Value.Integer 14 |)))
               ]
             |)
           |)))
@@ -11155,11 +11145,7 @@ Module instruction.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 0
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11171,11 +11157,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 1
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11187,11 +11169,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 2
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11203,11 +11181,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 3
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11219,11 +11193,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 4
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11235,11 +11205,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 5
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11251,11 +11217,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 6
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11267,11 +11229,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 7
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11283,11 +11241,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 8
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11299,11 +11253,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 9
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11315,11 +11265,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 10
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11331,11 +11277,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 11
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11347,11 +11289,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 12
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 12 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11363,11 +11301,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 13
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -11379,11 +11313,7 @@ Module instruction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer Integer.U8 14
-                      |) in
+                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 14 |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -12788,10 +12718,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        BinOp.Panic.add (|
-                          Value.Integer Integer.Usize 1,
-                          Value.Integer Integer.Usize 1
-                        |),
+                        Integer.Usize,
+                        BinOp.Panic.add (| Integer.Usize, Value.Integer 1, Value.Integer 1 |),
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -13227,10 +13155,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        BinOp.Panic.add (|
-                          Value.Integer Integer.Usize 1,
-                          Value.Integer Integer.Usize 1
-                        |),
+                        Integer.Usize,
+                        BinOp.Panic.add (| Integer.Usize, Value.Integer 1, Value.Integer 1 |),
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -13563,7 +13489,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -13957,7 +13884,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -14342,7 +14270,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 2,
+                        Integer.Usize,
+                        Value.Integer 2,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -14753,7 +14682,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -15119,7 +15049,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -15513,7 +15444,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -15903,7 +15835,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -16293,7 +16226,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -16683,7 +16617,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -17090,7 +17025,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 4,
+                        Integer.Usize,
+                        Value.Integer 4,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -17523,7 +17459,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 4,
+                        Integer.Usize,
+                        Value.Integer 4,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -17952,7 +17889,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -18355,7 +18293,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 3,
+                        Integer.Usize,
+                        Value.Integer 3,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -19848,7 +19787,8 @@ Module instruction.
                     |),
                     [
                       BinOp.Panic.add (|
-                        Value.Integer Integer.Usize 4,
+                        Integer.Usize,
+                        Value.Integer 4,
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -20815,7 +20755,7 @@ Module instruction.
                             M.read (|
                               M.SubPointer.get_array_field (|
                                 M.read (| input |),
-                                M.alloc (| Value.Integer Integer.Usize 0 |)
+                                M.alloc (| Value.Integer 0 |)
                               |)
                             |)
                           ]
@@ -20897,7 +20837,7 @@ Module instruction.
                                 M.get_function (| "spl_pod::bytemuck::pod_get_packed_len", [ T ] |),
                                 []
                               |);
-                              Value.Integer Integer.Usize 1
+                              Value.Integer 1
                             ]
                           |))
                       |)) in
@@ -20930,7 +20870,7 @@ Module instruction.
                             M.read (| input_with_type |);
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
-                              [ ("start", Value.Integer Integer.Usize 1) ]
+                              [ ("start", Value.Integer 1) ]
                           ]
                         |)
                       ]

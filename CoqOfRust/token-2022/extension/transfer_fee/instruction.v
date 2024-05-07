@@ -855,7 +855,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 0
+                                                Value.Integer 0
                                               |) in
                                             M.match_operator (|
                                               M.match_operator (|
@@ -1373,7 +1373,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 1
+                                                Value.Integer 1
                                               |) in
                                             M.match_operator (|
                                               M.match_operator (|
@@ -1616,7 +1616,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 2
+                                                Value.Integer 2
                                               |) in
                                             M.alloc (|
                                               Value.StructTuple
@@ -1628,7 +1628,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 3
+                                                Value.Integer 3
                                               |) in
                                             M.match_operator (|
                                               M.match_operator (|
@@ -1785,7 +1785,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 4
+                                                Value.Integer 4
                                               |) in
                                             M.alloc (|
                                               Value.StructTuple
@@ -1797,7 +1797,7 @@ Module extension.
                                             (let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
-                                                Value.Integer Integer.U8 5
+                                                Value.Integer 5
                                               |) in
                                             M.match_operator (|
                                               M.match_operator (|
@@ -2176,7 +2176,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 0 ]
+                              [ M.read (| buffer |); Value.Integer 0 ]
                             |)
                           |) in
                         let _ :=
@@ -2289,7 +2289,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 1 ]
+                              [ M.read (| buffer |); Value.Integer 1 ]
                             |)
                           |) in
                         let _ :=
@@ -2386,7 +2386,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 2 ]
+                              [ M.read (| buffer |); Value.Integer 2 ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -2409,7 +2409,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 3 ]
+                              [ M.read (| buffer |); Value.Integer 3 ]
                             |)
                           |) in
                         let _ :=
@@ -2438,7 +2438,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 4 ]
+                              [ M.read (| buffer |); Value.Integer 4 ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -2468,7 +2468,7 @@ Module extension.
                                 "push",
                                 []
                               |),
-                              [ M.read (| buffer |); Value.Integer Integer.U8 5 ]
+                              [ M.read (| buffer |); Value.Integer 5 ]
                             |)
                           |) in
                         let _ :=
@@ -3017,7 +3017,8 @@ Module extension.
                         |),
                         [
                           BinOp.Panic.add (|
-                            Value.Integer Integer.Usize 4,
+                            Integer.Usize,
+                            Value.Integer 4,
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -3416,7 +3417,8 @@ Module extension.
                         |),
                         [
                           BinOp.Panic.add (|
-                            Value.Integer Integer.Usize 3,
+                            Integer.Usize,
+                            Value.Integer 3,
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -3942,8 +3944,10 @@ Module extension.
                         |),
                         [
                           BinOp.Panic.add (|
+                            Integer.Usize,
                             BinOp.Panic.add (|
-                              Value.Integer Integer.Usize 3,
+                              Integer.Usize,
+                              Value.Integer 3,
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -4452,7 +4456,8 @@ Module extension.
                         |),
                         [
                           BinOp.Panic.add (|
-                            Value.Integer Integer.Usize 1,
+                            Integer.Usize,
+                            Value.Integer 1,
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
@@ -4774,7 +4779,8 @@ Module extension.
                         |),
                         [
                           BinOp.Panic.add (|
-                            Value.Integer Integer.Usize 2,
+                            Integer.Usize,
+                            Value.Integer 2,
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply

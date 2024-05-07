@@ -2,8 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module native_mint.
-  Definition value_DECIMALS : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer Integer.U8 9 |))).
+  Definition value_DECIMALS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 9 |))).
   
   Definition value_ID : Value.t :=
     M.run
@@ -18,38 +17,38 @@ Module native_mint.
             [
               Value.Array
                 [
-                  Value.Integer Integer.U8 131;
-                  Value.Integer Integer.U8 13;
-                  Value.Integer Integer.U8 252;
-                  Value.Integer Integer.U8 159;
-                  Value.Integer Integer.U8 222;
-                  Value.Integer Integer.U8 95;
-                  Value.Integer Integer.U8 230;
-                  Value.Integer Integer.U8 184;
-                  Value.Integer Integer.U8 170;
-                  Value.Integer Integer.U8 124;
-                  Value.Integer Integer.U8 4;
-                  Value.Integer Integer.U8 164;
-                  Value.Integer Integer.U8 118;
-                  Value.Integer Integer.U8 233;
-                  Value.Integer Integer.U8 30;
-                  Value.Integer Integer.U8 138;
-                  Value.Integer Integer.U8 198;
-                  Value.Integer Integer.U8 187;
-                  Value.Integer Integer.U8 38;
-                  Value.Integer Integer.U8 74;
-                  Value.Integer Integer.U8 173;
-                  Value.Integer Integer.U8 144;
-                  Value.Integer Integer.U8 250;
-                  Value.Integer Integer.U8 25;
-                  Value.Integer Integer.U8 201;
-                  Value.Integer Integer.U8 223;
-                  Value.Integer Integer.U8 73;
-                  Value.Integer Integer.U8 216;
-                  Value.Integer Integer.U8 92;
-                  Value.Integer Integer.U8 62;
-                  Value.Integer Integer.U8 91;
-                  Value.Integer Integer.U8 94
+                  Value.Integer 131;
+                  Value.Integer 13;
+                  Value.Integer 252;
+                  Value.Integer 159;
+                  Value.Integer 222;
+                  Value.Integer 95;
+                  Value.Integer 230;
+                  Value.Integer 184;
+                  Value.Integer 170;
+                  Value.Integer 124;
+                  Value.Integer 4;
+                  Value.Integer 164;
+                  Value.Integer 118;
+                  Value.Integer 233;
+                  Value.Integer 30;
+                  Value.Integer 138;
+                  Value.Integer 198;
+                  Value.Integer 187;
+                  Value.Integer 38;
+                  Value.Integer 74;
+                  Value.Integer 173;
+                  Value.Integer 144;
+                  Value.Integer 250;
+                  Value.Integer 25;
+                  Value.Integer 201;
+                  Value.Integer 223;
+                  Value.Integer 73;
+                  Value.Integer 216;
+                  Value.Integer 92;
+                  Value.Integer 62;
+                  Value.Integer 91;
+                  Value.Integer 94
                 ]
             ]
           |)
@@ -95,8 +94,7 @@ Module native_mint.
                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                     [ M.read (| Value.String "native-mint" |) ]
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ Value.Integer Integer.U8 255 ] |))
+                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ Value.Integer 255 ] |))
                 ]
             |))
         |))).

@@ -1055,22 +1055,22 @@ Module extension.
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ2_0 |),
-                                          Value.Integer Integer.U8 1
+                                          Value.Integer 1
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ2_1 |),
-                                          Value.Integer Integer.U8 0
+                                          Value.Integer 0
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ2_2 |),
-                                          Value.Integer Integer.U8 0
+                                          Value.Integer 0
                                         |) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ2_3 |),
-                                          Value.Integer Integer.U8 0
+                                          Value.Integer 0
                                         |) in
                                       let freeze_authority := M.alloc (| γ1_1 |) in
                                       M.alloc (|
