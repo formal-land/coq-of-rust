@@ -22,6 +22,11 @@ Module AccountId.
   Inductive t : Set :=
   | Make (account_id : Z).
 
+  Definition get (account_id : t) : Z :=
+    match account_id with
+    | Make account_id => account_id
+    end.
+
   Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc20::AccountId";
   }.
