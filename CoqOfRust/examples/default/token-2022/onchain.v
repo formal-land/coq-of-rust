@@ -118,28 +118,32 @@ Module onchain.
                             [
                               M.read (| token_program_id |);
                               M.read (|
-                                M.get_struct_record_field
-                                  source_info
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  source_info,
+                                  "solana_program::account_info::AccountInfo",
                                   "key"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  mint_info
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  mint_info,
+                                  "solana_program::account_info::AccountInfo",
                                   "key"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  destination_info
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  destination_info,
+                                  "solana_program::account_info::AccountInfo",
                                   "key"
+                                |)
                               |);
                               M.read (|
-                                M.get_struct_record_field
-                                  authority_info
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  authority_info,
+                                  "solana_program::account_info::AccountInfo",
                                   "key"
+                                |)
                               |);
                               (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |));
                               M.read (| amount |);
@@ -153,7 +157,7 @@ Module onchain.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -192,7 +196,7 @@ Module onchain.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -371,10 +375,11 @@ Module onchain.
                                         ltac:(M.monadic
                                           (let ai := M.copy (| γ |) in
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| M.read (| ai |) |))
-                                              "solana_program::account_info::AccountInfo"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| M.read (| ai |) |),
+                                              "solana_program::account_info::AccountInfo",
                                               "is_signer"
+                                            |)
                                           |)))
                                     ]
                                   |)
@@ -439,10 +444,11 @@ Module onchain.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  cpi_instruction
-                                                  "solana_program::instruction::Instruction"
-                                                  "accounts";
+                                                M.SubPointer.get_struct_record_field (|
+                                                  cpi_instruction,
+                                                  "solana_program::instruction::Instruction",
+                                                  "accounts"
+                                                |);
                                                 M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path
@@ -453,17 +459,19 @@ Module onchain.
                                                   [
                                                     M.read (|
                                                       M.read (|
-                                                        M.get_struct_record_field
-                                                          (M.read (| ai |))
-                                                          "solana_program::account_info::AccountInfo"
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| ai |),
+                                                          "solana_program::account_info::AccountInfo",
                                                           "key"
+                                                        |)
                                                       |)
                                                     |);
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| ai |))
-                                                        "solana_program::account_info::AccountInfo"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| ai |),
+                                                        "solana_program::account_info::AccountInfo",
                                                         "is_signer"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -519,7 +527,7 @@ Module onchain.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -558,7 +566,7 @@ Module onchain.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -624,7 +632,7 @@ Module onchain.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -663,7 +671,7 @@ Module onchain.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -694,7 +702,7 @@ Module onchain.
                             |)
                           |) in
                         let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::option::Option::Some",
                             0
@@ -750,7 +758,7 @@ Module onchain.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -791,7 +799,7 @@ Module onchain.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0

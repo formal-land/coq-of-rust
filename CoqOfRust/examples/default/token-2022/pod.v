@@ -109,39 +109,44 @@ Module pod.
               M.read (| Value.String "mint_authority" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMint"
-                  "mint_authority");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMint",
+                  "mint_authority"
+                |));
               M.read (| Value.String "supply" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMint"
-                  "supply");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMint",
+                  "supply"
+                |));
               M.read (| Value.String "decimals" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMint"
-                  "decimals");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMint",
+                  "decimals"
+                |));
               M.read (| Value.String "is_initialized" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMint"
-                  "is_initialized");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMint",
+                  "is_initialized"
+                |));
               M.read (| Value.String "freeze_authority" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodMint"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodMint",
                     "freeze_authority"
+                  |)
                 |))
             ]
           |)))
@@ -278,14 +283,16 @@ Module pod.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::pod::PodMint"
-                        "mint_authority";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::pod::PodMint"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::pod::PodMint",
                         "mint_authority"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::pod::PodMint",
+                        "mint_authority"
+                      |)
                     ]
                   |),
                   ltac:(M.monadic
@@ -298,30 +305,34 @@ Module pod.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::pod::PodMint"
-                          "supply";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::pod::PodMint"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::pod::PodMint",
                           "supply"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::pod::PodMint",
+                          "supply"
+                        |)
                       ]
                     |)))
                 |),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::pod::PodMint"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::pod::PodMint",
                         "decimals"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::pod::PodMint"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::pod::PodMint",
                         "decimals"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
@@ -334,14 +345,16 @@ Module pod.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodMint"
-                      "is_initialized";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::pod::PodMint"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodMint",
                       "is_initialized"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::pod::PodMint",
+                      "is_initialized"
+                    |)
                   ]
                 |)))
             |),
@@ -361,14 +374,16 @@ Module pod.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodMint"
-                    "freeze_authority";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod::PodMint"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodMint",
                     "freeze_authority"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod::PodMint",
+                    "freeze_authority"
+                  |)
                 ]
               |)))
           |)))
@@ -428,10 +443,11 @@ Module pod.
             |),
             [
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMint"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMint",
                   "is_initialized"
+                |)
               |)
             ]
           |)))
@@ -609,53 +625,61 @@ Module pod.
                       [
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "mint");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "mint"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "owner");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "owner"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "amount");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "amount"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "delegate");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "delegate"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "state");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "state"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "is_native");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "is_native"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
-                          (M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "delegated_amount");
+                          (M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
+                            "delegated_amount"
+                          |));
                         (* Unsize *)
                         M.pointer_coercion
                           (M.alloc (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::pod::PodAccount"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::pod::PodAccount",
                               "close_authority"
+                            |)
                           |))
                       ]
                   |))
@@ -841,14 +865,16 @@ Module pod.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::pod::PodAccount"
-                              "mint";
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "spl_token_2022::pod::PodAccount"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::pod::PodAccount",
                               "mint"
+                            |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "spl_token_2022::pod::PodAccount",
+                              "mint"
+                            |)
                           ]
                         |),
                         ltac:(M.monadic
@@ -861,14 +887,16 @@ Module pod.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::pod::PodAccount"
-                                "owner";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "spl_token_2022::pod::PodAccount"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::pod::PodAccount",
                                 "owner"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "spl_token_2022::pod::PodAccount",
+                                "owner"
+                              |)
                             ]
                           |)))
                       |),
@@ -882,14 +910,16 @@ Module pod.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::pod::PodAccount"
-                              "amount";
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "spl_token_2022::pod::PodAccount"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::pod::PodAccount",
                               "amount"
+                            |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "spl_token_2022::pod::PodAccount",
+                              "amount"
+                            |)
                           ]
                         |)))
                     |),
@@ -909,30 +939,34 @@ Module pod.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::pod::PodAccount"
-                            "delegate";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "spl_token_2022::pod::PodAccount"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::pod::PodAccount",
                             "delegate"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "spl_token_2022::pod::PodAccount",
+                            "delegate"
+                          |)
                         ]
                       |)))
                   |),
                   ltac:(M.monadic
                     (BinOp.Pure.eq
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::pod::PodAccount"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::pod::PodAccount",
                           "state"
+                        |)
                       |))
                       (M.read (|
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::pod::PodAccount"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::pod::PodAccount",
                           "state"
+                        |)
                       |))))
                 |),
                 ltac:(M.monadic
@@ -951,14 +985,16 @@ Module pod.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::pod::PodAccount"
-                        "is_native";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::pod::PodAccount"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::pod::PodAccount",
                         "is_native"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::pod::PodAccount",
+                        "is_native"
+                      |)
                     ]
                   |)))
               |),
@@ -972,14 +1008,16 @@ Module pod.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodAccount"
-                      "delegated_amount";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::pod::PodAccount"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodAccount",
                       "delegated_amount"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::pod::PodAccount",
+                      "delegated_amount"
+                    |)
                   ]
                 |)))
             |),
@@ -999,14 +1037,16 @@ Module pod.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodAccount"
-                    "close_authority";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod::PodAccount"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodAccount",
                     "close_authority"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod::PodAccount",
+                    "close_authority"
+                  |)
                 ]
               |)))
           |)))
@@ -1058,10 +1098,11 @@ Module pod.
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod::PodAccount"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod::PodAccount",
                 "state"
+              |)
             |))
             (M.rust_cast (Value.Integer Integer.U8 2))))
       | _, _ => M.impossible
@@ -1088,10 +1129,11 @@ Module pod.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod::PodAccount"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod::PodAccount",
                 "is_native"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -1114,20 +1156,22 @@ Module pod.
             M.call_closure (|
               M.get_function (| "solana_program::system_program::check_id", [] |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodAccount"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodAccount",
                   "owner"
+                |)
               ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_function (| "solana_program::incinerator::check_id", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodAccount"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodAccount",
                     "owner"
+                  |)
                 ]
               |)))
           |)))
@@ -1156,10 +1200,11 @@ Module pod.
           (let self := M.alloc (| self |) in
           BinOp.Pure.ne
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod::PodAccount"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod::PodAccount",
                 "state"
+              |)
             |))
             (Value.Integer Integer.U8 0)))
       | _, _ => M.impossible
@@ -1285,32 +1330,36 @@ Module pod.
               M.read (| Value.String "m" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMultisig"
-                  "m");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMultisig",
+                  "m"
+                |));
               M.read (| Value.String "n" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMultisig"
-                  "n");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMultisig",
+                  "n"
+                |));
               M.read (| Value.String "is_initialized" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMultisig"
-                  "is_initialized");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMultisig",
+                  "is_initialized"
+                |));
               M.read (| Value.String "signers" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodMultisig"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodMultisig",
                     "signers"
+                  |)
                 |))
             ]
           |)))
@@ -1418,30 +1467,34 @@ Module pod.
               LogicalOp.and (|
                 BinOp.Pure.eq
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodMultisig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodMultisig",
                       "m"
+                    |)
                   |))
                   (M.read (|
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::pod::PodMultisig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::pod::PodMultisig",
                       "m"
+                    |)
                   |)),
                 ltac:(M.monadic
                   (BinOp.Pure.eq
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::pod::PodMultisig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::pod::PodMultisig",
                         "n"
+                      |)
                     |))
                     (M.read (|
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::pod::PodMultisig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::pod::PodMultisig",
                         "n"
+                      |)
                     |))))
               |),
               ltac:(M.monadic
@@ -1454,14 +1507,16 @@ Module pod.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodMultisig"
-                      "is_initialized";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::pod::PodMultisig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodMultisig",
                       "is_initialized"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::pod::PodMultisig",
+                      "is_initialized"
+                    |)
                   ]
                 |)))
             |),
@@ -1475,14 +1530,16 @@ Module pod.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodMultisig"
-                    "signers";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod::PodMultisig"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodMultisig",
                     "signers"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod::PodMultisig",
+                    "signers"
+                  |)
                 ]
               |)))
           |)))
@@ -1542,10 +1599,11 @@ Module pod.
             |),
             [
               M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodMultisig"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodMultisig",
                   "is_initialized"
+                |)
               |)
             ]
           |)))
@@ -1616,20 +1674,22 @@ Module pod.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodCOption"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodCOption",
                       "option"
+                    |)
                   ]
                 |));
               ("value",
                 M.call_closure (|
                   M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::pod::PodCOption"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::pod::PodCOption",
                       "value"
+                    |)
                   ]
                 |))
             ]))
@@ -1680,18 +1740,20 @@ Module pod.
               M.read (| Value.String "option" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodCOption"
-                  "option");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodCOption",
+                  "option"
+                |));
               M.read (| Value.String "value" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodCOption"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodCOption",
                     "value"
+                  |)
                 |))
             ]
           |)))
@@ -1781,28 +1843,32 @@ Module pod.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod::PodCOption"
-                  "option";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::pod::PodCOption"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod::PodCOption",
                   "option"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::pod::PodCOption",
+                  "option"
+                |)
               ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod::PodCOption"
-                    "value";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod::PodCOption"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod::PodCOption",
                     "value"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod::PodCOption",
+                    "value"
+                  |)
                 ]
               |)))
           |)))
@@ -1957,10 +2023,11 @@ Module pod.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                self
-                                "spl_token_2022::pod::PodCOption"
-                                "option";
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "spl_token_2022::pod::PodCOption",
+                                "option"
+                              |);
                               M.get_constant (| "spl_token_2022::pod::NONE" |)
                             ]
                           |)
@@ -1969,7 +2036,11 @@ Module pod.
                     default));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.get_struct_record_field self "spl_token_2022::pod::PodCOption" "value"))
+                    (M.SubPointer.get_struct_record_field (|
+                      self,
+                      "spl_token_2022::pod::PodCOption",
+                      "value"
+                    |)))
               ]
             |)
           |)))
@@ -2000,10 +2071,11 @@ Module pod.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod::PodCOption"
-                "option";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod::PodCOption",
+                "option"
+              |);
               M.get_constant (| "spl_token_2022::pod::SOME" |)
             ]
           |)))
@@ -2034,10 +2106,11 @@ Module pod.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod::PodCOption"
-                "option";
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod::PodCOption",
+                "option"
+              |);
               M.get_constant (| "spl_token_2022::pod::NONE" |)
             ]
           |)))
@@ -2073,21 +2146,21 @@ Module pod.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "option"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "value"
                       |) in
-                    let γ1_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                    let γ1_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
-                    let γ1_2 := M.get_slice_index_or_break_match (| γ0_0, 2 |) in
-                    let γ1_3 := M.get_slice_index_or_break_match (| γ0_0, 3 |) in
+                    let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                    let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
+                    let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
+                    let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ1_0 |),
@@ -2178,7 +2251,7 @@ Module pod.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "solana_program::program_option::COption::Some",
                         0
@@ -2245,21 +2318,21 @@ Module pod.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "option"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "value"
                       |) in
-                    let γ1_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                    let γ1_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
-                    let γ1_2 := M.get_slice_index_or_break_match (| γ0_0, 2 |) in
-                    let γ1_3 := M.get_slice_index_or_break_match (| γ0_0, 3 |) in
+                    let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                    let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
+                    let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
+                    let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ1_0 |),
@@ -2321,21 +2394,21 @@ Module pod.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "option"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "value"
                       |) in
-                    let γ1_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                    let γ1_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
-                    let γ1_2 := M.get_slice_index_or_break_match (| γ0_0, 2 |) in
-                    let γ1_3 := M.get_slice_index_or_break_match (| γ0_0, 3 |) in
+                    let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                    let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
+                    let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
+                    let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ1_0 |),
@@ -2369,21 +2442,21 @@ Module pod.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "option"
                       |) in
                     let γ0_1 :=
-                      M.get_struct_record_field_or_break_match (|
+                      M.SubPointer.get_struct_record_field (|
                         γ,
                         "spl_token_2022::pod::PodCOption",
                         "value"
                       |) in
-                    let γ1_0 := M.get_slice_index_or_break_match (| γ0_0, 0 |) in
-                    let γ1_1 := M.get_slice_index_or_break_match (| γ0_0, 1 |) in
-                    let γ1_2 := M.get_slice_index_or_break_match (| γ0_0, 2 |) in
-                    let γ1_3 := M.get_slice_index_or_break_match (| γ0_0, 3 |) in
+                    let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                    let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
+                    let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
+                    let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
                     let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ1_0 |),

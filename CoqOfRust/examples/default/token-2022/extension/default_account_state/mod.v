@@ -73,10 +73,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::default_account_state::DefaultAccountState"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::default_account_state::DefaultAccountState",
                       "state"
+                    |)
                   |))
               ]
             |)))
@@ -151,16 +152,18 @@ Module extension.
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::default_account_state::DefaultAccountState"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::default_account_state::DefaultAccountState",
                   "state"
+                |)
               |))
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::default_account_state::DefaultAccountState"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::default_account_state::DefaultAccountState",
                   "state"
+                |)
               |))))
         | _, _ => M.impossible
         end.

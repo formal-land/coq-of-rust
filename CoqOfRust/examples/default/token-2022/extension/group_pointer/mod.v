@@ -73,18 +73,20 @@ Module extension.
                 M.read (| Value.String "authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::group_pointer::GroupPointer"
-                    "authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::group_pointer::GroupPointer",
+                    "authority"
+                  |));
                 M.read (| Value.String "group_address" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::group_pointer::GroupPointer"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::group_pointer::GroupPointer",
                       "group_address"
+                    |)
                   |))
               ]
             |)))
@@ -175,14 +177,16 @@ Module extension.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::group_pointer::GroupPointer"
-                    "authority";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::extension::group_pointer::GroupPointer"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::group_pointer::GroupPointer",
                     "authority"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::extension::group_pointer::GroupPointer",
+                    "authority"
+                  |)
                 ]
               |),
               ltac:(M.monadic
@@ -195,14 +199,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::group_pointer::GroupPointer"
-                      "group_address";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::group_pointer::GroupPointer"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::group_pointer::GroupPointer",
                       "group_address"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::group_pointer::GroupPointer",
+                      "group_address"
+                    |)
                   ]
                 |)))
             |)))

@@ -254,7 +254,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -303,7 +303,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -315,8 +315,8 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.get_tuple_field γ 0 in
-                          let γ0_1 := M.get_tuple_field γ 1 in
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let transfer_amount_lo := M.copy (| γ0_0 |) in
                           let transfer_amount_hi := M.copy (| γ0_1 |) in
                           M.match_operator (|
@@ -347,8 +347,8 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let transfer_amount_grouped_ciphertext_lo := M.copy (| γ0_0 |) in
                                   let transfer_amount_opening_lo := M.copy (| γ0_1 |) in
                                   M.match_operator (|
@@ -379,8 +379,8 @@ Module extension.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let transfer_amount_grouped_ciphertext_hi :=
                                             M.copy (| γ0_0 |) in
                                           let transfer_amount_opening_hi := M.copy (| γ0_1 |) in
@@ -441,7 +441,7 @@ Module extension.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Break",
                                                           0
@@ -494,7 +494,7 @@ Module extension.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                           0
@@ -560,7 +560,7 @@ Module extension.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Break",
                                                           0
@@ -613,7 +613,7 @@ Module extension.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ0_0 :=
-                                                        M.get_struct_tuple_field_or_break_match (|
+                                                        M.SubPointer.get_struct_tuple_field (|
                                                           γ,
                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                           0
@@ -638,8 +638,10 @@ Module extension.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ0_0 := M.get_tuple_field γ 0 in
-                                                  let γ0_1 := M.get_tuple_field γ 1 in
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let new_available_balance_commitment :=
                                                     M.copy (| γ0_0 |) in
                                                   let new_source_opening := M.copy (| γ0_1 |) in
@@ -784,7 +786,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
@@ -838,7 +840,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
@@ -939,7 +941,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
@@ -993,7 +995,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
@@ -1095,7 +1097,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
@@ -1149,7 +1151,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
@@ -1395,7 +1397,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
@@ -1449,7 +1451,7 @@ Module extension.
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ0_0 :=
-                                                                M.get_struct_tuple_field_or_break_match (|
+                                                                M.SubPointer.get_struct_tuple_field (|
                                                                   γ,
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
@@ -1474,8 +1476,16 @@ Module extension.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ0_0 := M.get_tuple_field γ 0 in
-                                                          let γ0_1 := M.get_tuple_field γ 1 in
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
                                                           let padding_commitment :=
                                                             M.copy (| γ0_0 |) in
                                                           let padding_opening :=
@@ -1842,7 +1852,7 @@ Module extension.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ0_0 :=
-                                                                        M.get_struct_tuple_field_or_break_match (|
+                                                                        M.SubPointer.get_struct_tuple_field (|
                                                                           γ,
                                                                           "core::ops::control_flow::ControlFlow::Break",
                                                                           0
@@ -1901,7 +1911,7 @@ Module extension.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ0_0 :=
-                                                                        M.get_struct_tuple_field_or_break_match (|
+                                                                        M.SubPointer.get_struct_tuple_field (|
                                                                           γ,
                                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                                           0

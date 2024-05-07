@@ -119,39 +119,44 @@ Module extension.
                 M.read (| Value.String "rate_authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                    "rate_authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                    "rate_authority"
+                  |));
                 M.read (| Value.String "initialization_timestamp" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                    "initialization_timestamp");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                    "initialization_timestamp"
+                  |));
                 M.read (| Value.String "pre_update_average_rate" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                    "pre_update_average_rate");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                    "pre_update_average_rate"
+                  |));
                 M.read (| Value.String "last_update_timestamp" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                    "last_update_timestamp");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                    "last_update_timestamp"
+                  |));
                 M.read (| Value.String "current_rate" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                       "current_rate"
+                    |)
                   |))
               ]
             |)))
@@ -281,14 +286,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                          "rate_authority";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                           "rate_authority"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                          "rate_authority"
+                        |)
                       ]
                     |),
                     ltac:(M.monadic
@@ -301,14 +308,16 @@ Module extension.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                            "initialization_timestamp";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                             "initialization_timestamp"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                            "initialization_timestamp"
+                          |)
                         ]
                       |)))
                   |),
@@ -322,14 +331,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                          "pre_update_average_rate";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                           "pre_update_average_rate"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                          "pre_update_average_rate"
+                        |)
                       ]
                     |)))
                 |),
@@ -343,14 +354,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                        "last_update_timestamp";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                         "last_update_timestamp"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                        "last_update_timestamp"
+                      |)
                     ]
                   |)))
               |),
@@ -364,14 +377,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
-                      "current_rate";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                       "current_rate"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
+                      "current_rate"
+                    |)
                   ]
                 |)))
             |)))
@@ -437,10 +452,11 @@ Module extension.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                         "last_update_timestamp"
+                      |)
                     |)
                   ]
                 |);
@@ -454,10 +470,11 @@ Module extension.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                         "initialization_timestamp"
+                      |)
                     |)
                   ]
                 |)
@@ -518,10 +535,11 @@ Module extension.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                                 "pre_update_average_rate"
+                                              |)
                                             |)
                                           ]
                                         |));
@@ -556,7 +574,7 @@ Module extension.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
@@ -592,7 +610,7 @@ Module extension.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
@@ -611,7 +629,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -644,7 +662,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -716,10 +734,11 @@ Module extension.
                   |),
                   [
                     M.read (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                         "last_update_timestamp"
+                      |)
                     |)
                   ]
                 |)
@@ -782,10 +801,11 @@ Module extension.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                                 "current_rate"
+                                              |)
                                             |)
                                           ]
                                         |));
@@ -821,7 +841,7 @@ Module extension.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
@@ -857,7 +877,7 @@ Module extension.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ0_0 :=
-                                                    M.get_struct_tuple_field_or_break_match (|
+                                                    M.SubPointer.get_struct_tuple_field (|
                                                       γ,
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
@@ -876,7 +896,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -909,7 +929,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -1006,7 +1026,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -1039,7 +1059,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -1077,7 +1097,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -1110,7 +1130,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -1192,7 +1212,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -1225,7 +1245,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -1362,7 +1382,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1402,7 +1422,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1465,7 +1485,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -1506,7 +1526,7 @@ Module extension.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -1623,10 +1643,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                 "initialization_timestamp"
+                              |)
                             |)
                           ]
                         |))
@@ -1644,10 +1665,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                 "last_update_timestamp"
+                              |)
                             |)
                           ]
                         |))
@@ -1665,10 +1687,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                 "pre_update_average_rate"
+                              |)
                             |)
                           ]
                         |))
@@ -1700,7 +1723,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1733,7 +1756,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1756,10 +1779,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::interest_bearing_mint::InterestBearingConfig",
                                 "current_rate"
+                              |)
                             |)
                           ]
                         |))
@@ -1791,7 +1815,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1824,7 +1848,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1858,7 +1882,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1891,7 +1915,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1994,7 +2018,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Break",
                                                                       0
@@ -2034,7 +2058,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
@@ -2076,7 +2100,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Break",
                                                                       0
@@ -2116,7 +2140,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
@@ -2135,7 +2159,7 @@ Module extension.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Break",
                                                         0
@@ -2171,7 +2195,7 @@ Module extension.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                         0
@@ -2191,7 +2215,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -2224,7 +2248,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0

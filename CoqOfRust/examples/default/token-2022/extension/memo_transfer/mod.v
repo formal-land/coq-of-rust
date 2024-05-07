@@ -70,10 +70,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::memo_transfer::MemoTransfer"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::memo_transfer::MemoTransfer",
                       "require_incoming_transfer_memos"
+                    |)
                   |))
               ]
             |)))
@@ -152,14 +153,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::memo_transfer::MemoTransfer"
-                  "require_incoming_transfer_memos";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::memo_transfer::MemoTransfer"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::memo_transfer::MemoTransfer",
                   "require_incoming_transfer_memos"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::memo_transfer::MemoTransfer",
+                  "require_incoming_transfer_memos"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -252,7 +255,7 @@ Module extension.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::result::Result::Ok",
                               0
@@ -272,10 +275,11 @@ Module extension.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| extension |))
-                                          "spl_token_2022::extension::memo_transfer::MemoTransfer"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| extension |),
+                                          "spl_token_2022::extension::memo_transfer::MemoTransfer",
                                           "require_incoming_transfer_memos"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -404,7 +408,7 @@ Module extension.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::option::Option::Some",
                               0
@@ -440,10 +444,11 @@ Module extension.
                                   is_memo_program;
                                   Value.Tuple
                                     [
-                                      M.get_struct_record_field
-                                        instruction
-                                        "solana_program::instruction::Instruction"
+                                      M.SubPointer.get_struct_record_field (|
+                                        instruction,
+                                        "solana_program::instruction::Instruction",
                                         "program_id"
+                                      |)
                                     ]
                                 ]
                               |)

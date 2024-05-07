@@ -112,32 +112,36 @@ Module extension.
                 M.read (| Value.String "authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                    "authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                    "authority"
+                  |));
                 M.read (| Value.String "withdraw_withheld_authority_elgamal_pubkey" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                    "withdraw_withheld_authority_elgamal_pubkey");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                    "withdraw_withheld_authority_elgamal_pubkey"
+                  |));
                 M.read (| Value.String "harvest_to_mint_enabled" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                    "harvest_to_mint_enabled");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                    "harvest_to_mint_enabled"
+                  |));
                 M.read (| Value.String "withheld_amount" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                       "withheld_amount"
+                    |)
                   |))
               ]
             |)))
@@ -259,14 +263,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "authority";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                         "authority"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "authority"
+                      |)
                     ]
                   |),
                   ltac:(M.monadic
@@ -283,14 +289,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                          "withdraw_withheld_authority_elgamal_pubkey";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                           "withdraw_withheld_authority_elgamal_pubkey"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                          "withdraw_withheld_authority_elgamal_pubkey"
+                        |)
                       ]
                     |)))
                 |),
@@ -304,14 +312,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "harvest_to_mint_enabled";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                         "harvest_to_mint_enabled"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "harvest_to_mint_enabled"
+                      |)
                     ]
                   |)))
               |),
@@ -329,14 +339,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                      "withheld_amount";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                       "withheld_amount"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                      "withheld_amount"
+                    |)
                   ]
                 |)))
             |)))
@@ -478,10 +490,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
                       "withheld_amount"
+                    |)
                   |))
               ]
             |)))
@@ -568,14 +581,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
-                  "withheld_amount";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
                   "withheld_amount"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
+                  "withheld_amount"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -680,10 +695,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
-                                  "withheld_amount";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
+                                  "withheld_amount"
+                                |);
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|

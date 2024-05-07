@@ -73,10 +73,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::permanent_delegate::PermanentDelegate"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::permanent_delegate::PermanentDelegate",
                       "delegate"
+                    |)
                   |))
               ]
             |)))
@@ -158,14 +159,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::permanent_delegate::PermanentDelegate"
-                  "delegate";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::permanent_delegate::PermanentDelegate"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::permanent_delegate::PermanentDelegate",
                   "delegate"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::permanent_delegate::PermanentDelegate",
+                  "delegate"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -319,10 +322,11 @@ Module extension.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| e |))
-                                      "spl_token_2022::extension::permanent_delegate::PermanentDelegate"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| e |),
+                                      "spl_token_2022::extension::permanent_delegate::PermanentDelegate",
                                       "delegate"
+                                    |)
                                   |)
                                 ]
                               |)))

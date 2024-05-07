@@ -73,10 +73,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::mint_close_authority::MintCloseAuthority"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::mint_close_authority::MintCloseAuthority",
                       "close_authority"
+                    |)
                   |))
               ]
             |)))
@@ -158,14 +159,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::mint_close_authority::MintCloseAuthority"
-                  "close_authority";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::mint_close_authority::MintCloseAuthority"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::mint_close_authority::MintCloseAuthority",
                   "close_authority"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::mint_close_authority::MintCloseAuthority",
+                  "close_authority"
+                |)
               ]
             |)))
         | _, _ => M.impossible

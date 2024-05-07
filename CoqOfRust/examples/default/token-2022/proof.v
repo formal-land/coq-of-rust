@@ -47,10 +47,11 @@ Module proof.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| instruction |))
-                                      "solana_program::instruction::Instruction"
-                                      "program_id";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| instruction |),
+                                      "solana_program::instruction::Instruction",
+                                      "program_id"
+                                    |);
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (|
@@ -104,10 +105,11 @@ Module proof.
                                                 []
                                               |),
                                               [
-                                                M.get_struct_record_field
-                                                  (M.read (| instruction |))
-                                                  "solana_program::instruction::Instruction"
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| instruction |),
+                                                  "solana_program::instruction::Instruction",
                                                   "data"
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -188,10 +190,11 @@ Module proof.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| instruction |))
-                                  "solana_program::instruction::Instruction"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| instruction |),
+                                  "solana_program::instruction::Instruction",
                                   "data"
+                                |)
                               ]
                             |)
                           ]
@@ -257,13 +260,13 @@ Module proof.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "spl_token_2022::proof::ProofLocation::InstructionOffset",
                         0
                       |) in
                     let γ1_1 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "spl_token_2022::proof::ProofLocation::InstructionOffset",
                         1
@@ -300,7 +303,7 @@ Module proof.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "spl_token_2022::proof::ProofLocation::ContextStateAccount",
                         0

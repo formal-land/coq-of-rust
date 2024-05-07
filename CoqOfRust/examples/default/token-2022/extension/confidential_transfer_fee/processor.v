@@ -92,7 +92,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -132,7 +132,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -177,10 +177,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| mint_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| mint_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -242,7 +243,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -282,7 +283,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -337,7 +338,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -377,7 +378,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -389,26 +390,29 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| extension |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "authority",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| extension |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "authority"
+                      |),
                       M.read (| M.read (| authority |) |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| extension |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "withdraw_withheld_authority_elgamal_pubkey",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| extension |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "withdraw_withheld_authority_elgamal_pubkey"
+                      |),
                       M.read (| M.read (| withdraw_withheld_authority_elgamal_pubkey |) |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| extension |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "harvest_to_mint_enabled",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| extension |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "harvest_to_mint_enabled"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::Into",
@@ -422,10 +426,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| extension |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "withheld_amount",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| extension |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "withheld_amount"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "bytemuck::zeroable::Zeroable",
@@ -618,7 +623,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -658,7 +663,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -706,7 +711,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -746,7 +751,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -825,7 +830,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -866,7 +871,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -886,7 +891,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -926,7 +931,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -974,7 +979,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1014,7 +1019,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1054,10 +1059,11 @@ Module extension.
                               M.get_function (| "spl_token_2022::check_program_account", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| mint_account_info |))
-                                    "solana_program::account_info::AccountInfo"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mint_account_info |),
+                                    "solana_program::account_info::AccountInfo",
                                     "owner"
+                                  |)
                                 |)
                               ]
                             |)
@@ -1068,7 +1074,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1107,7 +1113,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1151,10 +1157,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| mint_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| mint_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -1216,7 +1223,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1256,7 +1263,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1313,7 +1320,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1354,7 +1361,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1403,10 +1410,11 @@ Module extension.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| transfer_fee_config |))
-                                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| transfer_fee_config |),
+                                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                                             "withdraw_withheld_authority"
+                                          |)
                                         |)
                                       ]
                                     |);
@@ -1422,7 +1430,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -1462,7 +1470,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -1517,7 +1525,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1557,7 +1565,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1612,7 +1620,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1652,7 +1660,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1697,10 +1705,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| destination_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| destination_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -1762,7 +1771,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1802,7 +1811,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1830,20 +1839,23 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (|
-                                          M.get_struct_record_field
-                                            destination_account
-                                            "spl_token_2022::extension::PodStateWithExtensionsMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            destination_account,
+                                            "spl_token_2022::extension::PodStateWithExtensionsMut",
                                             "base"
-                                        |))
-                                        "spl_token_2022::pod::PodAccount"
-                                        "mint";
+                                          |)
+                                        |),
+                                        "spl_token_2022::pod::PodAccount",
+                                        "mint"
+                                      |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| mint_account_info |))
-                                          "solana_program::account_info::AccountInfo"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| mint_account_info |),
+                                          "solana_program::account_info::AccountInfo",
                                           "key"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1897,10 +1909,11 @@ Module extension.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          destination_account
-                                          "spl_token_2022::extension::PodStateWithExtensionsMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          destination_account,
+                                          "spl_token_2022::extension::PodStateWithExtensionsMut",
                                           "base"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1982,7 +1995,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -2022,7 +2035,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -2063,7 +2076,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -2102,7 +2115,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -2133,14 +2146,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "source_pubkey";
-                                      M.get_struct_record_field
-                                        (M.read (| confidential_transfer_fee_config |))
-                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "source_pubkey"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| confidential_transfer_fee_config |),
+                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                                         "withdraw_withheld_authority_elgamal_pubkey"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -2198,14 +2213,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "destination_pubkey";
-                                      M.get_struct_record_field
-                                        (M.read (| destination_confidential_transfer_account |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "destination_pubkey"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| destination_confidential_transfer_account |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                         "elgamal_pubkey"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -2263,14 +2280,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "source_ciphertext";
-                                      M.get_struct_record_field
-                                        (M.read (| confidential_transfer_fee_config |))
-                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "source_ciphertext"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| confidential_transfer_fee_config |),
+                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                                         "withheld_amount"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -2308,10 +2327,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| destination_confidential_transfer_account |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "available_balance",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| destination_confidential_transfer_account |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "available_balance"
+                      |),
                       M.read (|
                         M.match_operator (|
                           M.alloc (|
@@ -2348,14 +2368,16 @@ Module extension.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| destination_confidential_transfer_account |))
-                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                          "available_balance";
-                                        M.get_struct_record_field
-                                          proof_context
-                                          "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| destination_confidential_transfer_account |),
+                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                          "available_balance"
+                                        |);
+                                        M.SubPointer.get_struct_record_field (|
+                                          proof_context,
+                                          "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
                                           "destination_ciphertext"
+                                        |)
                                       ]
                                     |);
                                     Value.StructTuple
@@ -2370,7 +2392,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -2411,7 +2433,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -2424,18 +2446,20 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| destination_confidential_transfer_account |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "decryptable_available_balance",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| destination_confidential_transfer_account |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "decryptable_available_balance"
+                      |),
                       M.read (| M.read (| new_decryptable_available_balance |) |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| confidential_transfer_fee_config |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "withheld_amount",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| confidential_transfer_fee_config |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "withheld_amount"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "bytemuck::zeroable::Zeroable",
@@ -2535,10 +2559,11 @@ Module extension.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| account_info |))
-                                            "solana_program::account_info::AccountInfo"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| account_info |),
+                                            "solana_program::account_info::AccountInfo",
                                             "owner"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -2549,7 +2574,7 @@ Module extension.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -2591,7 +2616,7 @@ Module extension.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -2635,10 +2660,11 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| account_info |))
-                                        "solana_program::account_info::AccountInfo"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| account_info |),
+                                        "solana_program::account_info::AccountInfo",
                                         "data"
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -2714,7 +2740,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -2756,7 +2782,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -2788,10 +2814,11 @@ Module extension.
                                               []
                                             |),
                                             [
-                                              M.get_struct_record_field
-                                                (M.read (| context_state |))
-                                                "solana_zk_token_sdk::zk_token_proof_state::ProofContextState"
-                                                "proof_type";
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| context_state |),
+                                                "solana_zk_token_sdk::zk_token_proof_state::ProofContextState",
+                                                "proof_type"
+                                              |);
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -2843,10 +2870,11 @@ Module extension.
                               "core::result::Result::Ok"
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| context_state |))
-                                    "solana_zk_token_sdk::zk_token_proof_state::ProofContextState"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| context_state |),
+                                    "solana_zk_token_sdk::zk_token_proof_state::ProofContextState",
                                     "proof_context"
+                                  |)
                                 |)
                               ]
                           |)));
@@ -2887,7 +2915,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -2929,7 +2957,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -2991,7 +3019,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -3033,7 +3061,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -3258,7 +3286,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3298,7 +3326,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3346,7 +3374,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3386,7 +3414,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3465,7 +3493,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -3506,7 +3534,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -3526,7 +3554,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3566,7 +3594,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3614,7 +3642,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3654,7 +3682,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3726,10 +3754,11 @@ Module extension.
                               M.get_function (| "spl_token_2022::check_program_account", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| mint_account_info |))
-                                    "solana_program::account_info::AccountInfo"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mint_account_info |),
+                                    "solana_program::account_info::AccountInfo",
                                     "owner"
+                                  |)
                                 |)
                               ]
                             |)
@@ -3740,7 +3769,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -3779,7 +3808,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -3823,10 +3852,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| mint_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| mint_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -3888,7 +3918,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -3928,7 +3958,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -3983,7 +4013,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4023,7 +4053,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4072,10 +4102,11 @@ Module extension.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| transfer_fee_config |))
-                                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| transfer_fee_config |),
+                                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                                           "withdraw_withheld_authority"
+                                        |)
                                       |)
                                     ]
                                   |);
@@ -4091,7 +4122,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4130,7 +4161,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4196,7 +4227,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -4235,7 +4266,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -4279,10 +4310,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| destination_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| destination_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -4344,7 +4376,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -4384,7 +4416,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -4412,20 +4444,23 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (|
-                                          M.get_struct_record_field
-                                            destination_account
-                                            "spl_token_2022::extension::PodStateWithExtensionsMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            destination_account,
+                                            "spl_token_2022::extension::PodStateWithExtensionsMut",
                                             "base"
-                                        |))
-                                        "spl_token_2022::pod::PodAccount"
-                                        "mint";
+                                          |)
+                                        |),
+                                        "spl_token_2022::pod::PodAccount",
+                                        "mint"
+                                      |);
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| mint_account_info |))
-                                          "solana_program::account_info::AccountInfo"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| mint_account_info |),
+                                          "solana_program::account_info::AccountInfo",
                                           "key"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4479,10 +4514,11 @@ Module extension.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          destination_account
-                                          "spl_token_2022::extension::PodStateWithExtensionsMut"
+                                        M.SubPointer.get_struct_record_field (|
+                                          destination_account,
+                                          "spl_token_2022::extension::PodStateWithExtensionsMut",
                                           "base"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4608,7 +4644,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -4643,16 +4679,18 @@ Module extension.
                                                               []
                                                             |),
                                                             [
-                                                              M.get_struct_record_field
-                                                                (M.read (| account_info |))
-                                                                "solana_program::account_info::AccountInfo"
-                                                                "key";
-                                                              M.get_struct_record_field
-                                                                (M.read (|
-                                                                  destination_account_info
-                                                                |))
-                                                                "solana_program::account_info::AccountInfo"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| account_info |),
+                                                                "solana_program::account_info::AccountInfo",
                                                                 "key"
+                                                              |);
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (|
+                                                                  destination_account_info
+                                                                |),
+                                                                "solana_program::account_info::AccountInfo",
+                                                                "key"
+                                                              |)
                                                             ]
                                                           |)
                                                         |)) in
@@ -4766,7 +4804,7 @@ Module extension.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                     0
@@ -4810,7 +4848,7 @@ Module extension.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                     0
@@ -4865,12 +4903,13 @@ Module extension.
                                                                         |),
                                                                         [
                                                                           aggregate_withheld_amount;
-                                                                          M.get_struct_record_field
-                                                                            (M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (|
                                                                               destination_confidential_transfer_fee_amount
-                                                                            |))
-                                                                            "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
+                                                                            |),
+                                                                            "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
                                                                             "withheld_amount"
+                                                                          |)
                                                                         ]
                                                                       |);
                                                                       Value.StructTuple
@@ -4885,7 +4924,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Break",
                                                                       0
@@ -4931,7 +4970,7 @@ Module extension.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ0_0 :=
-                                                                    M.get_struct_tuple_field_or_break_match (|
+                                                                    M.SubPointer.get_struct_tuple_field (|
                                                                       γ,
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
@@ -4944,12 +4983,13 @@ Module extension.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (|
                                                             destination_confidential_transfer_fee_amount
-                                                          |))
-                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
-                                                          "withheld_amount",
+                                                          |),
+                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
+                                                          "withheld_amount"
+                                                        |),
                                                         M.call_closure (|
                                                           M.get_trait_method (|
                                                             "bytemuck::zeroable::Zeroable",
@@ -4974,10 +5014,11 @@ Module extension.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_struct_record_field
-                                                                (M.read (| mint_account_info |))
-                                                                "solana_program::account_info::AccountInfo"
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| mint_account_info |),
+                                                                "solana_program::account_info::AccountInfo",
                                                                 "key"
+                                                              |)
                                                             |);
                                                             M.read (| account_info |)
                                                           ]
@@ -4987,7 +5028,7 @@ Module extension.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::result::Result::Ok",
                                                                 0
@@ -5055,7 +5096,7 @@ Module extension.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ0_0 :=
-                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                               γ,
                                                                               "core::ops::control_flow::ControlFlow::Break",
                                                                               0
@@ -5105,7 +5146,7 @@ Module extension.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ0_0 :=
-                                                                            M.get_struct_tuple_field_or_break_match (|
+                                                                            M.SubPointer.get_struct_tuple_field (|
                                                                               γ,
                                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                                               0
@@ -5121,7 +5162,7 @@ Module extension.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::result::Result::Err",
                                                                 0
@@ -5197,12 +5238,13 @@ Module extension.
                                                                                                 ]
                                                                                               |),
                                                                                               [
-                                                                                                M.get_struct_record_field
-                                                                                                  (M.read (|
+                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                  M.read (|
                                                                                                     account_info
-                                                                                                  |))
-                                                                                                  "solana_program::account_info::AccountInfo"
+                                                                                                  |),
+                                                                                                  "solana_program::account_info::AccountInfo",
                                                                                                   "key"
+                                                                                                |)
                                                                                               ]
                                                                                             |);
                                                                                             M.call_closure (|
@@ -5286,7 +5328,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -5326,7 +5368,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -5367,7 +5409,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -5406,7 +5448,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -5460,7 +5502,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -5500,7 +5542,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -5532,14 +5574,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "source_pubkey";
-                                      M.get_struct_record_field
-                                        (M.read (| confidential_transfer_fee_config |))
-                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "source_pubkey"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| confidential_transfer_fee_config |),
+                                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                                         "withdraw_withheld_authority_elgamal_pubkey"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -5597,14 +5641,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "destination_pubkey";
-                                      M.get_struct_record_field
-                                        (M.read (| destination_confidential_transfer_account |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "destination_pubkey"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| destination_confidential_transfer_account |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                         "elgamal_pubkey"
+                                      |)
                                     ]
                                   |)
                                 |)) in
@@ -5662,10 +5708,11 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        proof_context
-                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
-                                        "source_ciphertext";
+                                      M.SubPointer.get_struct_record_field (|
+                                        proof_context,
+                                        "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
+                                        "source_ciphertext"
+                                      |);
                                       aggregate_withheld_amount
                                     ]
                                   |)
@@ -5704,10 +5751,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| destination_confidential_transfer_account |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "available_balance",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| destination_confidential_transfer_account |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "available_balance"
+                      |),
                       M.read (|
                         M.match_operator (|
                           M.alloc (|
@@ -5744,14 +5792,16 @@ Module extension.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| destination_confidential_transfer_account |))
-                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                          "available_balance";
-                                        M.get_struct_record_field
-                                          proof_context
-                                          "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| destination_confidential_transfer_account |),
+                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                          "available_balance"
+                                        |);
+                                        M.SubPointer.get_struct_record_field (|
+                                          proof_context,
+                                          "solana_zk_token_sdk::instruction::ciphertext_ciphertext_equality::CiphertextCiphertextEqualityProofContext",
                                           "destination_ciphertext"
+                                        |)
                                       ]
                                     |);
                                     Value.StructTuple
@@ -5766,7 +5816,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
@@ -5807,7 +5857,7 @@ Module extension.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
@@ -5820,10 +5870,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| destination_confidential_transfer_account |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "decryptable_available_balance",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| destination_confidential_transfer_account |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "decryptable_available_balance"
+                      |),
                       M.read (| M.read (| new_decryptable_available_balance |) |)
                     |) in
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -5900,10 +5951,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| token_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| token_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -6008,7 +6060,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6048,7 +6100,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6076,15 +6128,17 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (|
-                                          M.get_struct_record_field
-                                            token_account
-                                            "spl_token_2022::extension::PodStateWithExtensionsMut"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            token_account,
+                                            "spl_token_2022::extension::PodStateWithExtensionsMut",
                                             "base"
-                                        |))
-                                        "spl_token_2022::pod::PodAccount"
-                                        "mint";
+                                          |)
+                                        |),
+                                        "spl_token_2022::pod::PodAccount",
+                                        "mint"
+                                      |);
                                       M.read (| mint_key |)
                                     ]
                                   |)
@@ -6147,10 +6201,11 @@ Module extension.
                                   M.get_function (| "spl_token_2022::check_program_account", [] |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| token_account_info |))
-                                        "solana_program::account_info::AccountInfo"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| token_account_info |),
+                                        "solana_program::account_info::AccountInfo",
                                         "owner"
+                                      |)
                                     |)
                                   ]
                                 |);
@@ -6180,7 +6235,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -6220,7 +6275,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -6319,7 +6374,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6359,7 +6414,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6371,17 +6426,19 @@ Module extension.
                     |) in
                   let withheld_amount :=
                     M.copy (|
-                      M.get_struct_record_field
-                        (M.read (| confidential_transfer_token_account |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| confidential_transfer_token_account |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
                         "withheld_amount"
+                      |)
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| confidential_transfer_token_account |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount"
-                        "withheld_amount",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| confidential_transfer_token_account |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeAmount",
+                        "withheld_amount"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "bytemuck::zeroable::Zeroable",
@@ -6501,7 +6558,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6541,7 +6598,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6599,10 +6656,11 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| mint_account_info |))
-                                "solana_program::account_info::AccountInfo"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| mint_account_info |),
+                                "solana_program::account_info::AccountInfo",
                                 "data"
+                              |)
                             ]
                           |)
                         ]
@@ -6664,7 +6722,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6704,7 +6762,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6758,7 +6816,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -6797,7 +6855,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -6851,7 +6909,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -6891,7 +6949,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -6913,10 +6971,11 @@ Module extension.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| confidential_transfer_fee_mint |))
-                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| confidential_transfer_fee_mint |),
+                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                               "harvest_to_mint_enabled"
+                            |)
                           |)
                         ]
                       |)
@@ -7017,7 +7076,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
@@ -7032,10 +7091,11 @@ Module extension.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_struct_record_field
-                                                        (M.read (| mint_account_info |))
-                                                        "solana_program::account_info::AccountInfo"
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| mint_account_info |),
+                                                        "solana_program::account_info::AccountInfo",
                                                         "key"
+                                                      |)
                                                     |);
                                                     M.read (| token_account_info |)
                                                   ]
@@ -7045,7 +7105,7 @@ Module extension.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::result::Result::Ok",
                                                         0
@@ -7093,12 +7153,13 @@ Module extension.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.get_struct_record_field
-                                                                          (M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (|
                                                                             confidential_transfer_fee_mint
-                                                                          |))
-                                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                                                                          "withheld_amount";
+                                                                          |),
+                                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                                                                          "withheld_amount"
+                                                                        |);
                                                                         withheld_amount
                                                                       ]
                                                                     |);
@@ -7114,7 +7175,7 @@ Module extension.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::ops::control_flow::ControlFlow::Break",
                                                                     0
@@ -7158,7 +7219,7 @@ Module extension.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ0_0 :=
-                                                                  M.get_struct_tuple_field_or_break_match (|
+                                                                  M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
                                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                                     0
@@ -7170,19 +7231,20 @@ Module extension.
                                                       |) in
                                                     let _ :=
                                                       M.write (|
-                                                        M.get_struct_record_field
-                                                          (M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (|
                                                             confidential_transfer_fee_mint
-                                                          |))
-                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                                                          "withheld_amount",
+                                                          |),
+                                                          "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                                                          "withheld_amount"
+                                                        |),
                                                         M.read (| new_mint_withheld_amount |)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ0_0 :=
-                                                      M.get_struct_tuple_field_or_break_match (|
+                                                      M.SubPointer.get_struct_tuple_field (|
                                                         γ,
                                                         "core::result::Result::Err",
                                                         0
@@ -7257,12 +7319,13 @@ Module extension.
                                                                                         ]
                                                                                       |),
                                                                                       [
-                                                                                        M.get_struct_record_field
-                                                                                          (M.read (|
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.read (|
                                                                                             token_account_info
-                                                                                          |))
-                                                                                          "solana_program::account_info::AccountInfo"
+                                                                                          |),
+                                                                                          "solana_program::account_info::AccountInfo",
                                                                                           "key"
+                                                                                        |)
                                                                                       ]
                                                                                     |);
                                                                                     M.call_closure (|
@@ -7397,7 +7460,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -7437,7 +7500,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -7485,7 +7548,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -7525,7 +7588,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -7565,10 +7628,11 @@ Module extension.
                               M.get_function (| "spl_token_2022::check_program_account", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| mint_info |))
-                                    "solana_program::account_info::AccountInfo"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mint_info |),
+                                    "solana_program::account_info::AccountInfo",
                                     "owner"
+                                  |)
                                 |)
                               ]
                             |)
@@ -7579,7 +7643,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -7618,7 +7682,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -7663,10 +7727,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| mint_info |))
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| mint_info |),
+                                  "solana_program::account_info::AccountInfo",
                                   "data"
+                                |)
                               ]
                             |)
                           ]
@@ -7729,7 +7794,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -7769,7 +7834,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -7824,7 +7889,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -7864,7 +7929,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -7890,10 +7955,11 @@ Module extension.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| confidential_transfer_fee_mint |))
-                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| confidential_transfer_fee_mint |),
+                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                               "authority"
+                            |)
                           |)
                         ]
                       |)
@@ -7938,7 +8004,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -7977,7 +8043,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8032,7 +8098,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -8071,7 +8137,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -8082,10 +8148,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| confidential_transfer_fee_mint |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "harvest_to_mint_enabled",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| confidential_transfer_fee_mint |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "harvest_to_mint_enabled"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::Into",
@@ -8195,7 +8262,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8235,7 +8302,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8283,7 +8350,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8323,7 +8390,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8363,10 +8430,11 @@ Module extension.
                               M.get_function (| "spl_token_2022::check_program_account", [] |),
                               [
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| mint_info |))
-                                    "solana_program::account_info::AccountInfo"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| mint_info |),
+                                    "solana_program::account_info::AccountInfo",
                                     "owner"
+                                  |)
                                 |)
                               ]
                             |)
@@ -8377,7 +8445,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -8416,7 +8484,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -8461,10 +8529,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| mint_info |))
-                                  "solana_program::account_info::AccountInfo"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| mint_info |),
+                                  "solana_program::account_info::AccountInfo",
                                   "data"
+                                |)
                               ]
                             |)
                           ]
@@ -8527,7 +8596,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8567,7 +8636,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8622,7 +8691,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8662,7 +8731,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8688,10 +8757,11 @@ Module extension.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| confidential_transfer_fee_mint |))
-                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| confidential_transfer_fee_mint |),
+                              "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
                               "authority"
+                            |)
                           |)
                         ]
                       |)
@@ -8736,7 +8806,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -8775,7 +8845,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -8830,7 +8900,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -8869,7 +8939,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -8880,10 +8950,11 @@ Module extension.
                     |) in
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| confidential_transfer_fee_mint |))
-                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig"
-                        "harvest_to_mint_enabled",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| confidential_transfer_fee_mint |),
+                        "spl_token_2022::extension::confidential_transfer_fee::ConfidentialTransferFeeConfig",
+                        "harvest_to_mint_enabled"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::Into",
@@ -9014,7 +9085,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -9053,7 +9124,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -9097,7 +9168,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -9136,7 +9207,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -9200,7 +9271,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -9241,7 +9312,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -9259,14 +9330,16 @@ Module extension.
                               |),
                               [
                                 M.read (| accounts |);
-                                M.get_struct_record_field
-                                  (M.read (| data |))
-                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::InitializeConfidentialTransferFeeConfigData"
-                                  "authority";
-                                M.get_struct_record_field
-                                  (M.read (| data |))
-                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::InitializeConfidentialTransferFeeConfigData"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| data |),
+                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::InitializeConfidentialTransferFeeConfigData",
+                                  "authority"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| data |),
+                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::InitializeConfidentialTransferFeeConfigData",
                                   "withdraw_withheld_authority_elgamal_pubkey"
+                                |)
                               ]
                             |)
                           |)));
@@ -9324,7 +9397,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -9365,7 +9438,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -9384,16 +9457,18 @@ Module extension.
                               [
                                 M.read (| program_id |);
                                 M.read (| accounts |);
-                                M.get_struct_record_field
-                                  (M.read (| data |))
-                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromMintData"
-                                  "new_decryptable_available_balance";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| data |),
+                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromMintData",
+                                  "new_decryptable_available_balance"
+                                |);
                                 M.rust_cast
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| data |))
-                                      "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromMintData"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| data |),
+                                      "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromMintData",
                                       "proof_instruction_offset"
+                                    |)
                                   |))
                               ]
                             |)
@@ -9452,7 +9527,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -9493,7 +9568,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -9513,21 +9588,24 @@ Module extension.
                                 M.read (| program_id |);
                                 M.read (| accounts |);
                                 M.read (|
-                                  M.get_struct_record_field
-                                    (M.read (| data |))
-                                    "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| data |),
+                                    "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData",
                                     "num_token_accounts"
+                                  |)
                                 |);
-                                M.get_struct_record_field
-                                  (M.read (| data |))
-                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData"
-                                  "new_decryptable_available_balance";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| data |),
+                                  "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData",
+                                  "new_decryptable_available_balance"
+                                |);
                                 M.rust_cast
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| data |))
-                                      "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| data |),
+                                      "spl_token_2022::extension::confidential_transfer_fee::instruction::WithdrawWithheldTokensFromAccountsData",
                                       "proof_instruction_offset"
+                                    |)
                                   |))
                               ]
                             |)

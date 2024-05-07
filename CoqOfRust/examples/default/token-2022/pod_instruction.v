@@ -77,18 +77,20 @@ Module pod_instruction.
               M.read (| Value.String "decimals" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod_instruction::InitializeMintData"
-                  "decimals");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod_instruction::InitializeMintData",
+                  "decimals"
+                |));
               M.read (| Value.String "mint_authority" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::InitializeMintData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::InitializeMintData",
                     "mint_authority"
+                  |)
                 |))
             ]
           |)))
@@ -172,16 +174,18 @@ Module pod_instruction.
           LogicalOp.and (|
             BinOp.Pure.eq
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod_instruction::InitializeMintData"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod_instruction::InitializeMintData",
                   "decimals"
+                |)
               |))
               (M.read (|
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::pod_instruction::InitializeMintData"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::pod_instruction::InitializeMintData",
                   "decimals"
+                |)
               |)),
             ltac:(M.monadic
               (M.call_closure (|
@@ -193,14 +197,16 @@ Module pod_instruction.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::InitializeMintData"
-                    "mint_authority";
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod_instruction::InitializeMintData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::InitializeMintData",
                     "mint_authority"
+                  |);
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod_instruction::InitializeMintData",
+                    "mint_authority"
+                  |)
                 ]
               |)))
           |)))
@@ -304,10 +310,11 @@ Module pod_instruction.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::InitializeMultisigData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::InitializeMultisigData",
                     "m"
+                  |)
                 |))
             ]
           |)))
@@ -379,16 +386,18 @@ Module pod_instruction.
           let other := M.alloc (| other |) in
           BinOp.Pure.eq
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod_instruction::InitializeMultisigData"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod_instruction::InitializeMultisigData",
                 "m"
+              |)
             |))
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| other |))
-                "spl_token_2022::pod_instruction::InitializeMultisigData"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "spl_token_2022::pod_instruction::InitializeMultisigData",
                 "m"
+              |)
             |))))
       | _, _ => M.impossible
       end.
@@ -490,10 +499,11 @@ Module pod_instruction.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::AmountData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::AmountData",
                     "amount"
+                  |)
                 |))
             ]
           |)))
@@ -572,14 +582,16 @@ Module pod_instruction.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod_instruction::AmountData"
-                "amount";
-              M.get_struct_record_field
-                (M.read (| other |))
-                "spl_token_2022::pod_instruction::AmountData"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod_instruction::AmountData",
                 "amount"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "spl_token_2022::pod_instruction::AmountData",
+                "amount"
+              |)
             ]
           |)))
       | _, _ => M.impossible
@@ -688,18 +700,20 @@ Module pod_instruction.
               M.read (| Value.String "amount" |);
               (* Unsize *)
               M.pointer_coercion
-                (M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod_instruction::AmountCheckedData"
-                  "amount");
+                (M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod_instruction::AmountCheckedData",
+                  "amount"
+                |));
               M.read (| Value.String "decimals" |);
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::AmountCheckedData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::AmountCheckedData",
                     "decimals"
+                  |)
                 |))
             ]
           |)))
@@ -790,29 +804,33 @@ Module pod_instruction.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::pod_instruction::AmountCheckedData"
-                  "amount";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::pod_instruction::AmountCheckedData"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::pod_instruction::AmountCheckedData",
                   "amount"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::pod_instruction::AmountCheckedData",
+                  "amount"
+                |)
               ]
             |),
             ltac:(M.monadic
               (BinOp.Pure.eq
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::AmountCheckedData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::AmountCheckedData",
                     "decimals"
+                  |)
                 |))
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| other |))
-                    "spl_token_2022::pod_instruction::AmountCheckedData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| other |),
+                    "spl_token_2022::pod_instruction::AmountCheckedData",
                     "decimals"
+                  |)
                 |))))
           |)))
       | _, _ => M.impossible
@@ -915,10 +933,11 @@ Module pod_instruction.
               (* Unsize *)
               M.pointer_coercion
                 (M.alloc (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::pod_instruction::SetAuthorityData"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::pod_instruction::SetAuthorityData",
                     "authority_type"
+                  |)
                 |))
             ]
           |)))
@@ -990,16 +1009,18 @@ Module pod_instruction.
           let other := M.alloc (| other |) in
           BinOp.Pure.eq
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "spl_token_2022::pod_instruction::SetAuthorityData"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "spl_token_2022::pod_instruction::SetAuthorityData",
                 "authority_type"
+              |)
             |))
             (M.read (|
-              M.get_struct_record_field
-                (M.read (| other |))
-                "spl_token_2022::pod_instruction::SetAuthorityData"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "spl_token_2022::pod_instruction::SetAuthorityData",
                 "authority_type"
+              |)
             |))))
       | _, _ => M.impossible
       end.
@@ -2389,13 +2410,13 @@ Module pod_instruction.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let γ1_0 := M.read (| γ1_0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
@@ -2421,13 +2442,13 @@ Module pod_instruction.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
-                        M.get_struct_tuple_field_or_break_match (|
+                        M.SubPointer.get_struct_tuple_field (|
                           γ,
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ1_0 := M.get_tuple_field γ0_0 0 in
-                      let γ1_1 := M.get_tuple_field γ0_0 1 in
+                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let γ1_0 := M.read (| γ1_0 |) in
                       let _ :=
                         M.is_constant_or_break_match (|
@@ -2578,7 +2599,7 @@ Module pod_instruction.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
@@ -2621,7 +2642,7 @@ Module pod_instruction.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
@@ -2793,7 +2814,7 @@ Module pod_instruction.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -2838,7 +2859,7 @@ Module pod_instruction.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0
@@ -2902,7 +2923,7 @@ Module pod_instruction.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Break",
                               0
@@ -2947,7 +2968,7 @@ Module pod_instruction.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::ops::control_flow::ControlFlow::Continue",
                               0

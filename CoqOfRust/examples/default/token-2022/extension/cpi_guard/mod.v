@@ -70,10 +70,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::cpi_guard::CpiGuard"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::cpi_guard::CpiGuard",
                       "lock_cpi"
+                    |)
                   |))
               ]
             |)))
@@ -152,14 +153,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::cpi_guard::CpiGuard"
-                  "lock_cpi";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::cpi_guard::CpiGuard"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::cpi_guard::CpiGuard",
                   "lock_cpi"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::cpi_guard::CpiGuard",
+                  "lock_cpi"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -253,7 +256,7 @@ Module extension.
                               |)
                             |) in
                           let γ0_0 :=
-                            M.get_struct_tuple_field_or_break_match (|
+                            M.SubPointer.get_struct_tuple_field (|
                               γ,
                               "core::result::Result::Ok",
                               0
@@ -273,10 +276,11 @@ Module extension.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_struct_record_field
-                                          (M.read (| extension |))
-                                          "spl_token_2022::extension::cpi_guard::CpiGuard"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| extension |),
+                                          "spl_token_2022::extension::cpi_guard::CpiGuard",
                                           "lock_cpi"
+                                        |)
                                       |)
                                     ]
                                   |)

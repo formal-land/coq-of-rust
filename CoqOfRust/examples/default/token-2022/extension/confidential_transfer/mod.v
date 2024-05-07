@@ -116,25 +116,28 @@ Module extension.
                 M.read (| Value.String "authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
-                    "authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
+                    "authority"
+                  |));
                 M.read (| Value.String "auto_approve_new_accounts" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
-                    "auto_approve_new_accounts");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
+                    "auto_approve_new_accounts"
+                  |));
                 M.read (| Value.String "auditor_elgamal_pubkey" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
                       "auditor_elgamal_pubkey"
+                    |)
                   |))
               ]
             |)))
@@ -240,14 +243,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
-                      "authority";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
                       "authority"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
+                      "authority"
+                    |)
                   ]
                 |),
                 ltac:(M.monadic
@@ -260,14 +265,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
-                        "auto_approve_new_accounts";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
                         "auto_approve_new_accounts"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
+                        "auto_approve_new_accounts"
+                      |)
                     ]
                   |)))
               |),
@@ -281,14 +288,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
-                      "auditor_elgamal_pubkey";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
                       "auditor_elgamal_pubkey"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferMint",
+                      "auditor_elgamal_pubkey"
+                    |)
                   ]
                 |)))
             |)))
@@ -484,77 +493,89 @@ Module extension.
                         [
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "approved");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "approved"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "elgamal_pubkey");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "elgamal_pubkey"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "pending_balance_lo");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "pending_balance_lo"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "pending_balance_hi");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "pending_balance_hi"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "available_balance");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "available_balance"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "decryptable_available_balance");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "decryptable_available_balance"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "allow_confidential_credits");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "allow_confidential_credits"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "allow_non_confidential_credits");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "allow_non_confidential_credits"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "pending_balance_credit_counter");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "pending_balance_credit_counter"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "maximum_pending_balance_credit_counter");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "maximum_pending_balance_credit_counter"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
-                            (M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "expected_pending_balance_credit_counter");
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "expected_pending_balance_credit_counter"
+                            |));
                           (* Unsize *)
                           M.pointer_coercion
                             (M.alloc (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                 "actual_pending_balance_credit_counter"
+                              |)
                             |))
                         ]
                     |))
@@ -789,14 +810,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                        "approved";
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                         "approved"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                        "approved"
+                                      |)
                                     ]
                                   |),
                                   ltac:(M.monadic
@@ -813,14 +836,16 @@ Module extension.
                                         []
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                          "elgamal_pubkey";
-                                        M.get_struct_record_field
-                                          (M.read (| other |))
-                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                           "elgamal_pubkey"
+                                        |);
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| other |),
+                                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                          "elgamal_pubkey"
+                                        |)
                                       ]
                                     |)))
                                 |),
@@ -838,14 +863,16 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                        "pending_balance_lo";
-                                      M.get_struct_record_field
-                                        (M.read (| other |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                         "pending_balance_lo"
+                                      |);
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| other |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                        "pending_balance_lo"
+                                      |)
                                     ]
                                   |)))
                               |),
@@ -863,14 +890,16 @@ Module extension.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                      "pending_balance_hi";
-                                    M.get_struct_record_field
-                                      (M.read (| other |))
-                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                       "pending_balance_hi"
+                                    |);
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| other |),
+                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                      "pending_balance_hi"
+                                    |)
                                   ]
                                 |)))
                             |),
@@ -888,14 +917,16 @@ Module extension.
                                   []
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| self |))
-                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                    "available_balance";
-                                  M.get_struct_record_field
-                                    (M.read (| other |))
-                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                     "available_balance"
+                                  |);
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| other |),
+                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                    "available_balance"
+                                  |)
                                 ]
                               |)))
                           |),
@@ -913,14 +944,16 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                  "decryptable_available_balance";
-                                M.get_struct_record_field
-                                  (M.read (| other |))
-                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                   "decryptable_available_balance"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| other |),
+                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                  "decryptable_available_balance"
+                                |)
                               ]
                             |)))
                         |),
@@ -934,14 +967,16 @@ Module extension.
                               []
                             |),
                             [
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                "allow_confidential_credits";
-                              M.get_struct_record_field
-                                (M.read (| other |))
-                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                 "allow_confidential_credits"
+                              |);
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| other |),
+                                "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                "allow_confidential_credits"
+                              |)
                             ]
                           |)))
                       |),
@@ -955,14 +990,16 @@ Module extension.
                             []
                           |),
                           [
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                              "allow_non_confidential_credits";
-                            M.get_struct_record_field
-                              (M.read (| other |))
-                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                               "allow_non_confidential_credits"
+                            |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| other |),
+                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                              "allow_non_confidential_credits"
+                            |)
                           ]
                         |)))
                     |),
@@ -976,14 +1013,16 @@ Module extension.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                            "pending_balance_credit_counter";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                             "pending_balance_credit_counter"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                            "pending_balance_credit_counter"
+                          |)
                         ]
                       |)))
                   |),
@@ -997,14 +1036,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                          "maximum_pending_balance_credit_counter";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                           "maximum_pending_balance_credit_counter"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                          "maximum_pending_balance_credit_counter"
+                        |)
                       ]
                     |)))
                 |),
@@ -1018,14 +1059,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "expected_pending_balance_credit_counter";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                         "expected_pending_balance_credit_counter"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "expected_pending_balance_credit_counter"
+                      |)
                     ]
                   |)))
               |),
@@ -1039,14 +1082,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                      "actual_pending_balance_credit_counter";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                       "actual_pending_balance_credit_counter"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                      "actual_pending_balance_credit_counter"
+                    |)
                   ]
                 |)))
             |)))
@@ -1145,10 +1190,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                   "approved"
+                                |)
                               ]
                             |)
                           |)) in
@@ -1227,10 +1273,11 @@ Module extension.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                      "pending_balance_lo";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                      "pending_balance_lo"
+                                    |);
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -1260,10 +1307,11 @@ Module extension.
                                       []
                                     |),
                                     [
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                        "pending_balance_hi";
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                        "pending_balance_hi"
+                                      |);
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1294,10 +1342,11 @@ Module extension.
                                     []
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                                      "available_balance";
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                                      "available_balance"
+                                    |);
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -1382,10 +1431,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                   "allow_non_confidential_credits"
+                                |)
                               ]
                             |)
                           |)) in
@@ -1512,7 +1562,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
@@ -1551,7 +1601,7 @@ Module extension.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
-                              M.get_struct_tuple_field_or_break_match (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ,
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
@@ -1580,10 +1630,11 @@ Module extension.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                             "allow_confidential_credits"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -1659,10 +1710,11 @@ Module extension.
                                         |),
                                         [
                                           M.read (|
-                                            M.get_struct_record_field
-                                              (M.read (| self |))
-                                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                               "pending_balance_credit_counter"
+                                            |)
                                           |)
                                         ]
                                       |);
@@ -1679,7 +1731,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1718,7 +1770,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1749,10 +1801,11 @@ Module extension.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                             "maximum_pending_balance_credit_counter"
+                                          |)
                                         |)
                                       ]
                                     |))
@@ -1817,10 +1870,11 @@ Module extension.
                 (M.read (|
                   let _ :=
                     M.write (|
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
-                        "pending_balance_credit_counter",
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
+                        "pending_balance_credit_counter"
+                      |),
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::Into",
@@ -1869,10 +1923,11 @@ Module extension.
                                               |),
                                               [
                                                 M.read (|
-                                                  M.get_struct_record_field
-                                                    (M.read (| self |))
-                                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount"
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "spl_token_2022::extension::confidential_transfer::ConfidentialTransferAccount",
                                                     "pending_balance_credit_counter"
+                                                  |)
                                                 |)
                                               ]
                                             |);
@@ -1891,7 +1946,7 @@ Module extension.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -1931,7 +1986,7 @@ Module extension.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0

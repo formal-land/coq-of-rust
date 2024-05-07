@@ -94,25 +94,28 @@ Module extension.
                 M.read (| Value.String "epoch" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFee"
-                    "epoch");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFee",
+                    "epoch"
+                  |));
                 M.read (| Value.String "maximum_fee" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFee"
-                    "maximum_fee");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFee",
+                    "maximum_fee"
+                  |));
                 M.read (| Value.String "transfer_fee_basis_points" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFee"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFee",
                       "transfer_fee_basis_points"
+                    |)
                   |))
               ]
             |)))
@@ -215,14 +218,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFee"
-                      "epoch";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::transfer_fee::TransferFee"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFee",
                       "epoch"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::transfer_fee::TransferFee",
+                      "epoch"
+                    |)
                   ]
                 |),
                 ltac:(M.monadic
@@ -235,14 +240,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::transfer_fee::TransferFee"
-                        "maximum_fee";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::transfer_fee::TransferFee"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::transfer_fee::TransferFee",
                         "maximum_fee"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::transfer_fee::TransferFee",
+                        "maximum_fee"
+                      |)
                     ]
                   |)))
               |),
@@ -256,14 +263,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFee"
-                      "transfer_fee_basis_points";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::transfer_fee::TransferFee"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFee",
                       "transfer_fee_basis_points"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::transfer_fee::TransferFee",
+                      "transfer_fee_basis_points"
+                    |)
                   ]
                 |)))
             |)))
@@ -366,7 +375,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Break",
                                                 0
@@ -399,7 +408,7 @@ Module extension.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 :=
-                                              M.get_struct_tuple_field_or_break_match (|
+                                              M.SubPointer.get_struct_tuple_field (|
                                                 γ,
                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                 0
@@ -419,7 +428,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -452,7 +461,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -508,10 +517,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::transfer_fee::TransferFee"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::transfer_fee::TransferFee",
                                 "transfer_fee_basis_points"
+                              |)
                             |)
                           ]
                         |))
@@ -574,7 +584,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -607,7 +617,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -688,7 +698,7 @@ Module extension.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Break",
                                                             0
@@ -726,7 +736,7 @@ Module extension.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.get_struct_tuple_field_or_break_match (|
+                                                          M.SubPointer.get_struct_tuple_field (|
                                                             γ,
                                                             "core::ops::control_flow::ControlFlow::Continue",
                                                             0
@@ -747,7 +757,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
@@ -780,7 +790,7 @@ Module extension.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ0_0 :=
-                                        M.get_struct_tuple_field_or_break_match (|
+                                        M.SubPointer.get_struct_tuple_field (|
                                           γ,
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
@@ -808,10 +818,11 @@ Module extension.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_struct_record_field
-                                            (M.read (| self |))
-                                            "spl_token_2022::extension::transfer_fee::TransferFee"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "spl_token_2022::extension::transfer_fee::TransferFee",
                                             "maximum_fee"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -873,7 +884,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -906,7 +917,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -968,10 +979,11 @@ Module extension.
                         |),
                         [
                           M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "spl_token_2022::extension::transfer_fee::TransferFee"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "spl_token_2022::extension::transfer_fee::TransferFee",
                               "maximum_fee"
+                            |)
                           |)
                         ]
                       |)
@@ -989,10 +1001,11 @@ Module extension.
                           |),
                           [
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "spl_token_2022::extension::transfer_fee::TransferFee"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "spl_token_2022::extension::transfer_fee::TransferFee",
                                 "transfer_fee_basis_points"
+                              |)
                             |)
                           ]
                         |))
@@ -1089,7 +1102,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -1123,7 +1136,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -1170,7 +1183,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -1204,7 +1217,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -1245,7 +1258,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
@@ -1279,7 +1292,7 @@ Module extension.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ0_0 :=
-                                                M.get_struct_tuple_field_or_break_match (|
+                                                M.SubPointer.get_struct_tuple_field (|
                                                   γ,
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
@@ -1331,7 +1344,7 @@ Module extension.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                 0
@@ -1369,7 +1382,7 @@ Module extension.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                 0
@@ -1484,7 +1497,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
@@ -1517,7 +1530,7 @@ Module extension.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ0_0 :=
-                                M.get_struct_tuple_field_or_break_match (|
+                                M.SubPointer.get_struct_tuple_field (|
                                   γ,
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
@@ -1638,39 +1651,44 @@ Module extension.
                 M.read (| Value.String "transfer_fee_config_authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                    "transfer_fee_config_authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                    "transfer_fee_config_authority"
+                  |));
                 M.read (| Value.String "withdraw_withheld_authority" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                    "withdraw_withheld_authority");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                    "withdraw_withheld_authority"
+                  |));
                 M.read (| Value.String "withheld_amount" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                    "withheld_amount");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                    "withheld_amount"
+                  |));
                 M.read (| Value.String "older_transfer_fee" |);
                 (* Unsize *)
                 M.pointer_coercion
-                  (M.get_struct_record_field
-                    (M.read (| self |))
-                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                    "older_transfer_fee");
+                  (M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                    "older_transfer_fee"
+                  |));
                 M.read (| Value.String "newer_transfer_fee" |);
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                       "newer_transfer_fee"
+                    |)
                   |))
               ]
             |)))
@@ -1800,14 +1818,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                          "transfer_fee_config_authority";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                           "transfer_fee_config_authority"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                          "transfer_fee_config_authority"
+                        |)
                       ]
                     |),
                     ltac:(M.monadic
@@ -1820,14 +1840,16 @@ Module extension.
                           []
                         |),
                         [
-                          M.get_struct_record_field
-                            (M.read (| self |))
-                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                            "withdraw_withheld_authority";
-                          M.get_struct_record_field
-                            (M.read (| other |))
-                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                             "withdraw_withheld_authority"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| other |),
+                            "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                            "withdraw_withheld_authority"
+                          |)
                         ]
                       |)))
                   |),
@@ -1841,14 +1863,16 @@ Module extension.
                         []
                       |),
                       [
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                          "withheld_amount";
-                        M.get_struct_record_field
-                          (M.read (| other |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                           "withheld_amount"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                          "withheld_amount"
+                        |)
                       ]
                     |)))
                 |),
@@ -1862,14 +1886,16 @@ Module extension.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                        "older_transfer_fee";
-                      M.get_struct_record_field
-                        (M.read (| other |))
-                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                         "older_transfer_fee"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                        "older_transfer_fee"
+                      |)
                     ]
                   |)))
               |),
@@ -1883,14 +1909,16 @@ Module extension.
                     []
                   |),
                   [
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                      "newer_transfer_fee";
-                    M.get_struct_record_field
-                      (M.read (| other |))
-                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                       "newer_transfer_fee"
+                    |);
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| other |),
+                      "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                      "newer_transfer_fee"
+                    |)
                   ]
                 |)))
             |)))
@@ -1969,31 +1997,35 @@ Module extension.
                                 |),
                                 [
                                   M.read (|
-                                    M.get_struct_record_field
-                                      (M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
-                                        "newer_transfer_fee")
-                                      "spl_token_2022::extension::transfer_fee::TransferFee"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
+                                        "newer_transfer_fee"
+                                      |),
+                                      "spl_token_2022::extension::transfer_fee::TransferFee",
                                       "epoch"
+                                    |)
                                   |)
                                 ]
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                           "newer_transfer_fee"
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "spl_token_2022::extension::transfer_fee::TransferFeeConfig",
                           "older_transfer_fee"
+                        |)
                       |)))
                 ]
               |)
@@ -2169,10 +2201,11 @@ Module extension.
                 (* Unsize *)
                 M.pointer_coercion
                   (M.alloc (|
-                    M.get_struct_record_field
-                      (M.read (| self |))
-                      "spl_token_2022::extension::transfer_fee::TransferFeeAmount"
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "spl_token_2022::extension::transfer_fee::TransferFeeAmount",
                       "withheld_amount"
+                    |)
                   |))
               ]
             |)))
@@ -2254,14 +2287,16 @@ Module extension.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount"
-                  "withheld_amount";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount",
                   "withheld_amount"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount",
+                  "withheld_amount"
+                |)
               ]
             |)))
         | _, _ => M.impossible
@@ -2335,10 +2370,11 @@ Module extension.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount"
-                                  "withheld_amount";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "spl_token_2022::extension::transfer_fee::TransferFeeAmount",
+                                  "withheld_amount"
+                                |);
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|
