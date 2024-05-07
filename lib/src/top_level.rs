@@ -334,8 +334,8 @@ fn compile_top_level_item_without_local_items<'a>(
             if check_if_test_declaration(ty) {
                 return vec![];
             }
-            // skip const _ : () = ...
-            if item.ident.name.as_str() == "_" && matches!(ty.kind, TyKind::Tup([])) {
+            // skip const _ : ... = ...
+            if item.ident.name.as_str() == "_" {
                 return vec![];
             }
 

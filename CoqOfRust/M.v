@@ -792,3 +792,5 @@ Definition constructor_as_closure (constructor : string) : Value.t :=
     pure (Value.StructTuple constructor args)).
 
 Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
+
+Parameter yield : Value.t -> M.
