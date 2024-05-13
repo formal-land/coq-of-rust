@@ -109,6 +109,15 @@ Definition shear (self: traits.Sheep.t) : MS? State.t string unit :=
   in
   returnS? tt.
 
+(* Misc: Instances for string's ToValue *)
+Global Instance IsToValue_string : ToValue string. Admitted.
+
+Global Instance IsToValue_string_self {Self : Set} : ToValue (string -> Self). Admitted.
+
+Global Instance IsToValue_self_string {Self : Set} : ToValue (Self -> string). Admitted.
+
+Global Instance IsToValue_self_unit {Self : Set} : ToValue (Self -> unit). Admitted.
+
 (*
 trait Animal {
   // Associated function signature; `Self` refers to the implementor type.
@@ -152,7 +161,7 @@ Module Animal.
     `{ToValue Self}
     `{traits.Animal.Trait Self} :
     Prop := {
-      new : exists new,
+      new_exists : exists new,
         IsTraitMethod 
         (* (trait_name : string) *)
         "traits.Animal.Trait" 
@@ -170,6 +179,21 @@ Module Animal.
           (new [] []) (* NOTE: What should be the two list here for this function? *)
           (* (result : Value.t + Exception.t)  *)
           (inl (φ traits.Animal.new));
+
+      name_exists : exists name,
+        IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "name" name 
+        /\
+        Run.pure (name [] []) (inl (φ traits.Animal.name));
+
+      noise_exists : exists noise, 
+        IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "noise" noise 
+          /\
+          Run.pure (noise [] []) (inl (φ traits.Animal.noise));
+
+      talk_exists : exists talk,
+        IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "talk" talk 
+        /\
+        Run.pure (talk [] []) (inl (φ traits.Animal.talk));
   }.
 End Animal.
 
