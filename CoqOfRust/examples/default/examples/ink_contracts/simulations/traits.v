@@ -169,8 +169,8 @@ Module Animal.
 
       noise_exists : exists noise, 
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "noise" noise 
-          /\
-          Run.pure (noise [] []) (inl (φ traits.Animal.noise));
+        /\
+        Run.pure (noise [] []) (inl (φ traits.Animal.noise));
 
       talk_exists : exists talk,
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "talk" talk 
