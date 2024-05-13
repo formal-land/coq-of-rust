@@ -142,21 +142,6 @@ Module Animal.
     talk (self: Self) : unit;
   }.
 
-  (* 
-  Error: Unable to satisfy the following constraints:
-  In environment:
-  TraitHasRun : forall Self : Set,
-                ToValue Self -> Trait Self -> Prop
-  Self : Set
-  H : ToValue Self
-  H0 : Trait Self
-  new : list Ty.t -> list Value.t -> M
-
-  ?ToValue : "ToValue (string -> ?Self)"
-
-  ?Trait : "Trait ?Self"
-  *)
-
   Record TraitHasRun (Self : Set)
     `{ToValue Self}
     `{traits.Animal.Trait Self} :
