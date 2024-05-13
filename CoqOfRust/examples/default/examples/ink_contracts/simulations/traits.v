@@ -7,6 +7,8 @@ Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.bool.
 Require Import CoqOfRust.simulations.M.
 
+Require Import CoqOfRust.proofs.M.
+
 Import simulations.M.Notations.
 Import simulations.bool.Notations.
 
@@ -125,14 +127,50 @@ trait Animal {
 
 Module Animal.
   Class Trait (Self : Set) : Set := {
-    new (name: string) : traits.Sheep.t; 
-    name (self: traits.Sheep.t) : string;
-    noise (self: traits.Sheep.t) : string;
-    talk (self: traits.Sheep.t) : unit;
+    new (name: string) : Self;
+    name (self: Self) : string;
+    noise (self: Self) : string;
+    talk (self: Self) : unit;
   }.
 
-  (* TODO: Define the `TraitHasRun` struct to express that `Sheep` implements `Animal` *)
+  (* 
+  Error: Unable to satisfy the following constraints:
+  In environment:
+  TraitHasRun : forall Self : Set,
+                ToValue Self -> Trait Self -> Prop
+  Self : Set
+  H : ToValue Self
+  H0 : Trait Self
+  new : list Ty.t -> list Value.t -> M
 
+  ?ToValue : "ToValue (string -> ?Self)"
+
+  ?Trait : "Trait ?Self"
+  *)
+
+  Record TraitHasRun (Self : Set)
+    `{ToValue Self}
+    `{traits.Animal.Trait Self} :
+    Prop := {
+      new : exists new,
+        IsTraitMethod 
+        (* (trait_name : string) *)
+        "traits.Animal.Trait" 
+        (* (self_ty : Ty.t) *)
+        (Φ Self) 
+        (* (trait_tys : list Ty.t) *)
+        [ ] 
+        (* (method_name : string) *)
+        "new" 
+        (* (method : list Ty.t -> list Value.t -> M) *)
+        new
+        /\ 
+        Run.pure 
+          (* (e : M)  *)
+          (new [] []) (* NOTE: What should be the two list here for this function? *)
+          (* (result : Value.t + Exception.t)  *)
+          (inl (φ traits.Animal.new));
+  }.
 End Animal.
 
 (*
