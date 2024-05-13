@@ -109,13 +109,10 @@ Definition shear (self: traits.Sheep.t) : MS? State.t string unit :=
   in
   returnS? tt.
 
-(* Misc: Instances for string's ToValue *)
+(* Missing ToValue instances to define TraitHasRun *)
 Global Instance IsToValue_string : ToValue string. Admitted.
-
 Global Instance IsToValue_string_self {Self : Set} : ToValue (string -> Self). Admitted.
-
 Global Instance IsToValue_self_string {Self : Set} : ToValue (Self -> string). Admitted.
-
 Global Instance IsToValue_self_unit {Self : Set} : ToValue (Self -> unit). Admitted.
 
 (*
