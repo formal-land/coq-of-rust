@@ -2,7 +2,6 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
-use crate::render::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
@@ -12,25 +11,48 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::TyKind;
 use std::rc::Rc;
 
-fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
+fn path_of_bin_op(
+    env: &Env,
+    span: &rustc_span::Span,
+    bin_op: &BinOp,
+    lhs_ty: &rustc_middle::ty::Ty,
+) -> (&'static str, CallKind, Vec<Rc<Expr>>) {
+    let integer_ty_name = crate::ty::get_integer_ty_name(lhs_ty);
+    let additional_args = match bin_op {
+        BinOp::Add | BinOp::Sub | BinOp::Mul | BinOp::Div | BinOp::Rem => match integer_ty_name {
+            Some(integer_ty_name) => vec![Expr::local_var(integer_ty_name.as_str())],
+            None => {
+                emit_warning_with_note(
+                    env,
+                    span,
+                    "Expected an integer type for the parameters",
+                    Some("Please report 🙏"),
+                );
+
+                vec![Expr::local_var("Integer.Usize")]
+            }
+        },
+        _ => vec![],
+    };
+
     match bin_op {
-        BinOp::Add => ("BinOp.Panic.add", CallKind::Effectful),
-        BinOp::Sub => ("BinOp.Panic.sub", CallKind::Effectful),
-        BinOp::Mul => ("BinOp.Panic.mul", CallKind::Effectful),
-        BinOp::Div => ("BinOp.Panic.div", CallKind::Effectful),
-        BinOp::Rem => ("BinOp.Panic.rem", CallKind::Effectful),
-        BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure),
-        BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure),
-        BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure),
-        BinOp::Shl => ("BinOp.Panic.shl", CallKind::Effectful),
-        BinOp::Shr => ("BinOp.Panic.shr", CallKind::Effectful),
-        BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure),
-        BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure),
-        BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure),
-        BinOp::Le => ("BinOp.Pure.le", CallKind::Pure),
-        BinOp::Ge => ("BinOp.Pure.ge", CallKind::Pure),
-        BinOp::Gt => ("BinOp.Pure.gt", CallKind::Pure),
-        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure),
+        BinOp::Add => ("BinOp.Panic.add", CallKind::Effectful, additional_args),
+        BinOp::Sub => ("BinOp.Panic.sub", CallKind::Effectful, additional_args),
+        BinOp::Mul => ("BinOp.Panic.mul", CallKind::Effectful, additional_args),
+        BinOp::Div => ("BinOp.Panic.div", CallKind::Effectful, additional_args),
+        BinOp::Rem => ("BinOp.Panic.rem", CallKind::Effectful, additional_args),
+        BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure, additional_args),
+        BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure, additional_args),
+        BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure, additional_args),
+        BinOp::Shl => ("BinOp.Panic.shl", CallKind::Effectful, additional_args),
+        BinOp::Shr => ("BinOp.Panic.shr", CallKind::Effectful, additional_args),
+        BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure, additional_args),
+        BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure, additional_args),
+        BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure, additional_args),
+        BinOp::Le => ("BinOp.Pure.le", CallKind::Pure, additional_args),
+        BinOp::Ge => ("BinOp.Pure.ge", CallKind::Pure, additional_args),
+        BinOp::Gt => ("BinOp.Pure.gt", CallKind::Pure, additional_args),
+        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure, additional_args),
         _ => todo!(),
     }
 }
@@ -95,7 +117,7 @@ fn build_inner_match(
                             is_monadic: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
-                                func: Expr::local_var("M.get_struct_record_field_or_break_match"),
+                                func: Expr::local_var("M.SubPointer.get_struct_record_field"),
                                 args: vec![
                                     Expr::local_var(&scrutinee),
                                     Rc::new(Expr::InternalString(path.to_string())),
@@ -123,7 +145,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_struct_tuple_field_or_break_match"),
+                            func: Expr::local_var("M.SubPointer.get_struct_tuple_field"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalString(path.to_string())),
@@ -208,12 +230,12 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_{index}")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_tuple_field"),
+                            func: Expr::local_var("M.SubPointer.get_tuple_field"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(index)),
                             ],
-                            kind: CallKind::Pure,
+                            kind: CallKind::Effectful,
                         }),
                         body,
                     })
@@ -273,7 +295,7 @@ fn build_inner_match(
                                 is_monadic: false,
                                 name: Some(format!("γ{depth}_rev{index}")),
                                 init: Rc::new(Expr::Call {
-                                    func: Expr::local_var("M.get_slice_rev_index_or_break_match"),
+                                    func: Expr::local_var("M.SubPointer.get_slice_rev_index"),
                                     args: vec![
                                         Expr::local_var(&scrutinee),
                                         Rc::new(Expr::InternalInteger(index)),
@@ -290,7 +312,7 @@ fn build_inner_match(
                         is_monadic: false,
                         name: Some(format!("γ{depth}_rest")),
                         init: Rc::new(Expr::Call {
-                            func: Expr::local_var("M.get_slice_rest_or_break_match"),
+                            func: Expr::local_var("M.SubPointer.get_slice_rest"),
                             args: vec![
                                 Expr::local_var(&scrutinee),
                                 Rc::new(Expr::InternalInteger(prefix_patterns.len())),
@@ -310,7 +332,7 @@ fn build_inner_match(
                             is_monadic: false,
                             name: Some(format!("γ{depth}_{index}")),
                             init: Rc::new(Expr::Call {
-                                func: Expr::local_var("M.get_slice_index_or_break_match"),
+                                func: Expr::local_var("M.SubPointer.get_slice_index"),
                                 args: vec![
                                     Expr::local_var(&scrutinee),
                                     Rc::new(Expr::InternalInteger(index)),
@@ -396,31 +418,6 @@ fn get_if_conditions<'a>(
     }
 }
 
-fn compile_literal_integer(
-    env: &Env,
-    span: &rustc_span::Span,
-    ty: &rustc_middle::ty::Ty,
-    negative_sign: bool,
-    integer: u128,
-) -> LiteralInteger {
-    let uncapitalized_name = match ty.kind() {
-        TyKind::Int(int_ty) => format!("{int_ty:?}"),
-        TyKind::Uint(uint_ty) => format!("{uint_ty:?}"),
-        _ => {
-            emit_warning_with_note(env, span, "Unknown integer type", Some("Please report 🙏"));
-
-            "unknown_kind_of_integer".to_string()
-        }
-    };
-    let name = capitalize(&uncapitalized_name);
-
-    LiteralInteger {
-        name,
-        negative_sign,
-        value: integer,
-    }
-}
-
 pub(crate) fn compile_expr<'a>(
     env: &Env<'a>,
     generics: &'a rustc_middle::ty::Generics,
@@ -501,13 +498,14 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Deref { arg } => compile_expr(env, generics, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let (path, kind) = path_of_bin_op(op);
+            let lhs_ty = &thir.exprs.get(*lhs).unwrap().ty;
+            let (path, kind, additional_args) = path_of_bin_op(env, &expr.span, op, lhs_ty);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
-                args: vec![lhs.read(), rhs.read()],
+                args: [additional_args, vec![lhs.read(), rhs.read()]].concat(),
                 kind,
             })
             .alloc()
@@ -528,15 +526,33 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Unary { op, arg } => {
-            let (path, kind) = match op {
-                UnOp::Not => ("UnOp.Pure.not", CallKind::Pure),
-                UnOp::Neg => ("UnOp.Panic.neg", CallKind::Effectful),
+            let (path, kind, additional_args) = match op {
+                UnOp::Not => ("UnOp.Pure.not", CallKind::Pure, vec![]),
+                UnOp::Neg => {
+                    let arg_ty = &thir.exprs.get(*arg).unwrap().ty;
+                    let integer_ty_name = crate::ty::get_integer_ty_name(arg_ty);
+                    let additional_args = match integer_ty_name {
+                        Some(integer_ty_name) => vec![Expr::local_var(integer_ty_name.as_str())],
+                        None => {
+                            emit_warning_with_note(
+                                env,
+                                &expr.span,
+                                "Expected an integer type for the parameters",
+                                Some("Please report 🙏"),
+                            );
+
+                            vec![Expr::local_var("Integer.Usize")]
+                        }
+                    };
+
+                    ("UnOp.Panic.neg", CallKind::Effectful, additional_args)
+                }
             };
             let arg = compile_expr(env, generics, thir, arg);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
-                args: vec![arg.read()],
+                args: [additional_args, vec![arg.read()]].concat(),
                 kind,
             })
             .alloc()
@@ -629,7 +645,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
-            let func = Expr::local_var("M.assign");
+            let func = Expr::local_var("M.write");
             let args = vec![
                 compile_expr(env, generics, thir, lhs),
                 compile_expr(env, generics, thir, rhs).read(),
@@ -642,7 +658,8 @@ pub(crate) fn compile_expr<'a>(
             })
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let (path, kind) = path_of_bin_op(op);
+            let lhs_ty = &thir.exprs.get(*lhs).unwrap().ty;
+            let (path, kind, additional_args) = path_of_bin_op(env, &expr.span, op, lhs_ty);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
@@ -651,12 +668,16 @@ pub(crate) fn compile_expr<'a>(
                 name: Some("β".to_string()),
                 init: lhs,
                 body: Rc::new(Expr::Call {
-                    func: Expr::local_var("M.assign"),
+                    func: Expr::local_var("M.write"),
                     args: vec![
                         Expr::local_var("β"),
                         Rc::new(Expr::Call {
                             func: Expr::local_var(path),
-                            args: vec![Expr::local_var("β").read(), rhs.read()],
+                            args: [
+                                additional_args,
+                                vec![Expr::local_var("β").read(), rhs.read()],
+                            ]
+                            .concat(),
                             kind,
                         }),
                     ],
@@ -678,9 +699,9 @@ pub(crate) fn compile_expr<'a>(
                     let name = variant.fields.get(*name).unwrap().name.to_string();
                     let is_name_a_number = name.chars().all(|c| c.is_ascii_digit());
                     let getter_name = if is_name_a_number {
-                        "M.get_struct_tuple_field"
+                        "M.SubPointer.get_struct_tuple_field"
                     } else {
-                        "M.get_struct_record_field"
+                        "M.SubPointer.get_struct_record_field"
                     };
                     let constructor_name = compile_def_id(env, adt_def.did()).to_string();
                     let constructor = Rc::new(Expr::InternalString(constructor_name));
@@ -693,15 +714,15 @@ pub(crate) fn compile_expr<'a>(
                     Rc::new(Expr::Call {
                         func: Expr::local_var(getter_name),
                         args: vec![base, constructor, index],
-                        kind: CallKind::Pure,
+                        kind: CallKind::Effectful,
                     })
                 }
                 None => {
                     // We assume that we are in the case of a tuple.
                     Rc::new(Expr::Call {
-                        func: Expr::local_var("M.get_tuple_field"),
+                        func: Expr::local_var("M.SubPointer.get_tuple_field"),
                         args: vec![base, Rc::new(Expr::InternalInteger(name.as_usize()))],
-                        kind: CallKind::Pure,
+                        kind: CallKind::Effectful,
                     })
                 }
             }
@@ -895,25 +916,25 @@ pub(crate) fn compile_expr<'a>(
             rustc_ast::LitKind::Char(c) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc()
             }
-            rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Rc::new(Literal::Integer(
-                compile_literal_integer(env, &expr.span, &expr.ty, *neg, i),
-            ))))
-            .alloc(),
+            rustc_ast::LitKind::Int(i, _) => {
+                Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
+                    negative_sign: *neg,
+                    value: i,
+                }))))
+                .alloc()
+            }
             rustc_ast::LitKind::Bool(c) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Bool(c)))).alloc()
             }
             _ => Rc::new(Expr::Literal(Rc::new(Literal::Error))),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(Expr::Literal(Rc::new(
-            Literal::Integer(compile_literal_integer(
-                env,
-                &expr.span,
-                &expr.ty,
-                false,
-                lit.try_to_uint(lit.size()).unwrap(),
-            )),
-        )))
-        .alloc(),
+        thir::ExprKind::NonHirLiteral { lit, .. } => {
+            Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
+                negative_sign: false,
+                value: lit.try_to_uint(lit.size()).unwrap(),
+            }))))
+            .alloc()
+        }
         thir::ExprKind::ZstLiteral { .. } => {
             match &expr.ty.kind() {
                 TyKind::FnDef(def_id, generic_args) => {

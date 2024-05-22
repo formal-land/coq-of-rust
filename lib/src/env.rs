@@ -18,6 +18,7 @@ pub(crate) fn emit_warning_with_note(
         .tcx
         .sess
         .struct_span_warn(*span, warning_msg.to_string());
+
     match note_msg {
         Some(note) => warn.note(note.to_string()).emit(),
         None => warn.emit(),

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* Trait *)
 (* Empty module 'PrintInOption' *)
 
-Module Impl_generics_where_clauses_PrintInOption_for_T.
+Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_option_Option_T_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
   
   (*
@@ -74,7 +74,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
-End Impl_generics_where_clauses_PrintInOption_for_T.
+End Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_option_Option_T_for_T.
 
 (*
 fn main() {
@@ -113,12 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 2;
-                              Value.Integer Integer.I32 3
-                            ]
+                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                         |)
                       ]
                     |)

@@ -65,7 +65,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let b := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
         let c :=
           M.alloc (|
-            Value.StructTuple "if_let_match_enum_values::Foo::Qux" [ Value.Integer Integer.U32 100 ]
+            Value.StructTuple "if_let_match_enum_values::Foo::Qux" [ Value.Integer 100 ]
           |) in
         let _ :=
           M.match_operator (|
@@ -147,7 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := c in
                   let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "if_let_match_enum_values::Foo::Qux",
                       0
@@ -208,17 +208,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ := c in
                 let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "if_let_match_enum_values::Foo::Qux",
                     0
                   |) in
                 let value := M.copy (| γ0_0 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.U32 100
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 100 |) in
                 let _ :=
                   let _ :=
                     M.alloc (|

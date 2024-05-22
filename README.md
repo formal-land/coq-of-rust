@@ -83,6 +83,7 @@ Here are other projects working on formal verification for Rust:
 - [Aeneas](https://github.com/AeneasVerif/aeneas): Translation from MIR to purely functional Coq/F* code. Automatically put the code in a functional form. See their paper [Aeneas: Rust verification by functional translation](https://dl.acm.org/doi/abs/10.1145/3547647).
 - [Hacspec v2](https://github.com/hacspec/hacspec-v2): Translation from THIR to Coq/F* code
 - [Creusot](https://github.com/xldenis/creusot): Translation from MIR to Why3 (and then SMT solvers)
+- [Verus](https://github.com/verus-lang/verus): Automatic verification for Rust with annotations
 - [Kani](https://github.com/model-checking/kani): Model-checking with [CBMC](https://github.com/diffblue/cbmc)
 
 ## Contributing

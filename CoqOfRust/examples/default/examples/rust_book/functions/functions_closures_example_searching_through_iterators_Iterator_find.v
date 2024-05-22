@@ -60,12 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 1;
-                              Value.Integer Integer.I32 2;
-                              Value.Integer Integer.I32 3
-                            ]
+                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                         |)
                       ]
                     |)
@@ -98,12 +93,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer Integer.I32 4;
-                              Value.Integer Integer.I32 5;
-                              Value.Integer Integer.I32 6
-                            ]
+                          Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ]
                         |)
                       ]
                     |)
@@ -224,7 +214,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         let x := M.copy (| γ |) in
                                                         BinOp.Pure.eq
                                                           (M.read (| x |))
-                                                          (Value.Integer Integer.I32 2)))
+                                                          (Value.Integer 2)))
                                                   ]
                                                 |)
                                               | _ => M.impossible (||)
@@ -305,7 +295,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         let x := M.copy (| γ |) in
                                                         BinOp.Pure.eq
                                                           (M.read (| x |))
-                                                          (Value.Integer Integer.I32 2)))
+                                                          (Value.Integer 2)))
                                                   ]
                                                 |)
                                               | _ => M.impossible (||)
@@ -324,23 +314,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let array1 :=
-          M.alloc (|
-            Value.Array
-              [
-                Value.Integer Integer.I32 1;
-                Value.Integer Integer.I32 2;
-                Value.Integer Integer.I32 3
-              ]
-          |) in
+          M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
         let array2 :=
-          M.alloc (|
-            Value.Array
-              [
-                Value.Integer Integer.I32 4;
-                Value.Integer Integer.I32 5;
-                Value.Integer Integer.I32 6
-              ]
-          |) in
+          M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ] |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -424,7 +400,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         let x := M.copy (| γ |) in
                                                         BinOp.Pure.eq
                                                           (M.read (| x |))
-                                                          (Value.Integer Integer.I32 2)))
+                                                          (Value.Integer 2)))
                                                   ]
                                                 |)
                                               | _ => M.impossible (||)
@@ -528,7 +504,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         let x := M.copy (| γ |) in
                                                         BinOp.Pure.eq
                                                           (M.read (| M.read (| x |) |))
-                                                          (Value.Integer Integer.I32 2)))
+                                                          (Value.Integer 2)))
                                                   ]
                                                 |)
                                               | _ => M.impossible (||)

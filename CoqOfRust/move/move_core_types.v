@@ -4708,7 +4708,7 @@ Module account_address.
           (M.read (|
             let addr := M.alloc (| repeat (Value.Integer Integer.U8 0) 16 |) in
             let _ :=
-              M.assign (|
+              M.write (|
                 M.get_array_field (|
                   addr,
                   M.alloc (|
@@ -4746,7 +4746,7 @@ Module account_address.
           (M.read (|
             let addr := M.alloc (| repeat (Value.Integer Integer.U8 0) 16 |) in
             let _ :=
-              M.assign (|
+              M.write (|
                 M.get_array_field (|
                   addr,
                   M.alloc (|
@@ -9146,7 +9146,7 @@ Module effects.
                                                         0
                                                       |) in
                                                     let data := M.copy (| γ1_0 |) in
-                                                    M.assign (|
+                                                    M.write (|
                                                       M.read (| r |),
                                                       Value.StructTuple
                                                         "move_core_types::effects::Op::Modify"
@@ -9169,7 +9169,7 @@ Module effects.
                                                         0
                                                       |) in
                                                     let data := M.copy (| γ1_0 |) in
-                                                    M.assign (|
+                                                    M.write (|
                                                       M.read (| r |),
                                                       Value.StructTuple
                                                         "move_core_types::effects::Op::New"
@@ -9185,7 +9185,7 @@ Module effects.
                                                         "move_core_types::effects::Op::Modify",
                                                         0
                                                       |) in
-                                                    M.assign (|
+                                                    M.write (|
                                                       M.read (| r |),
                                                       Value.StructTuple
                                                         "move_core_types::effects::Op::Delete"
@@ -9202,7 +9202,7 @@ Module effects.
                                                         0
                                                       |) in
                                                     let data := M.copy (| γ1_0 |) in
-                                                    M.assign (|
+                                                    M.write (|
                                                       M.read (| r |),
                                                       Value.StructTuple
                                                         "move_core_types::effects::Op::Modify"
@@ -15148,7 +15148,7 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -16619,7 +16619,7 @@ Module identifier.
                           |) in
                         let _ :=
                           let β := i in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.Usize 1 |)
                           |) in
@@ -29157,7 +29157,7 @@ Module parser.
                             |)
                           |) in
                         let _ :=
-                          M.assign (|
+                          M.write (|
                             s,
                             M.call_closure (|
                               M.get_trait_method (|
@@ -40299,7 +40299,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 M.call_closure (|
                   M.get_trait_method (|
@@ -40377,7 +40377,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 M.call_closure (|
                   M.get_trait_method (|
@@ -40455,7 +40455,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 M.call_closure (|
                   M.get_trait_method (|
@@ -40533,7 +40533,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 M.call_closure (|
                   M.get_trait_method (|
@@ -40620,7 +40620,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 M.call_closure (|
                   M.get_trait_method (|
@@ -40707,7 +40707,7 @@ Module u256.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let _ :=
-              M.assign (|
+              M.write (|
                 M.read (| self |),
                 Value.StructTuple
                   "move_core_types::u256::U256"
@@ -41861,7 +41861,7 @@ Module u256.
                 |)
               |) in
             let _ :=
-              M.assign (|
+              M.write (|
                 t,
                 M.call_closure (|
                   M.get_trait_method (|
@@ -63418,7 +63418,7 @@ Module vm_status.
                         |) in
                       let code := M.alloc (| γ1_1 |) in
                       let _ :=
-                        M.assign (|
+                        M.write (|
                           status,
                           M.read (|
                             let res :=

@@ -8,9 +8,7 @@ fn some_number() -> Option<u32> {
 *)
 Definition some_number (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
-  | [], [] =>
-    ltac:(M.monadic
-      (Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.U32 42 ]))
+  | [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ Value.Integer 42 ]))
   | _, _ => M.impossible
   end.
 
@@ -43,17 +41,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.U32 42
-                  |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 42 |) in
                 let _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -100,11 +90,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let n := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|

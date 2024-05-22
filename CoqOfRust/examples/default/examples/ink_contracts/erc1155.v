@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
       ];
   } *)
 
-Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
+Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
   
   (* Default *)
@@ -57,7 +57,7 @@ Module Impl_core_default_Default_for_erc1155_Mapping_K_V.
       (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
-End Impl_core_default_Default_for_erc1155_Mapping_K_V.
+End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
 
 Module Impl_erc1155_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc1155::Mapping") [ K; V ].
@@ -218,8 +218,12 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (M.read (| self |)) "erc1155::AccountId" 0 |))
-          (M.read (| M.get_struct_tuple_field (M.read (| other |)) "erc1155::AccountId" 0 |))))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc1155::AccountId", 0 |)
+          |))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc1155::AccountId", 0 |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -275,7 +279,7 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
           "into",
           []
         |),
-        [ repeat (Value.Integer Integer.U8 0) 32 ]
+        [ repeat (Value.Integer 0) 32 ]
       |)))
   | _, _ => M.impossible
   end.
@@ -284,26 +288,14 @@ Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array
-          [
-            Value.Integer Integer.U8 242;
-            Value.Integer Integer.U8 58;
-            Value.Integer Integer.U8 110;
-            Value.Integer Integer.U8 97
-          ]
+        Value.Array [ Value.Integer 242; Value.Integer 58; Value.Integer 110; Value.Integer 97 ]
       |))).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t :=
   M.run
     ltac:(M.monadic
       (M.alloc (|
-        Value.Array
-          [
-            Value.Integer Integer.U8 188;
-            Value.Integer Integer.U8 25;
-            Value.Integer Integer.U8 124;
-            Value.Integer Integer.U8 129
-          ]
+        Value.Array [ Value.Integer 188; Value.Integer 25; Value.Integer 124; Value.Integer 129 ]
       |))).
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
@@ -522,7 +514,9 @@ Module Impl_erc1155_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "erc1155::Env" "caller" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc1155::Env", "caller" |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -719,8 +713,12 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β :=
-              M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "token_id_nonce" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U128 1 |) |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "erc1155::Contract",
+                "token_id_nonce"
+              |) in
+            M.write (| β, BinOp.Panic.add (| Integer.U128, M.read (| β |), Value.Integer 1 |) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -732,15 +730,20 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "erc1155::Contract",
+                    "balances"
+                  |);
                   Value.Tuple
                     [
                       M.read (| caller |);
                       M.read (|
-                        M.get_struct_record_field
-                          (M.read (| self |))
-                          "erc1155::Contract"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "erc1155::Contract",
                           "token_id_nonce"
+                        |)
                       |)
                     ];
                   M.read (| value |)
@@ -777,9 +780,7 @@ Module Impl_erc1155_Contract.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.eq
-                                              (M.read (| value |))
-                                              (Value.Integer Integer.U128 0)
+                                            BinOp.Pure.eq (M.read (| value |)) (Value.Integer 0)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -801,10 +802,11 @@ Module Impl_erc1155_Contract.
                             |));
                           ("token_id",
                             M.read (|
-                              M.get_struct_record_field
-                                (M.read (| self |))
-                                "erc1155::Contract"
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "erc1155::Contract",
                                 "token_id_nonce"
+                              |)
                             |));
                           ("value", M.read (| value |))
                         ]
@@ -812,7 +814,11 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "token_id_nonce"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "erc1155::Contract",
+            "token_id_nonce"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -861,10 +867,11 @@ Module Impl_erc1155_Contract.
                                 (BinOp.Pure.le
                                   (M.read (| token_id |))
                                   (M.read (|
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "erc1155::Contract"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "erc1155::Contract",
                                       "token_id_nonce"
+                                    |)
                                   |)))
                             |)) in
                         let _ :=
@@ -920,7 +927,11 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc1155::Contract",
+                        "balances"
+                      |);
                       Value.Tuple [ M.read (| caller |); M.read (| token_id |) ];
                       M.read (| value |)
                     ]
@@ -1025,7 +1036,11 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc1155::Contract",
+                        "balances"
+                      |);
                       M.alloc (| Value.Tuple [ M.read (| from |); M.read (| token_id |) ] |)
                     ]
                   |);
@@ -1037,7 +1052,10 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β := sender_balance in
-            M.assign (| β, BinOp.Panic.sub (| M.read (| β |), M.read (| value |) |) |) in
+            M.write (|
+              β,
+              BinOp.Panic.sub (| Integer.U128, M.read (| β |), M.read (| value |) |)
+            |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1049,7 +1067,11 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "erc1155::Contract",
+                    "balances"
+                  |);
                   Value.Tuple [ M.read (| from |); M.read (| token_id |) ];
                   M.read (| sender_balance |)
                 ]
@@ -1074,17 +1096,24 @@ Module Impl_erc1155_Contract.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc1155::Contract",
+                        "balances"
+                      |);
                       M.alloc (| Value.Tuple [ M.read (| to |); M.read (| token_id |) ] |)
                     ]
                   |);
-                  M.read (| M.use (M.alloc (| Value.Integer Integer.U128 0 |)) |)
+                  M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
                 ]
               |)
             |) in
           let _ :=
             let β := recipient_balance in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| value |) |) |) in
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U128, M.read (| β |), M.read (| value |) |)
+            |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1096,7 +1125,11 @@ Module Impl_erc1155_Contract.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "erc1155::Contract",
+                    "balances"
+                  |);
                   Value.Tuple [ M.read (| to |); M.read (| token_id |) ];
                   M.read (| recipient_balance |)
                 ]
@@ -1271,7 +1304,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
             []
           |),
           [
-            M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "approvals";
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "erc1155::Contract",
+              "approvals"
+            |);
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
@@ -1306,11 +1343,15 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "erc1155::Contract" "balances";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "erc1155::Contract",
+                  "balances"
+                |);
                 M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| token_id |) ] |)
               ]
             |);
-            M.read (| M.use (M.alloc (| Value.Integer Integer.U128 0 |)) |)
+            M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
           ]
         |)))
     | _, _ => M.impossible
@@ -2043,13 +2084,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let γ1_0 := M.read (| γ1_0 |) in
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
@@ -2185,13 +2226,13 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let γ1_0 := M.read (| γ1_0 |) in
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
@@ -2244,7 +2285,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ token_ids; Value.Integer Integer.Usize 0 ]
+                          [ token_ids; Value.Integer 0 ]
                         |)
                       |);
                       M.read (|
@@ -2258,7 +2299,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             "index",
                             []
                           |),
-                          [ values; Value.Integer Integer.Usize 0 ]
+                          [ values; Value.Integer 0 ]
                         |)
                       |);
                       M.read (| data |)
@@ -2354,7 +2395,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::option::Option::Some",
                                         0
@@ -2414,7 +2455,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ0_0 :=
-                                                              M.get_struct_tuple_field_or_break_match (|
+                                                              M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
@@ -2589,10 +2630,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "erc1155::Contract"
-                                  "approvals";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "erc1155::Contract",
+                                  "approvals"
+                                |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ];
                                 Value.Tuple []
                               ]
@@ -2617,10 +2659,11 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                 []
                               |),
                               [
-                                M.get_struct_record_field
-                                  (M.read (| self |))
-                                  "erc1155::Contract"
-                                  "approvals";
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "erc1155::Contract",
+                                  "approvals"
+                                |);
                                 Value.Tuple [ M.read (| caller |); M.read (| operator |) ]
                               ]
                             |)

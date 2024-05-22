@@ -30,8 +30,12 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
-          (M.read (| M.get_struct_tuple_field (M.read (| self |)) "derive::Centimeters" 0 |))
-          (M.read (| M.get_struct_tuple_field (M.read (| other |)) "derive::Centimeters" 0 |))))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |)
+          |))
+          (M.read (|
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -62,8 +66,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
             []
           |),
           [
-            M.get_struct_tuple_field (M.read (| self |)) "derive::Centimeters" 0;
-            M.get_struct_tuple_field (M.read (| other |)) "derive::Centimeters" 0
+            M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |);
+            M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
           ]
         |)))
     | _, _ => M.impossible
@@ -105,7 +109,9 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
             M.read (| Value.String "Inches" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "derive::Inches" 0 |))
+              (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Inches", 0 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -141,14 +147,14 @@ Module Impl_derive_Inches.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.get_struct_tuple_field_or_break_match (| γ, "derive::Inches", 0 |) in
+                  let γ1_0 := M.SubPointer.get_struct_tuple_field (| γ, "derive::Inches", 0 |) in
                   let inches := M.copy (| γ1_0 |) in
                   M.alloc (|
                     Value.StructTuple
                       "derive::Centimeters"
                       [
                         BinOp.Panic.mul (|
+                          Integer.Usize,
                           M.rust_cast (M.read (| inches |)),
                           M.read (| UnsupportedLiteral |)
                         |)
@@ -203,10 +209,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _one_second :=
-          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer Integer.I32 1 ] |) in
-        let foot :=
-          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer Integer.I32 12 ] |) in
+        let _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
+        let foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
         let _ :=
           let _ :=
             M.alloc (|

@@ -28,7 +28,11 @@ Module Impl_generics_implementation_Val.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.get_struct_record_field (M.read (| self |)) "generics_implementation::Val" "val"))
+        M.SubPointer.get_struct_record_field (|
+          M.read (| self |),
+          "generics_implementation::Val",
+          "val"
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -49,7 +53,11 @@ Module Impl_generics_implementation_GenVal_T.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.get_struct_record_field (M.read (| self |)) "generics_implementation::GenVal" "gen_val"))
+        M.SubPointer.get_struct_record_field (|
+          M.read (| self |),
+          "generics_implementation::GenVal",
+          "gen_val"
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -79,9 +87,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let y :=
           M.alloc (|
-            Value.StructRecord
-              "generics_implementation::GenVal"
-              [ ("gen_val", Value.Integer Integer.I32 3) ]
+            Value.StructRecord "generics_implementation::GenVal" [ ("gen_val", Value.Integer 3) ]
           |) in
         let _ :=
           let _ :=

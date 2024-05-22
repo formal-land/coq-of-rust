@@ -30,15 +30,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Integer Integer.I32 1 |),
+            M.alloc (| Value.Integer 1 |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (|
-                      M.read (| γ |),
-                      Value.Integer Integer.I32 0
-                    |) in
+                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
                   M.alloc (| Value.Bool false |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
             ]
@@ -51,8 +47,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer Integer.I32 0 |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 1 |)))
+                  M.alloc (| Value.Integer 0 |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
             ]
           |) in
         let _ :=
@@ -63,7 +59,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool false |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer Integer.I32 2 |)));
+                  M.alloc (| Value.Integer 2 |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -74,7 +70,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ := M.use (M.alloc (| Value.Bool false |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer Integer.I32 3 |)));
+                          M.alloc (| Value.Integer 3 |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -88,8 +84,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (| Value.Integer Integer.I32 4 |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.I32 5 |)))
+                                  M.alloc (| Value.Integer 4 |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
                             ]
                           |)))
                     ]

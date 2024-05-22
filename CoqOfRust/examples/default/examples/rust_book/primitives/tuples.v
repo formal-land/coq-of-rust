@@ -20,8 +20,8 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let int_param := M.copy (| γ0_0 |) in
                 let bool_param := M.copy (| γ0_1 |) in
                 M.alloc (| Value.Tuple [ M.read (| bool_param |); M.read (| int_param |) ] |)))
@@ -58,14 +58,19 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
             M.read (| f |);
             M.read (| Value.String "Matrix" |);
             (* Unsize *)
-            M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "tuples::Matrix" 0);
-            (* Unsize *)
-            M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "tuples::Matrix" 1);
-            (* Unsize *)
-            M.pointer_coercion (M.get_struct_tuple_field (M.read (| self |)) "tuples::Matrix" 2);
+            M.pointer_coercion
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 0 |));
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "tuples::Matrix" 3 |))
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 1 |));
+            (* Unsize *)
+            M.pointer_coercion
+              (M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 2 |));
+            (* Unsize *)
+            M.pointer_coercion
+              (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "tuples::Matrix", 3 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -132,14 +137,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer Integer.U8 1;
-                Value.Integer Integer.U16 2;
-                Value.Integer Integer.U32 3;
-                Value.Integer Integer.U64 4;
-                Value.Integer Integer.I8 (-1);
-                Value.Integer Integer.I16 (-2);
-                Value.Integer Integer.I32 (-3);
-                Value.Integer Integer.I64 (-4);
+                Value.Integer 1;
+                Value.Integer 2;
+                Value.Integer 3;
+                Value.Integer 4;
+                Value.Integer (-1);
+                Value.Integer (-2);
+                Value.Integer (-3);
+                Value.Integer (-4);
                 M.read (| UnsupportedLiteral |);
                 M.read (| UnsupportedLiteral |);
                 Value.UnicodeChar 97;
@@ -176,7 +181,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u8" ]
                                 |),
-                                [ M.get_tuple_field long_tuple 0 ]
+                                [ M.SubPointer.get_tuple_field (| long_tuple, 0 |) ]
                               |)
                             ]
                         |))
@@ -216,7 +221,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u16" ]
                                 |),
-                                [ M.get_tuple_field long_tuple 1 ]
+                                [ M.SubPointer.get_tuple_field (| long_tuple, 1 |) ]
                               |)
                             ]
                         |))
@@ -230,14 +235,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Tuple
-                  [
-                    Value.Integer Integer.U8 1;
-                    Value.Integer Integer.U16 2;
-                    Value.Integer Integer.U32 2
-                  ];
-                Value.Tuple [ Value.Integer Integer.U64 4; Value.Integer Integer.I8 (-1) ];
-                Value.Integer Integer.I16 (-2)
+                Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 2 ];
+                Value.Tuple [ Value.Integer 4; Value.Integer (-1) ];
+                Value.Integer (-2)
               ]
           |) in
         let _ :=
@@ -287,7 +287,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let pair_ := M.alloc (| Value.Tuple [ Value.Integer Integer.I32 1; Value.Bool true ] |) in
+        let pair_ := M.alloc (| Value.Tuple [ Value.Integer 1; Value.Bool true ] |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -402,7 +402,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.tuple [ Ty.path "u32" ] ]
                                 |),
-                                [ M.alloc (| Value.Tuple [ Value.Integer Integer.U32 5 ] |) ]
+                                [ M.alloc (| Value.Tuple [ Value.Integer 5 ] |) ]
                               |)
                             ]
                         |))
@@ -442,7 +442,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_debug",
                                   [ Ty.path "u32" ]
                                 |),
-                                [ M.alloc (| Value.Integer Integer.U32 5 |) ]
+                                [ M.alloc (| Value.Integer 5 |) ]
                               |)
                             ]
                         |))
@@ -456,7 +456,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.Tuple
               [
-                Value.Integer Integer.I32 1;
+                Value.Integer 1;
                 M.read (| Value.String "hello" |);
                 M.read (| UnsupportedLiteral |);
                 Value.Bool true
@@ -467,10 +467,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let γ0_2 := M.get_tuple_field γ 2 in
-                let γ0_3 := M.get_tuple_field γ 3 in
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
                 let a := M.copy (| γ0_0 |) in
                 let b := M.copy (| γ0_1 |) in
                 let c := M.copy (| γ0_2 |) in

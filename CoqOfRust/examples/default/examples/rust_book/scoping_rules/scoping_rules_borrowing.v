@@ -161,10 +161,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 5 ]
+              [ Value.Integer 5 ]
             |)
           |) in
-        let stacked_i32 := M.alloc (| Value.Integer Integer.I32 6 |) in
+        let stacked_i32 := M.alloc (| Value.Integer 6 |) in
         let _ :=
           M.alloc (|
             M.call_closure (|

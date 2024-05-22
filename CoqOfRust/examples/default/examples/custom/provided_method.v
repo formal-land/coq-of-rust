@@ -9,7 +9,8 @@ Module ProvidedAndRequired.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.add (|
-          Value.Integer Integer.I32 42,
+          Integer.I32,
+          Value.Integer 42,
           M.call_closure (|
             M.get_trait_method (|
               "provided_method::ProvidedAndRequired",
@@ -80,7 +81,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Integer Integer.I32 0))
+        Value.Integer 0))
     | _, _ => M.impossible
     end.
   
@@ -106,7 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 5 |) in
+        let x := M.alloc (| Value.Integer 5 |) in
         let _ :=
           M.match_operator (|
             M.alloc (|
@@ -124,14 +125,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ x ]
                     |)
                   |);
-                  M.alloc (| Value.Integer Integer.I32 47 |)
+                  M.alloc (| Value.Integer 47 |)
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -178,7 +179,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let y := M.alloc (| Value.Integer Integer.U32 5 |) in
+        let y := M.alloc (| Value.Integer 5 |) in
         let _ :=
           M.match_operator (|
             M.alloc (|
@@ -196,14 +197,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ y ]
                     |)
                   |);
-                  M.alloc (| Value.Integer Integer.I32 0 |)
+                  M.alloc (| Value.Integer 0 |)
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

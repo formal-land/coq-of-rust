@@ -33,12 +33,20 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
             M.read (| Value.String "length" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "length");
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "generics_bounds::Rectangle",
+                "length"
+              |));
             M.read (| Value.String "height" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "height"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "generics_bounds::Rectangle",
+                  "height"
+                |)
               |))
           ]
         |)))
@@ -74,11 +82,20 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         BinOp.Panic.mul (|
+          Integer.Usize,
           M.read (|
-            M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "length"
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "generics_bounds::Rectangle",
+              "length"
+            |)
           |),
           M.read (|
-            M.get_struct_record_field (M.read (| self |)) "generics_bounds::Rectangle" "height"
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "generics_bounds::Rectangle",
+              "height"
+            |)
           |)
         |)))
     | _, _ => M.impossible

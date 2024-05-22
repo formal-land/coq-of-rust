@@ -24,10 +24,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use
-                    (M.alloc (|
-                      BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
-                    |)) in
+                  M.use (M.alloc (| BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer 0) |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
@@ -42,7 +39,9 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (| BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |) |)))
+                (M.alloc (|
+                  BinOp.Panic.div (| Integer.I32, M.read (| dividend |), M.read (| divisor |) |)
+                |)))
           ]
         |)
       |)))
@@ -77,14 +76,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer Integer.I32 0 ]
+              [ Value.Integer 0 ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::division", [] |),
-              [ Value.Integer Integer.I32 3; Value.Integer Integer.I32 0 ]
+              [ Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
         let _ :=

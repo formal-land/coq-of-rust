@@ -25,10 +25,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use
-                    (M.alloc (|
-                      BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer Integer.I32 0)
-                    |)) in
+                  M.use (M.alloc (| BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer 0) |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
@@ -36,7 +33,8 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |) ]
+                    [ BinOp.Panic.div (| Integer.I32, M.read (| dividend |), M.read (| divisor |) |)
+                    ]
                 |)))
           ]
         |)
@@ -127,11 +125,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let quotient := M.copy (| γ0_0 |) in
                 let _ :=
                   M.alloc (|
@@ -231,14 +225,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
-              [ Value.Integer Integer.I32 4; Value.Integer Integer.I32 2 ]
+              [ Value.Integer 4; Value.Integer 2 ]
             |)
           |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
-              [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 0 ]
+              [ Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
         let none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in

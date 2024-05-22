@@ -107,13 +107,13 @@ Module Impl_enums_testcase_linked_list_List.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "enums_testcase_linked_list::List::Cons",
                       0
                     |) in
                   let γ0_1 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "enums_testcase_linked_list::List::Cons",
                       1
@@ -121,7 +121,8 @@ Module Impl_enums_testcase_linked_list_List.
                   let tail := M.alloc (| γ0_1 |) in
                   M.alloc (|
                     BinOp.Panic.add (|
-                      Value.Integer Integer.U32 1,
+                      Integer.U32,
+                      Value.Integer 1,
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "enums_testcase_linked_list::List",
@@ -132,7 +133,7 @@ Module Impl_enums_testcase_linked_list_List.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer Integer.U32 0 |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
             ]
           |)
         |)))
@@ -167,13 +168,13 @@ Module Impl_enums_testcase_linked_list_List.
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "enums_testcase_linked_list::List::Cons",
                       0
                     |) in
                   let γ0_1 :=
-                    M.get_struct_tuple_field_or_break_match (|
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
                       "enums_testcase_linked_list::List::Cons",
                       1
@@ -298,7 +299,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|
@@ -306,11 +307,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer Integer.U32 1 ]
+              [ M.read (| list |); Value.Integer 1 ]
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|
@@ -318,11 +319,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer Integer.U32 2 ]
+              [ M.read (| list |); Value.Integer 2 ]
             |)
           |) in
         let _ :=
-          M.assign (|
+          M.write (|
             list,
             M.call_closure (|
               M.get_associated_function (|
@@ -330,7 +331,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "prepend",
                 []
               |),
-              [ M.read (| list |); Value.Integer Integer.U32 3 ]
+              [ M.read (| list |); Value.Integer 3 ]
             |)
           |) in
         let _ :=

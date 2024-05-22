@@ -14,13 +14,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let _ :=
           M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer Integer.I32 1;
-                Value.Integer Integer.I32 2;
-                Value.Integer Integer.I32 3;
-                Value.Integer Integer.I32 4
-              ]
+            Value.Tuple [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4 ]
           |) in
         let _ :=
           M.alloc (|
@@ -48,12 +42,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [
                         M.alloc (|
                           Value.Array
-                            [
-                              Value.Integer Integer.I32 5;
-                              Value.Integer Integer.I32 6;
-                              Value.Integer Integer.I32 7;
-                              Value.Integer Integer.I32 8
-                            ]
+                            [ Value.Integer 5; Value.Integer 6; Value.Integer 7; Value.Integer 8 ]
                         |)
                       ]
                     |)

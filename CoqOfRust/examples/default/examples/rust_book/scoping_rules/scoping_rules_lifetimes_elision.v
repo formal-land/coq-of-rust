@@ -157,7 +157,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 3 |) in
+        let x := M.alloc (| Value.Integer 3 |) in
         let _ :=
           M.alloc (|
             M.call_closure (|

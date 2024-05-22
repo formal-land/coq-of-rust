@@ -1,0 +1,10 @@
+warning: Expected an integer type for the parameters
+  --> examples/rust_book/generics/generics_phantom_type_test_case_unit_clarification.rs:24:16
+   |
+24 |         Length(self.0 + rhs.0, PhantomData)
+   |                ^^^^^^^^^^^^^^
+   |
+   = note: Please report 🙏
+
+warning: 1 warning emitted
+

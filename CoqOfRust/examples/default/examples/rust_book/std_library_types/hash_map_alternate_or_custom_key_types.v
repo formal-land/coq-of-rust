@@ -43,14 +43,16 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "hash_map_alternate_or_custom_key_types::Account"
-                "username";
-              M.get_struct_record_field
-                (M.read (| other |))
-                "hash_map_alternate_or_custom_key_types::Account"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "hash_map_alternate_or_custom_key_types::Account",
                 "username"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "hash_map_alternate_or_custom_key_types::Account",
+                "username"
+              |)
             ]
           |),
           ltac:(M.monadic
@@ -63,14 +65,16 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "hash_map_alternate_or_custom_key_types::Account"
-                  "password";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "hash_map_alternate_or_custom_key_types::Account"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "hash_map_alternate_or_custom_key_types::Account",
                   "password"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "hash_map_alternate_or_custom_key_types::Account",
+                  "password"
+                |)
               ]
             |)))
         |)))
@@ -152,10 +156,11 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
                   [ __H ]
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "hash_map_alternate_or_custom_key_types::Account"
-                    "username";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "hash_map_alternate_or_custom_key_types::Account",
+                    "username"
+                  |);
                   M.read (| state |)
                 ]
               |)
@@ -170,10 +175,11 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
                 [ __H ]
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "hash_map_alternate_or_custom_key_types::Account"
-                  "password";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "hash_map_alternate_or_custom_key_types::Account",
+                  "password"
+                |);
                 M.read (| state |)
               ]
             |)
@@ -361,11 +367,7 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let account_info := M.copy (| γ0_0 |) in
                 let _ :=
                   let _ :=
@@ -427,10 +429,11 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| account_info |))
-                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| account_info |),
+                                            "hash_map_alternate_or_custom_key_types::AccountInfo",
                                             "name"
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -476,10 +479,11 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
                                           [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                         |),
                                         [
-                                          M.get_struct_record_field
-                                            (M.read (| account_info |))
-                                            "hash_map_alternate_or_custom_key_types::AccountInfo"
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| account_info |),
+                                            "hash_map_alternate_or_custom_key_types::AccountInfo",
                                             "email"
+                                          |)
                                         ]
                                       |)
                                     ]

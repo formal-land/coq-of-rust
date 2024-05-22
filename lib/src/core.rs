@@ -131,7 +131,9 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
         hash_untracked_state: None,
         using_internal_features: Arc::new(AtomicBool::new(false)),
     };
+
     println!("Starting to translate {filename:?}...");
+
     let now = std::time::Instant::now();
     let result = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
@@ -145,10 +147,19 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
             })
         })
     });
+
     println!(
         "{} ms have passed to translate: {:?}",
         now.elapsed().as_millis(),
         filename
     );
-    result
+
+    match &result.iter().next() {
+        Some((_, result)) => result.to_string(),
+        None => {
+            eprintln!("No result from the compiler");
+
+            "".to_string()
+        }
+    }
 }

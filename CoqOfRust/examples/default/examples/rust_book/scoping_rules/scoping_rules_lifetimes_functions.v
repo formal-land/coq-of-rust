@@ -70,7 +70,7 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           let β := M.read (| x |) in
-          M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
+          M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible
@@ -178,8 +178,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 7 |) in
-        let y := M.alloc (| Value.Integer Integer.I32 9 |) in
+        let x := M.alloc (| Value.Integer 7 |) in
+        let y := M.alloc (| Value.Integer 9 |) in
         let _ :=
           M.alloc (|
             M.call_closure (|
@@ -208,7 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| z |) ]
             |)
           |) in
-        let t := M.alloc (| Value.Integer Integer.I32 3 |) in
+        let t := M.alloc (| Value.Integer 3 |) in
         let _ :=
           M.alloc (|
             M.call_closure (|

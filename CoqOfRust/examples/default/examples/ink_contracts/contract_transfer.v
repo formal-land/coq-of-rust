@@ -91,7 +91,11 @@ Module Impl_contract_transfer_Env.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "contract_transfer::Env" "caller"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "contract_transfer::Env",
+            "caller"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -539,7 +543,7 @@ Module Impl_contract_transfer_GiveMe.
                                   |)
                                 ]
                               |))
-                              (Value.Integer Integer.U128 10))
+                              (Value.Integer 10))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|

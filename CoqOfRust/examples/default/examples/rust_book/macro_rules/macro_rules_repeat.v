@@ -77,10 +77,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
                                       [
                                         BinOp.Panic.add (|
-                                          Value.Integer Integer.I32 1,
-                                          Value.Integer Integer.I32 2
+                                          Integer.I32,
+                                          Value.Integer 1,
+                                          Value.Integer 2
                                         |);
-                                        Value.Integer Integer.I32 2
+                                        Value.Integer 2
                                       ]
                                     |)
                                   |)
@@ -126,15 +127,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.call_closure (|
                                       M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
                                       [
-                                        Value.Integer Integer.I32 5;
+                                        Value.Integer 5;
                                         M.call_closure (|
                                           M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
                                           [
                                             BinOp.Panic.mul (|
-                                              Value.Integer Integer.I32 2,
-                                              Value.Integer Integer.I32 3
+                                              Integer.I32,
+                                              Value.Integer 2,
+                                              Value.Integer 3
                                             |);
-                                            Value.Integer Integer.I32 4
+                                            Value.Integer 4
                                           ]
                                         |)
                                       ]

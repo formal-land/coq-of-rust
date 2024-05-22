@@ -12,8 +12,8 @@ Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       BinOp.Pure.eq
-        (BinOp.Panic.rem (| M.read (| n |), Value.Integer Integer.U32 2 |))
-        (Value.Integer Integer.U32 1)))
+        (BinOp.Panic.rem (| Integer.U32, M.read (| n |), Value.Integer 2 |))
+        (Value.Integer 1)))
   | _, _ => M.impossible
   end.
 
@@ -81,8 +81,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let upper := M.alloc (| Value.Integer Integer.U32 1000 |) in
-        let acc := M.alloc (| Value.Integer Integer.U32 0 |) in
+        let upper := M.alloc (| Value.Integer 1000 |) in
+        let acc := M.alloc (| Value.Integer 0 |) in
         let _ :=
           M.use
             (M.match_operator (|
@@ -95,10 +95,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "into_iter",
                     []
                   |),
-                  [
-                    Value.StructRecord
-                      "core::ops::range::RangeFrom"
-                      [ ("start", Value.Integer Integer.U32 0) ]
+                  [ Value.StructRecord "core::ops::range::RangeFrom" [ ("start", Value.Integer 0) ]
                   ]
                 |)
               |),
@@ -131,7 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
-                                    M.get_struct_tuple_field_or_break_match (|
+                                    M.SubPointer.get_struct_tuple_field (|
                                       γ,
                                       "core::option::Option::Some",
                                       0
@@ -139,7 +136,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   let n := M.copy (| γ0_0 |) in
                                   let n_squared :=
                                     M.alloc (|
-                                      BinOp.Panic.mul (| M.read (| n |), M.read (| n |) |)
+                                      BinOp.Panic.mul (|
+                                        Integer.U32,
+                                        M.read (| n |),
+                                        M.read (| n |)
+                                      |)
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -186,9 +187,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     |) in
                                                   let _ :=
                                                     let β := acc in
-                                                    M.assign (|
+                                                    M.write (|
                                                       β,
                                                       BinOp.Panic.add (|
+                                                        Integer.U32,
                                                         M.read (| β |),
                                                         M.read (| n_squared |)
                                                       |)
@@ -333,7 +335,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
-                              [ ("start", Value.Integer Integer.U32 0) ];
+                              [ ("start", Value.Integer 0) ];
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
@@ -345,7 +347,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let n := M.copy (| γ |) in
-                                            BinOp.Panic.mul (| M.read (| n |), M.read (| n |) |)))
+                                            BinOp.Panic.mul (|
+                                              Integer.U32,
+                                              M.read (| n |),
+                                              M.read (| n |)
+                                            |)))
                                       ]
                                     |)
                                   | _ => M.impossible (||)

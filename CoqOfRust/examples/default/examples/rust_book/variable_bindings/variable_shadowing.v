@@ -25,7 +25,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let shadowed_binding := M.alloc (| Value.Integer Integer.I32 1 |) in
+        let shadowed_binding := M.alloc (| Value.Integer 1 |) in
         let _ :=
           let _ :=
             let _ :=
@@ -149,7 +149,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let shadowed_binding := M.alloc (| Value.Integer Integer.I32 2 |) in
+        let shadowed_binding := M.alloc (| Value.Integer 2 |) in
         let _ :=
           let _ :=
             M.alloc (|

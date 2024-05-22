@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer Integer.I32 3 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3 |) |))).
 
 (*
 fn main() {
@@ -62,8 +62,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let tx := M.copy (| γ0_0 |) in
                 let rx := M.copy (| γ0_1 |) in
                 let children :=
@@ -98,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer Integer.I32 0);
+                                ("start", Value.Integer 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -138,7 +138,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -347,7 +347,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer Integer.I32 0);
+                                ("start", Value.Integer 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -387,7 +387,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0
@@ -488,7 +488,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0

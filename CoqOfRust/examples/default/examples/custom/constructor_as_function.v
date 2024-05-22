@@ -20,24 +20,16 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer Integer.I32 0
-                  |) in
-                let _ :=
-                  M.is_constant_or_break_match (|
-                    M.read (| γ0_1 |),
-                    Value.Integer Integer.I32 0
-                  |) in
-                M.alloc (| Value.Integer Integer.I32 0 |)));
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
+                let _ := M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
+                M.alloc (| Value.Integer 0 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ0_0 := M.get_tuple_field γ 0 in
-                let γ0_1 := M.get_tuple_field γ 1 in
-                M.alloc (| Value.Integer Integer.I32 1 |)))
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                M.alloc (| Value.Integer 1 |)))
           ]
         |)
       |)))
@@ -73,10 +65,11 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "constructor_as_function::Constructor"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "constructor_as_function::Constructor",
                   0
+                |)
               |))
           ]
         |)))
@@ -175,11 +168,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          Value.Integer Integer.I32 1;
-                                          Value.Integer Integer.I32 2;
-                                          Value.Integer Integer.I32 3
-                                        ]
+                                        [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
                                     |)
                                   ]
                                 |)

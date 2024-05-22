@@ -30,7 +30,11 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "try_from_and_try_into::EvenNumber" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "try_from_and_try_into::EvenNumber",
+                  0
+                |)
               |))
           ]
         |)))
@@ -68,10 +72,18 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
         let other := M.alloc (| other |) in
         BinOp.Pure.eq
           (M.read (|
-            M.get_struct_tuple_field (M.read (| self |)) "try_from_and_try_into::EvenNumber" 0
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "try_from_and_try_into::EvenNumber",
+              0
+            |)
           |))
           (M.read (|
-            M.get_struct_tuple_field (M.read (| other |)) "try_from_and_try_into::EvenNumber" 0
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| other |),
+              "try_from_and_try_into::EvenNumber",
+              0
+            |)
           |))))
     | _, _ => M.impossible
     end.
@@ -114,8 +126,8 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                     M.use
                       (M.alloc (|
                         BinOp.Pure.eq
-                          (BinOp.Panic.rem (| M.read (| value |), Value.Integer Integer.I32 2 |))
-                          (Value.Integer Integer.I32 0)
+                          (BinOp.Panic.rem (| Integer.I32, M.read (| value |), Value.Integer 2 |))
+                          (Value.Integer 0)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -176,25 +188,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer Integer.I32 8 ]
+                      [ Value.Integer 8 ]
                     |)
                   |);
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer Integer.I32 8 ]
-                      ]
+                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
                   |)
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -279,7 +287,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         "try_from",
                         []
                       |),
-                      [ Value.Integer Integer.I32 5 ]
+                      [ Value.Integer 5 ]
                     |)
                   |);
                   M.alloc (| Value.StructTuple "core::result::Result::Err" [ Value.Tuple [] ] |)
@@ -288,8 +296,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -370,7 +378,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer Integer.I32 8 ]
+              [ Value.Integer 8 ]
             |)
           |) in
         let _ :=
@@ -382,19 +390,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          [ Value.Integer Integer.I32 8 ]
-                      ]
+                      [ Value.StructTuple "try_from_and_try_into::EvenNumber" [ Value.Integer 8 ] ]
                   |)
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -475,7 +479,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "try_into",
                 []
               |),
-              [ Value.Integer Integer.I32 5 ]
+              [ Value.Integer 5 ]
             |)
           |) in
         let _ :=
@@ -490,8 +494,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

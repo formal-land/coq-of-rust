@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
       ];
   } *)
 
-Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
+Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].
   
   Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -24,7 +24,7 @@ Module Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
       (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
-End Impl_core_default_Default_for_trait_erc20_Mapping_K_V.
+End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_trait_erc20_Mapping_K_V.
 
 Module Impl_trait_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "trait_erc20::Mapping") [ K; V ].

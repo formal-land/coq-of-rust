@@ -24,11 +24,12 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_tuple_field
-                (M.read (| self |))
-                "scoping_rules_lifetimes_methods::Owner"
-                0 in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.I32 1 |) |) in
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "scoping_rules_lifetimes_methods::Owner",
+                0
+              |) in
+            M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -76,10 +77,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                                     [ Ty.path "i32" ]
                                   |),
                                   [
-                                    M.get_struct_tuple_field
-                                      (M.read (| self |))
-                                      "scoping_rules_lifetimes_methods::Owner"
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.read (| self |),
+                                      "scoping_rules_lifetimes_methods::Owner",
                                       0
+                                    |)
                                   ]
                                 |)
                               ]
@@ -113,9 +115,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let owner :=
           M.alloc (|
-            Value.StructTuple
-              "scoping_rules_lifetimes_methods::Owner"
-              [ Value.Integer Integer.I32 18 ]
+            Value.StructTuple "scoping_rules_lifetimes_methods::Owner" [ Value.Integer 18 ]
           |) in
         let _ :=
           M.alloc (|

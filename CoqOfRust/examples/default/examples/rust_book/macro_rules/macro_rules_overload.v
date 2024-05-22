@@ -65,17 +65,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     LogicalOp.and (|
                                       BinOp.Pure.eq
                                         (BinOp.Panic.add (|
-                                          Value.Integer Integer.I32 1,
-                                          Value.Integer Integer.I32 1
+                                          Integer.I32,
+                                          Value.Integer 1,
+                                          Value.Integer 1
                                         |))
-                                        (Value.Integer Integer.I32 2),
+                                        (Value.Integer 2),
                                       ltac:(M.monadic
                                         (BinOp.Pure.eq
                                           (BinOp.Panic.mul (|
-                                            Value.Integer Integer.I32 2,
-                                            Value.Integer Integer.I32 2
+                                            Integer.I32,
+                                            Value.Integer 2,
+                                            Value.Integer 2
                                           |))
-                                          (Value.Integer Integer.I32 4)))
+                                          (Value.Integer 4)))
                                     |)
                                   |)
                                 ]

@@ -62,7 +62,9 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
             M.read (| Value.String "Choice" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.alloc (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |))
+              (M.alloc (|
+                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+              |))
           ]
         |)))
     | _, _ => M.impossible
@@ -89,7 +91,9 @@ Module Impl_subtle_Choice.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_tuple_field (M.read (| self |)) "subtle::Choice" 0 |)))
+        M.read (|
+          M.SubPointer.get_struct_tuple_field (| M.read (| self |), "subtle::Choice", 0 |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -132,14 +136,22 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                       (BinOp.Pure.bit_or
                                         (BinOp.Pure.eq
                                           (M.read (|
-                                            M.get_struct_tuple_field source "subtle::Choice" 0
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              source,
+                                              "subtle::Choice",
+                                              0
+                                            |)
                                           |))
-                                          (Value.Integer Integer.U8 0))
+                                          (Value.Integer 0))
                                         (BinOp.Pure.eq
                                           (M.read (|
-                                            M.get_struct_tuple_field source "subtle::Choice" 0
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              source,
+                                              "subtle::Choice",
+                                              0
+                                            |)
                                           |))
-                                          (Value.Integer Integer.U8 1)))
+                                          (Value.Integer 1)))
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -168,8 +180,8 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
             |) in
           M.alloc (|
             BinOp.Pure.ne
-              (M.read (| M.get_struct_tuple_field source "subtle::Choice" 0 |))
-              (Value.Integer Integer.U8 0)
+              (M.read (| M.SubPointer.get_struct_tuple_field (| source, "subtle::Choice", 0 |) |))
+              (Value.Integer 0)
           |)
         |)))
     | _, _ => M.impossible
@@ -210,8 +222,8 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_and
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -242,7 +254,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -295,8 +307,8 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_or
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -327,7 +339,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -380,8 +392,8 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_xor
-              (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |))
-              (M.read (| M.get_struct_tuple_field rhs "subtle::Choice" 0 |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |))
+              (M.read (| M.SubPointer.get_struct_tuple_field (| rhs, "subtle::Choice", 0 |) |))
           ]
         |)))
     | _, _ => M.impossible
@@ -412,7 +424,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         let rhs := M.alloc (| rhs |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -464,8 +476,9 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
           |),
           [
             BinOp.Pure.bit_and
-              (Value.Integer Integer.U8 1)
-              (UnOp.Pure.not (M.read (| M.get_struct_tuple_field self "subtle::Choice" 0 |)))
+              (Value.Integer 1)
+              (UnOp.Pure.not
+                (M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)))
           ]
         |)))
     | _, _ => M.impossible
@@ -521,12 +534,8 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (|
                                   UnOp.Pure.not
                                     (BinOp.Pure.bit_or
-                                      (BinOp.Pure.eq
-                                        (M.read (| input |))
-                                        (Value.Integer Integer.U8 0))
-                                      (BinOp.Pure.eq
-                                        (M.read (| input |))
-                                        (Value.Integer Integer.U8 1)))
+                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 0))
+                                      (BinOp.Pure.eq (M.read (| input |)) (Value.Integer 1)))
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -617,7 +626,7 @@ Module ConstantTimeEq.
   Axiom ProvidedMethod_ct_ne : M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
 End ConstantTimeEq.
 
-Module Impl_subtle_ConstantTimeEq_for_slice_T.
+Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
   
   (*
@@ -692,7 +701,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                     "from",
                                     []
                                   |),
-                                  [ Value.Integer Integer.U8 0 ]
+                                  [ Value.Integer 0 ]
                                 |)
                               |)
                             |)
@@ -701,7 +710,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let x := M.alloc (| Value.Integer Integer.U8 1 |) in
+              let x := M.alloc (| Value.Integer 1 |) in
               let _ :=
                 M.use
                   (M.match_operator (|
@@ -784,18 +793,18 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 :=
-                                          M.get_struct_tuple_field_or_break_match (|
+                                          M.SubPointer.get_struct_tuple_field (|
                                             γ,
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ1_0 := M.get_tuple_field γ0_0 0 in
-                                        let γ1_1 := M.get_tuple_field γ0_0 1 in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let ai := M.copy (| γ1_0 |) in
                                         let bi := M.copy (| γ1_1 |) in
                                         let _ :=
                                           let β := x in
-                                          M.assign (|
+                                          M.write (|
                                             β,
                                             BinOp.Pure.bit_and
                                               (M.read (| β |))
@@ -852,7 +861,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
-End Impl_subtle_ConstantTimeEq_for_slice_T.
+End Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
@@ -939,7 +948,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                     M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 8, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 8, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -957,7 +966,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                     (M.alloc (|
                       BinOp.Pure.bit_xor
                         (M.read (| y |))
-                        (M.read (| M.use (M.alloc (| Value.Integer Integer.U8 1 |)) |))
+                        (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |))
                     |))
                 |)
               ]
@@ -1053,7 +1062,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                     M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 16, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 16, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1069,7 +1078,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U16 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1163,7 +1172,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                     M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 32, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 32, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1179,7 +1188,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U32 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1273,7 +1282,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                     M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
                   |)),
-                BinOp.Panic.sub (| Value.Integer Integer.I32 64, Value.Integer Integer.I32 1 |)
+                BinOp.Panic.sub (| Integer.I32, Value.Integer 64, Value.Integer 1 |)
               |)
             |) in
           M.alloc (|
@@ -1289,7 +1298,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.U64 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1384,14 +1393,16 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                     [ M.read (| x |) ]
                   |)),
                 BinOp.Panic.sub (|
+                  Integer.Usize,
                   BinOp.Panic.mul (|
+                    Integer.Usize,
                     M.call_closure (|
                       M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                       []
                     |),
-                    Value.Integer Integer.Usize 8
+                    Value.Integer 8
                   |),
-                  Value.Integer Integer.Usize 1
+                  Value.Integer 1
                 |)
               |)
             |) in
@@ -1408,7 +1419,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 M.rust_cast
                   (BinOp.Pure.bit_xor
                     (M.read (| y |))
-                    (M.read (| M.use (M.alloc (| Value.Integer Integer.Usize 1 |)) |)))
+                    (M.read (| M.use (M.alloc (| Value.Integer 1 |)) |)))
               ]
             |)
           |)
@@ -1468,7 +1479,7 @@ Module ConditionallySelectable.
         let choice := M.alloc (| choice |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.read (| self |),
               M.call_closure (|
                 M.get_trait_method (|
@@ -1555,6 +1566,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1612,6 +1624,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1621,7 +1634,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -1658,6 +1671,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I8,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1673,10 +1687,10 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -1719,6 +1733,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1778,6 +1793,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1788,7 +1804,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -1826,6 +1842,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I8,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1842,10 +1859,10 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -1887,6 +1904,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1944,6 +1962,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -1953,7 +1972,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -1990,6 +2009,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I16,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2005,10 +2025,10 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2051,6 +2071,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2110,6 +2131,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2120,7 +2142,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2158,6 +2180,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I16,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2174,10 +2197,10 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2219,6 +2242,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2276,6 +2300,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2285,7 +2310,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2322,6 +2347,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I32,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2337,10 +2363,10 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2383,6 +2409,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2442,6 +2469,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2452,7 +2480,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2490,6 +2518,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I32,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2506,10 +2535,10 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2551,6 +2580,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2608,6 +2638,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2617,7 +2648,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2654,6 +2685,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
+                  Integer.I64,
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2669,10 +2701,10 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2715,6 +2747,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2774,6 +2807,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2784,7 +2818,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           let _ :=
             let β := M.read (| self |) in
-            M.assign (|
+            M.write (|
               β,
               BinOp.Pure.bit_xor
                 (M.read (| β |))
@@ -2822,6 +2856,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   UnOp.Panic.neg (|
+                    Integer.I64,
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
@@ -2838,10 +2873,10 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
             |) in
           let _ :=
             let β := M.read (| a |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           let _ :=
             let β := M.read (| b |) in
-            M.assign (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
+            M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -2887,8 +2922,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
                 []
               |),
               [
-                M.get_struct_tuple_field (M.read (| a |)) "subtle::Choice" 0;
-                M.get_struct_tuple_field (M.read (| b |)) "subtle::Choice" 0;
+                M.SubPointer.get_struct_tuple_field (| M.read (| a |), "subtle::Choice", 0 |);
+                M.SubPointer.get_struct_tuple_field (| M.read (| b |), "subtle::Choice", 0 |);
                 M.read (| choice |)
               ]
             |)
@@ -2907,7 +2942,7 @@ End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 (* Trait *)
 (* Empty module 'ConditionallyNegatable' *)
 
-Module Impl_subtle_ConditionallyNegatable_for_T.
+Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_where_core_ops_arith_Neg_ref__T_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
   
   (*
@@ -2963,7 +2998,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
-End Impl_subtle_ConditionallyNegatable_for_T.
+End Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_where_core_ops_arith_Neg_ref__T_for_T.
 
 (* StructRecord
   {
@@ -2972,7 +3007,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
     fields := [ ("value", T); ("is_some", Ty.path "subtle::Choice") ];
   } *)
 
-Module Impl_core_clone_Clone_for_subtle_CtOption_T.
+Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   (* Clone *)
@@ -2988,7 +3023,13 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
             ("value",
               M.call_closure (|
                 M.get_trait_method (| "core::clone::Clone", T, [], "clone", [] |),
-                [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "subtle::CtOption",
+                    "value"
+                  |)
+                ]
               |));
             ("is_some",
               M.call_closure (|
@@ -2999,7 +3040,13 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
                   "clone",
                   []
                 |),
-                [ M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" ]
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "subtle::CtOption",
+                    "is_some"
+                  |)
+                ]
               |))
           ]))
     | _, _ => M.impossible
@@ -3012,9 +3059,9 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
-End Impl_core_clone_Clone_for_subtle_CtOption_T.
+End Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 
-Module Impl_core_marker_Copy_for_subtle_CtOption_T.
+Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Axiom Implements :
@@ -3024,9 +3071,9 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [].
-End Impl_core_marker_Copy_for_subtle_CtOption_T.
+End Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 
-Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
+Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   (* Debug *)
@@ -3049,12 +3096,20 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
             M.read (| Value.String "value" |);
             (* Unsize *)
             M.pointer_coercion
-              (M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value");
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "subtle::CtOption",
+                "value"
+              |));
             M.read (| Value.String "is_some" |);
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "subtle::CtOption",
+                  "is_some"
+                |)
               |))
           ]
         |)))
@@ -3068,7 +3123,7 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
-End Impl_core_fmt_Debug_for_subtle_CtOption_T.
+End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
@@ -3117,13 +3172,21 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                               |)
                             ]
                           |))
-                          (Value.Integer Integer.U8 1)
+                          (Value.Integer 1)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::option::Option::Some"
-                      [ M.read (| M.get_struct_record_field source "subtle::CtOption" "value" |) ]
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            source,
+                            "subtle::CtOption",
+                            "value"
+                          |)
+                        |)
+                      ]
                   |)));
               fun γ =>
                 ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
@@ -3191,17 +3254,23 @@ Module Impl_subtle_CtOption_T.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
-                        [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.U8 1 |)
+                    M.alloc (| Value.Integer 1 |)
                   ]
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -3284,7 +3353,7 @@ Module Impl_subtle_CtOption_T.
                     |)))
               ]
             |) in
-          M.get_struct_record_field self "subtle::CtOption" "value"
+          M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
     | _, _ => M.impossible
     end.
@@ -3315,17 +3384,23 @@ Module Impl_subtle_CtOption_T.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [] |),
-                        [ M.get_struct_record_field self "subtle::CtOption" "is_some" ]
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        ]
                       |)
                     |);
-                    M.alloc (| Value.Integer Integer.U8 1 |)
+                    M.alloc (| Value.Integer 1 |)
                   ]
               |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ0_0 := M.get_tuple_field γ 0 in
-                    let γ0_1 := M.get_tuple_field γ 1 in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
@@ -3372,7 +3447,7 @@ Module Impl_subtle_CtOption_T.
                     |)))
               ]
             |) in
-          M.get_struct_record_field self "subtle::CtOption" "value"
+          M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |)
         |)))
     | _, _ => M.impossible
     end.
@@ -3406,8 +3481,10 @@ Module Impl_subtle_CtOption_T.
           |),
           [
             def;
-            M.get_struct_record_field self "subtle::CtOption" "value";
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3454,8 +3531,10 @@ Module Impl_subtle_CtOption_T.
                 [ M.read (| f |); Value.Tuple [] ]
               |)
             |);
-            M.get_struct_record_field self "subtle::CtOption" "value";
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "value" |);
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3476,7 +3555,13 @@ Module Impl_subtle_CtOption_T.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "subtle::CtOption",
+            "is_some"
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -3497,7 +3582,14 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_trait_method (| "core::ops::bit::Not", Ty.path "subtle::Choice", [], "not", [] |),
-          [ M.read (| M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "is_some" |)
+          [
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "subtle::CtOption",
+                "is_some"
+              |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3560,14 +3652,26 @@ Module Impl_subtle_CtOption_T.
                             []
                           |)
                         |);
-                        M.get_struct_record_field self "subtle::CtOption" "value";
-                        M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "subtle::CtOption",
+                          "value"
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "is_some"
+                          |)
+                        |)
                       ]
                     |)
                   ]
               ]
             |);
-            M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+            M.read (|
+              M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -3634,8 +3738,18 @@ Module Impl_subtle_CtOption_T.
                               []
                             |)
                           |);
-                          M.get_struct_record_field self "subtle::CtOption" "value";
-                          M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "subtle::CtOption",
+                            "value"
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "subtle::CtOption",
+                              "is_some"
+                            |)
+                          |)
                         ]
                       |)
                     ]
@@ -3653,8 +3767,10 @@ Module Impl_subtle_CtOption_T.
                   []
                 |),
                 [
-                  M.get_struct_record_field tmp "subtle::CtOption" "is_some";
-                  M.read (| M.get_struct_record_field self "subtle::CtOption" "is_some" |)
+                  M.SubPointer.get_struct_record_field (| tmp, "subtle::CtOption", "is_some" |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (| self, "subtle::CtOption", "is_some" |)
+                  |)
                 ]
               |)
             |) in
@@ -3732,7 +3848,7 @@ Module Impl_subtle_CtOption_T.
     M.IsAssociatedFunction (Self T) "or_else" (or_else T).
 End Impl_subtle_CtOption_T.
 
-Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   (*
@@ -3763,8 +3879,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "value";
-                M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "value";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| a |),
+                  "subtle::CtOption",
+                  "value"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| b |),
+                  "subtle::CtOption",
+                  "value"
+                |);
                 M.read (| choice |)
               ]
             |);
@@ -3777,8 +3901,16 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| a |)) "subtle::CtOption" "is_some";
-                M.get_struct_record_field (M.read (| b |)) "subtle::CtOption" "is_some";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| a |),
+                  "subtle::CtOption",
+                  "is_some"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| b |),
+                  "subtle::CtOption",
+                  "is_some"
+                |);
                 M.read (| choice |)
               ]
             |)
@@ -3794,9 +3926,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
-End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+End Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
 
-Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   (*
@@ -3869,8 +4001,16 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
                     M.call_closure (|
                       M.get_trait_method (| "subtle::ConstantTimeEq", T, [], "ct_eq", [] |),
                       [
-                        M.get_struct_record_field (M.read (| self |)) "subtle::CtOption" "value";
-                        M.get_struct_record_field (M.read (| rhs |)) "subtle::CtOption" "value"
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "subtle::CtOption",
+                          "value"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| rhs |),
+                          "subtle::CtOption",
+                          "value"
+                        |)
                       ]
                     |)
                   ]
@@ -3920,7 +4060,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
-End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+End Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
 
 (* Trait *)
 (* Empty module 'ConstantTimeGreater' *)
@@ -4008,7 +4148,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4019,14 +4159,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4034,9 +4172,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4057,7 +4195,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4068,14 +4206,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 8)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4083,9 +4219,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4113,10 +4249,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               |),
               [
                 M.read (|
-                  M.use
-                    (M.alloc (|
-                      BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U8 1)
-                    |))
+                  M.use (M.alloc (| BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1) |))
                 |)
               ]
             |)
@@ -4216,7 +4349,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4227,14 +4360,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 16)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4242,9 +4373,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4265,7 +4396,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4276,14 +4407,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 16)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4291,9 +4420,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4319,7 +4448,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U16 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))
@@ -4417,7 +4546,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4428,14 +4557,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 32)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4443,9 +4570,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4466,7 +4593,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4477,14 +4604,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 32)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4492,9 +4617,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4520,7 +4645,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U32 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))
@@ -4618,7 +4743,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4629,14 +4754,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 64)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := ltb in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4644,9 +4767,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4667,7 +4790,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer Integer.I32 1 |) in
+          let pow := M.alloc (| Value.Integer 1 |) in
           let _ :=
             M.loop (|
               ltac:(M.monadic
@@ -4678,14 +4801,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.Pure.lt (M.read (| pow |)) (Value.Integer Integer.I32 64)
-                            |)) in
+                            (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let _ :=
                           let β := bit in
-                          M.assign (|
+                          M.write (|
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
@@ -4693,9 +4814,9 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                           |) in
                         let _ :=
                           let β := pow in
-                          M.assign (|
+                          M.write (|
                             β,
-                            BinOp.Panic.add (| M.read (| β |), M.read (| pow |) |)
+                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4721,7 +4842,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 "from",
                 []
               |),
-              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer Integer.U64 1)) ]
+              [ M.rust_cast (BinOp.Pure.bit_and (M.read (| bit |)) (Value.Integer 1)) ]
             |)
           |)
         |)))

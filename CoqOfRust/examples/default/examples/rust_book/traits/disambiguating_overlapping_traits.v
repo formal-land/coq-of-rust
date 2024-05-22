@@ -36,10 +36,11 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
             []
           |),
           [
-            M.get_struct_record_field
-              (M.read (| self |))
-              "disambiguating_overlapping_traits::Form"
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "disambiguating_overlapping_traits::Form",
               "username"
+            |)
           ]
         |)))
     | _, _ => M.impossible
@@ -67,10 +68,11 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field
-            (M.read (| self |))
-            "disambiguating_overlapping_traits::Form"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "disambiguating_overlapping_traits::Form",
             "age"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -122,7 +124,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [ M.read (| Value.String "rustacean" |) ]
                   |));
-                ("age", Value.Integer Integer.U8 28)
+                ("age", Value.Integer 28)
               ]
           |) in
         let username :=
@@ -161,8 +163,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
@@ -234,12 +236,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer Integer.U8 28 |); age ] |),
+            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer 28 |); age ] |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

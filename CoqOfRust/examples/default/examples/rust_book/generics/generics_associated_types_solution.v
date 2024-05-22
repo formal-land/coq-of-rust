@@ -43,10 +43,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
             |),
             [
               M.alloc (|
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "generics_associated_types_solution::Container"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "generics_associated_types_solution::Container",
                   0
+                |)
               |);
               number_1
             ]
@@ -62,10 +63,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
               |),
               [
                 M.alloc (|
-                  M.get_struct_tuple_field
-                    (M.read (| self |))
-                    "generics_associated_types_solution::Container"
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "generics_associated_types_solution::Container",
                     1
+                  |)
                 |);
                 number_2
               ]
@@ -85,10 +87,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_tuple_field
-            (M.read (| self |))
-            "generics_associated_types_solution::Container"
+          M.SubPointer.get_struct_tuple_field (|
+            M.read (| self |),
+            "generics_associated_types_solution::Container",
             0
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -104,10 +107,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_tuple_field
-            (M.read (| self |))
-            "generics_associated_types_solution::Container"
+          M.SubPointer.get_struct_tuple_field (|
+            M.read (| self |),
+            "generics_associated_types_solution::Container",
             1
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -123,10 +127,11 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_tuple_field
-            (M.read (| self |))
-            "generics_associated_types_solution::Container"
+          M.SubPointer.get_struct_tuple_field (|
+            M.read (| self |),
+            "generics_associated_types_solution::Container",
             0
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -158,6 +163,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       BinOp.Panic.sub (|
+        Integer.I32,
         M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_solution::Contains",
@@ -223,8 +229,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let number_1 := M.alloc (| Value.Integer Integer.I32 3 |) in
-        let number_2 := M.alloc (| Value.Integer Integer.I32 10 |) in
+        let number_1 := M.alloc (| Value.Integer 3 |) in
+        let number_2 := M.alloc (| Value.Integer 10 |) in
         let container :=
           M.alloc (|
             Value.StructTuple

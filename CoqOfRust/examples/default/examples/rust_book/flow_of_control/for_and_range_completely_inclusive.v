@@ -40,7 +40,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer Integer.I32 1; Value.Integer Integer.I32 100 ]
+                    [ Value.Integer 1; Value.Integer 100 ]
                   |)
                 ]
               |)
@@ -74,7 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
-                                  M.get_struct_tuple_field_or_break_match (|
+                                  M.SubPointer.get_struct_tuple_field (|
                                     γ,
                                     "core::option::Option::Some",
                                     0
@@ -90,10 +90,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             (M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Panic.rem (|
+                                                  Integer.I32,
                                                   M.read (| n |),
-                                                  Value.Integer Integer.I32 15
+                                                  Value.Integer 15
                                                 |))
-                                                (Value.Integer Integer.I32 0)
+                                                (Value.Integer 0)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -140,10 +141,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     (M.alloc (|
                                                       BinOp.Pure.eq
                                                         (BinOp.Panic.rem (|
+                                                          Integer.I32,
                                                           M.read (| n |),
-                                                          Value.Integer Integer.I32 3
+                                                          Value.Integer 3
                                                         |))
-                                                        (Value.Integer Integer.I32 0)
+                                                        (Value.Integer 0)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -196,10 +198,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             (M.alloc (|
                                                               BinOp.Pure.eq
                                                                 (BinOp.Panic.rem (|
+                                                                  Integer.I32,
                                                                   M.read (| n |),
-                                                                  Value.Integer Integer.I32 5
+                                                                  Value.Integer 5
                                                                 |))
-                                                                (Value.Integer Integer.I32 0)
+                                                                (Value.Integer 0)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|

@@ -98,7 +98,7 @@ Module Impl_custom_allocator_CustomAllocator.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
+            M.write (|
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",
@@ -110,11 +110,12 @@ Module Impl_custom_allocator_CustomAllocator.
                   []
                 |),
                 [
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "custom_allocator::CustomAllocator"
-                    "value";
-                  Value.Integer Integer.Usize 0
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "custom_allocator::CustomAllocator",
+                    "value"
+                  |);
+                  Value.Integer 0
                 ]
               |),
               UnOp.Pure.not
@@ -130,11 +131,12 @@ Module Impl_custom_allocator_CustomAllocator.
                       []
                     |),
                     [
-                      M.get_struct_record_field
-                        (M.read (| self |))
-                        "custom_allocator::CustomAllocator"
-                        "value";
-                      Value.Integer Integer.Usize 0
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "custom_allocator::CustomAllocator",
+                        "value"
+                      |);
+                      Value.Integer 0
                     ]
                   |)
                 |))
@@ -168,11 +170,12 @@ Module Impl_custom_allocator_CustomAllocator.
               []
             |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "custom_allocator::CustomAllocator"
-                "value";
-              Value.Integer Integer.Usize 0
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "custom_allocator::CustomAllocator",
+                "value"
+              |);
+              Value.Integer 0
             ]
           |)
         |)))

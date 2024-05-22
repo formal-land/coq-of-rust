@@ -181,11 +181,12 @@ Module Impl_updated_incrementer_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field
-                (M.read (| self |))
-                "updated_incrementer::Incrementer"
-                "count" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 4 |) |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "updated_incrementer::Incrementer",
+                "count"
+              |) in
+            M.write (| β, BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 4 |) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -220,10 +221,11 @@ Module Impl_updated_incrementer_Incrementer.
                                     [ Ty.path "u32" ]
                                   |),
                                   [
-                                    M.get_struct_record_field
-                                      (M.read (| self |))
-                                      "updated_incrementer::Incrementer"
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "updated_incrementer::Incrementer",
                                       "count"
+                                    |)
                                   ]
                                 |)
                               ]
@@ -252,7 +254,11 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "updated_incrementer::Incrementer" "count"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "updated_incrementer::Incrementer",
+            "count"
+          |)
         |)))
     | _, _ => M.impossible
     end.

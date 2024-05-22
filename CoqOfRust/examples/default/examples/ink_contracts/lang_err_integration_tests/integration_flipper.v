@@ -145,14 +145,19 @@ Module Impl_integration_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
-              M.get_struct_record_field (M.read (| self |)) "integration_flipper::Flipper" "value",
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "integration_flipper::Flipper",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field
-                    (M.read (| self |))
-                    "integration_flipper::Flipper"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "integration_flipper::Flipper",
                     "value"
+                  |)
                 |))
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -173,7 +178,11 @@ Module Impl_integration_flipper_Flipper.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "integration_flipper::Flipper" "value"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "integration_flipper::Flipper",
+            "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.

@@ -49,7 +49,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -88,7 +88,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -122,20 +122,12 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| s |) ] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
-                        γ,
-                        "core::result::Result::Err",
-                        0
-                      |) in
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     let e := M.copy (| γ0_0 |) in
                     M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
               ]
@@ -191,7 +183,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -227,7 +219,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -313,12 +305,12 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Ok", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (| γ, "core::result::Result::Err", 0 |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
           ]
@@ -430,11 +422,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let why := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|
@@ -491,11 +479,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
@@ -1042,11 +1026,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let why := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|
@@ -1103,11 +1083,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let s := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|
@@ -1186,11 +1162,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Err",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let why := M.copy (| γ0_0 |) in
                   let _ :=
                     M.alloc (|
@@ -1247,11 +1219,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::result::Result::Ok",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let paths := M.copy (| γ0_0 |) in
                   M.use
                     (M.match_operator (|
@@ -1296,7 +1264,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 :=
-                                            M.get_struct_tuple_field_or_break_match (|
+                                            M.SubPointer.get_struct_tuple_field (|
                                               γ,
                                               "core::option::Option::Some",
                                               0

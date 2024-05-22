@@ -7,12 +7,14 @@ use crate::pattern::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
+use rustc_hir::def_id::LocalDefId;
 use rustc_hir::{
-    GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind, PatKind, QPath, TraitFn,
-    TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemRef, Item, ItemId, ItemKind,
+    PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
+use std::collections::HashMap;
 use std::iter::repeat;
 use std::rc::Rc;
 use std::string::ToString;
@@ -68,6 +70,18 @@ enum ImplItemKind {
     Type {
         ty: Rc<CoqType>,
     },
+}
+
+#[derive(Debug)]
+struct WherePredicate {
+    bound: Rc<TraitBound>,
+    ty: Rc<CoqType>,
+}
+
+#[derive(Debug)]
+struct TraitBound {
+    name: Path,
+    ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
 }
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
@@ -161,6 +175,7 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
+        predicates: Vec<Rc<WherePredicate>>,
         self_ty: Rc<CoqType>,
         of_trait: Path,
         trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
@@ -177,20 +192,13 @@ struct TypeStructStruct {
 }
 
 #[derive(Debug)]
-pub struct TopLevel(Vec<Rc<TopLevelItem>>);
-
-impl<A> FieldWithDefault<A> {
-    fn map<B, F>(&self, f: F) -> FieldWithDefault<B>
-    where
-        F: FnOnce(&A) -> B,
-    {
-        match self {
-            FieldWithDefault::RequiredValue(a) => FieldWithDefault::RequiredValue(f(a)),
-            FieldWithDefault::OptionalValue(a) => FieldWithDefault::OptionalValue(f(a)),
-            FieldWithDefault::Default => FieldWithDefault::Default,
-        }
-    }
+struct TopLevelEntry {
+    file_name: String,
+    item: Rc<TopLevelItem>,
 }
+
+#[derive(Debug)]
+struct TopLevel(Vec<Rc<TopLevelEntry>>);
 
 impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
     fn from(val: &'a FieldWithDefault<Rc<A>>) -> Self {
@@ -326,8 +334,8 @@ fn compile_top_level_item_without_local_items<'a>(
             if check_if_test_declaration(ty) {
                 return vec![];
             }
-            // skip const _ : () = ...
-            if item.ident.name.as_str() == "_" && matches!(ty.kind, TyKind::Tup([])) {
+            // skip const _ : ... = ...
+            if item.ident.name.as_str() == "_" {
                 return vec![];
             }
 
@@ -361,14 +369,15 @@ fn compile_top_level_item_without_local_items<'a>(
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let items: Vec<_> = module
+            let items = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
                     let item = env.tcx.hir().item(*item_id);
-                    compile_top_level_item(env, item)
+
+                    compile_top_level_item_with_file_name(env, item)
                 })
-                .collect();
+                .collect_vec();
 
             vec![Rc::new(TopLevelItem::Module {
                 name,
@@ -532,6 +541,7 @@ fn compile_top_level_item_without_local_items<'a>(
             ..
         }) => {
             let generic_tys = get_ty_params(env, generics);
+            let predicates = get_where_predicates(env, &item.owner_id.def_id, generics);
             let self_ty = compile_type(env, &item.owner_id.def_id, self_ty);
             let items = compile_impl_item_refs(env, items);
 
@@ -585,6 +595,7 @@ fn compile_top_level_item_without_local_items<'a>(
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_tys,
+                        predicates,
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
                         trait_ty_params: get_ty_params_with_default_status(
@@ -627,7 +638,8 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
         .into_iter()
         .flat_map(|item_id| {
             let item = env.tcx.hir().item(item_id);
-            compile_top_level_item(env, item)
+
+            compile_top_level_item_with_file_name(env, item)
         })
         .collect_vec();
 
@@ -645,6 +657,72 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
         },
     ]
     .concat()
+}
+
+fn compile_top_level_item_with_file_name<'a>(
+    env: &Env<'a>,
+    item: &'a Item,
+) -> Vec<Rc<TopLevelEntry>> {
+    compile_top_level_item(env, item)
+        .into_iter()
+        .map(|translated_item| {
+            Rc::new(TopLevelEntry {
+                file_name: env
+                    .tcx
+                    .sess
+                    .source_map()
+                    .lookup_source_file(item.span.lo())
+                    .name
+                    .prefer_remapped_unconditionaly()
+                    .to_string_lossy()
+                    .to_string(),
+                item: translated_item,
+            })
+        })
+        .collect()
+}
+
+fn group_top_level_items_by_file_name(
+    items: &[Rc<TopLevelEntry>],
+) -> HashMap<String, Vec<Rc<TopLevelEntry>>> {
+    let mut groups: HashMap<String, Vec<Rc<TopLevelEntry>>> = HashMap::new();
+
+    for item in items {
+        match item.item.as_ref() {
+            TopLevelItem::Module { name, body } => {
+                let sub_groups = group_top_level_items_by_file_name(&body.0);
+
+                for (file_name, sub_group) in sub_groups {
+                    let group = groups.entry(file_name.clone()).or_default();
+
+                    group.push(Rc::new(TopLevelEntry {
+                        file_name,
+                        item: Rc::new(TopLevelItem::Module {
+                            name: name.clone(),
+                            body: Rc::new(TopLevel(sub_group)),
+                        }),
+                    }))
+                }
+            }
+            _ => {
+                let file_name = item.file_name.clone();
+                let group = groups.entry(file_name).or_default();
+
+                group.push(item.clone());
+            }
+        }
+    }
+
+    groups
+}
+
+fn group_top_level_by_file_name(top_level: Rc<TopLevel>) -> HashMap<String, Rc<TopLevel>> {
+    let groups = group_top_level_items_by_file_name(&top_level.0);
+
+    groups
+        .into_iter()
+        .map(|(file_name, items)| (file_name, Rc::new(TopLevel(items))))
+        .collect()
 }
 
 /// returns a pair of function signature and its body
@@ -820,10 +898,69 @@ fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
         .collect()
 }
 
+/// extracts where predicates from the generics
+fn get_where_predicates(
+    env: &Env,
+    local_def_id: &LocalDefId,
+    generics: &rustc_hir::Generics,
+) -> Vec<Rc<WherePredicate>> {
+    generics
+        .predicates
+        .iter()
+        .flat_map(|predicate| match predicate {
+            rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                let names_and_ty_params =
+                    compile_generic_bounds(env, local_def_id, predicate.bounds);
+
+                names_and_ty_params
+                    .into_iter()
+                    .map(|bound| {
+                        trait_bound_to_where_predicate(
+                            bound,
+                            compile_type(env, local_def_id, predicate.bounded_ty),
+                        )
+                    })
+                    .collect()
+            }
+            _ => vec![],
+        })
+        .collect()
+}
+
+/// converts a trait bound to a where predicate
+fn trait_bound_to_where_predicate(bound: Rc<TraitBound>, ty: Rc<CoqType>) -> Rc<WherePredicate> {
+    Rc::new(WherePredicate { bound, ty })
+}
+
+/// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
+fn compile_generic_bounds(
+    env: &Env,
+    local_def_id: &LocalDefId,
+    generic_bounds: GenericBounds,
+) -> Vec<Rc<TraitBound>> {
+    generic_bounds
+        .iter()
+        .filter_map(|generic_bound| match generic_bound {
+            GenericBound::Trait(ptraitref, _) => {
+                Some(TraitBound::compile(env, local_def_id, ptraitref))
+            }
+            GenericBound::LangItemTrait { .. } => {
+                let warning_msg = "LangItem trait bounds are not supported yet.";
+                let note_msg = "It will change in the future.";
+                let span = &generic_bound.span();
+                emit_warning_with_note(env, span, warning_msg, Some(note_msg));
+                None
+            }
+            // we ignore lifetimes
+            GenericBound::Outlives { .. } => None,
+        })
+        .collect()
+}
+
 /// computes the list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &Env,
-    local_def_id: &rustc_hir::def_id::LocalDefId,
+    local_def_id: &LocalDefId,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
@@ -935,7 +1072,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         .iter()
         .flat_map(|item_id| {
             let item = tcx.hir().item(*item_id);
-            compile_top_level_item(&env, item)
+            compile_top_level_item_with_file_name(&env, item)
         })
         .collect();
 
@@ -944,130 +1081,14 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
 
 const LINE_WIDTH: usize = 100;
 
-pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> HashMap<String, String> {
     let top_level = compile_top_level(tcx, opts);
-    let top_level = mt_top_level(top_level);
-    top_level.to_pretty(LINE_WIDTH)
-}
+    let top_level_groups = group_top_level_by_file_name(top_level);
 
-fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
-    match item.as_ref() {
-        ImplItemKind::Const { ty, body } => Rc::new(ImplItemKind::Const {
-            ty: ty.clone(),
-            body: body.clone(),
-        }),
-        ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
-            definition: definition.clone(),
-        }),
-        ImplItemKind::Type { .. } => item,
-    }
-}
-
-fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
-    match body.as_ref() {
-        TraitItem::Definition { .. } => body,
-        TraitItem::Type() => body,
-        TraitItem::DefinitionWithDefault(fun_definition) => {
-            Rc::new(TraitItem::DefinitionWithDefault(fun_definition.clone()))
-        }
-    }
-}
-
-fn mt_trait_items(body: Vec<(String, Rc<TraitItem>)>) -> Vec<(String, Rc<TraitItem>)> {
-    body.into_iter()
-        .map(|(s, item)| (s, mt_trait_item(item)))
+    top_level_groups
+        .into_iter()
+        .map(|(file_name, top_level)| (file_name, top_level.to_pretty(LINE_WIDTH)))
         .collect()
-}
-
-/// Monad transform for [TopLevelItem]
-fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
-    match item.as_ref() {
-        TopLevelItem::Const { name, value } => Rc::new(TopLevelItem::Const {
-            name: name.clone(),
-            value: value.clone(),
-        }),
-        TopLevelItem::Definition {
-            name,
-            snippet,
-            definition,
-        } => Rc::new(TopLevelItem::Definition {
-            name: name.clone(),
-            snippet: snippet.clone(),
-            definition: definition.clone(),
-        }),
-        TopLevelItem::TypeAlias { .. } => item,
-        TopLevelItem::TypeEnum { .. } => item,
-        TopLevelItem::TypeStructStruct { .. } => item,
-        TopLevelItem::TypeStructTuple { .. } => item,
-        TopLevelItem::Module { name, body } => Rc::new(TopLevelItem::Module {
-            name: name.clone(),
-            body: mt_top_level(body.clone()),
-        }),
-        TopLevelItem::ForeignModule => item,
-        TopLevelItem::Impl {
-            generic_tys,
-            self_ty,
-            items,
-        } => Rc::new(TopLevelItem::Impl {
-            generic_tys: generic_tys.clone(),
-            self_ty: self_ty.clone(),
-            items: items
-                .iter()
-                .map(|item| {
-                    Rc::new(ImplItem {
-                        name: item.name.clone(),
-                        snippet: item.snippet.clone(),
-                        kind: mt_impl_item(item.kind.clone()),
-                    })
-                })
-                .collect(),
-        }),
-        TopLevelItem::Trait {
-            name,
-            path,
-            ty_params,
-            body,
-        } => Rc::new(TopLevelItem::Trait {
-            name: name.clone(),
-            path: path.clone(),
-            ty_params: ty_params.clone(),
-            body: mt_trait_items(body.clone()),
-        }),
-        TopLevelItem::TraitImpl {
-            generic_tys,
-            self_ty,
-            of_trait,
-            trait_ty_params,
-            items,
-        } => Rc::new(TopLevelItem::TraitImpl {
-            generic_tys: generic_tys.clone(),
-            self_ty: self_ty.clone(),
-            of_trait: of_trait.clone(),
-            trait_ty_params: trait_ty_params.clone(),
-            items: items
-                .iter()
-                .map(|item| {
-                    Rc::new(TraitImplItem {
-                        name: item.name.clone(),
-                        snippet: item.snippet.clone(),
-                        kind: Rc::new(item.kind.map(|item| mt_impl_item(item.clone()))),
-                    })
-                })
-                .collect(),
-        }),
-        TopLevelItem::Error(_) => item,
-    }
-}
-
-fn mt_top_level(top_level: Rc<TopLevel>) -> Rc<TopLevel> {
-    Rc::new(TopLevel(
-        top_level
-            .0
-            .clone()
-            .into_iter()
-            .map(mt_top_level_item)
-            .collect(),
-    ))
 }
 
 #[derive(Debug)]
@@ -1390,6 +1411,26 @@ impl ImplItemKind {
     }
 }
 
+impl TraitBound {
+    /// Get the generics for the trait
+    fn compile(
+        env: &Env,
+        local_def_id: &LocalDefId,
+        ptraitref: &rustc_hir::PolyTraitRef,
+    ) -> Rc<TraitBound> {
+        Rc::new(TraitBound {
+            name: compile_path(env, ptraitref.trait_ref.path),
+            ty_params: get_ty_params_with_default_status(
+                env,
+                local_def_id,
+                env.tcx
+                    .generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
+                ptraitref.trait_ref.path,
+            ),
+        })
+    }
+}
+
 impl Snippet {
     fn of_span(env: &Env, span: &rustc_span::Span) -> Option<Rc<Self>> {
         if env.axiomatize {
@@ -1537,6 +1578,7 @@ impl TypeStructStruct {
 }
 
 impl TopLevelItem {
+    #[allow(clippy::format_collect)]
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
         match self {
             TopLevelItem::Const { name, value } => match value {
@@ -1836,6 +1878,7 @@ impl TopLevelItem {
             }
             TopLevelItem::TraitImpl {
                 generic_tys,
+                predicates,
                 self_ty,
                 of_trait,
                 trait_ty_params,
@@ -1843,8 +1886,30 @@ impl TopLevelItem {
                 ..
             } => {
                 let module_name = format!(
-                    "Impl_{}{}_for_{}",
+                    "Impl_{}{}{}_for_{}",
                     of_trait.to_name(),
+                    predicates
+                        .iter()
+                        .map(|where_predicate| {
+                            let WherePredicate { bound, ty } = where_predicate.as_ref();
+                            let TraitBound { name, ty_params } = bound.as_ref();
+
+                            format!(
+                                "_where_{}_{}{}",
+                                name.to_name(),
+                                ty.to_name(),
+                                ty_params
+                                    .iter()
+                                    .filter_map(|(_, ty_param)| match ty_param.as_ref() {
+                                        FieldWithDefault::RequiredValue(ty)
+                                        | FieldWithDefault::OptionalValue(ty) =>
+                                            Some(format!("_{}", ty.to_name())),
+                                        FieldWithDefault::Default => None,
+                                    })
+                                    .join(""),
+                            )
+                        })
+                        .collect::<String>(),
                     trait_ty_params
                         .iter()
                         .filter_map(|(_, trait_ty_param)| match trait_ty_param.as_ref() {
@@ -1998,7 +2063,7 @@ impl TopLevel {
     fn to_coq(&self) -> coq::TopLevel {
         coq::TopLevel::new(
             &itertools::Itertools::intersperse(
-                self.0.iter().map(|item| item.to_coq()),
+                self.0.iter().map(|item| item.item.to_coq()),
                 vec![coq::TopLevelItem::Line],
             )
             .flatten()

@@ -85,9 +85,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let number :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 7 ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 7 ] |) in
         let letter := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let emoticon := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let _ :=
@@ -98,11 +96,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := number in
                   let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let i := M.copy (| γ0_0 |) in
                   let _ :=
                     let _ :=
@@ -160,11 +154,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := letter in
                   let γ0_0 :=
-                    M.get_struct_tuple_field_or_break_match (|
-                      γ,
-                      "core::option::Option::Some",
-                      0
-                    |) in
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let j := M.copy (| γ0_0 |) in
                   let _ :=
                     let _ :=
@@ -255,11 +245,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ := emoticon in
                 let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
-                    γ,
-                    "core::option::Option::Some",
-                    0
-                  |) in
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let i := M.copy (| γ0_0 |) in
                 let _ :=
                   let _ :=

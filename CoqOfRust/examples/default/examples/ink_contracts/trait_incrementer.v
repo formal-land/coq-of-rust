@@ -47,11 +47,15 @@ Module Impl_trait_incrementer_Incrementer.
         M.read (|
           let _ :=
             let β :=
-              M.get_struct_record_field
-                (M.read (| self |))
-                "trait_incrementer::Incrementer"
-                "value" in
-            M.assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |) |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "trait_incrementer::Incrementer",
+                "value"
+              |) in
+            M.write (|
+              β,
+              BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| delta |) |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -75,7 +79,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
-          [ M.read (| self |); Value.Integer Integer.U64 1 ]
+          [ M.read (| self |); Value.Integer 1 ]
         |)))
     | _, _ => M.impossible
     end.
@@ -91,7 +95,11 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field (M.read (| self |)) "trait_incrementer::Incrementer" "value"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "trait_incrementer::Incrementer",
+            "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.
@@ -119,12 +127,13 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
-              M.get_struct_record_field
-                (M.read (| self |))
-                "trait_incrementer::Incrementer"
-                "value",
-              Value.Integer Integer.U64 0
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "trait_incrementer::Incrementer",
+                "value"
+              |),
+              Value.Integer 0
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

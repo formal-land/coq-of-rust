@@ -186,7 +186,7 @@ Module ConstantTimeEq.
   Axiom ProvidedMethod_ct_ne : M.IsProvidedMethod "subtle::ConstantTimeEq" "ct_ne" ct_ne.
 End ConstantTimeEq.
 
-Module Impl_subtle_ConstantTimeEq_for_slice_T.
+Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
   
   Parameter ct_eq : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -198,7 +198,7 @@ Module Impl_subtle_ConstantTimeEq_for_slice_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
-End Impl_subtle_ConstantTimeEq_for_slice_T.
+End Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
@@ -547,7 +547,7 @@ End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 (* Trait *)
 (* Empty module 'ConditionallyNegatable' *)
 
-Module Impl_subtle_ConditionallyNegatable_for_T.
+Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_where_core_ops_arith_Neg_ref__T_for_T.
   Definition Self (T : Ty.t) : Ty.t := T.
   
   Parameter conditional_negate : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -559,7 +559,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("conditional_negate", InstanceField.Method (conditional_negate T)) ].
-End Impl_subtle_ConditionallyNegatable_for_T.
+End Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T_where_core_ops_arith_Neg_ref__T_for_T.
 
 (* StructRecord
   {
@@ -568,7 +568,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
     fields := [ ("value", T); ("is_some", Ty.path "subtle::Choice") ];
   } *)
 
-Module Impl_core_clone_Clone_for_subtle_CtOption_T.
+Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Parameter clone : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -580,9 +580,9 @@ Module Impl_core_clone_Clone_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
-End Impl_core_clone_Clone_for_subtle_CtOption_T.
+End Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
 
-Module Impl_core_marker_Copy_for_subtle_CtOption_T.
+Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Axiom Implements :
@@ -592,9 +592,9 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [].
-End Impl_core_marker_Copy_for_subtle_CtOption_T.
+End Impl_core_marker_Copy_where_core_marker_Copy_T_for_subtle_CtOption_T.
 
-Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
+Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Parameter fmt : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -606,7 +606,7 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
-End Impl_core_fmt_Debug_for_subtle_CtOption_T.
+End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
@@ -682,7 +682,7 @@ Module Impl_subtle_CtOption_T.
     M.IsAssociatedFunction (Self T) "or_else" (or_else T).
 End Impl_subtle_CtOption_T.
 
-Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Parameter conditional_select : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -694,9 +694,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("conditional_select", InstanceField.Method (conditional_select T)) ].
-End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+End Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
 
-Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
   Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [ T ].
   
   Parameter ct_eq : forall (T : Ty.t), (list Ty.t) -> (list Value.t) -> M.
@@ -708,7 +708,7 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("ct_eq", InstanceField.Method (ct_eq T)) ].
-End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+End Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOption_T.
 
 (* Trait *)
 (* Empty module 'ConstantTimeGreater' *)

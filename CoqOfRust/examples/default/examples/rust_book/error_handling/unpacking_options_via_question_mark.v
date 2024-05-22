@@ -130,8 +130,8 @@ Module Impl_unpacking_options_via_question_mark_Person.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              M.get_struct_record_field
-                (M.match_operator (|
+              M.SubPointer.get_struct_record_field (|
+                M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -145,8 +145,8 @@ Module Impl_unpacking_options_via_question_mark_Person.
                       |),
                       [
                         M.read (|
-                          M.get_struct_record_field
-                            (M.match_operator (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -160,10 +160,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                   |),
                                   [
                                     M.read (|
-                                      M.get_struct_record_field
-                                        (M.read (| self |))
-                                        "unpacking_options_via_question_mark::Person"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "unpacking_options_via_question_mark::Person",
                                         "job"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -172,7 +173,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
@@ -205,7 +206,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
-                                      M.get_struct_tuple_field_or_break_match (|
+                                      M.SubPointer.get_struct_tuple_field (|
                                         γ,
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
@@ -213,9 +214,10 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                     let val := M.copy (| γ0_0 |) in
                                     val))
                               ]
-                            |))
-                            "unpacking_options_via_question_mark::Job"
+                            |),
+                            "unpacking_options_via_question_mark::Job",
                             "phone_number"
+                          |)
                         |)
                       ]
                     |)
@@ -224,7 +226,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -255,7 +257,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -263,9 +265,10 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         let val := M.copy (| γ0_0 |) in
                         val))
                   ]
-                |))
-                "unpacking_options_via_question_mark::PhoneNumber"
+                |),
+                "unpacking_options_via_question_mark::PhoneNumber",
                 "area_code"
+              |)
             |)))
         |)))
     | _, _ => M.impossible
@@ -316,8 +319,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     ("area_code",
                                       Value.StructTuple
                                         "core::option::Option::Some"
-                                        [ Value.Integer Integer.U8 61 ]);
-                                    ("number", Value.Integer Integer.U32 439222222)
+                                        [ Value.Integer 61 ]);
+                                    ("number", Value.Integer 439222222)
                                   ]
                               ])
                         ]
@@ -339,16 +342,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       [ p ]
                     |)
                   |);
-                  M.alloc (|
-                    Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.U8 61 ]
-                  |)
+                  M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 61 ] |)
                 ]
             |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

@@ -28,8 +28,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 5 |)) |) in
-        let inches := M.copy (| M.use (M.alloc (| Value.Integer Integer.U64 2 |)) |) in
+        let nanoseconds := M.copy (| M.use (M.alloc (| Value.Integer 5 |)) |) in
+        let inches := M.copy (| M.use (M.alloc (| Value.Integer 2 |)) |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -81,6 +81,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.add (|
+                                      Integer.U64,
                                       M.read (| nanoseconds |),
                                       M.read (| inches |)
                                     |)

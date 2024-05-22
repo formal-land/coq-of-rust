@@ -18,19 +18,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.U64 3 |) in
+        let x := M.alloc (| Value.Integer 3 |) in
         let y := M.copy (| Value.DeclaredButUndefined |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ y; M.alloc (| Value.Integer Integer.U64 8 |) ] |),
+            M.alloc (| Value.Tuple [ y; M.alloc (| Value.Integer 8 |) ] |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ0_0 := M.get_tuple_field γ 0 in
-                  let γ0_1 := M.get_tuple_field γ 1 in
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|

@@ -62,11 +62,19 @@ Module Impl_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           let _ :=
-            M.assign (|
-              M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value",
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "flipper::Flipper",
+                "value"
+              |),
               UnOp.Pure.not
                 (M.read (|
-                  M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value"
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "flipper::Flipper",
+                    "value"
+                  |)
                 |))
             |) in
           M.alloc (| Value.Tuple [] |)
@@ -86,7 +94,9 @@ Module Impl_flipper_Flipper.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "flipper::Flipper" "value" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "flipper::Flipper", "value" |)
+        |)))
     | _, _ => M.impossible
     end.
   

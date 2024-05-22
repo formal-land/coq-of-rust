@@ -41,7 +41,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let name_buf := M.alloc (| repeat (Value.Integer Integer.U8 0) 12 |) in
+        let name_buf := M.alloc (| repeat (Value.Integer 0) 12 |) in
         let _ :=
           let _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in

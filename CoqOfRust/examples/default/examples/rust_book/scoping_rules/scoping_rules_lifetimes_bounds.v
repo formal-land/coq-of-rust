@@ -8,7 +8,7 @@ Require Import CoqOfRust.CoqOfRust.
     fields := [ Ty.apply (Ty.path "&") [ T ] ];
   } *)
 
-Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self (T : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [ T ].
   
@@ -32,7 +32,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_tuple_field (M.read (| self |)) "scoping_rules_lifetimes_bounds::Ref" 0
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "scoping_rules_lifetimes_bounds::Ref",
+                  0
+                |)
               |))
           ]
         |)))
@@ -46,7 +50,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       (Self T)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
-End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
+End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 (*
 fn print<T>(t: T)
@@ -180,7 +184,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer Integer.I32 7 |) in
+        let x := M.alloc (| Value.Integer 7 |) in
         let ref_x := M.alloc (| Value.StructTuple "scoping_rules_lifetimes_bounds::Ref" [ x ] |) in
         let _ :=
           M.alloc (|

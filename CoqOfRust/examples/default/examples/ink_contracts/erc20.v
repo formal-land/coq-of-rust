@@ -12,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
       ];
   } *)
 
-Module Impl_core_default_Default_for_erc20_Mapping_K_V.
+Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
   
   (* Default *)
@@ -57,7 +57,7 @@ Module Impl_core_default_Default_for_erc20_Mapping_K_V.
       (Self K V)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
-End Impl_core_default_Default_for_erc20_Mapping_K_V.
+End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
   Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
@@ -322,7 +322,9 @@ Module Impl_erc20_Env.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "erc20::Env" "caller" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (| M.read (| self |), "erc20::Env", "caller" |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -499,7 +501,13 @@ Module Impl_erc20_Erc20.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "total_supply" |)))
+        M.read (|
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "erc20::Erc20",
+            "total_supply"
+          |)
+        |)))
     | _, _ => M.impossible
     end.
   
@@ -530,7 +538,11 @@ Module Impl_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "balances";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "erc20::Erc20",
+                  "balances"
+                |);
                 M.read (| owner |)
               ]
             |)
@@ -593,7 +605,11 @@ Module Impl_erc20_Erc20.
                 []
               |),
               [
-                M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "allowances";
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "erc20::Erc20",
+                  "allowances"
+                |);
                 M.alloc (|
                   Value.Tuple [ M.read (| M.read (| owner |) |); M.read (| M.read (| spender |) |) ]
                 |)
@@ -702,9 +718,17 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "balances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc20::Erc20",
+                        "balances"
+                      |);
                       M.read (| M.read (| from |) |);
-                      BinOp.Panic.sub (| M.read (| from_balance |), M.read (| value |) |)
+                      BinOp.Panic.sub (|
+                        Integer.U128,
+                        M.read (| from_balance |),
+                        M.read (| value |)
+                      |)
                     ]
                   |)
                 |) in
@@ -726,9 +750,17 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "balances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc20::Erc20",
+                        "balances"
+                      |);
                       M.read (| M.read (| to |) |);
-                      BinOp.Panic.add (| M.read (| to_balance |), M.read (| value |) |)
+                      BinOp.Panic.add (|
+                        Integer.U128,
+                        M.read (| to_balance |),
+                        M.read (| value |)
+                      |)
                     ]
                   |)
                 |) in
@@ -860,7 +892,11 @@ Module Impl_erc20_Erc20.
                   []
                 |),
                 [
-                  M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "allowances";
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "erc20::Erc20",
+                    "allowances"
+                  |);
                   Value.Tuple [ M.read (| owner |); M.read (| spender |) ];
                   M.read (| value |)
                 ]
@@ -998,7 +1034,7 @@ Module Impl_erc20_Erc20.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Break",
                             0
@@ -1034,7 +1070,7 @@ Module Impl_erc20_Erc20.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
-                          M.get_struct_tuple_field_or_break_match (|
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
@@ -1057,9 +1093,13 @@ Module Impl_erc20_Erc20.
                       []
                     |),
                     [
-                      M.get_struct_record_field (M.read (| self |)) "erc20::Erc20" "allowances";
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "erc20::Erc20",
+                        "allowances"
+                      |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
-                      BinOp.Panic.sub (| M.read (| allowance |), M.read (| value |) |)
+                      BinOp.Panic.sub (| Integer.U128, M.read (| allowance |), M.read (| value |) |)
                     ]
                   |)
                 |) in

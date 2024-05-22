@@ -80,7 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "index",
                                       []
                                     |),
-                                    [ args; Value.Integer Integer.Usize 0 ]
+                                    [ args; Value.Integer 0 ]
                                   |)
                                 ]
                               |)
@@ -126,6 +126,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     BinOp.Panic.sub (|
+                                      Integer.Usize,
                                       M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
@@ -139,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         |),
                                         [ args ]
                                       |),
-                                      Value.Integer Integer.Usize 1
+                                      Value.Integer 1
                                     |)
                                   |)
                                 ]
@@ -181,7 +182,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         args;
                                         Value.StructRecord
                                           "core::ops::range::RangeFrom"
-                                          [ ("start", Value.Integer Integer.Usize 1) ]
+                                          [ ("start", Value.Integer 1) ]
                                       ]
                                     |)
                                   |)

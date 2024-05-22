@@ -22,13 +22,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let years :=
           M.alloc (|
-            Value.StructTuple
-              "generics_new_type_idiom_as_base_type::Years"
-              [ Value.Integer Integer.I64 42 ]
+            Value.StructTuple "generics_new_type_idiom_as_base_type::Years" [ Value.Integer 42 ]
           |) in
         let years_as_primitive_1 :=
           M.copy (|
-            M.get_struct_tuple_field years "generics_new_type_idiom_as_base_type::Years" 0
+            M.SubPointer.get_struct_tuple_field (|
+              years,
+              "generics_new_type_idiom_as_base_type::Years",
+              0
+            |)
           |) in
         M.match_operator (|
           years,
@@ -36,7 +38,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
-                  M.get_struct_tuple_field_or_break_match (|
+                  M.SubPointer.get_struct_tuple_field (|
                     γ,
                     "generics_new_type_idiom_as_base_type::Years",
                     0

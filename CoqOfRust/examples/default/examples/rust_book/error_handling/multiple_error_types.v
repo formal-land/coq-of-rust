@@ -51,7 +51,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (|
           BinOp.Panic.mul (|
-            Value.Integer Integer.I32 2,
+            Integer.I32,
+            Value.Integer 2,
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply

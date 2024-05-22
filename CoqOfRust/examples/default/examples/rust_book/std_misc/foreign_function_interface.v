@@ -231,10 +231,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       (M.alloc (|
                         BinOp.Pure.lt
                           (M.read (|
-                            M.get_struct_record_field
-                              (M.read (| self |))
-                              "foreign_function_interface::Complex"
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "foreign_function_interface::Complex",
                               "im"
+                            |)
                           |))
                           (M.read (| UnsupportedLiteral |))
                       |)) in
@@ -277,10 +278,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "foreign_function_interface::Complex"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "foreign_function_interface::Complex",
                                           "re"
+                                        |)
                                       ]
                                     |);
                                     M.call_closure (|
@@ -292,11 +294,13 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                       [
                                         M.alloc (|
                                           UnOp.Panic.neg (|
+                                            Integer.Usize,
                                             M.read (|
-                                              M.get_struct_record_field
-                                                (M.read (| self |))
-                                                "foreign_function_interface::Complex"
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "foreign_function_interface::Complex",
                                                 "im"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -349,10 +353,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "foreign_function_interface::Complex"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "foreign_function_interface::Complex",
                                           "re"
+                                        |)
                                       ]
                                     |);
                                     M.call_closure (|
@@ -362,10 +367,11 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                         [ Ty.path "f32" ]
                                       |),
                                       [
-                                        M.get_struct_record_field
-                                          (M.read (| self |))
-                                          "foreign_function_interface::Complex"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "foreign_function_interface::Complex",
                                           "im"
+                                        |)
                                       ]
                                     |)
                                   ]

@@ -307,7 +307,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                         "from",
                         []
                       |),
-                      [ repeat (Value.Integer Integer.U8 0) 32 ]
+                      [ repeat (Value.Integer 0) 32 ]
                     |)
                   ]
               |)
@@ -363,7 +363,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     "from",
                                     []
                                   |),
-                                  [ repeat (Value.Integer Integer.U8 0) 32 ]
+                                  [ repeat (Value.Integer 0) 32 ]
                                 |)
                               ]
                           ]
@@ -433,10 +433,11 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          M.get_struct_record_field
-            (M.read (| self |))
-            "constructors_return_value::ConstructorsReturnValue"
+          M.SubPointer.get_struct_record_field (|
+            M.read (| self |),
+            "constructors_return_value::ConstructorsReturnValue",
             "value"
+          |)
         |)))
     | _, _ => M.impossible
     end.

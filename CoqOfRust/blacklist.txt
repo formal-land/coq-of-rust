@@ -1,4 +1,15 @@
-examples/default/examples/ink_contracts/proofs/erc20.v
+# This file works but is taking a very long time (ten minutes)
+revm/opcode.v
+examples/default/examples/ink_contracts/proofs/erc721.v
+move/
+alloc/boxed.v
+core/any.v
+core/array/mod.v
+core/cmp/bytewise.v
+core/error.v
+core/escape.v
+core/iter/adapters/flatten.v
+core/net/ip_addr.v
 examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v

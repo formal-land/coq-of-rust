@@ -21,7 +21,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
-Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [ A; B ].
   
@@ -37,8 +37,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_tuple_field (M.read (| self |)) "generics_phantom_type::PhantomTuple" 0;
-              M.get_struct_tuple_field (M.read (| other |)) "generics_phantom_type::PhantomTuple" 0
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "generics_phantom_type::PhantomTuple",
+                0
+              |);
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| other |),
+                "generics_phantom_type::PhantomTuple",
+                0
+              |)
             ]
           |),
           ltac:(M.monadic
@@ -51,14 +59,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
                 []
               |),
               [
-                M.get_struct_tuple_field
-                  (M.read (| self |))
-                  "generics_phantom_type::PhantomTuple"
-                  1;
-                M.get_struct_tuple_field
-                  (M.read (| other |))
-                  "generics_phantom_type::PhantomTuple"
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "generics_phantom_type::PhantomTuple",
                   1
+                |);
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| other |),
+                  "generics_phantom_type::PhantomTuple",
+                  1
+                |)
               ]
             |)))
         |)))
@@ -72,7 +82,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
-End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* StructRecord
   {
@@ -94,7 +104,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
-Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [ A; B ].
   
@@ -110,14 +120,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
           M.call_closure (|
             M.get_trait_method (| "core::cmp::PartialEq", A, [ A ], "eq", [] |),
             [
-              M.get_struct_record_field
-                (M.read (| self |))
-                "generics_phantom_type::PhantomStruct"
-                "first";
-              M.get_struct_record_field
-                (M.read (| other |))
-                "generics_phantom_type::PhantomStruct"
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "generics_phantom_type::PhantomStruct",
                 "first"
+              |);
+              M.SubPointer.get_struct_record_field (|
+                M.read (| other |),
+                "generics_phantom_type::PhantomStruct",
+                "first"
+              |)
             ]
           |),
           ltac:(M.monadic
@@ -130,14 +142,16 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
                 []
               |),
               [
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "generics_phantom_type::PhantomStruct"
-                  "phantom";
-                M.get_struct_record_field
-                  (M.read (| other |))
-                  "generics_phantom_type::PhantomStruct"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "generics_phantom_type::PhantomStruct",
                   "phantom"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "generics_phantom_type::PhantomStruct",
+                  "phantom"
+                |)
               ]
             |)))
         |)))
@@ -151,7 +165,7 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       (Self A B)
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
-End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*
 fn main() {

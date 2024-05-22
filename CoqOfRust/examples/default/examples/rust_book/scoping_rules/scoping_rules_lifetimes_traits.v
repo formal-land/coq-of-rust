@@ -31,10 +31,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
             (* Unsize *)
             M.pointer_coercion
               (M.alloc (|
-                M.get_struct_record_field
-                  (M.read (| self |))
-                  "scoping_rules_lifetimes_traits::Borrowed"
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "scoping_rules_lifetimes_traits::Borrowed",
                   "x"
+                |)
               |))
           ]
         |)))
@@ -63,7 +64,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", M.alloc (| Value.Integer Integer.I32 10 |)) ]))
+          [ ("x", M.alloc (| Value.Integer 10 |)) ]))
     | _, _ => M.impossible
     end.
   

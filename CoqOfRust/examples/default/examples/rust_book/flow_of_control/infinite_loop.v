@@ -34,7 +34,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let count := M.alloc (| Value.Integer Integer.U32 0 |) in
+        let count := M.alloc (| Value.Integer 0 |) in
         let _ :=
           let _ :=
             M.alloc (|
@@ -60,7 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ltac:(M.monadic
             (let _ :=
               let β := count in
-              M.assign (| β, BinOp.Panic.add (| M.read (| β |), Value.Integer Integer.U32 1 |) |) in
+              M.write (| β, BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |) |) in
             let _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -69,9 +69,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.Pure.eq (M.read (| count |)) (Value.Integer Integer.U32 3)
-                          |)) in
+                          (M.alloc (| BinOp.Pure.eq (M.read (| count |)) (Value.Integer 3) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -155,10 +153,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.Pure.eq (M.read (| count |)) (Value.Integer Integer.U32 5)
-                        |)) in
+                      M.use (M.alloc (| BinOp.Pure.eq (M.read (| count |)) (Value.Integer 5) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|

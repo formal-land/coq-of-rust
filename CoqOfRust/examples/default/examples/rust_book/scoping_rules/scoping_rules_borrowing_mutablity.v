@@ -106,10 +106,11 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| book |))
-                                    "scoping_rules_borrowing_mutablity::Book"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| book |),
+                                    "scoping_rules_borrowing_mutablity::Book",
                                     "title"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -119,10 +120,11 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| book |))
-                                    "scoping_rules_borrowing_mutablity::Book"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| book |),
+                                    "scoping_rules_borrowing_mutablity::Book",
                                     "year"
+                                  |)
                                 ]
                               |)
                             ]
@@ -151,12 +153,13 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
       (let book := M.alloc (| book |) in
       M.read (|
         let _ :=
-          M.assign (|
-            M.get_struct_record_field
-              (M.read (| book |))
-              "scoping_rules_borrowing_mutablity::Book"
-              "year",
-            Value.Integer Integer.U32 2014
+          M.write (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| book |),
+              "scoping_rules_borrowing_mutablity::Book",
+              "year"
+            |),
+            Value.Integer 2014
           |) in
         let _ :=
           let _ :=
@@ -190,10 +193,11 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| book |))
-                                    "scoping_rules_borrowing_mutablity::Book"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| book |),
+                                    "scoping_rules_borrowing_mutablity::Book",
                                     "title"
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -203,10 +207,11 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  M.get_struct_record_field
-                                    (M.read (| book |))
-                                    "scoping_rules_borrowing_mutablity::Book"
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| book |),
+                                    "scoping_rules_borrowing_mutablity::Book",
                                     "year"
+                                  |)
                                 ]
                               |)
                             ]
@@ -262,7 +267,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("author", M.read (| Value.String "Douglas Hofstadter" |));
                 ("title",
                   M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
-                ("year", Value.Integer Integer.U32 1979)
+                ("year", Value.Integer 1979)
               ]
           |) in
         let mutabook := M.copy (| immutabook |) in

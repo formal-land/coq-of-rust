@@ -34,9 +34,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let optional :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer Integer.I32 0 ]
-          |) in
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ] |) in
         M.loop (|
           ltac:(M.monadic
             (M.match_operator (|
@@ -45,7 +43,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
-                      M.get_struct_tuple_field_or_break_match (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
                         "core::option::Option::Some",
                         0
@@ -58,9 +56,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| i |)) (Value.Integer Integer.I32 9)
-                                |)) in
+                                (M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 9) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let _ :=
@@ -91,7 +87,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
                             let _ :=
-                              M.assign (|
+                              M.write (|
                                 optional,
                                 Value.StructTuple "core::option::Option::None" []
                               |) in
@@ -143,14 +139,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
                             let _ :=
-                              M.assign (|
+                              M.write (|
                                 optional,
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   [
                                     BinOp.Panic.add (|
+                                      Integer.I32,
                                       M.read (| i |),
-                                      Value.Integer Integer.I32 1
+                                      Value.Integer 1
                                     |)
                                   ]
                               |) in
