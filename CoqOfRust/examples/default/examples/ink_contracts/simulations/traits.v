@@ -1,9 +1,9 @@
 (* traits/traits.rs *)
+(* TODO: Move this file to a separate location from ink contracts *)
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.result.
-Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.bool.
 Require Import CoqOfRust.simulations.M.
 
@@ -112,6 +112,9 @@ Definition shear (self: traits.Sheep.t) : MS? State.t string unit :=
   in
   returnS? tt.
 
+(* ToTy Instances *)
+(* TODO: Finish them *)
+
 (* Missing ToValue instances to define TraitHasRun *)
 Global Instance IsToValue_string : ToValue string. Admitted.
 Global Instance IsToValue_string_self {Self : Set} : ToValue (string -> Self). Admitted.
@@ -142,7 +145,7 @@ Module Animal.
     talk (self: Self) : unit;
   }.
 
-  Record TraitHasRun (Self : Set)
+  (* Record TraitHasRun (Self : Set)
     `{ToValue Self}
     `{traits.Animal.Trait Self} :
     Prop := {
@@ -179,7 +182,7 @@ Module Animal.
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "talk" talk 
         /\
         Run.pure (talk [] []) (inl (φ traits.Animal.talk));
-  }.
+  }. *)
 End Animal.
 
 (*
