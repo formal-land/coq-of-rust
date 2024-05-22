@@ -1056,4 +1056,51 @@ Module Interpreter.
         ("next_action", φ x.(next_action))
       ];
   }.
+
+  Definition update_gas
+    {A : Set}
+    (m : MS? Gas.t string A) :
+    MS? Interpreter.t string A :=
+  letS? interp := readS? in
+  let gas := Interpreter.gas interp in
+  match m gas with
+  | (result, state) =>
+    match result with
+    | inr e => panicS? e
+    | inl result =>
+      letS? _ := writeS? (interp <|
+        Interpreter.gas := state
+      |>) in
+      returnS? result
+    end
+  end.
 End Interpreter.
+
+(*
+  /// Records a `gas` cost and fails the instruction if it would exceed the available gas.
+  #[macro_export]
+  macro_rules! gas {
+      ($interp:expr, $gas:expr) => {
+          $crate::gas!($interp, $gas, ())
+      };
+      ($interp:expr, $gas:expr, $ret:expr) => {
+          if !$interp.gas.record_cost($gas) {
+              $interp.instruction_result = $crate::InstructionResult::OutOfGas;
+              return $ret;
+          }
+      };
+  }
+*)
+
+Definition gas_macro (gas : Z) :
+    MS? Interpreter.t string unit :=
+  letS? interp := readS? in
+  letS? success := Interpreter.update_gas (Gas.record_cost gas) in
+  if negb success
+  then
+    letS? _ := writeS? (interp <|
+      Interpreter.instruction_result := InstructionResult.OutOfGas
+    |>) in
+    returnS? tt
+  else
+    returnS? tt.
