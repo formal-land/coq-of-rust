@@ -12,8 +12,8 @@ Import simulations.M.Notations.
 static LANGUAGE: &str = "Rust";
 const THRESHOLD: i32 = 10;
 *)
-Definition LANGUAGE := mk_str "Rust".
-Definition THRESHOLD : i32.t := i32.Make 10.
+Definition LANGUAGE : string :=  "Rust".
+Definition THRESHOLD : A := 10.
 
 (* 
 fn is_big(n: i32) -> bool {

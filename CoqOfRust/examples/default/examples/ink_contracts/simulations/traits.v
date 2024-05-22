@@ -22,8 +22,11 @@ Module Sheep.
     name: string;
   }.
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "traits::Sheep";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ x :=
       Value.StructRecord "traits::Sheep" [
         ("naked", Value.Bool x.(naked));
