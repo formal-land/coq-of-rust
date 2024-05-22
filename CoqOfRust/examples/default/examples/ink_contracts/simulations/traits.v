@@ -113,7 +113,11 @@ Definition shear (self: traits.Sheep.t) : MS? State.t string unit :=
   returnS? tt.
 
 (* ToTy Instances *)
-(* TODO: Finish them *)
+
+Global Instance IsToTy_string : ToTy string. Admitted.
+Global Instance IsToTy_string_self {Self : Set} : ToTy (string -> Self). Admitted.
+Global Instance IsToTy_self_string {Self : Set} : ToTy (Self -> string). Admitted.
+Global Instance IsToTy_self_unit {Self : Set} : ToTy (Self -> unit). Admitted.
 
 (* Missing ToValue instances to define TraitHasRun *)
 Global Instance IsToValue_string : ToValue string. Admitted.
@@ -145,8 +149,9 @@ Module Animal.
     talk (self: Self) : unit;
   }.
 
-  (* Record TraitHasRun (Self : Set)
+  Record TraitHasRun (Self : Set)
     `{ToValue Self}
+    `{ToTy Self}
     `{traits.Animal.Trait Self} :
     Prop := {
       new_exists : exists new,
@@ -182,7 +187,7 @@ Module Animal.
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "talk" talk 
         /\
         Run.pure (talk [] []) (inl (φ traits.Animal.talk));
-  }. *)
+  }.
 End Animal.
 
 (*
