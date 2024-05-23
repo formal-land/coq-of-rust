@@ -927,7 +927,7 @@ Module fmt.
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     End Impl_core_fmt_rt_UnsafeArg.
     
-    (* Unhandled foreign module here *)
+    (* Foreign type 'Opaque' *)
     
     Definition value_USIZE_MARKER : Value.t :=
       M.run

@@ -183,7 +183,7 @@ Module ptr.
           ];
       } *)
     
-    (* Unhandled foreign module here *)
+    (* Foreign type 'VTable' *)
     
     Module Impl_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=

@@ -2,7 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module alloc.
-  (* Unhandled foreign module here *)
+  Parameter __rust_alloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter __rust_dealloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter __rust_realloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter __rust_alloc_zeroed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter __rust_no_alloc_shim_is_unstable : Value.t.
   
   (* StructTuple
     {
@@ -1777,7 +1785,7 @@ Module alloc.
     | _, _ => M.impossible
     end.
   
-  (* Unhandled foreign module here *)
+  Parameter __rust_alloc_error_handler : (list Ty.t) -> (list Value.t) -> M.
   
   (*
   pub const fn handle_alloc_error(layout: Layout) -> ! {
@@ -2029,7 +2037,7 @@ Module alloc.
       end.
     
     Module __rdl_oom.
-      (* Unhandled foreign module here *)
+      Parameter __rust_alloc_error_handler_should_panic : Value.t.
     End __rdl_oom.
   End __alloc_error_handler.
   

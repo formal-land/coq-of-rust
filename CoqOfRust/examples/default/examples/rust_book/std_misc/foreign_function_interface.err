@@ -1,17 +1,3 @@
-warning: Foreign modules are not supported
-  --> examples/rust_book/std_misc/foreign_function_interface.rs:5:1
-   |
-5  | / extern "C" {
-6  | |     // this is a foreign function
-7  | |     // that computes the square root of a single precision complex number
-8  | |     fn csqrtf(z: Complex) -> Complex;
-9  | |
-10 | |     fn ccosf(z: Complex) -> Complex;
-11 | | }
-   | |_^
-   |
-   = note: We will work on it! 🐣
-
 warning: Expected an integer type for the parameters
   --> examples/rust_book/std_misc/foreign_function_interface.rs:43:42
    |
@@ -20,5 +6,5 @@ warning: Expected an integer type for the parameters
    |
    = note: Please report 🙏
 
-warning: 2 warnings emitted
+warning: 1 warning emitted
 
