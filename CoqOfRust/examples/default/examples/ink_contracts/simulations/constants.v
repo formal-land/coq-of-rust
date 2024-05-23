@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require CoqOfRust.core.simulations.option.
-Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
+(* Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib. *)
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.lib.simulations.lib.
+(* Require Import CoqOfRust.lib.simulations.lib. *)
 
 Import simulations.M.Notations.
 
@@ -13,7 +13,7 @@ static LANGUAGE: &str = "Rust";
 const THRESHOLD: i32 = 10;
 *)
 Definition LANGUAGE : string :=  "Rust".
-Definition THRESHOLD : A := 10.
+Definition THRESHOLD : Z := 10.
 
 (* 
 fn is_big(n: i32) -> bool {
@@ -23,9 +23,9 @@ fn is_big(n: i32) -> bool {
 *)
 
 Definition is_big 
-  (n: i32.t) : bool := 
-  let get_n := i32.get n in
-  let get_THRESHOLD := i32.get THRESHOLD in
+  (n: Z) : bool := 
+  let get_n := n in
+  let get_THRESHOLD := THRESHOLD in
   get_n >? get_THRESHOLD.
 
 (*
@@ -34,5 +34,5 @@ fn main() {
 } *)
 
 Definition main : unit :=
-  let n := i32.Make 16 in
+  let n := 16 in
   tt.
