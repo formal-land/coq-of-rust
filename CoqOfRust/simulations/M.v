@@ -9,6 +9,10 @@ Class ToValue (A : Set) : Set := {
   φ : A -> Value.t;
 }.
 
+Global Instance BoolIsToValue : ToValue bool := {
+  φ b := Value.Bool b;
+}.
+
 Global Instance ZIsToValue : ToValue Z := {
   φ z := Value.Integer z;
 }.

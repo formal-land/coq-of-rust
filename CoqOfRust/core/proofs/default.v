@@ -6,15 +6,10 @@ Require core.simulations.default.
 Import Run.
 
 Module Default.
-  Record TraitHasRun (Self : Set) (Self_ty : Ty.t)
-    `{ToValue Self}
-    `{core.simulations.default.Default.Trait Self} :
-    Prop := {
-    default :
-      exists default,
-      IsTraitMethod "core::default::Default" Self_ty [] "default" default /\
-      Run.pure
-        (default [] [])
-        (inl (φ core.simulations.default.Default.default));
+  Record InstanceWithRun (Self : Set) `{ToTy Self} `{ToValue Self} : Set := {
+    default : {default @
+      IsTraitMethod "core::default::Default" (Φ Self) [] "default" default *
+      Run.pure (default [] []) (fun v => inl (φ v))
+    };
   }.
 End Default.
