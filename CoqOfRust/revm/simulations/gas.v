@@ -93,13 +93,17 @@ Module Impl_revm_interpreter_gas_Gas.
   Defined.
 End Impl_revm_interpreter_gas_Gas.
 
-(* Definition dummy_gas : Gas.t := {|
-  Gas.limit := 0;
-  Gas.remaining := 12;
-  Gas.refunded := 0;
-|}.
+Module Test.
+  Definition dummy_gas : Gas.t := {|
+    Gas.limit := 0;
+    Gas.remaining := 12;
+    Gas.refunded := 0;
+  |}.
 
-Definition foo : bool :=
-  fst (evaluate (Impl_revm_interpreter_gas_Gas.run_record_cost dummy_gas 3)).
+  Definition compute_gas (cost : Z) :=
+    evaluate (Impl_revm_interpreter_gas_Gas.run_record_cost dummy_gas cost).
 
-Compute foo. *)
+  Compute compute_gas 3.
+  Compute compute_gas 12.
+  Compute compute_gas 23.
+End Test.

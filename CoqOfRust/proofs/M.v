@@ -227,6 +227,10 @@ Module Run.
       {{ env, env_to_value, state_inter | k (to_value_inter value_inter) ⇓ to_value | P_state }}
     ) ->
     {{ env, env_to_value, state | LowM.CallClosure closure args k ⇓ to_value | P_state }}
+  | Rewrite (e e' : M) :
+    e = e' ->
+    {{ env, env_to_value, state | e' ⇓ to_value | P_state }} ->
+    {{ env, env_to_value, state | e ⇓ to_value | P_state }}
 
   where "{{ env , env_to_value , state | e ⇓ to_value | P_state }}" :=
     (t env env_to_value state to_value P_state e).
@@ -293,32 +297,29 @@ Proof.
     end.
     exact H_state_inter.
   }
+  { eapply evaluate.
+    exact run.
+  }
 Defined.
 
 Module SubPointer.
   Module Runner.
     Module Valid.
-      Inductive t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A} :
-          SubPointer.Runner.t A Sub_A -> Set :=
-      | Intro
-          (index : Pointer.Index.t)
-          (projection : A -> option Sub_A)
-          (injection : A -> Sub_A -> option A) :
+      Inductive t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+          (runner : SubPointer.Runner.t A Sub_A) :
+        Prop :=
+      | Intro :
         (* read equivalence *)
         (forall (a : A),
-          Option.map (projection a) φ =
-          Value.read_path (φ a) [index]
+          Option.map (runner.(SubPointer.Runner.projection) a) φ =
+          Value.read_path (φ a) [runner.(SubPointer.Runner.index)]
         ) ->
         (* write equivalence *)
         (forall (a : A) (sub_a : Sub_A),
-          Option.map (injection a sub_a) φ =
-          Value.write_value (φ a) [index] (φ sub_a)
+          Option.map (runner.(SubPointer.Runner.injection) a sub_a) φ =
+          Value.write_value (φ a) [runner.(SubPointer.Runner.index)] (φ sub_a)
         ) ->
-        t {|
-          SubPointer.Runner.index := index;
-          SubPointer.Runner.projection := projection;
-          SubPointer.Runner.injection := injection;
-        |}.
+        t runner.
     End Valid.
   End Runner.
 
@@ -332,8 +333,8 @@ Module SubPointer.
       `{State.Trait} {Env : Set} (env : Env) (env_to_value : Env -> Value.t) (state : State)
       (to_value : Result -> Value.t + Exception.t) (P_state : State -> Prop)
       (k : Value.t -> M)
-      (index : Pointer.Index.t) :
-    index = runner.(SubPointer.Runner.index) ->
+      (index : Pointer.Index.t)
+      (H_index : index = runner.(SubPointer.Runner.index)) :
     {{ env, env_to_value, state |
       k (Value.Pointer (Pointer.Mutable (SubPointer.get_sub mutable runner))) ⇓
       to_value
@@ -343,9 +344,20 @@ Module SubPointer.
       to_value
     | P_state }}.
   Proof.
-    intros.
-    destruct H_runner.
-    eapply Run.CallPrimitiveGetSubPointer; sfirstorder.
+    (* We are careful in this proof not to do `rewrite` on the expressions to avoid blocking
+       the [evaluate] function. *)
+    intros H_run.
+    eapply Run.Rewrite. {
+      rewrite H_index; reflexivity.
+    }
+    apply (Run.CallPrimitiveGetSubPointer
+      _ _ _ _ _ _
+      runner.(SubPointer.Runner.index)
+      runner.(SubPointer.Runner.projection)
+      runner.(SubPointer.Runner.injection)
+      φ
+    ); try apply H_run.
+    all: sfirstorder.
   Defined.
 End SubPointer.
 
