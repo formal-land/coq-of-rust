@@ -1272,6 +1272,9 @@ Module cell.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_already_borrowed :
+    M.IsFunction "core::cell::panic_already_borrowed" panic_already_borrowed.
+  
   (*
   fn panic_already_mutably_borrowed(err: BorrowError) -> ! {
       panic!("already mutably borrowed: {:?}", err)
@@ -1315,6 +1318,9 @@ Module cell.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_already_mutably_borrowed :
+    M.IsFunction "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
+  
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
   Definition value_UNUSED : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
@@ -1333,6 +1339,8 @@ Module cell.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_is_writing : M.IsFunction "core::cell::is_writing" is_writing.
+  
   (*
   fn is_reading(x: BorrowFlag) -> bool {
       x > UNUSED
@@ -1346,6 +1354,8 @@ Module cell.
         BinOp.Pure.gt (M.read (| x |)) (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_is_reading : M.IsFunction "core::cell::is_reading" is_reading.
   
   Module Impl_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [ T ].
@@ -5194,4 +5204,7 @@ Module cell.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_assert_coerce_unsized :
+    M.IsFunction "core::cell::assert_coerce_unsized" assert_coerce_unsized.
 End cell.

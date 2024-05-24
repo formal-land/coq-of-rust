@@ -101,12 +101,24 @@ End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
+
 Parameter chop : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
 
 Parameter cook : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
+
 Parameter process : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_process : M.IsFunction "combinators_map::process" process.
 
 Parameter eat : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "combinators_map::main" main.

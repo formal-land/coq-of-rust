@@ -3,6 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "inline_assembly_inlateout_mul::main" main.
+
 Module main.
   Parameter mul : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_mul : M.IsFunction "inline_assembly_inlateout_mul::main::mul" mul.
 End main.

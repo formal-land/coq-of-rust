@@ -148,4 +148,6 @@ Module future.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_get_context : M.IsFunction "core::future::get_context" get_context.
 End future.

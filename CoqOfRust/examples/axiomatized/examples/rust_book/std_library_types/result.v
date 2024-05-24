@@ -48,11 +48,21 @@ Module checked.
   
   Parameter div : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_div : M.IsFunction "result::checked::div" div.
+  
   Parameter sqrt : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
+  
   Parameter ln : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
 End checked.
 
 Parameter op : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_op : M.IsFunction "result::op" op.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "result::main" main.

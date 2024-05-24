@@ -24,6 +24,8 @@ Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
+
 (*
 fn function() {
     println!("I'm a function!");
@@ -57,6 +59,8 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
 
 (*
 fn main() {
@@ -140,3 +144,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.

@@ -11,6 +11,8 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
+Axiom Function_main : M.IsFunction "diverging_functions::main" main.
+
 Module main.
   (*
       fn foo() -> ! {
@@ -30,4 +32,6 @@ Module main.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.
 End main.

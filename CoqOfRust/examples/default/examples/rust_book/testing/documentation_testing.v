@@ -16,6 +16,8 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_add : M.IsFunction "documentation_testing::add" add.
+
 (*
 pub fn div(a: i32, b: i32) -> i32 {
     if b == 0 {
@@ -59,3 +61,5 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_div : M.IsFunction "documentation_testing::div" div.

@@ -24,6 +24,8 @@ Definition order (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_order : M.IsFunction "if_let::order" order.
+
 (*
 Enum Container
 {
@@ -103,6 +105,8 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_extract_value : M.IsFunction "if_let::extract_value" extract_value.
 
 (*
 fn main() {
@@ -406,3 +410,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "if_let::main" main.

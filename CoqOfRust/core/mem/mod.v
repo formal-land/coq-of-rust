@@ -30,6 +30,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_forget : M.IsFunction "core::mem::forget" forget.
+  
   (*
   pub fn forget_unsized<T: ?Sized>(t: T) {
       intrinsics::forget(t)
@@ -47,6 +49,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_forget_unsized : M.IsFunction "core::mem::forget_unsized" forget_unsized.
+  
   (*
   pub const fn size_of<T>() -> usize {
       intrinsics::size_of::<T>()
@@ -59,6 +63,8 @@ Module mem.
         (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_size_of : M.IsFunction "core::mem::size_of" size_of.
   
   (*
   pub const fn size_of_val<T: ?Sized>(val: &T) -> usize {
@@ -78,6 +84,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_size_of_val : M.IsFunction "core::mem::size_of_val" size_of_val.
+  
   (*
   pub const unsafe fn size_of_val_raw<T: ?Sized>(val: *const T) -> usize {
       // SAFETY: the caller must provide a valid raw pointer
@@ -96,6 +104,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_size_of_val_raw : M.IsFunction "core::mem::size_of_val_raw" size_of_val_raw.
+  
   (*
   pub fn min_align_of<T>() -> usize {
       intrinsics::min_align_of::<T>()
@@ -108,6 +118,8 @@ Module mem.
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_min_align_of : M.IsFunction "core::mem::min_align_of" min_align_of.
   
   (*
   pub fn min_align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -127,6 +139,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_min_align_of_val : M.IsFunction "core::mem::min_align_of_val" min_align_of_val.
+  
   (*
   pub const fn align_of<T>() -> usize {
       intrinsics::min_align_of::<T>()
@@ -139,6 +153,8 @@ Module mem.
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_align_of : M.IsFunction "core::mem::align_of" align_of.
   
   (*
   pub const fn align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -158,6 +174,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_align_of_val : M.IsFunction "core::mem::align_of_val" align_of_val.
+  
   (*
   pub const unsafe fn align_of_val_raw<T: ?Sized>(val: *const T) -> usize {
       // SAFETY: the caller must provide a valid raw pointer
@@ -176,6 +194,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_align_of_val_raw : M.IsFunction "core::mem::align_of_val_raw" align_of_val_raw.
+  
   (*
   pub const fn needs_drop<T: ?Sized>() -> bool {
       intrinsics::needs_drop::<T>()
@@ -188,6 +208,8 @@ Module mem.
         (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_needs_drop : M.IsFunction "core::mem::needs_drop" needs_drop.
   
   (*
   pub const unsafe fn zeroed<T>() -> T {
@@ -232,6 +254,8 @@ Module mem.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_zeroed : M.IsFunction "core::mem::zeroed" zeroed.
   
   (*
   pub unsafe fn uninitialized<T>() -> T {
@@ -320,6 +344,8 @@ Module mem.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_uninitialized : M.IsFunction "core::mem::uninitialized" uninitialized.
   
   (*
   pub const fn swap<T>(x: &mut T, y: &mut T) {
@@ -412,6 +438,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
+  
   (*
   pub(crate) const fn swap_simple<T>(x: &mut T, y: &mut T) {
       // We arrange for this to typically be called with small types,
@@ -474,6 +502,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_swap_simple : M.IsFunction "core::mem::swap_simple" swap_simple.
+  
   (*
   pub fn take<T: Default>(dest: &mut T) -> T {
       replace(dest, T::default())
@@ -496,6 +526,8 @@ Module mem.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_take : M.IsFunction "core::mem::take" take.
   
   (*
   pub const fn replace<T>(dest: &mut T, src: T) -> T {
@@ -539,6 +571,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_replace : M.IsFunction "core::mem::replace" replace.
+  
   (* pub fn drop<T>(_x: T) {} *)
   Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with
@@ -548,6 +582,8 @@ Module mem.
         Value.Tuple []))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_drop : M.IsFunction "core::mem::drop" drop.
   
   (*
   pub const fn copy<T: Copy>(x: &T) -> T {
@@ -562,6 +598,8 @@ Module mem.
         M.read (| M.read (| x |) |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_copy : M.IsFunction "core::mem::copy" copy.
   
   (*
   pub const unsafe fn transmute_copy<Src, Dst>(src: &Src) -> Dst {
@@ -680,6 +718,8 @@ Module mem.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_transmute_copy : M.IsFunction "core::mem::transmute_copy" transmute_copy.
   
   (* StructTuple
     {
@@ -906,6 +946,8 @@ Module mem.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_discriminant : M.IsFunction "core::mem::discriminant" discriminant.
+  
   (*
   pub const fn variant_count<T>() -> usize {
       intrinsics::variant_count::<T>()
@@ -918,6 +960,8 @@ Module mem.
         (M.call_closure (| M.get_function (| "core::intrinsics::variant_count", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_variant_count : M.IsFunction "core::mem::variant_count" variant_count.
   
   (* Trait *)
   (* Empty module 'SizedTypeProperties' *)

@@ -55,6 +55,8 @@ Definition call (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_call : M.IsFunction "hash_map::call" call.
+
 (*
 fn main() {
     let mut contacts = HashMap::new();
@@ -578,3 +580,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "hash_map::main" main.

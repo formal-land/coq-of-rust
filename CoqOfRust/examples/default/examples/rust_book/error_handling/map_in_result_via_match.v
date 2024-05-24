@@ -86,6 +86,8 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_multiply : M.IsFunction "map_in_result_via_match::multiply" multiply.
+
 (*
 fn print(result: Result<i32, ParseIntError>) {
     match result {
@@ -203,6 +205,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print : M.IsFunction "map_in_result_via_match::print" print.
+
 (*
 fn main() {
     // This still presents a reasonable answer.
@@ -251,3 +255,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "map_in_result_via_match::main" main.

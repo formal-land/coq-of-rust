@@ -1423,6 +1423,8 @@ Module cmp.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_min : M.IsFunction "core::cmp::min" min.
+  
   (*
   pub fn min_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
       match compare(&v1, &v2) {
@@ -1471,6 +1473,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
   
   (*
   pub fn min_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -1554,6 +1558,8 @@ Module cmp.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
+  
   (*
   pub fn max<T: Ord>(v1: T, v2: T) -> T {
       v1.max(v2)
@@ -1571,6 +1577,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_max : M.IsFunction "core::cmp::max" max.
   
   (*
   pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -1620,6 +1628,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
   
   (*
   pub fn max_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -1703,6 +1713,8 @@ Module cmp.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
+  
   (*
   pub fn minmax<T>(v1: T, v2: T) -> [T; 2]
   where
@@ -1740,6 +1752,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
   
   (*
   pub fn minmax_by<T, F>(v1: T, v2: T, compare: F) -> [T; 2]
@@ -1797,6 +1811,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
   
   (*
   pub fn minmax_by_key<T, F, K>(v1: T, v2: T, mut f: F) -> [T; 2]
@@ -1883,6 +1899,8 @@ Module cmp.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
   
   Module impls.
     Module Impl_core_cmp_PartialEq_for_Tuple_.

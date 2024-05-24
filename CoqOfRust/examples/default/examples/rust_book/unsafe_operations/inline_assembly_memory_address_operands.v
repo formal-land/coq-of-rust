@@ -15,6 +15,8 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
+Axiom Function_main : M.IsFunction "inline_assembly_memory_address_operands::main" main.
+
 Module main.
   (*
       fn load_fpu_control_word(control: u16) {
@@ -34,4 +36,9 @@ Module main.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_load_fpu_control_word :
+    M.IsFunction
+      "inline_assembly_memory_address_operands::main::load_fpu_control_word"
+      load_fpu_control_word.
 End main.

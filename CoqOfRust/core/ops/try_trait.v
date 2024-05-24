@@ -35,6 +35,8 @@ Module ops.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
+    
     (* Trait *)
     (* Empty module 'Residual' *)
     

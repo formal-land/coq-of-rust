@@ -68,6 +68,12 @@ End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "boxing_errors::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "boxing_errors::main" main.

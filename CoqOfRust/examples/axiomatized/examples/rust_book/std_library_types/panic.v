@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter division : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_division : M.IsFunction "panic::division" division.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "panic::main" main.

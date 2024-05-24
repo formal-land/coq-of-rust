@@ -14662,6 +14662,8 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
+    
     Module simd_contains.
       Definition value_UNROLL : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
     End simd_contains.
@@ -15245,5 +15247,8 @@ Module str.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_small_slice_eq :
+      M.IsFunction "core::str::pattern::small_slice_eq" small_slice_eq.
   End pattern.
 End str.

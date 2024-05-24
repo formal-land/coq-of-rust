@@ -1053,6 +1053,8 @@ Module any.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
+  
   (*
   pub const fn type_name_of_val<T: ?Sized>(_val: &T) -> &'static str {
       type_name::<T>()
@@ -1066,4 +1068,6 @@ Module any.
         M.call_closure (| M.get_function (| "core::any::type_name", [ T ] |), [] |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.
 End any.

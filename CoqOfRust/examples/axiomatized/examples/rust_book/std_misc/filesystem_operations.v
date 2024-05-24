@@ -3,8 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter cat : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
+
 Parameter echo : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
 
 Parameter touch : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "filesystem_operations::main" main.

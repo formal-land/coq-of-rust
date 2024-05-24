@@ -569,6 +569,8 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
+
 Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   

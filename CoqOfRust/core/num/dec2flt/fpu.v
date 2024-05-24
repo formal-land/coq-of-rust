@@ -11,6 +11,9 @@ Module num.
           | [ T ], [] => ltac:(M.monadic (Value.Tuple []))
           | _, _ => M.impossible
           end.
+        
+        Axiom Function_set_precision :
+          M.IsFunction "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
       End fpu_precision.
     End fpu.
   End dec2flt.

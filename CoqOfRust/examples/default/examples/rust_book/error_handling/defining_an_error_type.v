@@ -268,6 +268,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first : M.IsFunction "defining_an_error_type::double_first" double_first.
+
 (*
 fn print(result: Result<i32>) {
     match result {
@@ -386,6 +388,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_print : M.IsFunction "defining_an_error_type::print" print.
 
 (*
 fn main() {
@@ -532,3 +536,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "defining_an_error_type::main" main.

@@ -301,6 +301,8 @@ Module slice.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_split_point_of : M.IsFunction "core::slice::split_point_of" split_point_of.
+  
   (*
   Enum Direction
   {
@@ -11172,6 +11174,9 @@ Module slice.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_get_many_check_valid :
+    M.IsFunction "core::slice::get_many_check_valid" get_many_check_valid.
   
   (* StructRecord
     {

@@ -140,6 +140,9 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_borrow_book :
+  M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+
 (*
 fn new_edition(book: &mut Book) {
     book.year = 2014;
@@ -227,6 +230,9 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_new_edition :
+  M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+
 (*
 fn main() {
     // Create an immutable Book named `immutabook`
@@ -296,3 +302,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.

@@ -37,6 +37,8 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_function : M.IsFunction "super_and_self::function" function.
+
 Module cool.
   (*
       pub fn function() {
@@ -77,6 +79,8 @@ Module cool.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_function : M.IsFunction "super_and_self::cool::function" function.
 End cool.
 
 Module my.
@@ -120,6 +124,8 @@ Module my.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_function : M.IsFunction "super_and_self::my::function" function.
+  
   Module cool.
     (*
             pub fn function() {
@@ -161,6 +167,8 @@ Module my.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_function : M.IsFunction "super_and_self::my::cool::function" function.
   End cool.
   
   (*
@@ -243,6 +251,8 @@ Module my.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_indirect_call : M.IsFunction "super_and_self::my::indirect_call" indirect_call.
 End my.
 
 (*
@@ -263,3 +273,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "super_and_self::main" main.

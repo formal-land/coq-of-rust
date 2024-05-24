@@ -43,6 +43,8 @@ Module tuple.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_ordering_is_some : M.IsFunction "core::tuple::ordering_is_some" ordering_is_some.
+  
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
     

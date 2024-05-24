@@ -173,6 +173,9 @@ Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_have_ingredients :
+  M.IsFunction "combinators_and_then::have_ingredients" have_ingredients.
+
 (*
 fn have_recipe(food: Food) -> Option<Food> {
     match food {
@@ -202,6 +205,8 @@ Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
 
 (*
 fn cookable_v1(food: Food) -> Option<Food> {
@@ -266,6 +271,8 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
+
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
     have_recipe(food).and_then(have_ingredients)
@@ -297,6 +304,8 @@ Definition cookable_v2 (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
 
 (*
 fn eat(food: Food, day: Day) {
@@ -429,6 +438,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
+
 (*
 fn main() {
     let (cordon_bleu, steak, sushi) = (Food::CordonBleu, Food::Steak, Food::Sushi);
@@ -497,3 +508,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "combinators_and_then::main" main.

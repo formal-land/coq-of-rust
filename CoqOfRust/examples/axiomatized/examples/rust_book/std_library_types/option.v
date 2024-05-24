@@ -3,6 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter checked_division : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
+
 Parameter try_division : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "option::main" main.

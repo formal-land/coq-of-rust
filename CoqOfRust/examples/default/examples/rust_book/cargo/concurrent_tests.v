@@ -75,6 +75,8 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
+
 Module tests.
   (*
       fn test_file() {
@@ -249,6 +251,8 @@ Module tests.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
+  
   (*
       fn test_file_also() {
           // Opens the file ferris.txt or creates one if it doesn't exist.
@@ -421,4 +425,7 @@ Module tests.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_test_file_also :
+    M.IsFunction "concurrent_tests::tests::test_file_also'1" test_file_also.
 End tests.

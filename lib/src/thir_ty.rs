@@ -53,14 +53,12 @@ pub(crate) fn compile_type<'a>(
                 })
                 .collect();
             Rc::new(CoqType::Application {
-                func: Rc::new(CoqType::Path {
-                    path: Rc::new(path),
-                }),
+                func: Rc::new(CoqType::Path { path }),
                 args,
             })
         }
         TyKind::Foreign(def_id) => Rc::new(CoqType::Path {
-            path: Rc::new(compile_def_id(env, *def_id)),
+            path: compile_def_id(env, *def_id),
         }),
         TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {

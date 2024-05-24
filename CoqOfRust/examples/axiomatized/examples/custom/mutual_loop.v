@@ -44,3 +44,5 @@ Module Impl_mutual_loop_LoopB.
 End Impl_mutual_loop_LoopB.
 
 Parameter start_loop : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.

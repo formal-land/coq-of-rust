@@ -20,6 +20,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_repeat_with :
+        M.IsFunction "core::iter::sources::repeat_with::repeat_with" repeat_with.
+      
       (* StructRecord
         {
           name := "RepeatWith";

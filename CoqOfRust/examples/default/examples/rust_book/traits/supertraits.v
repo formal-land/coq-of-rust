@@ -150,6 +150,11 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_comp_sci_student_greeting :
+  M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+
 (* fn main() {} *)
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+
+Axiom Function_main : M.IsFunction "supertraits::main" main.

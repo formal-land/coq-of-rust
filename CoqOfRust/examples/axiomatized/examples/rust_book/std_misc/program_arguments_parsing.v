@@ -3,8 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter increase : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
+
 Parameter decrease : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
 
 Parameter help : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.

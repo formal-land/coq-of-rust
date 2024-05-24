@@ -42,6 +42,8 @@ Module foo.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
   End gre.
   
   (*
@@ -89,6 +91,8 @@ Module foo.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
 End foo.
 
 (*
@@ -109,3 +113,5 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_f : M.IsFunction "module_duplicate::f" f.

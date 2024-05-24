@@ -20,6 +20,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_once_with : M.IsFunction "core::iter::sources::once_with::once_with" once_with.
+      
       (* StructRecord
         {
           name := "OnceWith";

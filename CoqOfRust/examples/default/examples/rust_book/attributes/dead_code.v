@@ -5,13 +5,20 @@ Require Import CoqOfRust.CoqOfRust.
 Definition used_function (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
+Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
+
 (* fn unused_function() {} *)
 Definition unused_function (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
+Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
+
 (* fn noisy_unused_function() {} *)
 Definition noisy_unused_function (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+
+Axiom Function_noisy_unused_function :
+  M.IsFunction "dead_code::noisy_unused_function" noisy_unused_function.
 
 (*
 fn main() {
@@ -31,3 +38,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "dead_code::main" main.

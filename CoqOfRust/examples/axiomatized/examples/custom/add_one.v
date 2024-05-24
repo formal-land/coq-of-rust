@@ -2,3 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter add_one : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.

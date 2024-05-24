@@ -447,6 +447,12 @@ Parameter IsTraitInstance :
     (instance : Instance.t),
   Prop.
 
+Parameter IsFunction :
+  forall
+    (name : string)
+    (function : list Ty.t -> list Value.t -> M),
+  Prop.
+
 Parameter IsAssociatedFunction :
   forall
     (Self : Ty.t)

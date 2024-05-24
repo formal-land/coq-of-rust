@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter age : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_age : M.IsFunction "match_binding::age" age.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "match_binding::main" main.

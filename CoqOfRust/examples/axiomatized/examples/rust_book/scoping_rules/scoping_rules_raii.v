@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_box : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.

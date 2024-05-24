@@ -111,6 +111,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
+
 (*
 fn print_ref<'a, T>(t: &'a T)
 where
@@ -170,6 +172,8 @@ Definition print_ref (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+
 (*
 fn main() {
     let x = 7;
@@ -210,3 +214,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.

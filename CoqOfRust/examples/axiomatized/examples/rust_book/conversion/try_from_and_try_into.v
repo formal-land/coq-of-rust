@@ -62,3 +62,5 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "try_from_and_try_into::main" main.

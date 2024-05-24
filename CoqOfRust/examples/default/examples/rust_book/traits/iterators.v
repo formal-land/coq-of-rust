@@ -102,6 +102,8 @@ Definition fibonacci (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
+
 (*
 fn main() {
     // `0..3` is an `Iterator` that generates: 0, 1, and 2.
@@ -977,3 +979,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "iterators::main" main.

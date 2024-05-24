@@ -54,6 +54,12 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 Parameter origin : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
+
 Parameter boxed_origin : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "box_stack_heap::main" main.

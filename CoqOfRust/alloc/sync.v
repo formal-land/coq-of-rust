@@ -5969,6 +5969,9 @@ Module sync.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_arcinner_layout_for_value_layout :
+    M.IsFunction "alloc::sync::arcinner_layout_for_value_layout" arcinner_layout_for_value_layout.
+  
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::sync::ArcInner") [ T ].
     
@@ -11258,6 +11261,8 @@ Module sync.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_data_offset : M.IsFunction "alloc::sync::data_offset" data_offset.
+  
   (*
   fn data_offset_align(align: usize) -> usize {
       let layout = Layout::new::<ArcInner<()>>();
@@ -11301,6 +11306,9 @@ Module sync.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_data_offset_align :
+    M.IsFunction "alloc::sync::data_offset_align" data_offset_align.
   
   Module Impl_core_error_Error_where_core_error_Error_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=

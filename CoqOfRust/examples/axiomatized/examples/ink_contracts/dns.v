@@ -251,6 +251,8 @@ End Impl_dns_Env.
 
 Parameter zero_address : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
+
 Module Impl_core_default_Default_for_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
   

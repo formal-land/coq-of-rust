@@ -155,7 +155,7 @@ pub(crate) enum Expression {
     /// a single variable
     Variable {
         /// a list of names (a path) used to refer to the variable
-        ident: Path,
+        ident: Rc<Path>,
         /// a flag, set if implicit arguments are deactivated with '@'
         no_implicit: bool,
     },

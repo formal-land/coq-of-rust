@@ -3,4 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter destroy_box : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_destroy_box :
+  M.IsFunction "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.

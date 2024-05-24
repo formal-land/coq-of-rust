@@ -79,6 +79,11 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
   | _, _ => M.impossible
   end.
 
+Axiom Function_combine_vecs_explicit_return_type :
+  M.IsFunction
+    "impl_trait_as_return_type::combine_vecs_explicit_return_type"
+    combine_vecs_explicit_return_type.
+
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
     v.into_iter().chain(u.into_iter()).cycle()
@@ -153,6 +158,8 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
 
 Module combine_vecs.
   (* Error OpaqueTy *)
@@ -678,3 +685,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.

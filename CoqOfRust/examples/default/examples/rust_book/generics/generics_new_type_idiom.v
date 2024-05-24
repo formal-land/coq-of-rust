@@ -105,6 +105,8 @@ Definition old_enough (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_old_enough : M.IsFunction "generics_new_type_idiom::old_enough" old_enough.
+
 (*
 fn main() {
     let age = Years(5);
@@ -243,3 +245,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_new_type_idiom::main" main.

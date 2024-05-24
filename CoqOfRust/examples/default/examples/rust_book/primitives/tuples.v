@@ -31,6 +31,8 @@ Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
+
 (* StructTuple
   {
     name := "Matrix";
@@ -604,3 +606,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "tuples::main" main.

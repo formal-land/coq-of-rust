@@ -26,6 +26,8 @@ Module future.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_pending : M.IsFunction "core::future::pending::pending" pending.
+    
     Module Impl_core_future_future_Future_for_core_future_pending_Pending_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::future::pending::Pending") [ T ].

@@ -29,6 +29,9 @@ End Impl_functions_order_SomeType.
 
 Parameter depends_on_trait_impl : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_depends_on_trait_impl :
+  M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+
 (* Trait *)
 (* Empty module 'SomeTrait' *)
 
@@ -73,15 +76,27 @@ End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 Module inner_mod.
   Parameter bar : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
+  
   Parameter tar : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
   
   Module nested_mod.
     Parameter tick : (list Ty.t) -> (list Value.t) -> M.
     
+    Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
+    
     Parameter tack : (list Ty.t) -> (list Value.t) -> M.
+    
+    Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
   End nested_mod.
 End inner_mod.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "functions_order::main" main.
+
 Parameter foo : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_foo : M.IsFunction "functions_order::foo" foo.

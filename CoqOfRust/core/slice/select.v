@@ -649,6 +649,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_partition_at_index_loop :
+      M.IsFunction "core::slice::select::partition_at_index_loop" partition_at_index_loop.
+    
     (*
     fn min_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
         slice
@@ -819,6 +822,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_min_index : M.IsFunction "core::slice::select::min_index" min_index.
+    
     (*
     fn max_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
         slice
@@ -988,6 +993,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_max_index : M.IsFunction "core::slice::select::max_index" max_index.
     
     (*
     pub fn partition_at_index<T, F>(
@@ -1320,6 +1327,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_partition_at_index :
+      M.IsFunction "core::slice::select::partition_at_index" partition_at_index.
     
     (*
     fn median_of_medians<T, F: FnMut(&T, &T) -> bool>(mut v: &mut [T], is_less: &mut F, mut k: usize) {
@@ -1834,6 +1844,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_median_of_medians :
+      M.IsFunction "core::slice::select::median_of_medians" median_of_medians.
+    
     (*
     fn median_of_ninthers<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) -> usize {
         // use `saturating_mul` so the multiplication doesn't overflow on 16-bit platforms.
@@ -2205,6 +2218,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_median_of_ninthers :
+      M.IsFunction "core::slice::select::median_of_ninthers" median_of_ninthers.
     
     (*
     fn ninther<T, F: FnMut(&T, &T) -> bool>(
@@ -2703,6 +2719,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_ninther : M.IsFunction "core::slice::select::ninther" ninther.
+    
     (*
     fn median_idx<T, F: FnMut(&T, &T) -> bool>(
         v: &[T],
@@ -2862,5 +2880,7 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_median_idx : M.IsFunction "core::slice::select::median_idx" median_idx.
   End select.
 End slice.

@@ -64,6 +64,8 @@ Definition red (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
+
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
     "blue"
@@ -77,6 +79,8 @@ Definition blue (τ : list Ty.t) (α : list Value.t) : M :=
       M.match_operator (| β0, [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ] |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
 
 (*
 fn main() {
@@ -209,3 +213,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.

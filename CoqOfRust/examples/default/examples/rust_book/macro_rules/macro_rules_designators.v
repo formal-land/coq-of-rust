@@ -57,6 +57,8 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
+
 (*
         fn $func_name() {
             // The `stringify!` macro converts an `ident` into a string.
@@ -112,6 +114,8 @@ Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
 
 (*
 fn main() {
@@ -272,3 +276,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.

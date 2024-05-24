@@ -482,6 +482,8 @@ Module error.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
+  
   (*
   pub fn request_ref<'a, T>(err: &'a (impl Error + ?Sized)) -> Option<&'a T>
   where
@@ -509,6 +511,8 @@ Module error.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
   
   (*
   fn request_by_type_tag<'a, I>(err: &'a (impl Error + ?Sized)) -> Option<I::Reified>
@@ -559,6 +563,9 @@ Module error.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_request_by_type_tag :
+    M.IsFunction "core::error::request_by_type_tag" request_by_type_tag.
   
   (* StructTuple
     {

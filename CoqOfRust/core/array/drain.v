@@ -80,6 +80,9 @@ Module array.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_drain_array_with :
+      M.IsFunction "core::array::drain::drain_array_with" drain_array_with.
+    
     (* StructTuple
       {
         name := "Drain";

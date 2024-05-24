@@ -3,7 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter csqrtf : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_csqrtf : M.IsFunction "foreign_function_interface::csqrtf" csqrtf.
+
 Parameter ccosf : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_ccosf : M.IsFunction "foreign_function_interface::ccosf" ccosf.
 
 (*
 fn cos(z: Complex) -> Complex {
@@ -21,6 +25,8 @@ Definition cos (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_cos : M.IsFunction "foreign_function_interface::cos" cos.
 
 (*
 fn main() {
@@ -163,6 +169,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "foreign_function_interface::main" main.
 
 (* StructRecord
   {

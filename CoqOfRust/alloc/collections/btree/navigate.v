@@ -4811,6 +4811,9 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_full_range :
+        M.IsFunction "alloc::collections::btree::navigate::full_range" full_range.
+      
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply

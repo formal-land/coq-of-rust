@@ -50,3 +50,5 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "unpacking_options_and_defaults_via_get_or_insert::main" main.

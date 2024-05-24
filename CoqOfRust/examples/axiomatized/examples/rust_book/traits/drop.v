@@ -22,3 +22,5 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "drop::main" main.

@@ -50,6 +50,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_u8 : M.IsFunction "core::num::int_log10::u8" u8.
+    
     Module u8.
       Definition value_C1 : Value.t :=
         M.run
@@ -118,6 +120,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_less_than_5 : M.IsFunction "core::num::int_log10::less_than_5" less_than_5.
+    
     Module less_than_5.
       Definition value_C1 : Value.t :=
         M.run
@@ -164,6 +168,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_u16 : M.IsFunction "core::num::int_log10::u16" u16.
     
     (*
     pub const fn u32(mut val: u32) -> u32 {
@@ -221,6 +227,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_u32 : M.IsFunction "core::num::int_log10::u32" u32.
     
     (*
     pub const fn u64(mut val: u64) -> u32 {
@@ -314,6 +322,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_u64 : M.IsFunction "core::num::int_log10::u64" u64.
     
     (*
     pub const fn u128(mut val: u128) -> u32 {
@@ -441,6 +451,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_u128 : M.IsFunction "core::num::int_log10::u128" u128.
+    
     (*
     pub const fn usize(val: usize) -> u32 {
         u64(val as _)
@@ -457,6 +469,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_usize : M.IsFunction "core::num::int_log10::usize" usize.
     
     (*
     pub const fn i8(val: i8) -> u32 {
@@ -475,6 +489,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i8 : M.IsFunction "core::num::int_log10::i8" i8.
+    
     (*
     pub const fn i16(val: i16) -> u32 {
         u16(val as u16)
@@ -491,6 +507,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i16 : M.IsFunction "core::num::int_log10::i16" i16.
     
     (*
     pub const fn i32(val: i32) -> u32 {
@@ -509,6 +527,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i32 : M.IsFunction "core::num::int_log10::i32" i32.
+    
     (*
     pub const fn i64(val: i64) -> u32 {
         u64(val as u64)
@@ -526,6 +546,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i64 : M.IsFunction "core::num::int_log10::i64" i64.
+    
     (*
     pub const fn i128(val: i128) -> u32 {
         u128(val as u128)
@@ -542,6 +564,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i128 : M.IsFunction "core::num::int_log10::i128" i128.
     
     (*
     pub const fn panic_for_nonpositive_argument() -> ! {
@@ -571,5 +595,10 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_panic_for_nonpositive_argument :
+      M.IsFunction
+        "core::num::int_log10::panic_for_nonpositive_argument"
+        panic_for_nonpositive_argument.
   End int_log10.
 End num.

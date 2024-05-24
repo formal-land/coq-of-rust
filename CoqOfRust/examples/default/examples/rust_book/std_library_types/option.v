@@ -42,6 +42,8 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
+
 (*
 fn try_division(dividend: i32, divisor: i32) {
     // `Option` values can be pattern matched, just like other enums
@@ -193,6 +195,8 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
 
 (*
 fn main() {
@@ -365,3 +369,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "option::main" main.

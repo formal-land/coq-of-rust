@@ -449,6 +449,8 @@ where
 *)
 Parameter hash_encoded : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_hash_encoded : M.IsFunction "payment_channel::hash_encoded" hash_encoded.
+
 (*
 pub fn ecdsa_recover(
     signature: &[u8; 65],
@@ -459,6 +461,8 @@ pub fn ecdsa_recover(
 }
 *)
 Parameter ecdsa_recover : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecdsa_recover.
 
 (*
 Enum Sha2x256

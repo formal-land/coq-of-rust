@@ -284,6 +284,8 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
+
 Definition value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t :=
   M.run
     ltac:(M.monadic

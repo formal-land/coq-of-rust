@@ -584,6 +584,9 @@ End Impl_core_default_Default_for_multisig_Multisig.
 
 Parameter ensure_requirement_is_valid : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_ensure_requirement_is_valid :
+  M.IsFunction "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
+
 Module Impl_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   

@@ -27,6 +27,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_successors :
+        M.IsFunction "core::iter::sources::successors::successors" successors.
+      
       (* StructRecord
         {
           name := "Successors";

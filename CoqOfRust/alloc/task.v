@@ -185,6 +185,8 @@ Module task.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_raw_waker : M.IsFunction "alloc::task::raw_waker" raw_waker.
+  
   Module raw_waker.
     (*
         unsafe fn clone_waker<W: Wake + Send + Sync + 'static>(waker: *const ()) -> RawWaker {
@@ -246,6 +248,8 @@ Module task.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_clone_waker : M.IsFunction "alloc::task::raw_waker::clone_waker" clone_waker.
+    
     (*
         unsafe fn wake<W: Wake + Send + Sync + 'static>(waker: *const ()) {
             let waker = unsafe { Arc::from_raw(waker as *const W) };
@@ -280,6 +284,8 @@ Module task.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_wake : M.IsFunction "alloc::task::raw_waker::wake" wake.
     
     (*
         unsafe fn wake_by_ref<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -345,6 +351,8 @@ Module task.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_wake_by_ref : M.IsFunction "alloc::task::raw_waker::wake_by_ref" wake_by_ref.
+    
     (*
         unsafe fn drop_waker<W: Wake + Send + Sync + 'static>(waker: *const ()) {
             unsafe { Arc::decrement_strong_count(waker as *const W) };
@@ -371,5 +379,7 @@ Module task.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_drop_waker : M.IsFunction "alloc::task::raw_waker::drop_waker" drop_waker.
   End raw_waker.
 End task.

@@ -221,6 +221,9 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_float_to_decimal_common_exact :
+      M.IsFunction "core::fmt::float::float_to_decimal_common_exact" float_to_decimal_common_exact.
+    
     (*
     fn float_to_decimal_common_shortest<T>(
         fmt: &mut Formatter<'_>,
@@ -332,6 +335,11 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_float_to_decimal_common_shortest :
+      M.IsFunction
+        "core::fmt::float::float_to_decimal_common_shortest"
+        float_to_decimal_common_shortest.
+    
     (*
     fn float_to_decimal_display<T>(fmt: &mut Formatter<'_>, num: &T) -> Result
     where
@@ -437,6 +445,9 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_float_to_decimal_display :
+      M.IsFunction "core::fmt::float::float_to_decimal_display" float_to_decimal_display.
     
     (*
     fn float_to_exponential_common_exact<T>(
@@ -553,6 +564,11 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_float_to_exponential_common_exact :
+      M.IsFunction
+        "core::fmt::float::float_to_exponential_common_exact"
+        float_to_exponential_common_exact.
+    
     (*
     fn float_to_exponential_common_shortest<T>(
         fmt: &mut Formatter<'_>,
@@ -666,6 +682,11 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_float_to_exponential_common_shortest :
+      M.IsFunction
+        "core::fmt::float::float_to_exponential_common_shortest"
+        float_to_exponential_common_shortest.
+    
     (*
     fn float_to_exponential_common<T>(fmt: &mut Formatter<'_>, num: &T, upper: bool) -> Result
     where
@@ -772,6 +793,9 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_float_to_exponential_common :
+      M.IsFunction "core::fmt::float::float_to_exponential_common" float_to_exponential_common.
     
     (*
     fn float_to_general_debug<T>(fmt: &mut Formatter<'_>, num: &T) -> Result
@@ -925,6 +949,9 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_float_to_general_debug :
+      M.IsFunction "core::fmt::float::float_to_general_debug" float_to_general_debug.
     
     Module Impl_core_fmt_Debug_for_f32.
       Definition Self : Ty.t := Ty.path "f32".

@@ -4,3 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter value_NTHREADS : Value.t.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "channels::main" main.

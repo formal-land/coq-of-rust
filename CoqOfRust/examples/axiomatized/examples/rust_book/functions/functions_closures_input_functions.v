@@ -3,6 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call_me : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
+
 Parameter function : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.

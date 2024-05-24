@@ -26,3 +26,5 @@ Axiom Operations :
     (Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers").
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "enums_type_aliases_v1::main" main.

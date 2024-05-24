@@ -144,6 +144,9 @@ Definition random_animal (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_random_animal :
+  M.IsFunction "returning_traits_with_dyn::random_animal" random_animal.
+
 (*
 fn main() {
     let random_number = 0.234;
@@ -226,3 +229,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.

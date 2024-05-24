@@ -17,3 +17,5 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "example05::main" main.

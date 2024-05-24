@@ -9,6 +9,8 @@ fn age() -> u32 {
 Definition age (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Integer 15)) | _, _ => M.impossible end.
 
+Axiom Function_age : M.IsFunction "match_binding::age" age.
+
 (*
 fn main() {
     println!("Tell me what type of person you are");
@@ -230,3 +232,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "match_binding::main" main.

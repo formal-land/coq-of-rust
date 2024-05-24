@@ -117,6 +117,8 @@ Definition origin (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
+
 (*
 fn boxed_origin() -> Box<Point> {
     // Allocate this point on the heap, and return a pointer to it
@@ -143,6 +145,8 @@ Definition boxed_origin (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
 
 (*
 fn main() {
@@ -609,3 +613,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "box_stack_heap::main" main.

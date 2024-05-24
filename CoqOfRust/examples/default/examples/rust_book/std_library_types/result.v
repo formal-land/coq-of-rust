@@ -127,6 +127,8 @@ Module checked.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_div : M.IsFunction "result::checked::div" div.
+  
   (*
       pub fn sqrt(x: f64) -> MathResult {
           if x < 0.0 {
@@ -176,6 +178,8 @@ Module checked.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
+  
   (*
       pub fn ln(x: f64) -> MathResult {
           if x <= 0.0 {
@@ -224,6 +228,8 @@ Module checked.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
 End checked.
 
 (*
@@ -439,6 +445,8 @@ Definition op (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_op : M.IsFunction "result::op" op.
+
 (*
 fn main() {
     // Will this fail?
@@ -501,3 +509,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "result::main" main.

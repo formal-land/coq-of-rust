@@ -2,3 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "strings_byte_strings_as_non_utf8::main" main.

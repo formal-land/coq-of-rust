@@ -482,6 +482,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first : M.IsFunction "wrapping_errors::double_first" double_first.
+
 (*
 fn print(result: Result<i32>) {
     match result {
@@ -685,6 +687,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print : M.IsFunction "wrapping_errors::print" print.
+
 (*
 fn main() {
     let numbers = vec!["42", "93", "18"];
@@ -830,3 +834,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "wrapping_errors::main" main.

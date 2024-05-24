@@ -359,6 +359,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
+
 (*
 fn print(result: Result<i32>) {
     match result {
@@ -484,6 +486,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_print : M.IsFunction "boxing_errors::print" print.
 
 (*
 fn main() {
@@ -630,3 +634,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "boxing_errors::main" main.

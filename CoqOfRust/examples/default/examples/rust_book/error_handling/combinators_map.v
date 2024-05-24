@@ -251,6 +251,8 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
+
 (*
 fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
     match peeled {
@@ -287,6 +289,8 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
 
 (*
 fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
@@ -337,6 +341,8 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
 
 (*
 fn process(food: Option<Food>) -> Option<Cooked> {
@@ -456,6 +462,8 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_process : M.IsFunction "combinators_map::process" process.
+
 (*
 fn eat(food: Option<Cooked>) {
     match food {
@@ -553,6 +561,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
 
 (*
 fn main() {
@@ -654,3 +664,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "combinators_map::main" main.

@@ -37,6 +37,8 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
+
 Module deeply.
   Module nested.
     (*
@@ -79,6 +81,9 @@ Module deeply.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_function :
+      M.IsFunction "the_use_as_declaration::deeply::nested::function" function.
   End nested.
 End deeply.
 
@@ -174,3 +179,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.

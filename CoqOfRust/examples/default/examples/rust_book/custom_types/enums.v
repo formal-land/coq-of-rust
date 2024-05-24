@@ -284,6 +284,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
+
 (*
 fn main() {
     let pressed = WebEvent::KeyPress('x');
@@ -356,3 +358,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "enums::main" main.

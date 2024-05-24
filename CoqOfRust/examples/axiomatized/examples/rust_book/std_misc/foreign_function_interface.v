@@ -3,11 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter csqrtf : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_csqrtf : M.IsFunction "foreign_function_interface::csqrtf" csqrtf.
+
 Parameter ccosf : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_ccosf : M.IsFunction "foreign_function_interface::ccosf" ccosf.
 
 Parameter cos : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_cos : M.IsFunction "foreign_function_interface::cos" cos.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "foreign_function_interface::main" main.
 
 (* StructRecord
   {

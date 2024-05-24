@@ -45,6 +45,8 @@ Module str.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_slice_error_fail : M.IsFunction "core::str::slice_error_fail" slice_error_fail.
+  
   (*
   const fn slice_error_fail_ct(_: &str, _: usize, _: usize) -> ! {
       panic!("failed to slice string");
@@ -100,6 +102,9 @@ Module str.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_slice_error_fail_ct :
+    M.IsFunction "core::str::slice_error_fail_ct" slice_error_fail_ct.
   
   (*
   fn slice_error_fail_rt(s: &str, begin: usize, end: usize) -> ! {
@@ -577,6 +582,9 @@ Module str.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_slice_error_fail_rt :
+    M.IsFunction "core::str::slice_error_fail_rt" slice_error_fail_rt.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=

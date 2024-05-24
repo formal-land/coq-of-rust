@@ -14,6 +14,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function__assert_is_object_safe :
+        M.IsFunction "core::iter::traits::iterator::_assert_is_object_safe" _assert_is_object_safe.
+      
       (* Trait *)
       Module Iterator.
         Definition next_chunk (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3522,6 +3525,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_iter_compare :
+        M.IsFunction "core::iter::traits::iterator::iter_compare" iter_compare.
+      
       Module iter_compare.
         (*
             fn compare<'a, B, X, T>(
@@ -3637,6 +3643,9 @@ Module iter.
                     end))))
           | _, _ => M.impossible
           end.
+        
+        Axiom Function_compare :
+          M.IsFunction "core::iter::traits::iterator::iter_compare::compare" compare.
         
         Module compare.
           (* Error OpaqueTy *)

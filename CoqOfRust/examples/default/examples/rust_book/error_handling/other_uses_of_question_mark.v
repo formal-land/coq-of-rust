@@ -316,6 +316,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first : M.IsFunction "other_uses_of_question_mark::double_first" double_first.
+
 (*
 fn print(result: Result<i32>) {
     match result {
@@ -441,6 +443,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_print : M.IsFunction "other_uses_of_question_mark::print" print.
 
 (*
 fn main() {
@@ -587,3 +591,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "other_uses_of_question_mark::main" main.

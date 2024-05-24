@@ -55,6 +55,9 @@ Module hint.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_unreachable_unchecked :
+    M.IsFunction "core::hint::unreachable_unchecked" unreachable_unchecked.
+  
   (*
   pub fn spin_loop() {
       #[cfg(target_arch = "x86")]
@@ -110,6 +113,8 @@ Module hint.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
+  
   (*
   pub const fn black_box<T>(dummy: T) -> T {
       crate::intrinsics::black_box(dummy)
@@ -127,6 +132,8 @@ Module hint.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
+  
   (*
   pub const fn must_use<T>(value: T) -> T {
       value
@@ -140,4 +147,6 @@ Module hint.
         M.read (| value |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.
 End hint.

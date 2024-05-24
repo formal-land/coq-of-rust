@@ -61,6 +61,8 @@ Definition eat_box_i32 (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_eat_box_i32 : M.IsFunction "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
+
 (*
 fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
@@ -116,6 +118,8 @@ Definition borrow_i32 (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_borrow_i32 : M.IsFunction "scoping_rules_borrowing::borrow_i32" borrow_i32.
 
 (*
 fn main() {
@@ -200,3 +204,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_borrowing::main" main.

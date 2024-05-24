@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter apply : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define_and_use::apply" apply.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define_and_use::main" main.

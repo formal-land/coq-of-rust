@@ -162,6 +162,8 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
+
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
     t.area()
@@ -178,6 +180,8 @@ Definition area (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_area : M.IsFunction "generics_bounds::area" area.
 
 (*
 fn main() {
@@ -286,3 +290,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_bounds::main" main.

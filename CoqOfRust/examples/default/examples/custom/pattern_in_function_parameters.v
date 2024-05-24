@@ -26,6 +26,8 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_sum : M.IsFunction "pattern_in_function_parameters::sum" sum.
+
 (*
 fn steps_between(&start: &char, &end: &char) -> Option<usize> {
     let start = start as u32;
@@ -185,3 +187,6 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_steps_between :
+  M.IsFunction "pattern_in_function_parameters::steps_between" steps_between.

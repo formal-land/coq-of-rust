@@ -34,3 +34,5 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_implementation::main" main.

@@ -768,7 +768,13 @@ Module ffi.
   
   Parameter va_end : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_va_end : M.IsFunction "core::ffi::va_end" va_end.
+  
   Parameter va_copy : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_va_copy : M.IsFunction "core::ffi::va_copy" va_copy.
+  
   Parameter va_arg : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_va_arg : M.IsFunction "core::ffi::va_arg" va_arg.
 End ffi.

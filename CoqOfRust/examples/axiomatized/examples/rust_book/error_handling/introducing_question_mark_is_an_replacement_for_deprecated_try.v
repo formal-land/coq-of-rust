@@ -3,6 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_multiply :
+  M.IsFunction "introducing_question_mark_is_an_replacement_for_deprecated_try::multiply" multiply.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print :
+  M.IsFunction "introducing_question_mark_is_an_replacement_for_deprecated_try::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main :
+  M.IsFunction "introducing_question_mark_is_an_replacement_for_deprecated_try::main" main.

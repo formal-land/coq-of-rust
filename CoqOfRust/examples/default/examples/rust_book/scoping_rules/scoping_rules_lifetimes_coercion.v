@@ -25,6 +25,8 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_multiply : M.IsFunction "scoping_rules_lifetimes_coercion::multiply" multiply.
+
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
@@ -39,6 +41,9 @@ Definition choose_first (τ : list Ty.t) (α : list Value.t) : M :=
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| first |))) ] |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_choose_first :
+  M.IsFunction "scoping_rules_lifetimes_coercion::choose_first" choose_first.
 
 (*
 fn main() {
@@ -165,3 +170,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_coercion::main" main.
