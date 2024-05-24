@@ -57,7 +57,7 @@ Definition IsTraitMethod
   List.assoc instance method_name = Some (InstanceField.Method method).
 
 Module IsRead.
-  Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Set :=
+  Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Prop :=
   | Immediate (value : Value.t) :
     t state (Pointer.Immediate value) value
   | Mutable
@@ -258,14 +258,10 @@ Module Run.
       {{ env, env_to_value, state | e ⇓ to_value | P_state }}
     ).
 
-  Definition pure {A : Set} (e : M) (to_value : A -> Value.t + Exception.t) : Set :=
-    forall
-      (State Address : Set) `(State.Trait State Address)
-      (Env : Set) (env : Env) (env_to_value : Env -> Value.t)
-      (state : State),
-    {{ env, env_to_value, state |
-      e ⇓ to_value
-    | fun state' => state' = state }}.
+  Notation "{{ '_' , '_' , '_' | e ⇓ to_value | '_' }}" :=
+    (forall (State Address : Set) `(State.Trait State Address) (state : State),
+      {{ _, _, state | e ⇓ to_value | fun state' => state' = state }}
+    ).
 End Run.
 
 Import Run.

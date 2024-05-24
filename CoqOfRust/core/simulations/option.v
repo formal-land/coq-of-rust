@@ -21,7 +21,7 @@ Module Impl_Option_T.
   Definition Self (T : Set) : Set :=
     option T.
 
-  Definition unwrap_or_default {T : Set}
+  (* Definition unwrap_or_default {T : Set}
       {_ : core.simulations.default.Default.Trait T}
       (self : Self T) :
       T :=
@@ -39,12 +39,12 @@ Module Impl_Option_T.
 
   Definition unwrap {State A : Set}
     (self : option A) : MS? State string A :=
-    expect self "".
+    expect self "". *)
 End Impl_Option_T.
 
-Module Impl_Default_for_Option_T.
+(* Module Impl_Default_for_Option_T.
   Global Instance I (T : Set) :
       core.simulations.default.Default.Trait (option T) := {
     default := None;
   }.
-End Impl_Default_for_Option_T.
+End Impl_Default_for_Option_T. *)
