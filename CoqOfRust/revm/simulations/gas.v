@@ -4,6 +4,7 @@ Require Import CoqOfRust.simulations.M.
 Require core.num.mod.
 Require core.num.simulations.mod.
 Require core.simulations.clone.
+Require core.simulations.default.
 
 Require Import revm.gas.
 
@@ -80,7 +81,7 @@ Module Gas.
 End Gas.
 
 Module Impl_Clone.
-  Definition IsRunImpl `{State.Trait} : clone.Clone.RunImpl Gas.t.
+  Definition run_impl `{State.Trait} : clone.Clone.RunImpl Gas.t.
   Proof.
     constructor.
     { eexists; split.
@@ -101,6 +102,42 @@ Module Impl_Clone.
     }
   Defined.
 End Impl_Clone.
+
+Module Impl_Default.
+  Definition run_impl `{State.Trait} : default.Default.RunImpl Gas.t (Φ Gas.t).
+  Proof.
+    constructor.
+    { eexists; split.
+      { unfold IsTraitMethod.
+        eexists; split.
+        { cbn.
+          apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements.
+        }
+        { reflexivity. }
+      }
+      { intros.
+        run_symbolic.
+        destruct core.simulations.default.Impl_core_default_Default_for_i64.run_impl as [
+          [default_i64 [H_default_i64 run_default_i64]]
+        ].
+        destruct core.simulations.default.Impl_core_default_Default_for_u64.run_impl as [
+          [default_u64 [H_default_u64 run_default_u64]]
+        ].
+        repeat (
+          eapply Run.CallPrimitiveGetTraitMethod;
+          try apply H_default_i64;
+          try apply H_default_u64;
+          eapply Run.CallClosure;
+          try apply run_default_i64;
+          try apply run_default_u64;
+          intros; run_symbolic
+        ).
+        { now instantiate (1 := Gas.Build_t _ _ _). }
+        { congruence. }
+      }
+    }
+  Defined.
+End Impl_Default.
 
 Module State.
   Definition t : Set :=
