@@ -82,7 +82,7 @@ Module panicking.
     end.
   
   Module panic_fmt.
-    (* Unhandled foreign module here *)
+    Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
   End panic_fmt.
   
   (*
@@ -237,7 +237,7 @@ Module panicking.
       end.
     
     Module runtime.
-      (* Unhandled foreign module here *)
+      Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
     End runtime.
     
     (*

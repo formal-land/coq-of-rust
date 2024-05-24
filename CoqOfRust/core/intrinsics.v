@@ -70,7 +70,463 @@ Module intrinsics.
     | _, _ => M.impossible
     end.
   
-  (* Unhandled foreign module here *)
+  Parameter atomic_cxchg_relaxed_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_relaxed_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_relaxed_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acquire_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acquire_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acquire_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_release_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_release_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_release_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acqrel_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acqrel_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_acqrel_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_seqcst_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_seqcst_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchg_seqcst_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_relaxed_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_relaxed_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_relaxed_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acquire_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acquire_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acquire_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_release_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_release_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_release_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acqrel_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acqrel_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_acqrel_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_seqcst_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_seqcst_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_cxchgweak_seqcst_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_load_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_load_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_load_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_load_unordered : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_store_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_store_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_store_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_store_unordered : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xchg_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xchg_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xchg_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xchg_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xchg_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xadd_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xadd_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xadd_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xadd_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xadd_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xsub_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xsub_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xsub_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xsub_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xsub_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_and_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_and_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_and_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_and_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_and_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_nand_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_nand_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_nand_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_nand_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_nand_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_or_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_or_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_or_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_or_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_or_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xor_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xor_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xor_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xor_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_xor_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_max_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_max_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_max_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_max_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_max_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_min_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_min_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_min_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_min_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_min_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umin_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umin_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umin_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umin_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umin_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umax_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umax_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umax_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umax_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_umax_relaxed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_fence_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_fence_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_fence_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_fence_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_singlethreadfence_seqcst : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_singlethreadfence_acquire : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_singlethreadfence_release : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter atomic_singlethreadfence_acqrel : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter prefetch_read_data : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter prefetch_write_data : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter prefetch_read_instruction : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter prefetch_write_instruction : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter rustc_peek : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter abort : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unreachable : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter assume : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter likely : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unlikely : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter breakpoint : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter size_of : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter min_align_of : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter pref_align_of : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter size_of_val : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter min_align_of_val : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter type_name : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter type_id : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter assert_inhabited : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter assert_zero_valid : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter assert_mem_uninitialized_valid : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter caller_location : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter forget : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter transmute : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter transmute_unchecked : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter needs_drop : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter offset : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter arith_offset : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ptr_mask : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter volatile_copy_nonoverlapping_memory : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter volatile_copy_memory : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter volatile_set_memory : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter volatile_load : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter volatile_store : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unaligned_volatile_load : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unaligned_volatile_store : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter sqrtf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter sqrtf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter powif32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter powif64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter sinf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter sinf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter cosf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter cosf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter powf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter powf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter expf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter expf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter exp2f32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter exp2f64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter logf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter logf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter log10f32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter log10f64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter log2f32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter log2f64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fmaf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fmaf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fabsf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fabsf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter minnumf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter minnumf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter maxnumf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter maxnumf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter copysignf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter copysignf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter floorf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter floorf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ceilf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ceilf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter truncf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter truncf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter rintf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter rintf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter nearbyintf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter nearbyintf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter roundf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter roundf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter roundevenf32 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter roundevenf64 : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fadd_fast : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fsub_fast : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fmul_fast : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter fdiv_fast : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter frem_fast : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter float_to_int_unchecked : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ctpop : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ctlz : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ctlz_nonzero : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter cttz : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter cttz_nonzero : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter bswap : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter bitreverse : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter add_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter sub_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter mul_with_overflow : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter exact_div : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_div : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_rem : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_shl : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_shr : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_add : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_sub : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter unchecked_mul : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter rotate_left : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter rotate_right : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter wrapping_add : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter wrapping_sub : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter wrapping_mul : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter saturating_add : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter saturating_sub : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter read_via_copy : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter write_via_move : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter discriminant_value : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter variant_count : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter try : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter nontemporal_store : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ptr_offset_from : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ptr_offset_from_unsigned : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter ptr_guaranteed_cmp : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter const_allocate : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter const_deallocate : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter raw_eq : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter compare_bytes : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter black_box : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter vtable_size : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter vtable_align : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter const_eval_select : (list Ty.t) -> (list Value.t) -> M.
   
   (*
   pub(crate) fn is_aligned_and_not_null<T>(ptr: *const T) -> bool {
@@ -286,7 +742,7 @@ Module intrinsics.
     end.
   
   Module copy_nonoverlapping.
-    (* Unhandled foreign module here *)
+    Parameter copy_nonoverlapping : (list Ty.t) -> (list Value.t) -> M.
     
     (*
                 fn runtime$(<$($tt)*>)?($($i:$ty),* ) {
@@ -473,7 +929,7 @@ Module intrinsics.
     end.
   
   Module copy.
-    (* Unhandled foreign module here *)
+    Parameter copy : (list Ty.t) -> (list Value.t) -> M.
     
     (*
                 fn runtime$(<$($tt)*>)?($($i:$ty),* ) {
@@ -627,7 +1083,7 @@ Module intrinsics.
     end.
   
   Module write_bytes.
-    (* Unhandled foreign module here *)
+    Parameter write_bytes : (list Ty.t) -> (list Value.t) -> M.
     
     (*
                 fn runtime$(<$($tt)*>)?($($i:$ty),* ) {

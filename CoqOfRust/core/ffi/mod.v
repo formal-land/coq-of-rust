@@ -766,5 +766,9 @@ Module ffi.
         (* Instance *) [ ("drop", InstanceField.Method drop) ].
   End Impl_core_ops_drop_Drop_for_core_ffi_VaListImpl.
   
-  (* Unhandled foreign module here *)
+  Parameter va_end : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter va_copy : (list Ty.t) -> (list Value.t) -> M.
+  
+  Parameter va_arg : (list Ty.t) -> (list Value.t) -> M.
 End ffi.

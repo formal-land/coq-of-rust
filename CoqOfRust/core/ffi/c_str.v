@@ -2261,7 +2261,7 @@ Module ffi.
         end.
       
       Module strlen_rt.
-        (* Unhandled foreign module here *)
+        Parameter strlen : (list Ty.t) -> (list Value.t) -> M.
       End strlen_rt.
     End const_strlen.
   End c_str.

@@ -25,17 +25,17 @@ pub(crate) struct TopLevelOptions {
 }
 
 #[derive(Debug)]
-struct HirFnSigAndBody<'a> {
-    fn_sig: &'a rustc_hir::FnSig<'a>,
-    body: &'a rustc_hir::Body<'a>,
+struct HirFnDeclAndBody<'a> {
+    decl: &'a rustc_hir::FnDecl<'a>,
+    body: Option<&'a rustc_hir::Body<'a>>,
 }
 
 type FnArgs = Vec<(String, Rc<CoqType>, Option<Rc<Pattern>>)>;
 
 #[derive(Debug)]
 struct FnSigAndBody {
-    args: FnArgs,
-    ret_ty: Rc<CoqType>,
+    args: Option<FnArgs>,
+    ret_ty: Option<Rc<CoqType>>,
     body: Option<Rc<Expr>>,
 }
 
@@ -157,11 +157,11 @@ enum TopLevelItem {
         ty_params: Vec<String>,
         fields: Vec<Rc<CoqType>>,
     },
+    TypeForeign(String),
     Module {
         name: String,
         body: Rc<TopLevel>,
     },
-    ForeignModule,
     Impl {
         generic_tys: Vec<String>,
         self_ty: Rc<CoqType>,
@@ -213,17 +213,14 @@ impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
 /// compiles a function with the given signature and body
 fn compile_fn_sig_and_body<'a>(
     env: &Env<'a>,
-    fn_sig_and_body: HirFnSigAndBody<'a>,
+    fn_decl_and_body: HirFnDeclAndBody<'a>,
     is_axiom: bool,
 ) -> Rc<FnSigAndBody> {
-    let decl = fn_sig_and_body.fn_sig.decl;
-    let args = get_args(env, fn_sig_and_body.body, decl.inputs);
-    let ret_ty = compile_fn_ret_ty(
-        env,
-        &fn_sig_and_body.body.value.hir_id.owner.def_id,
-        &decl.output,
-    );
-    let body = compile_function_body(env, &args, fn_sig_and_body.body, is_axiom);
+    let HirFnDeclAndBody { decl, body } = fn_decl_and_body;
+    let args = body.map(|body| get_args(env, body, decl.inputs));
+    let ret_ty =
+        body.map(|body| compile_fn_ret_ty(env, &body.value.hir_id.owner.def_id, &decl.output));
+    let body = body.and_then(|body| compile_function_body(env, args.as_ref(), body, is_axiom));
 
     Rc::new(FnSigAndBody { args, ret_ty, body })
 }
@@ -320,7 +317,7 @@ fn compile_top_level_item_without_local_items<'a>(
     env: &Env<'a>,
     item: &'a Item,
 ) -> Vec<Rc<TopLevelItem>> {
-    let is_value = match item.kind {
+    let is_value = match &item.kind {
         ItemKind::Static(..) | ItemKind::Const(..) | ItemKind::Fn(..) => IsValue::Yes,
         _ => IsValue::No,
     };
@@ -359,12 +356,12 @@ fn compile_top_level_item_without_local_items<'a>(
 
             let snippet = Snippet::of_span(env, &item.span);
             let is_axiom = check_lint_attribute_axiom(env, item);
-            let fn_sig_and_body = get_hir_fn_sig_and_body(env, fn_sig, body_id);
+            let fn_decl_and_body = get_hir_fn_decl_and_body(env, fn_sig.decl, body_id);
 
             vec![Rc::new(TopLevelItem::Definition {
                 name,
                 snippet,
-                definition: FunDefinition::compile(env, generics, fn_sig_and_body, is_axiom),
+                definition: FunDefinition::compile(env, generics, fn_decl_and_body, is_axiom),
             })]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -384,16 +381,40 @@ fn compile_top_level_item_without_local_items<'a>(
                 body: Rc::new(TopLevel(items)),
             })]
         }
-        ItemKind::ForeignMod { .. } => {
-            emit_warning_with_note(
-                env,
-                &item.span,
-                "Foreign modules are not supported",
-                Some("We will work on it! 🐣"),
-            );
+        ItemKind::ForeignMod { abi: _, items } => items
+            .iter()
+            .map(|item| {
+                let foreign_item = env.tcx.hir().foreign_item(item.id);
+                let is_value = match &foreign_item.kind {
+                    rustc_hir::ForeignItemKind::Fn(..) | rustc_hir::ForeignItemKind::Static(..) => {
+                        IsValue::Yes
+                    }
+                    rustc_hir::ForeignItemKind::Type => IsValue::No,
+                };
+                let name = to_valid_coq_name(is_value, item.ident.name.as_str());
 
-            vec![Rc::new(TopLevelItem::ForeignModule)]
-        }
+                match &foreign_item.kind {
+                    rustc_hir::ForeignItemKind::Fn(decl, _, generics) => {
+                        let fn_decl_and_body = HirFnDeclAndBody { decl, body: None };
+
+                        Rc::new(TopLevelItem::Definition {
+                            name,
+                            snippet: None,
+                            definition: FunDefinition::compile(
+                                env,
+                                generics,
+                                fn_decl_and_body,
+                                false,
+                            ),
+                        })
+                    }
+                    rustc_hir::ForeignItemKind::Static(_, _) => {
+                        Rc::new(TopLevelItem::Const { name, value: None })
+                    }
+                    rustc_hir::ForeignItemKind::Type => Rc::new(TopLevelItem::TypeForeign(name)),
+                }
+            })
+            .collect_vec(),
         ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
         ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
             name,
@@ -659,26 +680,28 @@ fn compile_top_level_item<'a>(env: &Env<'a>, item: &'a Item) -> Vec<Rc<TopLevelI
     .concat()
 }
 
+fn entry_of_item(env: &Env, span: rustc_span::Span, item: Rc<TopLevelItem>) -> Rc<TopLevelEntry> {
+    Rc::new(TopLevelEntry {
+        file_name: env
+            .tcx
+            .sess
+            .source_map()
+            .lookup_source_file(span.lo())
+            .name
+            .prefer_remapped_unconditionaly()
+            .to_string_lossy()
+            .to_string(),
+        item,
+    })
+}
+
 fn compile_top_level_item_with_file_name<'a>(
     env: &Env<'a>,
     item: &'a Item,
 ) -> Vec<Rc<TopLevelEntry>> {
     compile_top_level_item(env, item)
         .into_iter()
-        .map(|translated_item| {
-            Rc::new(TopLevelEntry {
-                file_name: env
-                    .tcx
-                    .sess
-                    .source_map()
-                    .lookup_source_file(item.span.lo())
-                    .name
-                    .prefer_remapped_unconditionaly()
-                    .to_string_lossy()
-                    .to_string(),
-                item: translated_item,
-            })
-        })
+        .map(|translated_item| entry_of_item(env, item.span, translated_item))
         .collect()
 }
 
@@ -726,14 +749,14 @@ fn group_top_level_by_file_name(top_level: Rc<TopLevel>) -> HashMap<String, Rc<T
 }
 
 /// returns a pair of function signature and its body
-fn get_hir_fn_sig_and_body<'a>(
+fn get_hir_fn_decl_and_body<'a>(
     env: &Env<'a>,
-    fn_sig: &'a rustc_hir::FnSig<'a>,
+    decl: &'a rustc_hir::FnDecl<'a>,
     body_id: &rustc_hir::BodyId,
-) -> HirFnSigAndBody<'a> {
-    HirFnSigAndBody {
-        fn_sig,
-        body: get_body(env, body_id),
+) -> HirFnDeclAndBody<'a> {
+    HirFnDeclAndBody {
+        decl,
+        body: Some(get_body(env, body_id)),
     }
 }
 
@@ -770,7 +793,7 @@ fn compile_impl_item<'a>(env: &Env<'a>, item: &'a rustc_hir::ImplItem) -> Rc<Imp
                 definition: FunDefinition::compile(
                     env,
                     item.generics,
-                    get_hir_fn_sig_and_body(env, fn_sig, body_id),
+                    get_hir_fn_decl_and_body(env, fn_sig.decl, body_id),
                     is_axiom,
                 ),
             })
@@ -794,7 +817,7 @@ fn get_body<'a>(env: &Env<'a>, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Bo
 // compiles the body of a function
 fn compile_function_body(
     env: &Env,
-    args: &FnArgs,
+    args: Option<&FnArgs>,
     body: &rustc_hir::Body,
     is_axiom: bool,
 ) -> Option<Rc<Expr>> {
@@ -822,27 +845,35 @@ fn compile_function_body(
     } else {
         body_without_bindings
     };
-    let body_with_patterns = args.iter().rfold(
-        body_without_bindings,
-        |body, (name, _, pattern)| match pattern {
-            None => body,
-            Some(pattern) => crate::thir_expression::build_match(
-                Expr::local_var(name),
-                vec![MatchArm {
-                    pattern: pattern.clone(),
-                    if_let_guard: vec![],
-                    body,
-                }],
-            ),
-        },
-    );
-    let body = crate::thir_expression::allocate_bindings(
-        &args
-            .iter()
-            .map(|(name, _, _)| name.clone())
-            .collect::<Vec<_>>(),
-        body_with_patterns,
-    );
+    let body_with_patterns = match args {
+        None => body_without_bindings,
+        Some(args) => {
+            args.iter().rfold(
+                body_without_bindings,
+                |body, (name, _, pattern)| match pattern {
+                    None => body,
+                    Some(pattern) => crate::thir_expression::build_match(
+                        Expr::local_var(name),
+                        vec![MatchArm {
+                            pattern: pattern.clone(),
+                            if_let_guard: vec![],
+                            body,
+                        }],
+                    ),
+                },
+            )
+        }
+    };
+    let body = match args {
+        None => body_with_patterns,
+        Some(args) => crate::thir_expression::allocate_bindings(
+            &args
+                .iter()
+                .map(|(name, _, _)| name.clone())
+                .collect::<Vec<_>>(),
+            body_with_patterns,
+        ),
+    };
 
     Some(body)
 }
@@ -1042,8 +1073,8 @@ fn compile_trait_item_body<'a>(
                 ty: compile_fn_decl(env, &item.owner_id.def_id, fn_sig.decl),
             }),
             TraitFn::Provided(body_id) => {
-                let fn_sig_and_body = get_hir_fn_sig_and_body(env, fn_sig, body_id);
-                let signature_and_body = compile_fn_sig_and_body(env, fn_sig_and_body, false);
+                let fn_decl_and_body = get_hir_fn_decl_and_body(env, fn_sig.decl, body_id);
+                let signature_and_body = compile_fn_sig_and_body(env, fn_decl_and_body, false);
                 Rc::new(TraitItem::DefinitionWithDefault(Rc::new(FunDefinition {
                     ty_params,
                     signature_and_body,
@@ -1148,15 +1179,17 @@ impl FunDefinition {
     fn compile<'a>(
         env: &Env<'a>,
         generics: &rustc_hir::Generics,
-        fn_sig_and_body: HirFnSigAndBody<'a>,
+        fn_decl_and_body: HirFnDeclAndBody<'a>,
         is_axiom: bool,
     ) -> Rc<Self> {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &*compile_fn_sig_and_body(env, fn_sig_and_body, is_axiom);
-        let args = args.iter().fold(vec![], |result, (string, ty, pattern)| {
-            let ty = dyn_name_gen.make_dyn_parm(ty.clone());
-            [result, vec![(string.to_owned(), ty, pattern.clone())]].concat()
+            &*compile_fn_sig_and_body(env, fn_decl_and_body, is_axiom);
+        let args = args.as_ref().map(|args| {
+            args.iter().fold(vec![], |result, (string, ty, pattern)| {
+                let ty = dyn_name_gen.make_dyn_parm(ty.clone());
+                [result, vec![(string.to_owned(), ty, pattern.clone())]].concat()
+            })
         });
         let ty_params = get_ty_params(env, generics);
 
@@ -1232,6 +1265,8 @@ impl FunDefinition {
                                         exprs: self
                                             .signature_and_body
                                             .args
+                                            .as_ref()
+                                            .unwrap_or(&vec![])
                                             .iter()
                                             .map(|(name, _, _)| coq::Expression::name_pattern(name))
                                             .collect(),
@@ -1611,11 +1646,6 @@ impl TopLevelItem {
                     body.to_coq(),
                 ))]
             }
-            TopLevelItem::ForeignModule => {
-                vec![coq::TopLevelItem::Comment(vec![coq::Expression::Message(
-                    "Unhandled foreign module here".to_string(),
-                )])]
-            }
             TopLevelItem::TypeAlias {
                 name,
                 path,
@@ -1710,6 +1740,11 @@ impl TopLevelItem {
                     ],
                 }),
             ])],
+            TopLevelItem::TypeForeign(name) => {
+                vec![coq::TopLevelItem::Comment(vec![coq::Expression::Message(
+                    format!("Foreign type '{name}'"),
+                )])]
+            }
             TopLevelItem::Impl {
                 generic_tys,
                 self_ty,
