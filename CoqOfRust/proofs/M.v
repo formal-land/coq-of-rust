@@ -56,6 +56,35 @@ Definition IsTraitMethod
     instance /\
   List.assoc instance method_name = Some (InstanceField.Method method).
 
+Module IsRead.
+  Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Set :=
+  | Immediate (value : Value.t) :
+    t state (Pointer.Immediate value) value
+  | Mutable
+      {A : Set} {pointer_to_value : A -> Value.t} address path big_to_value projection injection
+      (value : State.get_Set address)
+      (sub_value : A) :
+    let mutable :=
+      Pointer.Mutable.Make
+        (Value := Value.t) (A := A) (to_value := pointer_to_value) (Address := Address)
+        (Big_A := State.get_Set address)
+        address
+        path
+        big_to_value
+        projection
+        injection in
+    State.read address state = Some value ->
+    projection value = Some sub_value ->
+    t state (Pointer.Mutable mutable) (pointer_to_value sub_value).
+End IsRead.
+
+Module HasRead.
+  Definition t `{State.Trait} {A : Set}
+      (state : State) (pointer : Pointer.t Value.t) (to_value : A -> Value.t) :
+      Set :=
+    { a : A @ IsRead.t state pointer (to_value a)}.
+End HasRead.
+
 Module Run.
   Reserved Notation "{{ env , env_to_value , state | e ⇓ to_value | P_state }}".
 
@@ -94,27 +123,16 @@ Module Run.
       LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ to_value
     | P_state }}
   | CallPrimitiveStateRead
-      {A : Set} {pointer_to_value : A -> Value.t} address path big_to_value projection injection
-      (value : State.get_Set address)
-      (sub_value : A)
+      (pointer : Pointer.t Value.t)
+      (value : Value.t)
       (k : Value.t -> M) :
-    let mutable :=
-      Pointer.Mutable.Make
-        (Value := Value.t) (A := A) (to_value := pointer_to_value) (Address := Address)
-        (Big_A := State.get_Set address)
-        address
-        path
-        big_to_value
-        projection
-        injection in
-    State.read address state = Some value ->
-    projection value = Some sub_value ->
+    IsRead.t state pointer value ->
     {{ env, env_to_value, state |
-      k (pointer_to_value sub_value) ⇓
+      k value ⇓
       to_value
     | P_state }} ->
     {{ env, env_to_value, state |
-      LowM.CallPrimitive (Primitive.StateRead mutable) k ⇓
+      LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓
       to_value
     | P_state }}
   | CallPrimitiveStateWrite
@@ -234,6 +252,11 @@ Module Run.
 
   where "{{ env , env_to_value , state | e ⇓ to_value | P_state }}" :=
     (t env env_to_value state to_value P_state e).
+
+  Notation "{{ '_' , '_' , state | e ⇓ to_value | P_state }}" :=
+    (forall (Env : Set) (env : Env) (env_to_value : Env -> Value.t),
+      {{ env, env_to_value, state | e ⇓ to_value | P_state }}
+    ).
 
   Definition pure {A : Set} (e : M) (to_value : A -> Value.t + Exception.t) : Set :=
     forall
@@ -361,24 +384,17 @@ Module SubPointer.
   Defined.
 End SubPointer.
 
-(** Simplify the usual case of read of immediate value. *)
-Lemma read_of_immediate (v : Value.t) :
-  M.read (Value.Pointer (Pointer.Immediate v)) =
-  M.pure v.
-Proof.
-  reflexivity.
-Qed.
-
 Ltac run_symbolic_state_read :=
-  match goal with
-  | |- Run.t _ _ _ _ _ (LowM.CallPrimitive (Primitive.StateRead (
-      Pointer.Mutable.Make ?address _ _ _ _
-    )) _) =>
-    let H := fresh "H" in
-    epose proof (H := Run.CallPrimitiveStateRead _ _ _ _ _ address);
-    eapply H; [reflexivity | reflexivity |];
-    clear H
-  end.
+  eapply Run.CallPrimitiveStateRead; [
+    match goal with
+    | |- context [Pointer.Mutable.Make ?address] =>
+      let H := fresh "H" in
+      epose proof (H := IsRead.Mutable _ address);
+      eapply H; reflexivity;
+      clear H
+    | _ => apply IsRead.Immediate
+    end
+  |].
 
 Ltac run_symbolic_state_write :=
   match goal with

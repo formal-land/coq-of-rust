@@ -357,8 +357,7 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
+  | StateRead (pointer : Pointer.t Value.t)
   | StateWrite {A : Set} {to_value : A -> Value.t}
     (mutable : Pointer.Mutable.t Value.t to_value)
     (value : Value.t)
@@ -664,9 +663,7 @@ Definition alloc (v : Value.t) : M :=
 
 Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.StateRead mutable)
+  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
   | _ => impossible
   end.
 
