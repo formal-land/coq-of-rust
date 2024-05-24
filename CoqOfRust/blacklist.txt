@@ -1,3 +1,4 @@
+examples/default/examples/ink_contracts/proofs/erc20.v
 # This file works but is taking a very long time (ten minutes)
 revm/opcode.v
 examples/default/examples/ink_contracts/proofs/erc721.v

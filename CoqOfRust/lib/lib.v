@@ -84,18 +84,18 @@ Module Integer.
 
   Definition normalize_wrap (kind : Integer.t) (z : Z) : Z :=
     match kind with
-    | Integer.U8 => Z.modulo z 2^8
-    | Integer.U16 => Z.modulo z 2^16
-    | Integer.U32 => Z.modulo z 2^32
-    | Integer.U64 => Z.modulo z 2^64
-    | Integer.U128 => Z.modulo z 2^128
-    | Integer.Usize => Z.modulo z 2^64
-    | Integer.I8 => Z.modulo (z + 2^7) 2^8 - 2^7
-    | Integer.I16 => Z.modulo (z + 2^15) 2^16 - 2^15
-    | Integer.I32 => Z.modulo (z + 2^31) 2^32 - 2^31
-    | Integer.I64 => Z.modulo (z + 2^63) 2^64 - 2^63
-    | Integer.I128 => Z.modulo (z + 2^127) 2^128 - 2^127
-    | Integer.Isize => Z.modulo (z + 2^63) 2^64 - 2^63
+    | Integer.U8 => Z.modulo z (2^8)
+    | Integer.U16 => Z.modulo z (2^16)
+    | Integer.U32 => Z.modulo z (2^32)
+    | Integer.U64 => Z.modulo z (2^64)
+    | Integer.U128 => Z.modulo z (2^128)
+    | Integer.Usize => Z.modulo z (2^64)
+    | Integer.I8 => Z.modulo (z + 2^7) (2^8) - 2^7
+    | Integer.I16 => Z.modulo (z + 2^15) (2^16) - 2^15
+    | Integer.I32 => Z.modulo (z + 2^31) (2^32) - 2^31
+    | Integer.I64 => Z.modulo (z + 2^63) (2^64) - 2^63
+    | Integer.I128 => Z.modulo (z + 2^127) (2^128) - 2^127
+    | Integer.Isize => Z.modulo (z + 2^63) (2^64) - 2^63
     end.
 
   Definition normalize_with_error (kind : Integer.t) (z : Z) : Z + string :=
