@@ -3,6 +3,7 @@ Require Import CoqOfRust.proofs.M.
 Require Import CoqOfRust.simulations.M.
 Require core.num.mod.
 Require core.num.simulations.mod.
+Require core.simulations.clone.
 
 Require Import revm.gas.
 
@@ -37,6 +38,19 @@ Module Gas.
   }.
 
   Module SubPointer.
+    Definition get_limit : SubPointer.Runner.t t Z := {|
+      SubPointer.Runner.index :=
+        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "limit";
+      SubPointer.Runner.projection x := Some x.(limit);
+      SubPointer.Runner.injection x y := Some (x <| limit := y |>);
+    |}.
+
+    Lemma get_limit_is_valid :
+      SubPointer.Runner.Valid.t get_limit.
+    Proof.
+      hauto l: on.
+    Qed.
+
     Definition get_remaining : SubPointer.Runner.t t Z := {|
       SubPointer.Runner.index :=
         Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "remaining";
@@ -49,8 +63,44 @@ Module Gas.
     Proof.
       hauto l: on.
     Qed.
+
+    Definition get_refunded : SubPointer.Runner.t t Z := {|
+      SubPointer.Runner.index :=
+        Pointer.Index.StructRecord "revm_interpreter::gas::Gas" "refunded";
+      SubPointer.Runner.projection x := Some x.(refunded);
+      SubPointer.Runner.injection x y := Some (x <| refunded := y |>);
+    |}.
+
+    Lemma get_refunded_is_valid :
+      SubPointer.Runner.Valid.t get_refunded.
+    Proof.
+      hauto l: on.
+    Qed.
   End SubPointer.
 End Gas.
+
+Module Impl_Clone.
+  Definition IsRunImpl `{State.Trait} : clone.Clone.RunImpl Gas.t.
+  Proof.
+    constructor.
+    { eexists; split.
+      { unfold IsTraitMethod.
+        eexists; split.
+        { cbn.
+          apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements.
+        }
+        { reflexivity. }
+      }
+      { intros state pointer [value H_pointer] **.
+        run_symbolic.
+        eapply Run.CallPrimitiveStateRead. {
+          apply H_pointer.
+        }
+        run_symbolic.
+      }
+    }
+  Defined.
+End Impl_Clone.
 
 Module State.
   Definition t : Set :=
@@ -81,6 +131,7 @@ Module Impl_revm_interpreter_gas_Gas.
     eapply Run.CallPrimitiveGetAssociatedFunction. {
       apply core.num.mod.num.Impl_u64.AssociatedFunction_overflowing_sub.
     }
+    run_symbolic.
     apply (SubPointer.run Gas.SubPointer.get_remaining_is_valid); [reflexivity|].
     run_symbolic.
     eapply Run.CallClosure. {

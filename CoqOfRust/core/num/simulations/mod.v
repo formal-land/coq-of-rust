@@ -17,6 +17,7 @@ Module Impl_u64.
     eapply Run.CallPrimitiveGetFunction. {
       apply core.intrinsics.intrinsics.Function_sub_with_overflow.
     }
+    run_symbolic.
     eapply Run.CallClosure. {
       apply core.simulations.intrinsics.run_sub_with_overflow_u64_u64.
     }
