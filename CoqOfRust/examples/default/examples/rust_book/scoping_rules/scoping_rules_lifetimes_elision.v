@@ -57,6 +57,9 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_elided_input :
+  M.IsFunction "scoping_rules_lifetimes_elision::elided_input" elided_input.
+
 (*
 fn annotated_input<'a>(x: &'a i32) {
     println!("`annotated_input`: {}", x);
@@ -113,6 +116,9 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_annotated_input :
+  M.IsFunction "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
+
 (*
 fn elided_pass(x: &i32) -> &i32 {
     x
@@ -127,6 +133,9 @@ Definition elided_pass (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_elided_pass :
+  M.IsFunction "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
+
 (*
 fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
     x
@@ -140,6 +149,9 @@ Definition annotated_pass (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (| x |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_annotated_pass :
+  M.IsFunction "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
 
 (*
 fn main() {
@@ -276,3 +288,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_elision::main" main.

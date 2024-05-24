@@ -3110,6 +3110,9 @@ Module iter.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_and_then_or_clear :
+        M.IsFunction "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
     End chain.
   End adapters.
 End iter.

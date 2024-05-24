@@ -3,6 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_multiply : M.IsFunction "early_returns::multiply" multiply.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "early_returns::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "early_returns::main" main.

@@ -5697,6 +5697,8 @@ Module vec.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_elem : M.IsFunction "alloc::vec::from_elem" from_elem.
+  
   (*
   pub fn from_elem_in<T: Clone, A: Allocator>(elem: T, n: usize, alloc: A) -> Vec<T, A> {
       <T as SpecFromElem>::from_elem(elem, n, alloc)
@@ -5721,6 +5723,8 @@ Module vec.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_from_elem_in : M.IsFunction "alloc::vec::from_elem_in" from_elem_in.
   
   (* Trait *)
   (* Empty module 'ExtendFromWithinSpec' *)

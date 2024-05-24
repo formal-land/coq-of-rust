@@ -38,4 +38,8 @@ Enum WebEvent
 
 Parameter inspect : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "enums::main" main.

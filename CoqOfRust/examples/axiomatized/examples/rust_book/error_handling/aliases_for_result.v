@@ -8,6 +8,12 @@ Axiom AliasedResult :
 
 Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_multiply : M.IsFunction "aliases_for_result::multiply" multiply.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "aliases_for_result::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "aliases_for_result::main" main.

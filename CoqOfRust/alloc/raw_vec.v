@@ -3232,6 +3232,8 @@ Module raw_vec.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_finish_grow : M.IsFunction "alloc::raw_vec::finish_grow" finish_grow.
+  
   Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_raw_vec_RawVec_T_A.
     Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ].
     
@@ -3406,6 +3408,8 @@ Module raw_vec.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_handle_reserve : M.IsFunction "alloc::raw_vec::handle_reserve" handle_reserve.
+  
   (*
   fn alloc_guard(alloc_size: usize) -> Result<(), TryReserveError> {
       if usize::BITS < 64 && alloc_size > isize::MAX as usize {
@@ -3469,6 +3473,8 @@ Module raw_vec.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_alloc_guard : M.IsFunction "alloc::raw_vec::alloc_guard" alloc_guard.
+  
   (*
   fn capacity_overflow() -> ! {
       panic!("capacity overflow");
@@ -3493,4 +3499,7 @@ Module raw_vec.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_capacity_overflow :
+    M.IsFunction "alloc::raw_vec::capacity_overflow" capacity_overflow.
 End raw_vec.

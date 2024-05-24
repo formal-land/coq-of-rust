@@ -167,6 +167,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_copy_fold : M.IsFunction "core::iter::adapters::copied::copy_fold" copy_fold.
+      
       Module copy_fold.
         (* Error OpaqueTy *)
       End copy_fold.
@@ -217,6 +219,9 @@ Module iter.
                   end))))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_copy_try_fold :
+        M.IsFunction "core::iter::adapters::copied::copy_try_fold" copy_try_fold.
       
       Module copy_try_fold.
         (* Error OpaqueTy *)

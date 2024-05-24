@@ -20,6 +20,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_from_coroutine :
+        M.IsFunction "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
+      
       (* StructTuple
         {
           name := "FromCoroutine";

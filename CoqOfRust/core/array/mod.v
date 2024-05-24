@@ -45,6 +45,8 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
+  
   (*
   pub fn try_from_fn<R, const N: usize, F>(cb: F) -> ChangeOutputType<R, [R::Output; N]>
   where
@@ -145,6 +147,8 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
+  
   (*
   pub const fn from_ref<T>(s: &T) -> &[T; 1] {
       // SAFETY: Converting `&T` to `&[T; 1]` is sound.
@@ -167,6 +171,8 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
+  
   (*
   pub const fn from_mut<T>(s: &mut T) -> &mut [T; 1] {
       // SAFETY: Converting `&mut T` to `&mut [T; 1]` is sound.
@@ -188,6 +194,8 @@ Module array.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
   
   (* StructTuple
     {
@@ -4852,6 +4860,9 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_trusted_iterator :
+    M.IsFunction "core::array::from_trusted_iterator" from_trusted_iterator.
+  
   (*
   fn try_from_trusted_iterator<T, R, const N: usize>(
       iter: impl UncheckedIterator<Item = R>,
@@ -4937,6 +4948,9 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_try_from_trusted_iterator :
+    M.IsFunction "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
+  
   Module try_from_trusted_iterator.
     (*
         fn next<T>(mut iter: impl UncheckedIterator<Item = T>) -> impl FnMut(usize) -> T {
@@ -4978,6 +4992,8 @@ Module array.
                 end))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
     
     Module next.
       (* Error OpaqueTy *)
@@ -5212,6 +5228,9 @@ Module array.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_try_from_fn_erased :
+    M.IsFunction "core::array::try_from_fn_erased" try_from_fn_erased.
   
   (* StructRecord
     {
@@ -5578,6 +5597,8 @@ Module array.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
+  
   (*
   fn iter_next_chunk_erased<T>(
       buffer: &mut [MaybeUninit<T>],
@@ -5723,4 +5744,7 @@ Module array.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_iter_next_chunk_erased :
+    M.IsFunction "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
 End array.

@@ -35,3 +35,5 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_traits::main" main.

@@ -56,6 +56,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_contains_zero_byte :
+      M.IsFunction "core::slice::memchr::contains_zero_byte" contains_zero_byte.
+    
     (*
     pub const fn memchr(x: u8, text: &[u8]) -> Option<usize> {
         // Fast path for small slices.
@@ -128,6 +131,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memchr : M.IsFunction "core::slice::memchr::memchr" memchr.
     
     (*
     const fn memchr_naive(x: u8, text: &[u8]) -> Option<usize> {
@@ -251,6 +256,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memchr_naive : M.IsFunction "core::slice::memchr::memchr_naive" memchr_naive.
     
     (*
     const fn memchr_aligned(x: u8, text: &[u8]) -> Option<usize> {
@@ -681,6 +688,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memchr_aligned :
+      M.IsFunction "core::slice::memchr::memchr_aligned" memchr_aligned.
     
     (*
     pub fn memrchr(x: u8, text: &[u8]) -> Option<usize> {
@@ -1154,6 +1164,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memrchr : M.IsFunction "core::slice::memchr::memrchr" memrchr.
     
     Module memrchr.
       Axiom Chunk : (Ty.path "core::slice::memchr::memrchr::Chunk") = (Ty.path "usize").

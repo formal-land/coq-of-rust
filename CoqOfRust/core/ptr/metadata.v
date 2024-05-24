@@ -39,6 +39,8 @@ Module ptr.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
+    
     (*
     pub const fn from_raw_parts<T: ?Sized>(
         data_address: *const (),
@@ -77,6 +79,9 @@ Module ptr.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_from_raw_parts :
+      M.IsFunction "core::ptr::metadata::from_raw_parts" from_raw_parts.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
@@ -117,6 +122,9 @@ Module ptr.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_from_raw_parts_mut :
+      M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
     
     (* Error Union *)
     

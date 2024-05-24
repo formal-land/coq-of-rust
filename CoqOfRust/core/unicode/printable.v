@@ -507,6 +507,8 @@ Module unicode.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
+    
     (*
     pub(crate) fn is_printable(x: char) -> bool {
         let x = x as u32;
@@ -1019,6 +1021,9 @@ Module unicode.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_is_printable :
+      M.IsFunction "core::unicode::printable::is_printable" is_printable.
     
     Definition value_SINGLETONS0U : Value.t :=
       M.run

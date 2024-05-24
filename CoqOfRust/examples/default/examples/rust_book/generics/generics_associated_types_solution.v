@@ -188,6 +188,9 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_difference :
+  M.IsFunction "generics_associated_types_solution::difference" difference.
+
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
@@ -204,6 +207,8 @@ Definition get_a (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
 
 (*
 fn main() {
@@ -468,3 +473,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.

@@ -20,6 +20,8 @@ Definition is_big (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
+
 (*
 fn main() {
     let n = 16;
@@ -195,3 +197,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "constants::main" main.

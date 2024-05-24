@@ -15,4 +15,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter comp_sci_student_greeting : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_comp_sci_student_greeting :
+  M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "supertraits::main" main.

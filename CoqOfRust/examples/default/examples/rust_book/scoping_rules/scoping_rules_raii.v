@@ -32,6 +32,8 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
+
 (*
 fn main() {
     // Allocate an integer on the heap
@@ -154,3 +156,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.

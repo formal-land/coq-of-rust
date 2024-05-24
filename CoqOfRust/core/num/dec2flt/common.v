@@ -303,6 +303,8 @@ Module num.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
+      
       (* StructRecord
         {
           name := "BiasedFp";

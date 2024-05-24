@@ -32,6 +32,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_once : M.IsFunction "core::iter::sources::once::once" once.
+      
       (* StructRecord
         {
           name := "Once";

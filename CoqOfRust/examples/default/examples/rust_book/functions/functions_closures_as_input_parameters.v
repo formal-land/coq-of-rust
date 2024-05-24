@@ -36,6 +36,8 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_apply : M.IsFunction "functions_closures_as_input_parameters::apply" apply.
+
 (*
 fn apply_to_3<F>(f: F) -> i32
 where
@@ -62,6 +64,9 @@ Definition apply_to_3 (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_apply_to_3 :
+  M.IsFunction "functions_closures_as_input_parameters::apply_to_3" apply_to_3.
 
 (*
 fn main() {
@@ -352,3 +357,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "functions_closures_as_input_parameters::main" main.

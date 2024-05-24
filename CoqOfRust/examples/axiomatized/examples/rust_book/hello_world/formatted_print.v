@@ -3,6 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "formatted_print::main" main.
+
 Module main.
   (* StructTuple
     {

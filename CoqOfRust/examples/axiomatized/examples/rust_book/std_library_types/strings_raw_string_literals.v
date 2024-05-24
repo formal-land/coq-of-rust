@@ -2,3 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "strings_raw_string_literals::main" main.

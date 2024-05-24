@@ -321,6 +321,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_zip : M.IsFunction "core::iter::adapters::zip::zip" zip.
+      
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_A_where_core_iter_traits_iterator_Iterator_B_for_core_iter_adapters_zip_Zip_A_B.
         Definition Self (A B : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [ A; B ].
@@ -4064,6 +4066,9 @@ Module iter.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_try_get_unchecked :
+        M.IsFunction "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
       
       (* Trait *)
       (* Empty module 'SpecTrustedRandomAccess' *)

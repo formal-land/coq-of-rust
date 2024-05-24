@@ -36,6 +36,8 @@ Definition matching (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
+
 (* StructTuple
   {
     name := "Constructor";
@@ -231,3 +233,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "constructor_as_function::main" main.

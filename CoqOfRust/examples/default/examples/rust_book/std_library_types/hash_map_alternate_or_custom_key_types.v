@@ -527,6 +527,9 @@ Definition try_logon (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_try_logon :
+  M.IsFunction "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
+
 (*
 fn main() {
     let mut accounts: Accounts = HashMap::new();
@@ -631,3 +634,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "hash_map_alternate_or_custom_key_types::main" main.

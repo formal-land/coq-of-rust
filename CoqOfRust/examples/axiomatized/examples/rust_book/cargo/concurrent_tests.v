@@ -3,8 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter foo : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
+
 Module tests.
   Parameter test_file : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
+  
   Parameter test_file_also : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_test_file_also :
+    M.IsFunction "concurrent_tests::tests::test_file_also'1" test_file_also.
 End tests.

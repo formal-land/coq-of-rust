@@ -80,7 +80,7 @@ struct WherePredicate {
 
 #[derive(Debug)]
 struct TraitBound {
-    name: Path,
+    name: Rc<Path>,
     ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
 }
 
@@ -137,12 +137,13 @@ enum TopLevelItem {
     },
     Definition {
         name: String,
+        path: Rc<Path>,
         snippet: Option<Rc<Snippet>>,
         definition: Rc<FunDefinition>,
     },
     TypeAlias {
         name: String,
-        path: Path,
+        path: Rc<Path>,
         ty_params: Vec<String>,
         ty: Rc<CoqType>,
     },
@@ -169,7 +170,7 @@ enum TopLevelItem {
     },
     Trait {
         name: String,
-        path: Path,
+        path: Rc<Path>,
         ty_params: Vec<String>,
         body: Vec<(String, Rc<TraitItem>)>,
     },
@@ -177,7 +178,7 @@ enum TopLevelItem {
         generic_tys: Vec<String>,
         predicates: Vec<Rc<WherePredicate>>,
         self_ty: Rc<CoqType>,
-        of_trait: Path,
+        of_trait: Rc<Path>,
         trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
         items: Vec<Rc<TraitImplItem>>,
     },
@@ -360,6 +361,7 @@ fn compile_top_level_item_without_local_items<'a>(
 
             vec![Rc::new(TopLevelItem::Definition {
                 name,
+                path,
                 snippet,
                 definition: FunDefinition::compile(env, generics, fn_decl_and_body, is_axiom),
             })]
@@ -398,7 +400,8 @@ fn compile_top_level_item_without_local_items<'a>(
                         let fn_decl_and_body = HirFnDeclAndBody { decl, body: None };
 
                         Rc::new(TopLevelItem::Definition {
-                            name,
+                            name: name.clone(),
+                            path: Path::concat(&[path.clone(), Path::new(&[name])]),
                             snippet: None,
                             definition: FunDefinition::compile(
                                 env,
@@ -1127,7 +1130,7 @@ pub(crate) struct DynNameGen {
     name: String,
     // Resources to be translated into a list of `WherePredicates`.
     // Traits' paths along with their opaque type names
-    predicates: Vec<(Path, String)>,
+    predicates: Vec<(Rc<Path>, String)>,
 }
 
 impl DynNameGen {
@@ -1138,7 +1141,7 @@ impl DynNameGen {
         }
     }
 
-    fn next(&mut self, path: Path) -> String {
+    fn next(&mut self, path: Rc<Path>) -> String {
         // Get the next character
         let next_letter = self
             .name
@@ -1637,9 +1640,25 @@ impl TopLevelItem {
             },
             TopLevelItem::Definition {
                 name,
+                path,
                 snippet,
                 definition,
-            } => definition.to_coq(name.to_string(), snippet, vec![], false),
+            } => [
+                definition.to_coq(name.to_string(), snippet, vec![], false),
+                vec![
+                    coq::TopLevelItem::Line,
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        &format!("Function_{name}"),
+                        &coq::DefinitionKind::Axiom {
+                            ty: coq::Expression::just_name("M.IsFunction").apply_many(&[
+                                coq::Expression::String(path.to_string()),
+                                coq::Expression::just_name(name),
+                            ]),
+                        },
+                    )),
+                ],
+            ]
+            .concat(),
             TopLevelItem::Module { name, body } => {
                 vec![coq::TopLevelItem::Module(coq::Module::new(
                     name,
@@ -1662,9 +1681,7 @@ impl TopLevelItem {
                         image: Rc::new(coq::Expression::Equality {
                             lhs: Rc::new(
                                 CoqType::Application {
-                                    func: Rc::new(CoqType::Path {
-                                        path: Rc::new(path.clone()),
-                                    }),
+                                    func: Rc::new(CoqType::Path { path: path.clone() }),
                                     args: ty_params
                                         .iter()
                                         .map(|ty_param| Rc::new(CoqType::Var(ty_param.clone())))

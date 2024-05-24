@@ -23,6 +23,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_drop_in_place : M.IsFunction "core::ptr::drop_in_place" drop_in_place.
+  
   (*
   pub const fn null<T: ?Sized + Thin>() -> *const T {
       from_raw_parts(invalid(0), ())
@@ -45,6 +47,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_null : M.IsFunction "core::ptr::null" null.
+  
   (*
   pub const fn null_mut<T: ?Sized + Thin>() -> *mut T {
       from_raw_parts_mut(invalid_mut(0), ())
@@ -66,6 +70,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_null_mut : M.IsFunction "core::ptr::null_mut" null_mut.
   
   (*
   pub const fn invalid<T>(addr: usize) -> *const T {
@@ -92,6 +98,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_invalid : M.IsFunction "core::ptr::invalid" invalid.
+  
   (*
   pub const fn invalid_mut<T>(addr: usize) -> *mut T {
       // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
@@ -117,6 +125,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_invalid_mut : M.IsFunction "core::ptr::invalid_mut" invalid_mut.
+  
   (*
   pub fn from_exposed_addr<T>(addr: usize) -> *const T
   where
@@ -134,6 +144,8 @@ Module ptr.
         M.rust_cast (M.read (| addr |))))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_from_exposed_addr : M.IsFunction "core::ptr::from_exposed_addr" from_exposed_addr.
   
   (*
   pub fn from_exposed_addr_mut<T>(addr: usize) -> *mut T
@@ -153,6 +165,9 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_exposed_addr_mut :
+    M.IsFunction "core::ptr::from_exposed_addr_mut" from_exposed_addr_mut.
+  
   (*
   pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
       r
@@ -167,6 +182,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_ref : M.IsFunction "core::ptr::from_ref" from_ref.
+  
   (*
   pub const fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
       r
@@ -180,6 +197,8 @@ Module ptr.
         M.read (| r |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_from_mut : M.IsFunction "core::ptr::from_mut" from_mut.
   
   (*
   pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
@@ -212,6 +231,9 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_slice_from_raw_parts :
+    M.IsFunction "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
+  
   (*
   pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
       from_raw_parts_mut(data.cast(), len)
@@ -242,6 +264,9 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_slice_from_raw_parts_mut :
+    M.IsFunction "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
   
   (*
   pub const unsafe fn swap<T>(x: *mut T, y: *mut T) {
@@ -330,6 +355,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_swap : M.IsFunction "core::ptr::swap" swap.
   
   (*
   pub const unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
@@ -731,6 +758,9 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_swap_nonoverlapping :
+    M.IsFunction "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
+  
   (*
   const unsafe fn swap_nonoverlapping_simple_untyped<T>(x: *mut T, y: *mut T, count: usize) {
       let x = x.cast::<MaybeUninit<T>>();
@@ -849,6 +879,9 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_swap_nonoverlapping_simple_untyped :
+    M.IsFunction "core::ptr::swap_nonoverlapping_simple_untyped" swap_nonoverlapping_simple_untyped.
+  
   (*
   pub const unsafe fn replace<T>(dst: *mut T, mut src: T) -> T {
       // SAFETY: the caller must guarantee that `dst` is valid to be
@@ -916,6 +949,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_replace : M.IsFunction "core::ptr::replace" replace.
   
   (*
   pub const unsafe fn read<T>(src: *const T) -> T {
@@ -1002,6 +1037,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_read : M.IsFunction "core::ptr::read" read.
+  
   (*
   pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
       let mut tmp = MaybeUninit::<T>::uninit();
@@ -1066,6 +1103,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_read_unaligned : M.IsFunction "core::ptr::read_unaligned" read_unaligned.
   
   (*
   pub const unsafe fn write<T>(dst: *mut T, src: T) {
@@ -1137,6 +1176,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_write : M.IsFunction "core::ptr::write" write.
+  
   (*
   pub const unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
       // SAFETY: the caller must guarantee that `dst` is valid for writes.
@@ -1178,6 +1219,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_write_unaligned : M.IsFunction "core::ptr::write_unaligned" write_unaligned.
   
   (*
   pub unsafe fn read_volatile<T>(src: *const T) -> T {
@@ -1237,6 +1280,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_read_volatile : M.IsFunction "core::ptr::read_volatile" read_volatile.
   
   (*
   pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
@@ -1299,6 +1344,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_write_volatile : M.IsFunction "core::ptr::write_volatile" write_volatile.
   
   (*
   pub(crate) const unsafe fn align_offset<T: Sized>(p: *const T, a: usize) -> usize {
@@ -1816,6 +1863,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_align_offset : M.IsFunction "core::ptr::align_offset" align_offset.
+  
   Module align_offset.
     (*
         const unsafe fn mod_inv(x: usize, m: usize) -> usize {
@@ -1990,6 +2039,8 @@ Module ptr.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mod_inv : M.IsFunction "core::ptr::align_offset::mod_inv" mod_inv.
+    
     Module mod_inv.
       Definition value_INV_TABLE_MOD_16 : Value.t :=
         M.run
@@ -2028,6 +2079,8 @@ Module ptr.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_eq : M.IsFunction "core::ptr::eq" eq.
+  
   (*
   pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
       (p as *const ()) == (q as *const ())
@@ -2042,6 +2095,8 @@ Module ptr.
         BinOp.Pure.eq (M.rust_cast (M.read (| p |))) (M.rust_cast (M.read (| q |)))))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_addr_eq : M.IsFunction "core::ptr::addr_eq" addr_eq.
   
   (*
   pub fn hash<T: ?Sized, S: hash::Hasher>(hashee: *const T, into: &mut S) {
@@ -2073,6 +2128,8 @@ Module ptr.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_hash : M.IsFunction "core::ptr::hash" hash.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.

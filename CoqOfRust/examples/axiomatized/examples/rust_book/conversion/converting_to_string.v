@@ -22,3 +22,5 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "converting_to_string::main" main.

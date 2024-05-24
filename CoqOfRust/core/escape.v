@@ -259,6 +259,9 @@ Module escape.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_escape_ascii_into :
+    M.IsFunction "core::escape::escape_ascii_into" escape_ascii_into.
+  
   Module escape_ascii_into.
     (*
         fn backslash(a: ascii::Char) -> ([ascii::Char; 4], u8) {
@@ -283,6 +286,8 @@ Module escape.
             ]))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_backslash : M.IsFunction "core::escape::escape_ascii_into::backslash" backslash.
   End escape_ascii_into.
   
   (*
@@ -481,6 +486,9 @@ Module escape.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_escape_unicode_into :
+    M.IsFunction "core::escape::escape_unicode_into" escape_unicode_into.
   
   Module escape_unicode_into.
     Definition value_UNICODE_ESCAPE_PREFIX : Value.t :=

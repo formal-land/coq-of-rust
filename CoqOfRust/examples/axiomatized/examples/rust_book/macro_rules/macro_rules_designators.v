@@ -3,6 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter foo : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
+
 Parameter bar : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.

@@ -3,6 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter order : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_order : M.IsFunction "if_let::order" order.
+
 (*
 Enum Container
 {
@@ -30,4 +32,8 @@ Enum Container
 
 Parameter extract_value : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_extract_value : M.IsFunction "if_let::extract_value" extract_value.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "if_let::main" main.

@@ -20,6 +20,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_repeat : M.IsFunction "core::iter::sources::repeat::repeat" repeat.
+      
       (* StructRecord
         {
           name := "Repeat";

@@ -80,6 +80,12 @@ End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_Doub
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_double_first : M.IsFunction "wrapping_errors::double_first" double_first.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "wrapping_errors::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "wrapping_errors::main" main.

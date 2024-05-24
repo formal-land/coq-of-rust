@@ -112,6 +112,9 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first :
+  M.IsFunction "pulling_results_out_of_options::double_first" double_first.
+
 (*
 fn main() {
     let numbers = vec!["42", "93", "18"];
@@ -402,3 +405,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "pulling_results_out_of_options::main" main.

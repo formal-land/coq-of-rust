@@ -379,3 +379,6 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main :
+  M.IsFunction "iterating_over_results_collect_via_map_err_and_filter_map::main" main.

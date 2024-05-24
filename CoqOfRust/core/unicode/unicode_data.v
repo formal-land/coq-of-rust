@@ -323,6 +323,9 @@ Module unicode.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_bitset_search :
+      M.IsFunction "core::unicode::unicode_data::bitset_search" bitset_search.
+    
     (*
     fn decode_prefix_sum(short_offset_run_header: u32) -> u32 {
         short_offset_run_header & ((1 << 21) - 1)
@@ -343,6 +346,9 @@ Module unicode.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_decode_prefix_sum :
+      M.IsFunction "core::unicode::unicode_data::decode_prefix_sum" decode_prefix_sum.
+    
     (*
     fn decode_length(short_offset_run_header: u32) -> usize {
         (short_offset_run_header >> 21) as usize
@@ -357,6 +363,9 @@ Module unicode.
             (BinOp.Panic.shr (| M.read (| short_offset_run_header |), Value.Integer 21 |))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_decode_length :
+      M.IsFunction "core::unicode::unicode_data::decode_length" decode_length.
     
     (*
     fn skip_search<const SOR: usize, const OFFSETS: usize>(
@@ -743,6 +752,9 @@ Module unicode.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_skip_search :
+      M.IsFunction "core::unicode::unicode_data::skip_search" skip_search.
     
     Definition value_UNICODE_VERSION : Value.t :=
       M.run
@@ -2316,6 +2328,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::alphabetic::lookup" lookup.
     End alphabetic.
     
     Module case_ignorable.
@@ -3281,6 +3295,9 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup :
+        M.IsFunction "core::unicode::unicode_data::case_ignorable::lookup" lookup.
     End case_ignorable.
     
     Module cased.
@@ -3669,6 +3686,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cased::lookup" lookup.
     End cased.
     
     Module cc.
@@ -3717,6 +3736,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cc::lookup" lookup.
     End cc.
     
     Module grapheme_extend.
@@ -4532,6 +4553,9 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup :
+        M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup" lookup.
     End grapheme_extend.
     
     Module lowercase.
@@ -5194,6 +5218,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::lowercase::lookup" lookup.
     End lowercase.
     
     Module n.
@@ -5559,6 +5585,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::n::lookup" lookup.
     End n.
     
     Module uppercase.
@@ -6158,6 +6186,8 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::uppercase::lookup" lookup.
     End uppercase.
     
     Module white_space.
@@ -6516,6 +6546,9 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_lookup :
+        M.IsFunction "core::unicode::unicode_data::white_space::lookup" lookup.
     End white_space.
     
     Module conversions.
@@ -6831,6 +6864,9 @@ Module unicode.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_to_lower :
+        M.IsFunction "core::unicode::unicode_data::conversions::to_lower" to_lower.
+      
       (*
           pub fn to_upper(c: char) -> [char; 3] {
               if c.is_ascii() {
@@ -7139,6 +7175,9 @@ Module unicode.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_to_upper :
+        M.IsFunction "core::unicode::unicode_data::conversions::to_upper" to_upper.
       
       Definition value_LOWERCASE_TABLE : Value.t :=
         M.run

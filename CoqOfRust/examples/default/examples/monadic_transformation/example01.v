@@ -15,6 +15,8 @@ Definition id (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_id : M.IsFunction "example01::id" id.
+
 (* fn tri(a: u64, b: u64, c: u64) {} *)
 Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
@@ -26,6 +28,8 @@ Definition tri (τ : list Ty.t) (α : list Value.t) : M :=
       Value.Tuple []))
   | _, _ => M.impossible
   end.
+
+Axiom Function_tri : M.IsFunction "example01::tri" tri.
 
 (*
 fn main() {
@@ -106,3 +110,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "example01::main" main.

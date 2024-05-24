@@ -288,6 +288,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_inspect_fold :
+        M.IsFunction "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+      
       Module inspect_fold.
         (* Error OpaqueTy *)
       End inspect_fold.
@@ -364,6 +367,9 @@ Module iter.
                   end))))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_inspect_try_fold :
+        M.IsFunction "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
       
       Module inspect_try_fold.
         (* Error OpaqueTy *)

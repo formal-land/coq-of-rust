@@ -64,6 +64,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
+    
     (*
         pub fn to_vec<T: ConvertVec, A: Allocator>(s: &[T], alloc: A) -> Vec<T, A> {
             T::to_vec(s, alloc)
@@ -81,6 +83,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
     
     (* Trait *)
     (* Empty module 'ConvertVec' *)
@@ -4704,4 +4708,6 @@ Module slice.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.
 End slice.

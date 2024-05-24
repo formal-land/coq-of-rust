@@ -57,6 +57,8 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_from_utf8 : M.IsFunction "core::str::converts::from_utf8" from_utf8.
+    
     (*
     pub const fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, Utf8Error> {
         // This should use `?` again, once it's `const`
@@ -111,6 +113,8 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_from_utf8_mut : M.IsFunction "core::str::converts::from_utf8_mut" from_utf8_mut.
+    
     (*
     pub const unsafe fn from_utf8_unchecked(v: &[u8]) -> &str {
         // SAFETY: the caller must guarantee that the bytes `v` are valid UTF-8.
@@ -136,6 +140,9 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_from_utf8_unchecked :
+      M.IsFunction "core::str::converts::from_utf8_unchecked" from_utf8_unchecked.
+    
     (*
     pub const unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str {
         // SAFETY: the caller must guarantee that the bytes `v`
@@ -153,5 +160,8 @@ Module str.
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_from_utf8_unchecked_mut :
+      M.IsFunction "core::str::converts::from_utf8_unchecked_mut" from_utf8_unchecked_mut.
   End converts.
 End str.

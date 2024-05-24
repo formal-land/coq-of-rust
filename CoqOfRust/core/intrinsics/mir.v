@@ -57,6 +57,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_UnwindContinue :
+      M.IsFunction "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindUnreachable (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -74,6 +77,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_UnwindUnreachable :
+      M.IsFunction "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindTerminate (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -88,6 +94,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_UnwindTerminate :
+      M.IsFunction "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindCleanup (τ : list Ty.t) (α : list Value.t) : M :=
@@ -104,6 +113,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_UnwindCleanup :
+      M.IsFunction "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Return (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -117,6 +129,8 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Return : M.IsFunction "core::intrinsics::mir::Return" value_Return.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Goto (τ : list Ty.t) (α : list Value.t) : M :=
@@ -133,6 +147,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Goto : M.IsFunction "core::intrinsics::mir::Goto" value_Goto.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Unreachable (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -146,6 +162,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Unreachable :
+      M.IsFunction "core::intrinsics::mir::Unreachable" value_Unreachable.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Drop (τ : list Ty.t) (α : list Value.t) : M :=
@@ -164,6 +183,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Drop : M.IsFunction "core::intrinsics::mir::Drop" value_Drop.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Call (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -181,6 +202,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Call : M.IsFunction "core::intrinsics::mir::Call" value_Call.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindResume (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -194,6 +217,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_UnwindResume :
+      M.IsFunction "core::intrinsics::mir::UnwindResume" value_UnwindResume.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageLive (τ : list Ty.t) (α : list Value.t) : M :=
@@ -210,6 +236,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_StorageLive :
+      M.IsFunction "core::intrinsics::mir::StorageLive" value_StorageLive.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageDead (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -224,6 +253,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_StorageDead :
+      M.IsFunction "core::intrinsics::mir::StorageDead" value_StorageDead.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Deinit (τ : list Ty.t) (α : list Value.t) : M :=
@@ -240,6 +272,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Deinit : M.IsFunction "core::intrinsics::mir::Deinit" value_Deinit.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Checked (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -254,6 +288,8 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Checked : M.IsFunction "core::intrinsics::mir::Checked" value_Checked.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Len (τ : list Ty.t) (α : list Value.t) : M :=
@@ -270,6 +306,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Len : M.IsFunction "core::intrinsics::mir::Len" value_Len.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CopyForDeref (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -284,6 +322,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_CopyForDeref :
+      M.IsFunction "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Retag (τ : list Ty.t) (α : list Value.t) : M :=
@@ -300,6 +341,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Retag : M.IsFunction "core::intrinsics::mir::Retag" value_Retag.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Move (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -314,6 +357,8 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Move : M.IsFunction "core::intrinsics::mir::Move" value_Move.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Static (τ : list Ty.t) (α : list Value.t) : M :=
@@ -330,6 +375,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Static : M.IsFunction "core::intrinsics::mir::Static" value_Static.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StaticMut (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -345,6 +392,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_StaticMut :
+      M.IsFunction "core::intrinsics::mir::StaticMut" value_StaticMut.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Discriminant (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -359,6 +409,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Discriminant :
+      M.IsFunction "core::intrinsics::mir::Discriminant" value_Discriminant.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_SetDiscriminant (τ : list Ty.t) (α : list Value.t) : M :=
@@ -376,6 +429,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_SetDiscriminant :
+      M.IsFunction "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Offset (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -391,6 +447,8 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_Offset : M.IsFunction "core::intrinsics::mir::Offset" value_Offset.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Field (τ : list Ty.t) (α : list Value.t) : M :=
@@ -408,6 +466,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Field : M.IsFunction "core::intrinsics::mir::Field" value_Field.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Variant (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -424,6 +484,8 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_value_Variant : M.IsFunction "core::intrinsics::mir::Variant" value_Variant.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CastTransmute (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -438,6 +500,9 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_value_CastTransmute :
+      M.IsFunction "core::intrinsics::mir::CastTransmute" value_CastTransmute.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __internal_make_place (τ : list Ty.t) (α : list Value.t) : M :=
@@ -457,6 +522,9 @@ Module intrinsics.
       | _, _ => M.impossible
       end.
     
+    Axiom Function___internal_make_place :
+      M.IsFunction "core::intrinsics::mir::__internal_make_place" __internal_make_place.
+    
     (*         pub fn $($sig)* { panic!() } *)
     Definition __debuginfo (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with
@@ -472,5 +540,7 @@ Module intrinsics.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function___debuginfo : M.IsFunction "core::intrinsics::mir::__debuginfo" __debuginfo.
   End mir.
 End intrinsics.

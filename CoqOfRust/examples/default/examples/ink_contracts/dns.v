@@ -405,6 +405,8 @@ Definition zero_address (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
+
 Module Impl_core_default_Default_for_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
   

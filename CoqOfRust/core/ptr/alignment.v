@@ -168,6 +168,11 @@ Module ptr.
       | _, _ => M.impossible
       end.
     
+    Axiom Function__alignment_can_be_structurally_matched :
+      M.IsFunction
+        "core::ptr::alignment::_alignment_can_be_structurally_matched"
+        _alignment_can_be_structurally_matched.
+    
     Module Impl_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       

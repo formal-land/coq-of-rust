@@ -3,10 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter elided_input : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_elided_input :
+  M.IsFunction "scoping_rules_lifetimes_elision::elided_input" elided_input.
+
 Parameter annotated_input : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_annotated_input :
+  M.IsFunction "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
 
 Parameter elided_pass : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_elided_pass :
+  M.IsFunction "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
+
 Parameter annotated_pass : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_annotated_pass :
+  M.IsFunction "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_elision::main" main.

@@ -22,3 +22,5 @@ Module Impl_core_convert_From_i32_for_from_Number.
 End Impl_core_convert_From_i32_for_from_Number.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "from::main" main.

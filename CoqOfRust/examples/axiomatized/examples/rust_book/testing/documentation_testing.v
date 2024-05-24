@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter add : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_add : M.IsFunction "documentation_testing::add" add.
+
 Parameter div : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_div : M.IsFunction "documentation_testing::div" div.

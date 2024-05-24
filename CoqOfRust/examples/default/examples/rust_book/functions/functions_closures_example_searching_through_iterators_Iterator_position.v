@@ -332,3 +332,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main :
+  M.IsFunction
+    "functions_closures_example_searching_through_iterators_Iterator_position::main"
+    main.

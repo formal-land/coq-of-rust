@@ -162,6 +162,8 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_difference : M.IsFunction "generics_associated_types_problem::difference" difference.
+
 (*
 fn main() {
     let number_1 = 3;
@@ -429,3 +431,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_associated_types_problem::main" main.

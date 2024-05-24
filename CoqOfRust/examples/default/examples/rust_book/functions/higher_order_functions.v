@@ -17,6 +17,8 @@ Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_is_odd : M.IsFunction "higher_order_functions::is_odd" is_odd.
+
 (*
 fn main() {
     println!("Find the sum of all the squared odd numbers under 1000");
@@ -448,3 +450,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "higher_order_functions::main" main.

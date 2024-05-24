@@ -74,6 +74,8 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_double_first : M.IsFunction "multiple_error_types::double_first" double_first.
+
 (*
 fn main() {
     let numbers = vec!["42", "93", "18"];
@@ -328,3 +330,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "multiple_error_types::main" main.

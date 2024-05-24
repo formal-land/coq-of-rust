@@ -63,6 +63,9 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_destroy_box :
+  M.IsFunction "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+
 (*
 fn main() {
     // _Stack_ allocated integer
@@ -225,3 +228,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules::main" main.

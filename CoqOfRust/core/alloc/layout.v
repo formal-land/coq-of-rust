@@ -20,6 +20,8 @@ Module alloc.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
+    
     (* StructRecord
       {
         name := "Layout";

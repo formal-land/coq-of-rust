@@ -129,6 +129,8 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_calculate_hash : M.IsFunction "hash::calculate_hash" calculate_hash.
+
 (*
 fn main() {
     let person1 = Person {
@@ -237,3 +239,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "hash::main" main.

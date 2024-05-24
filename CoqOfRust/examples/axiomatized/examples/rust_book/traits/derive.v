@@ -82,3 +82,5 @@ End Impl_derive_Inches.
   } *)
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "derive::main" main.

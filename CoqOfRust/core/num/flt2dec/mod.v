@@ -313,6 +313,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_round_up : M.IsFunction "core::num::flt2dec::round_up" round_up.
+    
     (*
     fn digits_to_dec_str<'a>(
         buf: &'a [u8],
@@ -1203,6 +1205,9 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_digits_to_dec_str :
+      M.IsFunction "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
+    
     (*
     fn digits_to_exp_str<'a>(
         buf: &'a [u8],
@@ -1755,6 +1760,9 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_digits_to_exp_str :
+      M.IsFunction "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
+    
     (*
     Enum Sign
     {
@@ -2011,6 +2019,9 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_determine_sign :
+      M.IsFunction "core::num::flt2dec::determine_sign" determine_sign.
     
     (*
     pub fn to_shortest_str<'a, T, F>(
@@ -2585,6 +2596,9 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_to_shortest_str :
+      M.IsFunction "core::num::flt2dec::to_shortest_str" to_shortest_str.
     
     (*
     pub fn to_shortest_exp_str<'a, T, F>(
@@ -3230,6 +3244,9 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_to_shortest_exp_str :
+      M.IsFunction "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
+    
     (*
     fn estimate_max_buf_len(exp: i16) -> usize {
         21 + ((if exp < 0 { -12 } else { 5 } * exp as i32) as usize >> 4)
@@ -3272,6 +3289,9 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_estimate_max_buf_len :
+      M.IsFunction "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
     
     (*
     pub fn to_exact_exp_str<'a, T, F>(
@@ -4053,6 +4073,9 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_to_exact_exp_str :
+      M.IsFunction "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
     
     (*
     pub fn to_exact_fixed_str<'a, T, F>(
@@ -5084,5 +5107,8 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_to_exact_fixed_str :
+      M.IsFunction "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
   End flt2dec.
 End num.

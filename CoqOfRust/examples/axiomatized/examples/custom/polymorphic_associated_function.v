@@ -20,3 +20,5 @@ Module Impl_polymorphic_associated_function_Foo_A.
 End Impl_polymorphic_associated_function_Foo_A.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "polymorphic_associated_function::main" main.

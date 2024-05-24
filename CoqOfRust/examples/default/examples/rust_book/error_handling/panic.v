@@ -97,6 +97,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_drink : M.IsFunction "panic::drink" drink.
+
 (*
 fn main() {
     drink("water");
@@ -126,3 +128,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "panic::main" main.

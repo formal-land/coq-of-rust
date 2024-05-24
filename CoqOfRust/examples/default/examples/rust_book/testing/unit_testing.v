@@ -16,6 +16,8 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_add : M.IsFunction "unit_testing::add" add.
+
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
     a - b
@@ -30,6 +32,8 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
       BinOp.Panic.sub (| Integer.I32, M.read (| a |), M.read (| b |) |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_bad_add : M.IsFunction "unit_testing::bad_add" bad_add.
 
 Module tests.
   (*
@@ -112,6 +116,8 @@ Module tests.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_test_add : M.IsFunction "unit_testing::tests::test_add'1" test_add.
+  
   (*
       fn test_bad_add() {
           // This assert would fire and test will fail.
@@ -193,4 +199,6 @@ Module tests.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_test_bad_add : M.IsFunction "unit_testing::tests::test_bad_add'1" test_bad_add.
 End tests.

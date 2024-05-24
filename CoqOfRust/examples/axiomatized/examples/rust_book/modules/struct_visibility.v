@@ -27,3 +27,5 @@ Module my.
 End my.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "struct_visibility::main" main.

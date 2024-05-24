@@ -103,6 +103,8 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_multiply : M.IsFunction "aliases_for_result::multiply" multiply.
+
 (*
 fn print(result: AliasedResult<i32>) {
     match result {
@@ -220,6 +222,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print : M.IsFunction "aliases_for_result::print" print.
+
 (*
 fn main() {
     print(multiply("10", "2"));
@@ -259,3 +263,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "aliases_for_result::main" main.

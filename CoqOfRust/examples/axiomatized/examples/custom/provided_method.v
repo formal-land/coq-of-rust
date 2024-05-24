@@ -39,3 +39,5 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
 End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "provided_method::main" main.

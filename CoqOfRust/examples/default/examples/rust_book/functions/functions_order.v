@@ -100,6 +100,9 @@ Definition depends_on_trait_impl (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_depends_on_trait_impl :
+  M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+
 (* Trait *)
 (* Empty module 'SomeTrait' *)
 
@@ -207,9 +210,13 @@ Module inner_mod.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
+  
   (*     fn tar() {} *)
   Definition tar (τ : list Ty.t) (α : list Value.t) : M :=
     match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+  
+  Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
   
   Module nested_mod.
     (*
@@ -234,9 +241,13 @@ Module inner_mod.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
+    
     (*         fn tack() {} *)
     Definition tack (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+    
+    Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
   End nested_mod.
 End inner_mod.
 
@@ -271,6 +282,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_main : M.IsFunction "functions_order::main" main.
+
 (* fn foo() {} *)
 Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+
+Axiom Function_foo : M.IsFunction "functions_order::foo" foo.

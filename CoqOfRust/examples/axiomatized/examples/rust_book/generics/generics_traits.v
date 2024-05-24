@@ -33,3 +33,5 @@ Module Impl_generics_traits_DoubleDrop_T_for_U.
 End Impl_generics_traits_DoubleDrop_T_for_U.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_traits::main" main.

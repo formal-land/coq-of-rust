@@ -58135,6 +58135,8 @@ Module num.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_can_not_overflow : M.IsFunction "core::num::can_not_overflow" can_not_overflow.
+  
   (*
   fn from_str_radix<T: FromStrRadixHelper>(src: &str, radix: u32) -> Result<T, ParseIntError> {
       use self::IntErrorKind::*;
@@ -60147,4 +60149,6 @@ Module num.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_from_str_radix : M.IsFunction "core::num::from_str_radix" from_str_radix.
 End num.

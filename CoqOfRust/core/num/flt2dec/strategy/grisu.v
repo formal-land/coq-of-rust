@@ -549,6 +549,9 @@ Module num.
           | _, _ => M.impossible
           end.
         
+        Axiom Function_cached_power :
+          M.IsFunction "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
+        
         (*
         pub fn max_pow10_no_more_than(x: u32) -> (u8, u32) {
             debug_assert!(x > 0);
@@ -954,6 +957,11 @@ Module num.
               |)))
           | _, _ => M.impossible
           end.
+        
+        Axiom Function_max_pow10_no_more_than :
+          M.IsFunction
+            "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than"
+            max_pow10_no_more_than.
         
         Module max_pow10_no_more_than.
           Definition value_X9 : Value.t :=
@@ -2852,6 +2860,11 @@ Module num.
           | _, _ => M.impossible
           end.
         
+        Axiom Function_format_shortest_opt :
+          M.IsFunction
+            "core::num::flt2dec::strategy::grisu::format_shortest_opt"
+            format_shortest_opt.
+        
         Module format_shortest_opt.
           (*
               fn round_and_weed(
@@ -3300,6 +3313,11 @@ Module num.
                 |)))
             | _, _ => M.impossible
             end.
+          
+          Axiom Function_round_and_weed :
+            M.IsFunction
+              "core::num::flt2dec::strategy::grisu::format_shortest_opt::round_and_weed"
+              round_and_weed.
         End format_shortest_opt.
         
         (*
@@ -3361,6 +3379,9 @@ Module num.
               |)))
           | _, _ => M.impossible
           end.
+        
+        Axiom Function_format_shortest :
+          M.IsFunction "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
         
         (*
         pub fn format_exact_opt<'a>(
@@ -4980,6 +5001,9 @@ Module num.
           | _, _ => M.impossible
           end.
         
+        Axiom Function_format_exact_opt :
+          M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact_opt" format_exact_opt.
+        
         Module format_exact_opt.
           Definition value_POW10_UP_TO_9 : Value.t :=
             M.run
@@ -5579,6 +5603,11 @@ Module num.
                 |)))
             | _, _ => M.impossible
             end.
+          
+          Axiom Function_possibly_round :
+            M.IsFunction
+              "core::num::flt2dec::strategy::grisu::format_exact_opt::possibly_round"
+              possibly_round.
         End format_exact_opt.
         
         (*
@@ -5646,6 +5675,9 @@ Module num.
               |)))
           | _, _ => M.impossible
           end.
+        
+        Axiom Function_format_exact :
+          M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
       End grisu.
     End strategy.
   End flt2dec.

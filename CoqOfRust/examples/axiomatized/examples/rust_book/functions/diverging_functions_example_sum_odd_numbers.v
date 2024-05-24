@@ -3,6 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
+
 Module main.
   Parameter sum_odd_numbers : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_sum_odd_numbers :
+    M.IsFunction
+      "diverging_functions_example_sum_odd_numbers::main::sum_odd_numbers"
+      sum_odd_numbers.
 End main.

@@ -119,6 +119,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_start_index_len_fail :
+      M.IsFunction "core::slice::index::slice_start_index_len_fail" slice_start_index_len_fail.
+    
     (*
     fn slice_start_index_len_fail_rt(index: usize, len: usize) -> ! {
         panic!("range start index {index} out of range for slice of length {len}");
@@ -175,6 +178,11 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_start_index_len_fail_rt :
+      M.IsFunction
+        "core::slice::index::slice_start_index_len_fail_rt"
+        slice_start_index_len_fail_rt.
+    
     (*
     const fn slice_start_index_len_fail_ct(_: usize, _: usize) -> ! {
         panic!("slice start index is out of range for slice");
@@ -228,6 +236,11 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_start_index_len_fail_ct :
+      M.IsFunction
+        "core::slice::index::slice_start_index_len_fail_ct"
+        slice_start_index_len_fail_ct.
+    
     (*
     const fn slice_end_index_len_fail(index: usize, len: usize) -> ! {
         // SAFETY: we are just panicking here
@@ -260,6 +273,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_slice_end_index_len_fail :
+      M.IsFunction "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
     
     (*
     fn slice_end_index_len_fail_rt(index: usize, len: usize) -> ! {
@@ -317,6 +333,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_end_index_len_fail_rt :
+      M.IsFunction "core::slice::index::slice_end_index_len_fail_rt" slice_end_index_len_fail_rt.
+    
     (*
     const fn slice_end_index_len_fail_ct(_: usize, _: usize) -> ! {
         panic!("slice end index is out of range for slice");
@@ -369,6 +388,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_end_index_len_fail_ct :
+      M.IsFunction "core::slice::index::slice_end_index_len_fail_ct" slice_end_index_len_fail_ct.
+    
     (*
     const fn slice_index_order_fail(index: usize, end: usize) -> ! {
         // SAFETY: we are just panicking here
@@ -399,6 +421,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_slice_index_order_fail :
+      M.IsFunction "core::slice::index::slice_index_order_fail" slice_index_order_fail.
     
     (*
     fn slice_index_order_fail_rt(index: usize, end: usize) -> ! {
@@ -456,6 +481,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_index_order_fail_rt :
+      M.IsFunction "core::slice::index::slice_index_order_fail_rt" slice_index_order_fail_rt.
+    
     (*
     const fn slice_index_order_fail_ct(_: usize, _: usize) -> ! {
         panic!("slice index start is larger than end");
@@ -508,6 +536,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_index_order_fail_ct :
+      M.IsFunction "core::slice::index::slice_index_order_fail_ct" slice_index_order_fail_ct.
+    
     (*
     const fn slice_start_index_overflow_fail() -> ! {
         panic!("attempted to index slice from after maximum usize");
@@ -540,6 +571,11 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_slice_start_index_overflow_fail :
+      M.IsFunction
+        "core::slice::index::slice_start_index_overflow_fail"
+        slice_start_index_overflow_fail.
+    
     (*
     const fn slice_end_index_overflow_fail() -> ! {
         panic!("attempted to index slice up to maximum usize");
@@ -567,6 +603,11 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_slice_end_index_overflow_fail :
+      M.IsFunction
+        "core::slice::index::slice_end_index_overflow_fail"
+        slice_end_index_overflow_fail.
     
     Module private_slice_index.
       (* Trait *)
@@ -4318,6 +4359,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_range : M.IsFunction "core::slice::index::range" range.
+    
     (*
     pub(crate) fn into_range_unchecked(
         len: usize,
@@ -4433,6 +4476,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_into_range_unchecked :
+      M.IsFunction "core::slice::index::into_range_unchecked" into_range_unchecked.
     
     (*
     pub(crate) fn into_range(
@@ -4696,6 +4742,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_into_range : M.IsFunction "core::slice::index::into_range" into_range.
+    
     (*
     pub(crate) fn into_slice_range(
         len: usize,
@@ -4890,6 +4938,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_into_slice_range :
+      M.IsFunction "core::slice::index::into_slice_range" into_slice_range.
     
     Module Impl_core_slice_index_SliceIndex_slice_T_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       Definition Self (T : Ty.t) : Ty.t :=

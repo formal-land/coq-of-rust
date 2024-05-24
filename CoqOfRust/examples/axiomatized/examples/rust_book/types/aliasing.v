@@ -8,3 +8,5 @@ Axiom Inch : (Ty.path "aliasing::Inch") = (Ty.path "u64").
 Axiom U64 : (Ty.path "aliasing::U64") = (Ty.path "u64").
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "aliasing::main" main.

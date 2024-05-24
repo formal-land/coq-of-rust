@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter some_fn : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_some_fn : M.IsFunction "diverging_functions_no_info_in_return_type::some_fn" some_fn.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "diverging_functions_no_info_in_return_type::main" main.

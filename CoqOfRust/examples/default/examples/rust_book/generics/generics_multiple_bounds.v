@@ -93,6 +93,9 @@ Definition compare_prints (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_compare_prints :
+  M.IsFunction "generics_multiple_bounds::compare_prints" compare_prints.
+
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("t: `{:?}`", t);
@@ -185,6 +188,8 @@ Definition compare_types (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
+
 (*
 fn main() {
     let string = "words";
@@ -268,3 +273,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.

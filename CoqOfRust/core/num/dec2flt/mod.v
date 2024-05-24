@@ -540,6 +540,8 @@ Module num.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_pfe_empty : M.IsFunction "core::num::dec2flt::pfe_empty" pfe_empty.
+    
     (*
     pub fn pfe_invalid() -> ParseFloatError {
         ParseFloatError { kind: FloatErrorKind::Invalid }
@@ -554,6 +556,8 @@ Module num.
             [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []) ]))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_pfe_invalid : M.IsFunction "core::num::dec2flt::pfe_invalid" pfe_invalid.
     
     (*
     fn biased_fp_to_float<T: RawFloat>(x: BiasedFp) -> T {
@@ -613,6 +617,9 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_biased_fp_to_float :
+      M.IsFunction "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
     
     (*
     pub fn dec2flt<F: RawFloat>(s: &str) -> Result<F, ParseFloatError> {
@@ -1116,5 +1123,7 @@ Module num.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_dec2flt : M.IsFunction "core::num::dec2flt::dec2flt" dec2flt.
   End dec2flt.
 End num.

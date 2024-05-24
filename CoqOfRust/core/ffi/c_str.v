@@ -2165,6 +2165,8 @@ Module ffi.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_const_strlen : M.IsFunction "core::ffi::c_str::const_strlen" const_strlen.
+    
     Module const_strlen.
       (*
           const fn strlen_ct(s: *const c_char) -> usize {
@@ -2237,6 +2239,8 @@ Module ffi.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::const_strlen::strlen_ct" strlen_ct.
+      
       (*
           fn strlen_rt(s: *const c_char) -> usize {
               extern "C" {
@@ -2260,8 +2264,13 @@ Module ffi.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::const_strlen::strlen_rt" strlen_rt.
+      
       Module strlen_rt.
         Parameter strlen : (list Ty.t) -> (list Value.t) -> M.
+        
+        Axiom Function_strlen :
+          M.IsFunction "core::ffi::c_str::const_strlen::strlen_rt::strlen" strlen.
       End strlen_rt.
     End const_strlen.
   End c_str.

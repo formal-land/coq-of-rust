@@ -116,6 +116,9 @@ Module vec.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_in_place_collectible :
+      M.IsFunction "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
+    
     (*
     const fn needs_realloc<SRC, DEST>(src_cap: usize, dst_cap: usize) -> bool {
         if const { mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
@@ -220,6 +223,9 @@ Module vec.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_needs_realloc :
+      M.IsFunction "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
     
     (* Trait *)
     (* Empty module 'InPlaceCollect' *)
@@ -1481,6 +1487,11 @@ Module vec.
                 end))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_write_in_place_with_drop :
+      M.IsFunction
+        "alloc::vec::in_place_collect::write_in_place_with_drop"
+        write_in_place_with_drop.
     
     Module write_in_place_with_drop.
       (* Error OpaqueTy *)

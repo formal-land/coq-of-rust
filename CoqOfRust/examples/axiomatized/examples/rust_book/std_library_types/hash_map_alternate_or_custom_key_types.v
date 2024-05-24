@@ -97,4 +97,9 @@ Axiom Accounts :
 
 Parameter try_logon : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_try_logon :
+  M.IsFunction "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "hash_map_alternate_or_custom_key_types::main" main.

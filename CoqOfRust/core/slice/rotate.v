@@ -1195,6 +1195,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_ptr_rotate : M.IsFunction "core::slice::rotate::ptr_rotate" ptr_rotate.
+    
     Module ptr_rotate.
       Axiom BufType :
         (Ty.path "core::slice::rotate::ptr_rotate::BufType") =

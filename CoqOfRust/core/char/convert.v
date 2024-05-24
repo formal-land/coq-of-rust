@@ -45,6 +45,8 @@ Module char.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
+    
     (*
     pub(super) const unsafe fn from_u32_unchecked(i: u32) -> char {
         // SAFETY: the caller must guarantee that `i` is a valid char value.
@@ -95,6 +97,9 @@ Module char.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_from_u32_unchecked :
+      M.IsFunction "core::char::convert::from_u32_unchecked" from_u32_unchecked.
     
     Module Impl_core_convert_From_char_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
@@ -1016,6 +1021,9 @@ Module char.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_char_try_from_u32 :
+      M.IsFunction "core::char::convert::char_try_from_u32" char_try_from_u32.
+    
     Module Impl_core_convert_TryFrom_u32_for_char.
       Definition Self : Ty.t := Ty.path "char".
       
@@ -1378,5 +1386,7 @@ Module char.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.
   End convert.
 End char.

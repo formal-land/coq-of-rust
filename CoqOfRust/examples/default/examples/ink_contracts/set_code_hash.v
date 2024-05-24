@@ -16,6 +16,8 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
 *)
 Parameter set_code_hash : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_code_hash.
+
 (* StructRecord
   {
     name := "Incrementer";

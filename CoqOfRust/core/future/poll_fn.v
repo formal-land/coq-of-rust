@@ -20,6 +20,8 @@ Module future.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_poll_fn : M.IsFunction "core::future::poll_fn::poll_fn" poll_fn.
+    
     (* StructRecord
       {
         name := "PollFn";

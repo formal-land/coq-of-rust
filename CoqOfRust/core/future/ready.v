@@ -231,5 +231,7 @@ Module future.
             [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.
   End ready.
 End future.

@@ -4092,6 +4092,9 @@ Module boxed.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_boxed_slice_as_array_unchecked :
+    M.IsFunction "alloc::boxed::boxed_slice_as_array_unchecked" boxed_slice_as_array_unchecked.
+  
   Module Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply

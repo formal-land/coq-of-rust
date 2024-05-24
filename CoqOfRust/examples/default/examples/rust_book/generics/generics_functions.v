@@ -32,6 +32,8 @@ Definition reg_fn (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_reg_fn : M.IsFunction "generics_functions::reg_fn" reg_fn.
+
 (* fn gen_spec_t(_s: SGen<A>) {} *)
 Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
@@ -41,6 +43,8 @@ Definition gen_spec_t (τ : list Ty.t) (α : list Value.t) : M :=
       Value.Tuple []))
   | _, _ => M.impossible
   end.
+
+Axiom Function_gen_spec_t : M.IsFunction "generics_functions::gen_spec_t" gen_spec_t.
 
 (* fn gen_spec_i32(_s: SGen<i32>) {} *)
 Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
@@ -52,6 +56,8 @@ Definition gen_spec_i32 (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_gen_spec_i32 : M.IsFunction "generics_functions::gen_spec_i32" gen_spec_i32.
+
 (* fn generic<T>(_s: SGen<T>) {} *)
 Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with
@@ -61,6 +67,8 @@ Definition generic (τ : list Ty.t) (α : list Value.t) : M :=
       Value.Tuple []))
   | _, _ => M.impossible
   end.
+
+Axiom Function_generic : M.IsFunction "generics_functions::generic" generic.
 
 (*
 fn main() {
@@ -128,3 +136,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "generics_functions::main" main.

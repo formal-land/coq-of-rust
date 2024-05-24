@@ -118,3 +118,5 @@ Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.

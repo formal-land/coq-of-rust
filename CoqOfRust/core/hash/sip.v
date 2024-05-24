@@ -1126,6 +1126,8 @@ Module hash.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_u8to64_le : M.IsFunction "core::hash::sip::u8to64_le" u8to64_le.
+    
     Module Impl_core_hash_sip_SipHasher.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
       

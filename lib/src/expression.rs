@@ -60,13 +60,13 @@ pub(crate) enum Literal {
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) enum Expr {
     LocalVar(String),
-    GetConst(Path),
+    GetConst(Rc<Path>),
     GetFunction {
-        func: Path,
+        func: Rc<Path>,
         generic_tys: Vec<Rc<CoqType>>,
     },
     GetTraitMethod {
-        trait_name: Path,
+        trait_name: Rc<Path>,
         self_ty: Rc<CoqType>,
         trait_tys: Vec<Rc<CoqType>>,
         method_name: String,
@@ -122,12 +122,12 @@ pub(crate) enum Expr {
     },
     ControlFlow(LoopControlFlow),
     StructStruct {
-        path: Path,
+        path: Rc<Path>,
         fields: Vec<(String, Rc<Expr>)>,
         base: Option<Rc<Expr>>,
     },
     StructTuple {
-        path: Path,
+        path: Rc<Path>,
         fields: Vec<Rc<Expr>>,
     },
     Use(Rc<Expr>),
