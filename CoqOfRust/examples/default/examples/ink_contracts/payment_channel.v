@@ -1096,17 +1096,16 @@ Module Impl_payment_channel_PaymentChannel.
                                     "recipient"
                                   |)
                                 |);
-                                BinOp.Panic.sub (|
-                                  Integer.U128,
-                                  M.read (| amount |),
-                                  M.read (|
+                                BinOp.Wrap.sub
+                                  Integer.U128
+                                  (M.read (| amount |))
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "payment_channel::PaymentChannel",
                                       "withdrawn"
                                     |)
-                                  |)
-                                |)
+                                  |))
                               ]
                             |);
                             M.closure
@@ -1433,17 +1432,16 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let expiration :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.U64,
-                    M.read (| now |),
-                    M.read (|
+                  BinOp.Wrap.add
+                    Integer.U64
+                    (M.read (| now |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "payment_channel::PaymentChannel",
                         "close_duration"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               let _ :=
                 M.alloc (|
@@ -1831,17 +1829,16 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let amount_to_withdraw :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.U128,
-                    M.read (| amount |),
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.U128
+                    (M.read (| amount |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "payment_channel::PaymentChannel",
                         "withdrawn"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               let _ :=
                 let β :=
@@ -1852,11 +1849,7 @@ Module Impl_payment_channel_PaymentChannel.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (|
-                    Integer.U128,
-                    M.read (| β |),
-                    M.read (| amount_to_withdraw |)
-                  |)
+                  BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| amount_to_withdraw |))
                 |) in
               let _ :=
                 M.match_operator (|

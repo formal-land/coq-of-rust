@@ -62,17 +62,16 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 "iterators::Fibonacci",
                 "next"
               |),
-              BinOp.Panic.add (|
-                Integer.U32,
-                M.read (| current |),
-                M.read (|
+              BinOp.Wrap.add
+                Integer.U32
+                (M.read (| current |))
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "iterators::Fibonacci",
                     "next"
                   |)
-                |)
-              |)
+                |))
             |) in
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| current |) ] |)
         |)))

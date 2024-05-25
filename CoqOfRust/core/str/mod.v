@@ -498,14 +498,13 @@ Module str.
                 [
                   ("start", M.read (| char_start |));
                   ("end_",
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (| char_start |),
-                      M.call_closure (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (| char_start |))
+                      (M.call_closure (|
                         M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
                         [ M.read (| ch |) ]
-                      |)
-                    |))
+                      |)))
                 ]
             |) in
           M.alloc (|
@@ -890,18 +889,17 @@ Module str.
                         |)
                       |) in
                     M.alloc (|
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (| lower_bound |),
-                        M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (| lower_bound |))
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
                             "unwrap_unchecked",
                             []
                           |),
                           [ M.read (| new_index |) ]
-                        |)
-                      |)
+                        |))
                     |)))
               ]
             |)
@@ -961,11 +959,7 @@ Module str.
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], "min", [] |),
                           [
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (| index |),
-                              Value.Integer 4
-                            |);
+                            BinOp.Wrap.add Integer.Usize (M.read (| index |)) (Value.Integer 4);
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| self |) ]
@@ -1074,11 +1068,10 @@ Module str.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let pos := M.copy (| γ |) in
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| pos |),
-                                            M.read (| index |)
-                                          |)))
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| pos |))
+                                            (M.read (| index |))))
                                     ]
                                   |)
                                 | _ => M.impossible (||)
@@ -1530,11 +1523,7 @@ Module str.
                                     |),
                                     [ M.read (| ptr |); M.read (| mid |) ]
                                   |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| mid |)
-                                  |)
+                                  BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
                                 ]
                               |)
                             ]

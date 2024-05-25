@@ -120,6 +120,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_pop : M.IsFunction "revm_interpreter::instructions::stack::pop" pop.
+    
     (*
     pub fn push0<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
         check!(interpreter, SHANGHAI);
@@ -286,6 +288,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_push0 : M.IsFunction "revm_interpreter::instructions::stack::push0" push0.
     
     (*
     pub fn push<const N: usize, H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -463,6 +467,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_push : M.IsFunction "revm_interpreter::instructions::stack::push" push.
+    
     (*
     pub fn dup<const N: usize, H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -585,6 +591,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_dup : M.IsFunction "revm_interpreter::instructions::stack::dup" dup.
+    
     (*
     pub fn swap<const N: usize, H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -706,6 +714,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_swap : M.IsFunction "revm_interpreter::instructions::stack::swap" swap.
     
     (*
     pub fn dupn<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -851,11 +861,10 @@ Module instructions.
                                     "revm_interpreter::interpreter::Interpreter",
                                     "stack"
                                   |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.rust_cast (M.read (| imm |)),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.rust_cast (M.read (| imm |)))
+                                    (Value.Integer 1)
                                 ]
                               |)
                             |) in
@@ -909,6 +918,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_dupn : M.IsFunction "revm_interpreter::instructions::stack::dupn" dupn.
     
     (*
     pub fn swapn<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1054,11 +1065,10 @@ Module instructions.
                                     "revm_interpreter::interpreter::Interpreter",
                                     "stack"
                                   |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.rust_cast (M.read (| imm |)),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.rust_cast (M.read (| imm |)))
+                                    (Value.Integer 1)
                                 ]
                               |)
                             |) in
@@ -1112,6 +1122,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_swapn : M.IsFunction "revm_interpreter::instructions::stack::swapn" swapn.
     
     (*
     pub fn exchange<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1242,19 +1254,17 @@ Module instructions.
                   |) in
                 let n :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.U8,
-                      BinOp.Panic.shr (| M.read (| imm |), Value.Integer 4 |),
-                      Value.Integer 1
-                    |)
+                    BinOp.Wrap.add
+                      Integer.U8
+                      (BinOp.Wrap.shr (M.read (| imm |)) (Value.Integer 4))
+                      (Value.Integer 1)
                   |) in
                 let m :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.U8,
-                      BinOp.Pure.bit_and (M.read (| imm |)) (Value.Integer 15),
-                      Value.Integer 1
-                    |)
+                    BinOp.Wrap.add
+                      Integer.U8
+                      (BinOp.Pure.bit_and (M.read (| imm |)) (Value.Integer 15))
+                      (Value.Integer 1)
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -1331,5 +1341,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_exchange :
+      M.IsFunction "revm_interpreter::instructions::stack::exchange" exchange.
   End stack.
 End instructions.

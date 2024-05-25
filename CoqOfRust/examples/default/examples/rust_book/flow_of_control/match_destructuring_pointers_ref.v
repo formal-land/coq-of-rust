@@ -237,7 +237,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           let β := M.read (| m |) in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 10 |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 10)
                           |) in
                         let _ :=
                           let _ :=

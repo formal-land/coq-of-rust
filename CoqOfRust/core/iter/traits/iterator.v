@@ -79,11 +79,10 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| count |),
-                                            Value.Integer 1
-                                          |)))
+                                          (BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| count |))
+                                            (Value.Integer 1)))
                                     ]
                                   |)))
                             ]
@@ -243,11 +242,10 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Panic.sub (|
-                                                                        Integer.Usize,
-                                                                        M.read (| n |),
-                                                                        M.read (| i |)
-                                                                      |)
+                                                                      BinOp.Wrap.sub
+                                                                        Integer.Usize
+                                                                        (M.read (| n |))
+                                                                        (M.read (| i |))
                                                                     ]
                                                                   |)
                                                                 ]
@@ -1120,11 +1118,10 @@ Module iter.
                                                 let β := true_count in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>

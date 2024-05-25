@@ -236,7 +236,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   BinOp.Pure.eq
-                                    (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 31 |))
+                                    (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 31))
                                     (Value.Integer 0)
                                 |)) in
                             let _ :=
@@ -250,7 +250,7 @@ Module num.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 23 |))
+                        (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 23))
                         (Value.Integer 255))
                   |) in
                 let mantissa :=
@@ -268,10 +268,9 @@ Module num.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Panic.shl (|
-                                BinOp.Pure.bit_and (M.read (| bits |)) (Value.Integer 8388607),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.shl
+                                (BinOp.Pure.bit_and (M.read (| bits |)) (Value.Integer 8388607))
+                                (Value.Integer 1)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -287,11 +286,10 @@ Module num.
                   let β := exponent in
                   M.write (|
                     β,
-                    BinOp.Panic.sub (|
-                      Integer.I16,
-                      M.read (| β |),
-                      BinOp.Panic.add (| Integer.I16, Value.Integer 127, Value.Integer 23 |)
-                    |)
+                    BinOp.Wrap.sub
+                      Integer.I16
+                      (M.read (| β |))
+                      (BinOp.Wrap.add Integer.I16 (Value.Integer 127) (Value.Integer 23))
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -585,7 +583,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   BinOp.Pure.eq
-                                    (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 63 |))
+                                    (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 63))
                                     (Value.Integer 0)
                                 |)) in
                             let _ :=
@@ -599,7 +597,7 @@ Module num.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 52 |))
+                        (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 52))
                         (Value.Integer 2047))
                   |) in
                 let mantissa :=
@@ -617,12 +615,11 @@ Module num.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Panic.shl (|
-                                BinOp.Pure.bit_and
+                              BinOp.Wrap.shl
+                                (BinOp.Pure.bit_and
                                   (M.read (| bits |))
-                                  (Value.Integer 4503599627370495),
-                                Value.Integer 1
-                              |)
+                                  (Value.Integer 4503599627370495))
+                                (Value.Integer 1)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -640,11 +637,10 @@ Module num.
                   let β := exponent in
                   M.write (|
                     β,
-                    BinOp.Panic.sub (|
-                      Integer.I16,
-                      M.read (| β |),
-                      BinOp.Panic.add (| Integer.I16, Value.Integer 1023, Value.Integer 52 |)
-                    |)
+                    BinOp.Wrap.sub
+                      Integer.I16
+                      (M.read (| β |))
+                      (BinOp.Wrap.add Integer.I16 (Value.Integer 1023) (Value.Integer 52))
                   |) in
                 M.alloc (|
                   Value.Tuple [ M.read (| mantissa |); M.read (| exponent |); M.read (| sign |) ]

@@ -726,7 +726,7 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 3 |))
+                              (BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 3))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -758,21 +758,19 @@ Module hash.
                                                       (M.alloc (|
                                                         UnOp.Pure.not
                                                           (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| start |),
-                                                                M.read (| i |)
-                                                              |),
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| start |))
+                                                                (M.read (| i |)))
+                                                              (M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::mem::size_of",
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 []
-                                                              |)
-                                                            |))
+                                                              |)))
                                                             (M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
@@ -837,11 +835,10 @@ Module hash.
                                             |),
                                             [ M.read (| buf |) ]
                                           |);
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| start |),
-                                            M.read (| i |)
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| start |))
+                                            (M.read (| i |))
                                         ]
                                       |);
                                       M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
@@ -867,7 +864,7 @@ Module hash.
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 4 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 4)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -883,7 +880,7 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |))
+                              (BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -893,8 +890,8 @@ Module hash.
                           β,
                           BinOp.Pure.bit_or
                             (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
+                            (BinOp.Wrap.shl
+                              (M.rust_cast
                                 (M.read (|
                                   let _ :=
                                     M.match_operator (|
@@ -919,21 +916,19 @@ Module hash.
                                                           (M.alloc (|
                                                             UnOp.Pure.not
                                                               (BinOp.Pure.le
-                                                                (BinOp.Panic.add (|
-                                                                  Integer.Usize,
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| start |),
-                                                                    M.read (| i |)
-                                                                  |),
-                                                                  M.call_closure (|
+                                                                (BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| start |))
+                                                                    (M.read (| i |)))
+                                                                  (M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::mem::size_of",
                                                                       [ Ty.path "u16" ]
                                                                     |),
                                                                     []
-                                                                  |)
-                                                                |))
+                                                                  |)))
                                                                 (M.call_closure (|
                                                                   M.get_associated_function (|
                                                                     Ty.apply
@@ -998,11 +993,10 @@ Module hash.
                                                 |),
                                                 [ M.read (| buf |) ]
                                               |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| start |),
-                                                M.read (| i |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| start |))
+                                                (M.read (| i |))
                                             ]
                                           |);
                                           M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
@@ -1022,14 +1016,13 @@ Module hash.
                                       [ M.read (| data |) ]
                                     |)
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
-                            |))
+                                |)))
+                              (BinOp.Wrap.mul Integer.Usize (M.read (| i |)) (Value.Integer 8)))
                         |) in
                       let β := i in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 2 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 2)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -1049,8 +1042,8 @@ Module hash.
                           β,
                           BinOp.Pure.bit_or
                             (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
+                            (BinOp.Wrap.shl
+                              (M.rust_cast
                                 (M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1060,22 +1053,20 @@ Module hash.
                                     |),
                                     [
                                       M.read (| buf |);
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| start |),
-                                        M.read (| i |)
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| start |))
+                                        (M.read (| i |))
                                     ]
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
-                            |))
+                                |)))
+                              (BinOp.Wrap.mul Integer.Usize (M.read (| i |)) (Value.Integer 8)))
                         |) in
                       let _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1775,7 +1766,7 @@ Module hash.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| length |) |)
+                      BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| length |))
                     |) in
                   let needed := M.alloc (| Value.Integer 0 |) in
                   let _ :=
@@ -1802,17 +1793,16 @@ Module hash.
                             let _ :=
                               M.write (|
                                 needed,
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  Value.Integer 8,
-                                  M.read (|
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (Value.Integer 8)
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::hash::sip::Hasher",
                                       "ntail"
                                     |)
-                                  |)
-                                |)
+                                  |))
                               |) in
                             let _ :=
                               let β :=
@@ -1825,8 +1815,8 @@ Module hash.
                                 β,
                                 BinOp.Pure.bit_or
                                   (M.read (| β |))
-                                  (BinOp.Panic.shl (|
-                                    M.call_closure (|
+                                  (BinOp.Wrap.shl
+                                    (M.call_closure (|
                                       M.get_function (| "core::hash::sip::u8to64_le", [] |),
                                       [
                                         M.read (| msg |);
@@ -1839,19 +1829,17 @@ Module hash.
                                           [ M.read (| length |); M.read (| needed |) ]
                                         |)
                                       ]
-                                    |),
-                                    BinOp.Panic.mul (|
-                                      Integer.Usize,
-                                      Value.Integer 8,
-                                      M.read (|
+                                    |))
+                                    (BinOp.Wrap.mul
+                                      Integer.Usize
+                                      (Value.Integer 8)
+                                      (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |)
-                                      |)
-                                    |)
-                                  |))
+                                      |))))
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1880,11 +1868,10 @@ Module hash.
                                               |) in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                M.read (| length |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (M.read (| length |))
                                             |) in
                                           M.return_ (| Value.Tuple [] |)
                                         |)
@@ -1974,7 +1961,7 @@ Module hash.
                     |) in
                   let len :=
                     M.alloc (|
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| length |), M.read (| needed |) |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| length |)) (M.read (| needed |))
                     |) in
                   let left :=
                     M.alloc (| BinOp.Pure.bit_and (M.read (| len |)) (Value.Integer 7) |) in
@@ -1992,11 +1979,10 @@ Module hash.
                                     (M.alloc (|
                                       BinOp.Pure.lt
                                         (M.read (| i |))
-                                        (BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| len |),
-                                          M.read (| left |)
-                                        |))
+                                        (BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| len |))
+                                          (M.read (| left |)))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2028,17 +2014,16 @@ Module hash.
                                                             (M.alloc (|
                                                               UnOp.Pure.not
                                                                 (BinOp.Pure.le
-                                                                  (BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| i |),
-                                                                    M.call_closure (|
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| i |))
+                                                                    (M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::mem::size_of",
                                                                         [ Ty.path "u64" ]
                                                                       |),
                                                                       []
-                                                                    |)
-                                                                  |))
+                                                                    |)))
                                                                   (M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
@@ -2179,11 +2164,7 @@ Module hash.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 8
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 8)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -2316,8 +2297,8 @@ Module hash.
               let b :=
                 M.alloc (|
                   BinOp.Pure.bit_or
-                    (BinOp.Panic.shl (|
-                      BinOp.Pure.bit_and
+                    (BinOp.Wrap.shl
+                      (BinOp.Pure.bit_and
                         (M.rust_cast
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -2326,9 +2307,8 @@ Module hash.
                               "length"
                             |)
                           |)))
-                        (Value.Integer 255),
-                      Value.Integer 56
-                    |))
+                        (Value.Integer 255))
+                      (Value.Integer 56))
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),

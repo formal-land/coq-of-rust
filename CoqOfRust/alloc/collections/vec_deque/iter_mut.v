@@ -714,11 +714,10 @@ Module collections.
                                     "alloc::collections::vec_deque::iter_mut::IterMut",
                                     "i2"
                                   |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| idx |),
-                                    M.read (| i1_len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| idx |))
+                                    (M.read (| i1_len |))
                                 ]
                               |)
                             |)))
@@ -1195,9 +1194,9 @@ Module collections.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Panic.add (|
-                Integer.Usize,
-                M.call_closure (|
+              BinOp.Wrap.add
+                Integer.Usize
+                (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
@@ -1212,8 +1211,8 @@ Module collections.
                       "i1"
                     |)
                   ]
-                |),
-                M.call_closure (|
+                |))
+                (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
@@ -1228,8 +1227,7 @@ Module collections.
                       "i2"
                     |)
                   ]
-                |)
-              |)))
+                |))))
           | _, _ => M.impossible
           end.
         

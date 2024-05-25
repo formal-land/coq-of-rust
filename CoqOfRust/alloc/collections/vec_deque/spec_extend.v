@@ -785,18 +785,17 @@ Module collections.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (| β |),
-                        M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (| β |))
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ T ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |)
-                      |)
+                        |))
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 let _ :=
@@ -978,14 +977,13 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (| β |),
-                      M.call_closure (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (| β |))
+                      (M.call_closure (|
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| slice |) ]
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))

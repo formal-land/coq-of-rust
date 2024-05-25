@@ -40,7 +40,7 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
-                  BinOp.Panic.div (| Integer.I32, M.read (| dividend |), M.read (| divisor |) |)
+                  BinOp.Wrap.div Integer.I32 (M.read (| dividend |)) (M.read (| divisor |))
                 |)))
           ]
         |)

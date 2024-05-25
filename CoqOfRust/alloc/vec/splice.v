@@ -957,11 +957,10 @@ Module vec.
                               M.read (| range_start |)
                             ]
                           |);
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.read (| range_end |),
-                            M.read (| range_start |)
-                          |)
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.read (| range_end |))
+                            (M.read (| range_start |))
                         ]
                       |)
                     |) in
@@ -1062,11 +1061,10 @@ Module vec.
                                                         |) in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Panic.add (|
-                                                          Integer.Usize,
-                                                          M.read (| β |),
-                                                          Value.Integer 1
-                                                        |)
+                                                        BinOp.Wrap.add
+                                                          Integer.Usize
+                                                          (M.read (| β |))
+                                                          (Value.Integer 1)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
@@ -1140,23 +1138,22 @@ Module vec.
                 |) in
               let len :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_len"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               let _ :=
                 M.alloc (|
@@ -1179,17 +1176,16 @@ Module vec.
                 |) in
               let new_tail_start :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::vec::drain::Drain",
                         "tail_start"
                       |)
-                    |),
-                    M.read (| additional |)
-                  |)
+                    |))
+                    (M.read (| additional |))
                 |) in
               let _ :=
                 let src :=

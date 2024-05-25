@@ -485,23 +485,22 @@ Module gas.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.sub (|
-            Integer.U64,
-            M.read (|
+          BinOp.Wrap.sub
+            Integer.U64
+            (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "limit"
               |)
-            |),
-            M.read (|
+            |))
+            (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "remaining"
               |)
-            |)
-          |)))
+            |))))
       | _, _ => M.impossible
       end.
     
@@ -569,7 +568,7 @@ Module gas.
                 |) in
               M.write (|
                 β,
-                BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| returned |) |)
+                BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| returned |))
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -624,10 +623,7 @@ Module gas.
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.I64, M.read (| β |), M.read (| refund |) |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| refund |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -684,18 +680,17 @@ Module gas.
                           |),
                           [ M.read (| self |) ]
                         |));
-                      BinOp.Panic.div (|
-                        Integer.U64,
-                        M.call_closure (|
+                      BinOp.Wrap.div
+                        Integer.U64
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.read (| max_refund_quotient |)
-                      |)
+                        |))
+                        (M.read (| max_refund_quotient |))
                     ]
                   |))
               |) in

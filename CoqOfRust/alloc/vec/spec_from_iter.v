@@ -139,17 +139,16 @@ Module vec.
                                           |),
                                           [ iterator ]
                                         |))
-                                        (BinOp.Panic.div (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        (BinOp.Wrap.div
+                                          Integer.Usize
+                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               iterator,
                                               "alloc::vec::into_iter::IntoIter",
                                               "cap"
                                             |)
-                                          |),
-                                          Value.Integer 2
-                                        |))))
+                                          |))
+                                          (Value.Integer 2))))
                                   |)
                                 |)) in
                             let _ :=

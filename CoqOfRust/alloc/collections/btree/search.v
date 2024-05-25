@@ -1754,11 +1754,10 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::KV"
                                                                 [
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
-                                                                  |)
+                                                                  BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| start_index |))
+                                                                    (M.read (| offset |))
                                                                 ]
                                                             |)
                                                           |)
@@ -1773,11 +1772,10 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::Edge"
                                                                 [
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
-                                                                  |)
+                                                                  BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| start_index |))
+                                                                    (M.read (| offset |))
                                                                 ]
                                                             |)
                                                           |)
@@ -1943,11 +1941,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| idx |),
-                                        Value.Integer 1
-                                      |);
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| idx |))
+                                        (Value.Integer 1);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllIncluded"
                                         []
@@ -2084,11 +2081,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| idx |),
-                                        Value.Integer 1
-                                      |);
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| idx |))
+                                        (Value.Integer 1);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllExcluded"
                                         []

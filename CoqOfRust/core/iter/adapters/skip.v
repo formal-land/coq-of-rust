@@ -367,11 +367,10 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.read (| skip |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.read (| skip |))
+                                                        (Value.Integer 1)
                                                     ]
                                                   |)
                                                 ]
@@ -553,17 +552,16 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.read (|
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             self,
                                                             "core::iter::adapters::skip::Skip",
                                                             "n"
                                                           |)
-                                                        |),
-                                                        Value.Integer 1
-                                                      |)
+                                                        |))
+                                                        (Value.Integer 1)
                                                     ]
                                                   |)
                                                 |)
@@ -679,17 +677,16 @@ Module iter.
                                               "core::iter::adapters::skip::Skip",
                                               "iter"
                                             |);
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (|
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   self,
                                                   "core::iter::adapters::skip::Skip",
                                                   "n"
                                                 |)
-                                              |),
-                                              Value.Integer 1
-                                            |)
+                                              |))
+                                              (Value.Integer 1)
                                           ]
                                         |)
                                       ]
@@ -978,11 +975,10 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.read (| n |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.read (| n |))
+                                                        (Value.Integer 1)
                                                     ]
                                                   |)
                                                 |)
@@ -1124,17 +1120,16 @@ Module iter.
                                                         "core::iter::adapters::skip::Skip",
                                                         "iter"
                                                       |);
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.read (|
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             self,
                                                             "core::iter::adapters::skip::Skip",
                                                             "n"
                                                           |)
-                                                        |),
-                                                        Value.Integer 1
-                                                      |)
+                                                        |))
+                                                        (Value.Integer 1)
                                                     ]
                                                   |)
                                                 |)
@@ -1287,24 +1282,22 @@ Module iter.
                   |) in
                 let advanced_inner :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (| skip_and_advance |),
-                      M.read (| remainder |)
-                    |)
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (| skip_and_advance |))
+                      (M.read (| remainder |))
                   |) in
                 let _ :=
                   let β := n in
                   M.write (|
                     β,
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (| β |),
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (| β |))
+                      (M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                         [ M.read (| advanced_inner |); M.read (| skip_inner |) ]
-                      |)
-                    |)
+                      |))
                   |) in
                 let _ :=
                   M.write (|
@@ -1645,11 +1638,10 @@ Module iter.
                                             "core::iter::adapters::skip::Skip",
                                             "iter"
                                           |);
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| len |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| len |))
+                                            (Value.Integer 1)
                                         ]
                                       |)
                                     |) in
@@ -1969,7 +1961,7 @@ Module iter.
                           "new",
                           []
                         |),
-                        [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| min |) |) ]
+                        [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| min |)) ]
                       |);
                       Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                       M.constructor_as_closure "core::result::Result::Err"

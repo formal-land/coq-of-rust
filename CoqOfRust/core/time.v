@@ -791,11 +791,10 @@ Module time.
               M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
               [
                 M.read (| M.get_constant (| "core::num::MAX" |) |);
-                BinOp.Panic.sub (|
-                  Integer.U32,
-                  M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
-                  Value.Integer 1
-                |)
+                BinOp.Wrap.sub
+                  Integer.U32
+                  (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                  (Value.Integer 1)
               ]
             |)
           |))).
@@ -829,11 +828,10 @@ Module time.
                       [
                         M.read (| secs |);
                         M.rust_cast
-                          (BinOp.Panic.div (|
-                            Integer.U32,
-                            M.read (| nanos |),
-                            M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
-                          |))
+                          (BinOp.Wrap.div
+                            Integer.U32
+                            (M.read (| nanos |))
+                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
                       ]
                     |)
                   |),
@@ -879,11 +877,10 @@ Module time.
               |) in
             let nanos :=
               M.alloc (|
-                BinOp.Panic.rem (|
-                  Integer.U32,
-                  M.read (| nanos |),
-                  M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)
-                |)
+                BinOp.Wrap.rem
+                  Integer.U32
+                  (M.read (| nanos |))
+                  (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
               |) in
             M.alloc (|
               Value.StructRecord
@@ -931,21 +928,18 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
             [
-              BinOp.Panic.div (|
-                Integer.U64,
-                M.read (| millis |),
-                M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
-              |);
-              BinOp.Panic.mul (|
-                Integer.U32,
-                M.rust_cast
-                  (BinOp.Panic.rem (|
-                    Integer.U64,
-                    M.read (| millis |),
-                    M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |)
-                  |)),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
-              |)
+              BinOp.Wrap.div
+                Integer.U64
+                (M.read (| millis |))
+                (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |));
+              BinOp.Wrap.mul
+                Integer.U32
+                (M.rust_cast
+                  (BinOp.Wrap.rem
+                    Integer.U64
+                    (M.read (| millis |))
+                    (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))))
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))
             ]
           |)))
       | _, _ => M.impossible
@@ -966,21 +960,18 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
             [
-              BinOp.Panic.div (|
-                Integer.U64,
-                M.read (| micros |),
-                M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
-              |);
-              BinOp.Panic.mul (|
-                Integer.U32,
-                M.rust_cast
-                  (BinOp.Panic.rem (|
-                    Integer.U64,
-                    M.read (| micros |),
-                    M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |)
-                  |)),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
-              |)
+              BinOp.Wrap.div
+                Integer.U64
+                (M.read (| micros |))
+                (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |));
+              BinOp.Wrap.mul
+                Integer.U32
+                (M.rust_cast
+                  (BinOp.Wrap.rem
+                    Integer.U64
+                    (M.read (| micros |))
+                    (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))))
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))
             ]
           |)))
       | _, _ => M.impossible
@@ -1001,17 +992,15 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "new", [] |),
             [
-              BinOp.Panic.div (|
-                Integer.U64,
-                M.read (| nanos |),
-                M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-              |);
+              BinOp.Wrap.div
+                Integer.U64
+                (M.read (| nanos |))
+                (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)));
               M.rust_cast
-                (BinOp.Panic.rem (|
-                  Integer.U64,
-                  M.read (| nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                |))
+                (BinOp.Wrap.rem
+                  Integer.U64
+                  (M.read (| nanos |))
+                  (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))
             ]
           |)))
       | _, _ => M.impossible
@@ -1091,9 +1080,9 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.div (|
-            Integer.U32,
-            M.read (|
+          BinOp.Wrap.div
+            Integer.U32
+            (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1103,9 +1092,8 @@ Module time.
                 "core::time::Nanoseconds",
                 0
               |)
-            |),
-            M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
-          |)))
+            |))
+            (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))))
       | _, _ => M.impossible
       end.
     
@@ -1122,9 +1110,9 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.div (|
-            Integer.U32,
-            M.read (|
+          BinOp.Wrap.div
+            Integer.U32
+            (M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1134,9 +1122,8 @@ Module time.
                 "core::time::Nanoseconds",
                 0
               |)
-            |),
-            M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
-          |)))
+            |))
+            (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))))
       | _, _ => M.impossible
       end.
     
@@ -1179,24 +1166,23 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.add (|
-            Integer.U128,
-            BinOp.Panic.mul (|
-              Integer.U128,
-              M.rust_cast
+          BinOp.Wrap.add
+            Integer.U128
+            (BinOp.Wrap.mul
+              Integer.U128
+              (M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::time::Duration",
                     "secs"
                   |)
-                |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))
-            |),
-            M.rust_cast
-              (BinOp.Panic.div (|
-                Integer.U32,
-                M.read (|
+                |)))
+              (M.rust_cast (M.read (| M.get_constant (| "core::time::MILLIS_PER_SEC" |) |))))
+            (M.rust_cast
+              (BinOp.Wrap.div
+                Integer.U32
+                (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1206,10 +1192,8 @@ Module time.
                     "core::time::Nanoseconds",
                     0
                   |)
-                |),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
-              |))
-          |)))
+                |))
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |))))))
       | _, _ => M.impossible
       end.
     
@@ -1225,24 +1209,23 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.add (|
-            Integer.U128,
-            BinOp.Panic.mul (|
-              Integer.U128,
-              M.rust_cast
+          BinOp.Wrap.add
+            Integer.U128
+            (BinOp.Wrap.mul
+              Integer.U128
+              (M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::time::Duration",
                     "secs"
                   |)
-                |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))
-            |),
-            M.rust_cast
-              (BinOp.Panic.div (|
-                Integer.U32,
-                M.read (|
+                |)))
+              (M.rust_cast (M.read (| M.get_constant (| "core::time::MICROS_PER_SEC" |) |))))
+            (M.rust_cast
+              (BinOp.Wrap.div
+                Integer.U32
+                (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1252,10 +1235,8 @@ Module time.
                     "core::time::Nanoseconds",
                     0
                   |)
-                |),
-                M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |)
-              |))
-          |)))
+                |))
+                (M.read (| M.get_constant (| "core::time::NANOS_PER_MICRO" |) |))))))
       | _, _ => M.impossible
       end.
     
@@ -1271,21 +1252,20 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.add (|
-            Integer.U128,
-            BinOp.Panic.mul (|
-              Integer.U128,
-              M.rust_cast
+          BinOp.Wrap.add
+            Integer.U128
+            (BinOp.Wrap.mul
+              Integer.U128
+              (M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::time::Duration",
                     "secs"
                   |)
-                |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-            |),
-            M.rust_cast
+                |)))
+              (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))
+            (M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.SubPointer.get_struct_record_field (|
@@ -1296,8 +1276,7 @@ Module time.
                   "core::time::Nanoseconds",
                   0
                 |)
-              |))
-          |)))
+              |)))))
       | _, _ => M.impossible
       end.
     
@@ -1434,9 +1413,9 @@ Module time.
                         let secs := M.copy (| γ0_0 |) in
                         let nanos :=
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U32,
-                              M.read (|
+                            BinOp.Wrap.add
+                              Integer.U32
+                              (M.read (|
                                 M.SubPointer.get_struct_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
@@ -1446,8 +1425,8 @@ Module time.
                                   "core::time::Nanoseconds",
                                   0
                                 |)
-                              |),
-                              M.read (|
+                              |))
+                              (M.read (|
                                 M.SubPointer.get_struct_tuple_field (|
                                   M.SubPointer.get_struct_record_field (|
                                     rhs,
@@ -1457,8 +1436,7 @@ Module time.
                                   "core::time::Nanoseconds",
                                   0
                                 |)
-                              |)
-                            |)
+                              |))
                           |) in
                         let _ :=
                           M.match_operator (|
@@ -1484,13 +1462,12 @@ Module time.
                                     let β := nanos in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.sub (|
-                                        Integer.U32,
-                                        M.read (| β |),
-                                        M.read (|
+                                      BinOp.Wrap.sub
+                                        Integer.U32
+                                        (M.read (| β |))
+                                        (M.read (|
                                           M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -1758,9 +1735,9 @@ Module time.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.U32,
-                                        M.read (|
+                                      BinOp.Wrap.sub
+                                        Integer.U32
+                                        (M.read (|
                                           M.SubPointer.get_struct_tuple_field (|
                                             M.SubPointer.get_struct_record_field (|
                                               self,
@@ -1770,8 +1747,8 @@ Module time.
                                             "core::time::Nanoseconds",
                                             0
                                           |)
-                                        |),
-                                        M.read (|
+                                        |))
+                                        (M.read (|
                                           M.SubPointer.get_struct_tuple_field (|
                                             M.SubPointer.get_struct_record_field (|
                                               rhs,
@@ -1781,8 +1758,7 @@ Module time.
                                             "core::time::Nanoseconds",
                                             0
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1811,11 +1787,11 @@ Module time.
                                             let sub_secs := M.copy (| γ0_0 |) in
                                             let _ := M.write (| secs, M.read (| sub_secs |) |) in
                                             M.alloc (|
-                                              BinOp.Panic.sub (|
-                                                Integer.U32,
-                                                BinOp.Panic.add (|
-                                                  Integer.U32,
-                                                  M.read (|
+                                              BinOp.Wrap.sub
+                                                Integer.U32
+                                                (BinOp.Wrap.add
+                                                  Integer.U32
+                                                  (M.read (|
                                                     M.SubPointer.get_struct_tuple_field (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         self,
@@ -1825,12 +1801,11 @@ Module time.
                                                       "core::time::Nanoseconds",
                                                       0
                                                     |)
-                                                  |),
-                                                  M.read (|
+                                                  |))
+                                                  (M.read (|
                                                     M.get_constant (| "core::time::NANOS_PER_SEC" |)
-                                                  |)
-                                                |),
-                                                M.read (|
+                                                  |)))
+                                                (M.read (|
                                                   M.SubPointer.get_struct_tuple_field (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       rhs,
@@ -1840,8 +1815,7 @@ Module time.
                                                     "core::time::Nanoseconds",
                                                     0
                                                   |)
-                                                |)
-                                              |)
+                                                |))
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -2011,9 +1985,9 @@ Module time.
               (M.read (|
                 let total_nanos :=
                   M.alloc (|
-                    BinOp.Panic.mul (|
-                      Integer.U64,
-                      M.rust_cast
+                    BinOp.Wrap.mul
+                      Integer.U64
+                      (M.rust_cast
                         (M.read (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.SubPointer.get_struct_record_field (|
@@ -2024,26 +1998,24 @@ Module time.
                             "core::time::Nanoseconds",
                             0
                           |)
-                        |)),
-                      M.rust_cast (M.read (| rhs |))
-                    |)
+                        |)))
+                      (M.rust_cast (M.read (| rhs |)))
                   |) in
                 let extra_secs :=
                   M.alloc (|
-                    BinOp.Panic.div (|
-                      Integer.U64,
-                      M.read (| total_nanos |),
-                      M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                    |)
+                    BinOp.Wrap.div
+                      Integer.U64
+                      (M.read (| total_nanos |))
+                      (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
                   |) in
                 let nanos :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Panic.rem (|
-                        Integer.U64,
-                        M.read (| total_nanos |),
-                        M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                      |))
+                      (BinOp.Wrap.rem
+                        Integer.U64
+                        (M.read (| total_nanos |))
+                        (M.rust_cast
+                          (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -2268,28 +2240,26 @@ Module time.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Panic.div (|
-                              Integer.U64,
-                              M.read (|
+                            BinOp.Wrap.div
+                              Integer.U64
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::time::Duration",
                                   "secs"
                                 |)
-                              |),
-                              M.rust_cast (M.read (| rhs |))
-                            |);
-                            BinOp.Panic.rem (|
-                              Integer.U64,
-                              M.read (|
+                              |))
+                              (M.rust_cast (M.read (| rhs |)));
+                            BinOp.Wrap.rem
+                              Integer.U64
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::time::Duration",
                                   "secs"
                                 |)
-                              |),
-                              M.rust_cast (M.read (| rhs |))
-                            |)
+                              |))
+                              (M.rust_cast (M.read (| rhs |)))
                           ]
                       |),
                       [
@@ -2303,9 +2273,9 @@ Module time.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    BinOp.Panic.div (|
-                                      Integer.U32,
-                                      M.read (|
+                                    BinOp.Wrap.div
+                                      Integer.U32
+                                      (M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
@@ -2315,12 +2285,11 @@ Module time.
                                           "core::time::Nanoseconds",
                                           0
                                         |)
-                                      |),
-                                      M.read (| rhs |)
-                                    |);
-                                    BinOp.Panic.rem (|
-                                      Integer.U32,
-                                      M.read (|
+                                      |))
+                                      (M.read (| rhs |));
+                                    BinOp.Wrap.rem
+                                      Integer.U32
+                                      (M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
@@ -2330,9 +2299,8 @@ Module time.
                                           "core::time::Nanoseconds",
                                           0
                                         |)
-                                      |),
-                                      M.read (| rhs |)
-                                    |)
+                                      |))
+                                      (M.read (| rhs |))
                                   ]
                               |),
                               [
@@ -2346,29 +2314,25 @@ Module time.
                                       let β := nanos in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (|
-                                          Integer.U32,
-                                          M.read (| β |),
-                                          M.rust_cast
-                                            (BinOp.Panic.div (|
-                                              Integer.U64,
-                                              BinOp.Panic.add (|
-                                                Integer.U64,
-                                                BinOp.Panic.mul (|
-                                                  Integer.U64,
-                                                  M.read (| extra_secs |),
-                                                  M.rust_cast
+                                        BinOp.Wrap.add
+                                          Integer.U32
+                                          (M.read (| β |))
+                                          (M.rust_cast
+                                            (BinOp.Wrap.div
+                                              Integer.U64
+                                              (BinOp.Wrap.add
+                                                Integer.U64
+                                                (BinOp.Wrap.mul
+                                                  Integer.U64
+                                                  (M.read (| extra_secs |))
+                                                  (M.rust_cast
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::time::NANOS_PER_SEC"
                                                       |)
-                                                    |))
-                                                |),
-                                                M.rust_cast (M.read (| extra_nanos |))
-                                              |),
-                                              M.rust_cast (M.read (| rhs |))
-                                            |))
-                                        |)
+                                                    |))))
+                                                (M.rust_cast (M.read (| extra_nanos |))))
+                                              (M.rust_cast (M.read (| rhs |)))))
                                       |) in
                                     let _ :=
                                       M.match_operator (|
@@ -2468,19 +2432,19 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.add (|
-            Integer.Usize,
-            M.rust_cast
+          BinOp.Wrap.add
+            Integer.Usize
+            (M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::time::Duration",
                   "secs"
                 |)
-              |)),
-            BinOp.Panic.div (|
-              Integer.Usize,
-              M.rust_cast
+              |)))
+            (BinOp.Wrap.div
+              Integer.Usize
+              (M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -2491,10 +2455,8 @@ Module time.
                     "core::time::Nanoseconds",
                     0
                   |)
-                |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-            |)
-          |)))
+                |)))
+              (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))))
       | _, _ => M.impossible
       end.
     
@@ -2510,19 +2472,19 @@ Module time.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.add (|
-            Integer.Usize,
-            M.rust_cast
+          BinOp.Wrap.add
+            Integer.Usize
+            (M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::time::Duration",
                   "secs"
                 |)
-              |)),
-            BinOp.Panic.div (|
-              Integer.Usize,
-              M.rust_cast
+              |)))
+            (BinOp.Wrap.div
+              Integer.Usize
+              (M.rust_cast
                 (M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -2533,10 +2495,8 @@ Module time.
                     "core::time::Nanoseconds",
                     0
                   |)
-                |)),
-              M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-            |)
-          |)))
+                |)))
+              (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))))
       | _, _ => M.impossible
       end.
     
@@ -2694,14 +2654,13 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
             [
-              BinOp.Panic.mul (|
-                Integer.Usize,
-                M.read (| rhs |),
-                M.call_closure (|
+              BinOp.Wrap.mul
+                Integer.Usize
+                (M.read (| rhs |))
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
                   [ self ]
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _ => M.impossible
@@ -2723,14 +2682,13 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
             [
-              BinOp.Panic.mul (|
-                Integer.Usize,
-                M.read (| rhs |),
-                M.call_closure (|
+              BinOp.Wrap.mul
+                Integer.Usize
+                (M.read (| rhs |))
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
                   [ self ]
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _ => M.impossible
@@ -2752,14 +2710,13 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f64", [] |),
             [
-              BinOp.Panic.div (|
-                Integer.Usize,
-                M.call_closure (|
+              BinOp.Wrap.div
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
                   [ self ]
-                |),
-                M.read (| rhs |)
-              |)
+                |))
+                (M.read (| rhs |))
             ]
           |)))
       | _, _ => M.impossible
@@ -2781,14 +2738,13 @@ Module time.
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::time::Duration", "from_secs_f32", [] |),
             [
-              BinOp.Panic.div (|
-                Integer.Usize,
-                M.call_closure (|
+              BinOp.Wrap.div
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
                   [ self ]
-                |),
-                M.read (| rhs |)
-              |)
+                |))
+                (M.read (| rhs |))
             ]
           |)))
       | _, _ => M.impossible
@@ -2807,17 +2763,16 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          BinOp.Panic.div (|
-            Integer.Usize,
-            M.call_closure (|
+          BinOp.Wrap.div
+            Integer.Usize
+            (M.call_closure (|
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
               [ self ]
-            |),
-            M.call_closure (|
+            |))
+            (M.call_closure (|
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f64", [] |),
               [ rhs ]
-            |)
-          |)))
+            |))))
       | _, _ => M.impossible
       end.
     
@@ -2835,17 +2790,16 @@ Module time.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
-          BinOp.Panic.div (|
-            Integer.Usize,
-            M.call_closure (|
+          BinOp.Wrap.div
+            Integer.Usize
+            (M.call_closure (|
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
               [ self ]
-            |),
-            M.call_closure (|
+            |))
+            (M.call_closure (|
               M.get_associated_function (| Ty.path "core::time::Duration", "as_secs_f32", [] |),
               [ rhs ]
-            |)
-          |)))
+            |))))
       | _, _ => M.impossible
       end.
     
@@ -2922,26 +2876,24 @@ Module time.
                         (M.read (|
                           M.get_constant (| "core::time::try_from_secs_f32::MANT_MASK" |)
                         |)))
-                      (BinOp.Panic.add (|
-                        Integer.U32,
-                        M.read (|
+                      (BinOp.Wrap.add
+                        Integer.U32
+                        (M.read (|
                           M.get_constant (| "core::time::try_from_secs_f32::MANT_MASK" |)
-                        |),
-                        Value.Integer 1
-                      |))
+                        |))
+                        (Value.Integer 1))
                   |) in
                 let exp :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.I16,
-                      M.rust_cast
+                    BinOp.Wrap.add
+                      Integer.I16
+                      (M.rust_cast
                         (BinOp.Pure.bit_and
-                          (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 23 |))
+                          (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 23))
                           (M.read (|
                             M.get_constant (| "core::time::try_from_secs_f32::EXP_MASK" |)
-                          |))),
-                      M.read (| M.get_constant (| "core::time::try_from_secs_f32::MIN_EXP" |) |)
-                    |)
+                          |))))
+                      (M.read (| M.get_constant (| "core::time::try_from_secs_f32::MIN_EXP" |) |))
                   |) in
                 M.match_operator (|
                   M.match_operator (|
@@ -2976,8 +2928,8 @@ Module time.
                                     |) in
                                   let t :=
                                     M.alloc (|
-                                      BinOp.Panic.shl (|
-                                        M.call_closure (|
+                                      BinOp.Wrap.shl
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u64",
@@ -2986,27 +2938,24 @@ Module time.
                                             []
                                           |),
                                           [ M.read (| mant |) ]
-                                        |),
-                                        BinOp.Panic.add (|
-                                          Integer.I16,
-                                          Value.Integer 41,
-                                          M.read (| exp |)
-                                        |)
-                                      |)
+                                        |))
+                                        (BinOp.Wrap.add
+                                          Integer.I16
+                                          (Value.Integer 41)
+                                          (M.read (| exp |)))
                                     |) in
                                   let nanos_offset :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.I32,
-                                        Value.Integer 23,
-                                        Value.Integer 41
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.I32
+                                        (Value.Integer 23)
+                                        (Value.Integer 41)
                                     |) in
                                   let nanos_tmp :=
                                     M.alloc (|
-                                      BinOp.Panic.mul (|
-                                        Integer.U128,
-                                        M.call_closure (|
+                                      BinOp.Wrap.mul
+                                        Integer.U128
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
@@ -3019,8 +2968,8 @@ Module time.
                                               M.get_constant (| "core::time::NANOS_PER_SEC" |)
                                             |)
                                           ]
-                                        |),
-                                        M.call_closure (|
+                                        |))
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
@@ -3029,38 +2978,32 @@ Module time.
                                             []
                                           |),
                                           [ M.read (| t |) ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   let nanos :=
                                     M.alloc (|
                                       M.rust_cast
-                                        (BinOp.Panic.shr (|
-                                          M.read (| nanos_tmp |),
-                                          M.read (| nanos_offset |)
-                                        |))
+                                        (BinOp.Wrap.shr
+                                          (M.read (| nanos_tmp |))
+                                          (M.read (| nanos_offset |)))
                                     |) in
                                   let rem_mask :=
                                     M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.U128,
-                                        BinOp.Panic.shl (|
-                                          Value.Integer 1,
-                                          M.read (| nanos_offset |)
-                                        |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.U128
+                                        (BinOp.Wrap.shl
+                                          (Value.Integer 1)
+                                          (M.read (| nanos_offset |)))
+                                        (Value.Integer 1)
                                     |) in
                                   let rem_msb_mask :=
                                     M.alloc (|
-                                      BinOp.Panic.shl (|
-                                        Value.Integer 1,
-                                        BinOp.Panic.sub (|
-                                          Integer.I32,
-                                          M.read (| nanos_offset |),
-                                          Value.Integer 1
-                                        |)
-                                      |)
+                                      BinOp.Wrap.shl
+                                        (Value.Integer 1)
+                                        (BinOp.Wrap.sub
+                                          Integer.I32
+                                          (M.read (| nanos_offset |))
+                                          (Value.Integer 1))
                                     |) in
                                   let rem :=
                                     M.alloc (|
@@ -3100,11 +3043,10 @@ Module time.
                                     |) in
                                   let nanos :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.U32
+                                        (M.read (| nanos |))
+                                        (M.rust_cast (M.read (| add_ns |)))
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -3171,14 +3113,12 @@ Module time.
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Panic.shr (|
-                                                    M.read (| mant |),
-                                                    BinOp.Panic.sub (|
-                                                      Integer.I16,
-                                                      Value.Integer 23,
-                                                      M.read (| exp |)
-                                                    |)
-                                                  |)
+                                                  BinOp.Wrap.shr
+                                                    (M.read (| mant |))
+                                                    (BinOp.Wrap.sub
+                                                      Integer.I16
+                                                      (Value.Integer 23)
+                                                      (M.read (| exp |)))
                                                 ]
                                               |)
                                             |) in
@@ -3194,10 +3134,9 @@ Module time.
                                                 |),
                                                 [
                                                   BinOp.Pure.bit_and
-                                                    (BinOp.Panic.shl (|
-                                                      M.read (| mant |),
-                                                      M.read (| exp |)
-                                                    |))
+                                                    (BinOp.Wrap.shl
+                                                      (M.read (| mant |))
+                                                      (M.read (| exp |)))
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::time::try_from_secs_f32::MANT_MASK"
@@ -3209,9 +3148,9 @@ Module time.
                                           let nanos_offset := M.alloc (| Value.Integer 23 |) in
                                           let nanos_tmp :=
                                             M.alloc (|
-                                              BinOp.Panic.mul (|
-                                                Integer.U64,
-                                                M.call_closure (|
+                                              BinOp.Wrap.mul
+                                                Integer.U64
+                                                (M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u64",
@@ -3226,39 +3165,33 @@ Module time.
                                                       |)
                                                     |)
                                                   ]
-                                                |),
-                                                M.read (| t |)
-                                              |)
+                                                |))
+                                                (M.read (| t |))
                                             |) in
                                           let nanos :=
                                             M.alloc (|
                                               M.rust_cast
-                                                (BinOp.Panic.shr (|
-                                                  M.read (| nanos_tmp |),
-                                                  M.read (| nanos_offset |)
-                                                |))
+                                                (BinOp.Wrap.shr
+                                                  (M.read (| nanos_tmp |))
+                                                  (M.read (| nanos_offset |)))
                                             |) in
                                           let rem_mask :=
                                             M.alloc (|
-                                              BinOp.Panic.sub (|
-                                                Integer.U64,
-                                                BinOp.Panic.shl (|
-                                                  Value.Integer 1,
-                                                  M.read (| nanos_offset |)
-                                                |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.U64
+                                                (BinOp.Wrap.shl
+                                                  (Value.Integer 1)
+                                                  (M.read (| nanos_offset |)))
+                                                (Value.Integer 1)
                                             |) in
                                           let rem_msb_mask :=
                                             M.alloc (|
-                                              BinOp.Panic.shl (|
-                                                Value.Integer 1,
-                                                BinOp.Panic.sub (|
-                                                  Integer.I32,
-                                                  M.read (| nanos_offset |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                              BinOp.Wrap.shl
+                                                (Value.Integer 1)
+                                                (BinOp.Wrap.sub
+                                                  Integer.I32
+                                                  (M.read (| nanos_offset |))
+                                                  (Value.Integer 1))
                                             |) in
                                           let rem :=
                                             M.alloc (|
@@ -3302,11 +3235,10 @@ Module time.
                                             |) in
                                           let nanos :=
                                             M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.U32,
-                                                M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.U32
+                                                (M.read (| nanos |))
+                                                (M.rust_cast (M.read (| add_ns |)))
                                             |) in
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
@@ -3344,11 +3276,10 @@ Module time.
                                                   (M.alloc (|
                                                     Value.Tuple
                                                       [
-                                                        BinOp.Panic.add (|
-                                                          Integer.U64,
-                                                          M.read (| secs |),
-                                                          Value.Integer 1
-                                                        |);
+                                                        BinOp.Wrap.add
+                                                          Integer.U64
+                                                          (M.read (| secs |))
+                                                          (Value.Integer 1);
                                                         Value.Integer 0
                                                       ]
                                                   |)))
@@ -3375,8 +3306,8 @@ Module time.
                                                     |) in
                                                   let secs :=
                                                     M.alloc (|
-                                                      BinOp.Panic.shl (|
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.shl
+                                                        (M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
@@ -3385,13 +3316,11 @@ Module time.
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
-                                                        |),
-                                                        BinOp.Panic.sub (|
-                                                          Integer.I16,
-                                                          M.read (| exp |),
-                                                          Value.Integer 23
-                                                        |)
-                                                      |)
+                                                        |))
+                                                        (BinOp.Wrap.sub
+                                                          Integer.I16
+                                                          (M.read (| exp |))
+                                                          (Value.Integer 23))
                                                     |) in
                                                   M.alloc (|
                                                     Value.Tuple
@@ -3529,26 +3458,24 @@ Module time.
                         (M.read (|
                           M.get_constant (| "core::time::try_from_secs_f64::MANT_MASK" |)
                         |)))
-                      (BinOp.Panic.add (|
-                        Integer.U64,
-                        M.read (|
+                      (BinOp.Wrap.add
+                        Integer.U64
+                        (M.read (|
                           M.get_constant (| "core::time::try_from_secs_f64::MANT_MASK" |)
-                        |),
-                        Value.Integer 1
-                      |))
+                        |))
+                        (Value.Integer 1))
                   |) in
                 let exp :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.I16,
-                      M.rust_cast
+                    BinOp.Wrap.add
+                      Integer.I16
+                      (M.rust_cast
                         (BinOp.Pure.bit_and
-                          (BinOp.Panic.shr (| M.read (| bits |), Value.Integer 52 |))
+                          (BinOp.Wrap.shr (M.read (| bits |)) (Value.Integer 52))
                           (M.read (|
                             M.get_constant (| "core::time::try_from_secs_f64::EXP_MASK" |)
-                          |))),
-                      M.read (| M.get_constant (| "core::time::try_from_secs_f64::MIN_EXP" |) |)
-                    |)
+                          |))))
+                      (M.read (| M.get_constant (| "core::time::try_from_secs_f64::MIN_EXP" |) |))
                   |) in
                 M.match_operator (|
                   M.match_operator (|
@@ -3583,8 +3510,8 @@ Module time.
                                     |) in
                                   let t :=
                                     M.alloc (|
-                                      BinOp.Panic.shl (|
-                                        M.call_closure (|
+                                      BinOp.Wrap.shl
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
@@ -3593,27 +3520,24 @@ Module time.
                                             []
                                           |),
                                           [ M.read (| mant |) ]
-                                        |),
-                                        BinOp.Panic.add (|
-                                          Integer.I16,
-                                          Value.Integer 44,
-                                          M.read (| exp |)
-                                        |)
-                                      |)
+                                        |))
+                                        (BinOp.Wrap.add
+                                          Integer.I16
+                                          (Value.Integer 44)
+                                          (M.read (| exp |)))
                                     |) in
                                   let nanos_offset :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.I32,
-                                        Value.Integer 52,
-                                        Value.Integer 44
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.I32
+                                        (Value.Integer 52)
+                                        (Value.Integer 44)
                                     |) in
                                   let nanos_tmp :=
                                     M.alloc (|
-                                      BinOp.Panic.mul (|
-                                        Integer.U128,
-                                        M.call_closure (|
+                                      BinOp.Wrap.mul
+                                        Integer.U128
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
@@ -3626,8 +3550,8 @@ Module time.
                                               M.get_constant (| "core::time::NANOS_PER_SEC" |)
                                             |)
                                           ]
-                                        |),
-                                        M.call_closure (|
+                                        |))
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::convert::From",
                                             Ty.path "u128",
@@ -3636,38 +3560,32 @@ Module time.
                                             []
                                           |),
                                           [ M.read (| t |) ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   let nanos :=
                                     M.alloc (|
                                       M.rust_cast
-                                        (BinOp.Panic.shr (|
-                                          M.read (| nanos_tmp |),
-                                          M.read (| nanos_offset |)
-                                        |))
+                                        (BinOp.Wrap.shr
+                                          (M.read (| nanos_tmp |))
+                                          (M.read (| nanos_offset |)))
                                     |) in
                                   let rem_mask :=
                                     M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.U128,
-                                        BinOp.Panic.shl (|
-                                          Value.Integer 1,
-                                          M.read (| nanos_offset |)
-                                        |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.U128
+                                        (BinOp.Wrap.shl
+                                          (Value.Integer 1)
+                                          (M.read (| nanos_offset |)))
+                                        (Value.Integer 1)
                                     |) in
                                   let rem_msb_mask :=
                                     M.alloc (|
-                                      BinOp.Panic.shl (|
-                                        Value.Integer 1,
-                                        BinOp.Panic.sub (|
-                                          Integer.I32,
-                                          M.read (| nanos_offset |),
-                                          Value.Integer 1
-                                        |)
-                                      |)
+                                      BinOp.Wrap.shl
+                                        (Value.Integer 1)
+                                        (BinOp.Wrap.sub
+                                          Integer.I32
+                                          (M.read (| nanos_offset |))
+                                          (Value.Integer 1))
                                     |) in
                                   let rem :=
                                     M.alloc (|
@@ -3707,11 +3625,10 @@ Module time.
                                     |) in
                                   let nanos :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        M.read (| nanos |),
-                                        M.rust_cast (M.read (| add_ns |))
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.U32
+                                        (M.read (| nanos |))
+                                        (M.rust_cast (M.read (| add_ns |)))
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -3778,14 +3695,12 @@ Module time.
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Panic.shr (|
-                                                    M.read (| mant |),
-                                                    BinOp.Panic.sub (|
-                                                      Integer.I16,
-                                                      Value.Integer 52,
-                                                      M.read (| exp |)
-                                                    |)
-                                                  |)
+                                                  BinOp.Wrap.shr
+                                                    (M.read (| mant |))
+                                                    (BinOp.Wrap.sub
+                                                      Integer.I16
+                                                      (Value.Integer 52)
+                                                      (M.read (| exp |)))
                                                 ]
                                               |)
                                             |) in
@@ -3801,10 +3716,9 @@ Module time.
                                                 |),
                                                 [
                                                   BinOp.Pure.bit_and
-                                                    (BinOp.Panic.shl (|
-                                                      M.read (| mant |),
-                                                      M.read (| exp |)
-                                                    |))
+                                                    (BinOp.Wrap.shl
+                                                      (M.read (| mant |))
+                                                      (M.read (| exp |)))
                                                     (M.read (|
                                                       M.get_constant (|
                                                         "core::time::try_from_secs_f64::MANT_MASK"
@@ -3816,9 +3730,9 @@ Module time.
                                           let nanos_offset := M.alloc (| Value.Integer 52 |) in
                                           let nanos_tmp :=
                                             M.alloc (|
-                                              BinOp.Panic.mul (|
-                                                Integer.U128,
-                                                M.call_closure (|
+                                              BinOp.Wrap.mul
+                                                Integer.U128
+                                                (M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::convert::From",
                                                     Ty.path "u128",
@@ -3833,39 +3747,33 @@ Module time.
                                                       |)
                                                     |)
                                                   ]
-                                                |),
-                                                M.read (| t |)
-                                              |)
+                                                |))
+                                                (M.read (| t |))
                                             |) in
                                           let nanos :=
                                             M.alloc (|
                                               M.rust_cast
-                                                (BinOp.Panic.shr (|
-                                                  M.read (| nanos_tmp |),
-                                                  M.read (| nanos_offset |)
-                                                |))
+                                                (BinOp.Wrap.shr
+                                                  (M.read (| nanos_tmp |))
+                                                  (M.read (| nanos_offset |)))
                                             |) in
                                           let rem_mask :=
                                             M.alloc (|
-                                              BinOp.Panic.sub (|
-                                                Integer.U128,
-                                                BinOp.Panic.shl (|
-                                                  Value.Integer 1,
-                                                  M.read (| nanos_offset |)
-                                                |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.U128
+                                                (BinOp.Wrap.shl
+                                                  (Value.Integer 1)
+                                                  (M.read (| nanos_offset |)))
+                                                (Value.Integer 1)
                                             |) in
                                           let rem_msb_mask :=
                                             M.alloc (|
-                                              BinOp.Panic.shl (|
-                                                Value.Integer 1,
-                                                BinOp.Panic.sub (|
-                                                  Integer.I32,
-                                                  M.read (| nanos_offset |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                              BinOp.Wrap.shl
+                                                (Value.Integer 1)
+                                                (BinOp.Wrap.sub
+                                                  Integer.I32
+                                                  (M.read (| nanos_offset |))
+                                                  (Value.Integer 1))
                                             |) in
                                           let rem :=
                                             M.alloc (|
@@ -3909,11 +3817,10 @@ Module time.
                                             |) in
                                           let nanos :=
                                             M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.U32,
-                                                M.read (| nanos |),
-                                                M.rust_cast (M.read (| add_ns |))
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.U32
+                                                (M.read (| nanos |))
+                                                (M.rust_cast (M.read (| add_ns |)))
                                             |) in
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
@@ -3951,11 +3858,10 @@ Module time.
                                                   (M.alloc (|
                                                     Value.Tuple
                                                       [
-                                                        BinOp.Panic.add (|
-                                                          Integer.U64,
-                                                          M.read (| secs |),
-                                                          Value.Integer 1
-                                                        |);
+                                                        BinOp.Wrap.add
+                                                          Integer.U64
+                                                          (M.read (| secs |))
+                                                          (Value.Integer 1);
                                                         Value.Integer 0
                                                       ]
                                                   |)))
@@ -3982,8 +3888,8 @@ Module time.
                                                     |) in
                                                   let secs :=
                                                     M.alloc (|
-                                                      BinOp.Panic.shl (|
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.shl
+                                                        (M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::convert::From",
                                                             Ty.path "u64",
@@ -3992,13 +3898,11 @@ Module time.
                                                             []
                                                           |),
                                                           [ M.read (| mant |) ]
-                                                        |),
-                                                        BinOp.Panic.sub (|
-                                                          Integer.I16,
-                                                          M.read (| exp |),
-                                                          Value.Integer 52
-                                                        |)
-                                                      |)
+                                                        |))
+                                                        (BinOp.Wrap.sub
+                                                          Integer.I16
+                                                          (M.read (| exp |))
+                                                          (Value.Integer 52))
                                                     |) in
                                                   M.alloc (|
                                                     Value.Tuple
@@ -4603,16 +4507,15 @@ Module time.
                                                               |),
                                                               [
                                                                 M.read (| total_secs |);
-                                                                BinOp.Panic.div (|
-                                                                  Integer.U64,
-                                                                  M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                BinOp.Wrap.div
+                                                                  Integer.U64
+                                                                  (M.read (| total_nanos |))
+                                                                  (M.rust_cast
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
                                                                       |)
-                                                                    |))
-                                                                |)
+                                                                    |)))
                                                               ]
                                                             |);
                                                             M.read (|
@@ -4623,19 +4526,18 @@ Module time.
                                                         |)
                                                       |) in
                                                     M.alloc (|
-                                                      BinOp.Panic.add (|
-                                                        Integer.U64,
-                                                        BinOp.Panic.rem (|
-                                                          Integer.U64,
-                                                          M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                      BinOp.Wrap.add
+                                                        Integer.U64
+                                                        (BinOp.Wrap.rem
+                                                          Integer.U64
+                                                          (M.read (| total_nanos |))
+                                                          (M.rust_cast
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
-                                                            |))
-                                                        |),
-                                                        M.rust_cast
+                                                            |))))
+                                                        (M.rust_cast
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -4646,8 +4548,7 @@ Module time.
                                                               "core::time::Nanoseconds",
                                                               0
                                                             |)
-                                                          |))
-                                                      |)
+                                                          |)))
                                                     |)))
                                               ]
                                             |)
@@ -4674,12 +4575,11 @@ Module time.
                       M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
                       [
                         M.read (| total_secs |);
-                        BinOp.Panic.div (|
-                          Integer.U64,
-                          M.read (| total_nanos |),
-                          M.rust_cast
-                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                        |)
+                        BinOp.Wrap.div
+                          Integer.U64
+                          (M.read (| total_nanos |))
+                          (M.rust_cast
+                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
                       ]
                     |);
                     M.read (| Value.String "overflow in iter::sum over durations" |)
@@ -4689,11 +4589,10 @@ Module time.
             let _ :=
               M.write (|
                 total_nanos,
-                BinOp.Panic.rem (|
-                  Integer.U64,
-                  M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                |)
+                BinOp.Wrap.rem
+                  Integer.U64
+                  (M.read (| total_nanos |))
+                  (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4876,16 +4775,15 @@ Module time.
                                                               |),
                                                               [
                                                                 M.read (| total_secs |);
-                                                                BinOp.Panic.div (|
-                                                                  Integer.U64,
-                                                                  M.read (| total_nanos |),
-                                                                  M.rust_cast
+                                                                BinOp.Wrap.div
+                                                                  Integer.U64
+                                                                  (M.read (| total_nanos |))
+                                                                  (M.rust_cast
                                                                     (M.read (|
                                                                       M.get_constant (|
                                                                         "core::time::NANOS_PER_SEC"
                                                                       |)
-                                                                    |))
-                                                                |)
+                                                                    |)))
                                                               ]
                                                             |);
                                                             M.read (|
@@ -4896,19 +4794,18 @@ Module time.
                                                         |)
                                                       |) in
                                                     M.alloc (|
-                                                      BinOp.Panic.add (|
-                                                        Integer.U64,
-                                                        BinOp.Panic.rem (|
-                                                          Integer.U64,
-                                                          M.read (| total_nanos |),
-                                                          M.rust_cast
+                                                      BinOp.Wrap.add
+                                                        Integer.U64
+                                                        (BinOp.Wrap.rem
+                                                          Integer.U64
+                                                          (M.read (| total_nanos |))
+                                                          (M.rust_cast
                                                             (M.read (|
                                                               M.get_constant (|
                                                                 "core::time::NANOS_PER_SEC"
                                                               |)
-                                                            |))
-                                                        |),
-                                                        M.rust_cast
+                                                            |))))
+                                                        (M.rust_cast
                                                           (M.read (|
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.SubPointer.get_struct_record_field (|
@@ -4919,8 +4816,7 @@ Module time.
                                                               "core::time::Nanoseconds",
                                                               0
                                                             |)
-                                                          |))
-                                                      |)
+                                                          |)))
                                                     |)))
                                               ]
                                             |)
@@ -4947,12 +4843,11 @@ Module time.
                       M.get_associated_function (| Ty.path "u64", "checked_add", [] |),
                       [
                         M.read (| total_secs |);
-                        BinOp.Panic.div (|
-                          Integer.U64,
-                          M.read (| total_nanos |),
-                          M.rust_cast
-                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                        |)
+                        BinOp.Wrap.div
+                          Integer.U64
+                          (M.read (| total_nanos |))
+                          (M.rust_cast
+                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
                       ]
                     |);
                     M.read (| Value.String "overflow in iter::sum over durations" |)
@@ -4962,11 +4857,10 @@ Module time.
             let _ :=
               M.write (|
                 total_nanos,
-                BinOp.Panic.rem (|
-                  Integer.U64,
-                  M.read (| total_nanos |),
-                  M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
-                |)
+                BinOp.Wrap.rem
+                  Integer.U64
+                  (M.read (| total_nanos |))
+                  (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -5254,11 +5148,10 @@ Module time.
                               0
                             |)
                           |);
-                          BinOp.Panic.div (|
-                            Integer.U32,
-                            M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |),
-                            Value.Integer 10
-                          |);
+                          BinOp.Wrap.div
+                            Integer.U32
+                            (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))
+                            (Value.Integer 10);
                           M.read (| prefix |);
                           M.read (| Value.String "s" |)
                         ]
@@ -5298,9 +5191,9 @@ Module time.
                                 [
                                   M.read (| f |);
                                   M.rust_cast
-                                    (BinOp.Panic.div (|
-                                      Integer.U32,
-                                      M.read (|
+                                    (BinOp.Wrap.div
+                                      Integer.U32
+                                      (M.read (|
                                         M.SubPointer.get_struct_tuple_field (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
@@ -5310,14 +5203,13 @@ Module time.
                                           "core::time::Nanoseconds",
                                           0
                                         |)
-                                      |),
-                                      M.read (|
+                                      |))
+                                      (M.read (|
                                         M.get_constant (| "core::time::NANOS_PER_MILLI" |)
-                                      |)
-                                    |));
-                                  BinOp.Panic.rem (|
-                                    Integer.U32,
-                                    M.read (|
+                                      |)));
+                                  BinOp.Wrap.rem
+                                    Integer.U32
+                                    (M.read (|
                                       M.SubPointer.get_struct_tuple_field (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -5327,14 +5219,16 @@ Module time.
                                         "core::time::Nanoseconds",
                                         0
                                       |)
-                                    |),
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |)
-                                  |);
-                                  BinOp.Panic.div (|
-                                    Integer.U32,
-                                    M.read (| M.get_constant (| "core::time::NANOS_PER_MILLI" |) |),
-                                    Value.Integer 10
-                                  |);
+                                    |))
+                                    (M.read (|
+                                      M.get_constant (| "core::time::NANOS_PER_MILLI" |)
+                                    |));
+                                  BinOp.Wrap.div
+                                    Integer.U32
+                                    (M.read (|
+                                      M.get_constant (| "core::time::NANOS_PER_MILLI" |)
+                                    |))
+                                    (Value.Integer 10);
                                   M.read (| prefix |);
                                   M.read (| Value.String "ms" |)
                                 ]
@@ -5377,9 +5271,9 @@ Module time.
                                         [
                                           M.read (| f |);
                                           M.rust_cast
-                                            (BinOp.Panic.div (|
-                                              Integer.U32,
-                                              M.read (|
+                                            (BinOp.Wrap.div
+                                              Integer.U32
+                                              (M.read (|
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
@@ -5389,14 +5283,13 @@ Module time.
                                                   "core::time::Nanoseconds",
                                                   0
                                                 |)
-                                              |),
-                                              M.read (|
+                                              |))
+                                              (M.read (|
                                                 M.get_constant (| "core::time::NANOS_PER_MICRO" |)
-                                              |)
-                                            |));
-                                          BinOp.Panic.rem (|
-                                            Integer.U32,
-                                            M.read (|
+                                              |)));
+                                          BinOp.Wrap.rem
+                                            Integer.U32
+                                            (M.read (|
                                               M.SubPointer.get_struct_tuple_field (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
@@ -5406,18 +5299,16 @@ Module time.
                                                 "core::time::Nanoseconds",
                                                 0
                                               |)
-                                            |),
-                                            M.read (|
+                                            |))
+                                            (M.read (|
                                               M.get_constant (| "core::time::NANOS_PER_MICRO" |)
-                                            |)
-                                          |);
-                                          BinOp.Panic.div (|
-                                            Integer.U32,
-                                            M.read (|
+                                            |));
+                                          BinOp.Wrap.div
+                                            Integer.U32
+                                            (M.read (|
                                               M.get_constant (| "core::time::NANOS_PER_MICRO" |)
-                                            |),
-                                            Value.Integer 10
-                                          |);
+                                            |))
+                                            (Value.Integer 10);
                                           M.read (| prefix |);
                                           M.read (| Value.String (String.String "181" "s") |)
                                         ]

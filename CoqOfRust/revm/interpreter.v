@@ -3414,7 +3414,7 @@ Module interpreter.
             |) in
           let cost :=
             M.alloc (|
-              BinOp.Panic.sub (| Integer.U64, M.read (| new_cost |), M.read (| current_cost |) |)
+              BinOp.Wrap.sub Integer.U64 (M.read (| new_cost |)) (M.read (| current_cost |))
             |) in
           let success :=
             M.alloc (|
@@ -3445,11 +3445,10 @@ Module interpreter.
                           |),
                           [
                             M.read (| memory |);
-                            BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.rust_cast (M.read (| new_words |)),
-                              Value.Integer 32
-                            |)
+                            BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.rust_cast (M.read (| new_words |)))
+                              (Value.Integer 32)
                           ]
                         |)
                       |) in
@@ -3461,4 +3460,7 @@ Module interpreter.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_resize_memory :
+    M.IsFunction "revm_interpreter::interpreter::resize_memory" resize_memory.
 End interpreter.

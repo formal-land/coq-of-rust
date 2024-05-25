@@ -601,6 +601,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_keccak256 :
+      M.IsFunction "revm_interpreter::instructions::system::keccak256" keccak256.
+    
     (*
     pub fn address<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -748,6 +751,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_address : M.IsFunction "revm_interpreter::instructions::system::address" address.
+    
     (*
     pub fn caller<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -894,6 +899,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_caller : M.IsFunction "revm_interpreter::instructions::system::caller" caller.
     
     (*
     pub fn codesize<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1173,6 +1180,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_codesize :
+      M.IsFunction "revm_interpreter::instructions::system::codesize" codesize.
     
     (*
     pub fn codecopy<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2007,6 +2017,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_codecopy :
+      M.IsFunction "revm_interpreter::instructions::system::codecopy" codecopy.
+    
     (*
     pub fn calldataload<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -2306,9 +2319,9 @@ Module instructions.
                                 |),
                                 [
                                   Value.Integer 32;
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "bytes::bytes::Bytes",
                                         "len",
@@ -2336,9 +2349,8 @@ Module instructions.
                                           ]
                                         |)
                                       ]
-                                    |),
-                                    M.read (| offset |)
-                                  |)
+                                    |))
+                                    (M.read (| offset |))
                                 ]
                               |)
                             |) in
@@ -2370,11 +2382,10 @@ Module instructions.
                                                           (Value.Integer 32),
                                                         ltac:(M.monadic
                                                           (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| offset |),
-                                                              M.read (| count |)
-                                                            |))
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| offset |))
+                                                              (M.read (| count |)))
                                                             (M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path "bytes::bytes::Bytes",
@@ -2541,6 +2552,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_calldataload :
+      M.IsFunction "revm_interpreter::instructions::system::calldataload" calldataload.
     
     (*
     pub fn calldatasize<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2709,6 +2723,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_calldatasize :
+      M.IsFunction "revm_interpreter::instructions::system::calldatasize" calldatasize.
+    
     (*
     pub fn callvalue<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -2848,6 +2865,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_callvalue :
+      M.IsFunction "revm_interpreter::instructions::system::callvalue" callvalue.
     
     (*
     pub fn calldatacopy<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -3544,6 +3564,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_calldatacopy :
+      M.IsFunction "revm_interpreter::instructions::system::calldatacopy" calldatacopy.
+    
     (*
     pub fn returndatasize<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
         check!(interpreter, BYZANTIUM);
@@ -3758,6 +3781,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_returndatasize :
+      M.IsFunction "revm_interpreter::instructions::system::returndatasize" returndatasize.
     
     (*
     pub fn returndatacopy<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -4589,6 +4615,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_returndatacopy :
+      M.IsFunction "revm_interpreter::instructions::system::returndatacopy" returndatacopy.
+    
     (*
     pub fn returndataload<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         require_eof!(interpreter);
@@ -5010,11 +5039,10 @@ Module instructions.
                                   [
                                     ("start", M.read (| offset_usize |));
                                     ("end_",
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| offset_usize |),
-                                        Value.Integer 32
-                                      |))
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| offset_usize |))
+                                        (Value.Integer 32))
                                   ]
                               ]
                             |)
@@ -5028,6 +5056,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_returndataload :
+      M.IsFunction "revm_interpreter::instructions::system::returndataload" returndataload.
     
     (*
     pub fn gas<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -5180,5 +5211,7 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_gas : M.IsFunction "revm_interpreter::instructions::system::gas" gas.
   End system.
 End instructions.

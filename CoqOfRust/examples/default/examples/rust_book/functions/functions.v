@@ -38,7 +38,7 @@ Definition is_divisible_by (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (|
               BinOp.Pure.eq
-                (BinOp.Panic.rem (| Integer.U32, M.read (| lhs |), M.read (| rhs |) |))
+                (BinOp.Wrap.rem Integer.U32 (M.read (| lhs |)) (M.read (| rhs |)))
                 (Value.Integer 0)
             |)
           |)))

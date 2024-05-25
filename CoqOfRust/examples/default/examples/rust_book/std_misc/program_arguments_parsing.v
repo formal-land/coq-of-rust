@@ -41,11 +41,10 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.I32,
-                                      M.read (| number |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add
+                                      Integer.I32
+                                      (M.read (| number |))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |)
@@ -104,11 +103,10 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.I32,
-                                      M.read (| number |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.I32
+                                      (M.read (| number |))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |)

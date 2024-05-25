@@ -210,6 +210,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_chainid :
+      M.IsFunction "revm_interpreter::instructions::host_env::chainid" chainid.
+    
     (*
     pub fn coinbase<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -366,6 +369,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_coinbase :
+      M.IsFunction "revm_interpreter::instructions::host_env::coinbase" coinbase.
+    
     (*
     pub fn timestamp<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -515,6 +521,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_timestamp :
+      M.IsFunction "revm_interpreter::instructions::host_env::timestamp" timestamp.
+    
     (*
     pub fn block_number<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -663,6 +672,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_block_number :
+      M.IsFunction "revm_interpreter::instructions::host_env::block_number" block_number.
     
     (*
     pub fn difficulty<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -933,6 +945,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_difficulty :
+      M.IsFunction "revm_interpreter::instructions::host_env::difficulty" difficulty.
+    
     (*
     pub fn gaslimit<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -1082,6 +1097,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_gaslimit :
+      M.IsFunction "revm_interpreter::instructions::host_env::gaslimit" gaslimit.
+    
     (*
     pub fn gasprice<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -1229,6 +1247,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_gasprice :
+      M.IsFunction "revm_interpreter::instructions::host_env::gasprice" gasprice.
     
     (*
     pub fn basefee<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -1428,6 +1449,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_basefee :
+      M.IsFunction "revm_interpreter::instructions::host_env::basefee" basefee.
+    
     (*
     pub fn origin<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -1583,6 +1607,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_origin : M.IsFunction "revm_interpreter::instructions::host_env::origin" origin.
     
     (*
     pub fn blob_hash<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -1954,6 +1980,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_blob_hash :
+      M.IsFunction "revm_interpreter::instructions::host_env::blob_hash" blob_hash.
+    
     (*
     pub fn blob_basefee<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, CANCUN);
@@ -2175,5 +2204,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_blob_basefee :
+      M.IsFunction "revm_interpreter::instructions::host_env::blob_basefee" blob_basefee.
   End host_env.
 End instructions.

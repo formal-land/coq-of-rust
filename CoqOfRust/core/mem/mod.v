@@ -395,17 +395,16 @@ Module mem.
                           M.use
                             (M.alloc (|
                               BinOp.Pure.gt
-                                (BinOp.Panic.div (|
-                                  Integer.Usize,
-                                  M.call_closure (|
+                                (BinOp.Wrap.div
+                                  Integer.Usize
+                                  (M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ T ] |),
                                     []
-                                  |),
-                                  M.call_closure (|
+                                  |))
+                                  (M.call_closure (|
                                     M.get_function (| "core::mem::align_of", [ T ] |),
                                     []
-                                  |)
-                                |))
+                                  |)))
                                 (Value.Integer 4)
                             |)) in
                         let _ :=

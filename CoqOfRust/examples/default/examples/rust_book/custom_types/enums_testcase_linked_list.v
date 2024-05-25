@@ -120,18 +120,17 @@ Module Impl_enums_testcase_linked_list_List.
                     |) in
                   let tail := M.alloc (| γ0_1 |) in
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.U32,
-                      Value.Integer 1,
-                      M.call_closure (|
+                    BinOp.Wrap.add
+                      Integer.U32
+                      (Value.Integer 1)
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "enums_testcase_linked_list::List",
                           "len",
                           []
                         |),
                         [ M.read (| M.read (| tail |) |) ]
-                      |)
-                    |)
+                      |))
                   |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
             ]

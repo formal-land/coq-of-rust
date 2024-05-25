@@ -35,10 +35,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
         let _ :=
           let x := M.alloc (| Value.Integer 2 |) in
           let _ :=
-            M.write (|
-              a_binding,
-              BinOp.Panic.mul (| Integer.I32, M.read (| x |), M.read (| x |) |)
-            |) in
+            M.write (| a_binding, BinOp.Wrap.mul Integer.I32 (M.read (| x |)) (M.read (| x |)) |) in
           M.alloc (| Value.Tuple [] |) in
         let _ :=
           let _ :=

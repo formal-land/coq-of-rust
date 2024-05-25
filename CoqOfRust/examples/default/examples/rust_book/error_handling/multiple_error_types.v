@@ -50,10 +50,10 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.alloc (|
-          BinOp.Panic.mul (|
-            Integer.I32,
-            Value.Integer 2,
-            M.call_closure (|
+          BinOp.Wrap.mul
+            Integer.I32
+            (Value.Integer 2)
+            (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -67,8 +67,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   [ M.read (| M.read (| first |) |) ]
                 |)
               ]
-            |)
-          |)
+            |))
         |)
       |)))
   | _, _ => M.impossible

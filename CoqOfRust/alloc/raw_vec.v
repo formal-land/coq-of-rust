@@ -1870,17 +1870,16 @@ Module raw_vec.
                     M.call_closure (|
                       M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                       [
-                        BinOp.Panic.mul (|
-                          Integer.Usize,
-                          M.read (|
+                        BinOp.Wrap.mul
+                          Integer.Usize
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "alloc::raw_vec::RawVec",
                               "cap"
                             |)
-                          |),
-                          Value.Integer 2
-                        |);
+                          |))
+                          (Value.Integer 2);
                         M.read (| required_cap |)
                       ]
                     |)

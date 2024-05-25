@@ -52,10 +52,7 @@ Module Impl_trait_incrementer_Incrementer.
                 "trait_incrementer::Incrementer",
                 "value"
               |) in
-            M.write (|
-              β,
-              BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| delta |) |)
-            |) in
+            M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| delta |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible

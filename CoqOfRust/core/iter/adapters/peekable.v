@@ -660,10 +660,10 @@ Module iter.
                             0
                           |) in
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            Value.Integer 1,
-                            M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (Value.Integer 1)
+                            (M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 I,
@@ -680,8 +680,7 @@ Module iter.
                                   |)
                                 |)
                               ]
-                            |)
-                          |)
+                            |))
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -806,7 +805,7 @@ Module iter.
                                 "core::iter::adapters::peekable::Peekable",
                                 "iter"
                               |);
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (Value.Integer 1)
                             ]
                           |)
                         |)));

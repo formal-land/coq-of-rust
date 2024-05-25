@@ -186,11 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.U32,
-                                      Value.Integer 1,
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.U32 (Value.Integer 1) (Value.Integer 1)
                                   |)
                                 ]
                               |)
@@ -244,23 +240,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   let x := M.alloc (| Value.Integer 1 |) in
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.U32,
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        BinOp.Panic.mul (|
-                                          Integer.U32,
-                                          M.read (| x |),
-                                          M.read (| x |)
-                                        |),
-                                        BinOp.Panic.mul (|
-                                          Integer.U32,
-                                          Value.Integer 2,
-                                          M.read (| x |)
-                                        |)
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.U32
+                                      (BinOp.Wrap.add
+                                        Integer.U32
+                                        (BinOp.Wrap.mul
+                                          Integer.U32
+                                          (M.read (| x |))
+                                          (M.read (| x |)))
+                                        (BinOp.Wrap.mul
+                                          Integer.U32
+                                          (Value.Integer 2)
+                                          (M.read (| x |))))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |)

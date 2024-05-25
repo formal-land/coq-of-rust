@@ -1634,13 +1634,13 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| old_len |),
-                              M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| β |))
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (| old_len |))
+                              (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
@@ -1655,9 +1655,7 @@ Module str.
                                     "iter"
                                   |)
                                 ]
-                              |)
-                            |)
-                          |)
+                              |)))
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1911,17 +1909,16 @@ Module str.
                                     "core::str::pattern::CharSearcher",
                                     "utf8_encoded"
                                   |));
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (|
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::str::pattern::CharSearcher",
                                       "utf8_size"
                                     |)
-                                  |),
-                                  Value.Integer 1
-                                |)
+                                  |))
+                                  (Value.Integer 1)
                               ]
                             |)
                           |) in
@@ -1953,15 +1950,13 @@ Module str.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| index |),
-                                        Value.Integer 1
-                                      |)
-                                    |)
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| β |))
+                                      (BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| index |))
+                                        (Value.Integer 1))
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -1994,23 +1989,22 @@ Module str.
                                           |) in
                                         let found_char :=
                                           M.alloc (|
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (|
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::str::pattern::CharSearcher",
                                                   "finger"
                                                 |)
-                                              |),
-                                              M.read (|
+                                              |))
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::str::pattern::CharSearcher",
                                                   "utf8_size"
                                                 |)
-                                              |)
-                                            |)
+                                              |))
                                           |) in
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -2360,13 +2354,13 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| old_len |),
-                              M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.read (| β |))
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (| old_len |))
+                              (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
@@ -2381,9 +2375,7 @@ Module str.
                                     "iter"
                                   |)
                                 ]
-                              |)
-                            |)
-                          |)
+                              |)))
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2649,17 +2641,16 @@ Module str.
                                         "core::str::pattern::CharSearcher",
                                         "utf8_encoded"
                                       |));
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::str::pattern::CharSearcher",
                                           "utf8_size"
                                         |)
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                      |))
+                                      (Value.Integer 1)
                                   ]
                                 |)
                               |) in
@@ -2684,31 +2675,29 @@ Module str.
                                     let index := M.copy (| γ0_0 |) in
                                     let index :=
                                       M.alloc (|
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::CharSearcher",
                                               "finger"
                                             |)
-                                          |),
-                                          M.read (| index |)
-                                        |)
+                                          |))
+                                          (M.read (| index |))
                                       |) in
                                     let shift :=
                                       M.alloc (|
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::CharSearcher",
                                               "utf8_size"
                                             |)
-                                          |),
-                                          Value.Integer 1
-                                        |)
+                                          |))
+                                          (Value.Integer 1)
                                       |) in
                                     let _ :=
                                       M.match_operator (|
@@ -2730,11 +2719,10 @@ Module str.
                                                 |) in
                                               let found_char :=
                                                 M.alloc (|
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| index |),
-                                                    M.read (| shift |)
-                                                  |)
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| index |))
+                                                    (M.read (| shift |))
                                                 |) in
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
@@ -2764,17 +2752,16 @@ Module str.
                                                                   ("start",
                                                                     M.read (| found_char |));
                                                                   ("end_",
-                                                                    BinOp.Panic.add (|
-                                                                      Integer.Usize,
-                                                                      M.read (| found_char |),
-                                                                      M.read (|
+                                                                    BinOp.Wrap.add
+                                                                      Integer.Usize
+                                                                      (M.read (| found_char |))
+                                                                      (M.read (|
                                                                         M.SubPointer.get_struct_record_field (|
                                                                           M.read (| self |),
                                                                           "core::str::pattern::CharSearcher",
                                                                           "utf8_size"
                                                                         |)
-                                                                      |)
-                                                                    |))
+                                                                      |)))
                                                                 ]
                                                             ]
                                                           |)
@@ -2894,9 +2881,9 @@ Module str.
                                                                                   "finger_back"
                                                                                 |)
                                                                               |);
-                                                                              BinOp.Panic.add (|
-                                                                                Integer.Usize,
-                                                                                M.read (|
+                                                                              BinOp.Wrap.add
+                                                                                Integer.Usize
+                                                                                (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -2904,8 +2891,8 @@ Module str.
                                                                                     "core::str::pattern::CharSearcher",
                                                                                     "finger_back"
                                                                                   |)
-                                                                                |),
-                                                                                M.read (|
+                                                                                |))
+                                                                                (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -2913,8 +2900,7 @@ Module str.
                                                                                     "core::str::pattern::CharSearcher",
                                                                                     "utf8_size"
                                                                                   |)
-                                                                                |)
-                                                                              |)
+                                                                                |))
                                                                             ]
                                                                         ]
                                                                     |)
@@ -3875,11 +3861,10 @@ Module str.
                               |) in
                             let char_len :=
                               M.alloc (|
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| pre_len |),
-                                  M.read (| len |)
-                                |)
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| pre_len |))
+                                  (M.read (| len |))
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -3920,11 +3905,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Match"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| i |),
-                                                  M.read (| char_len |)
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| i |))
+                                                  (M.read (| char_len |))
                                               ]
                                           |)
                                         |)
@@ -3940,11 +3924,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Reject"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| i |),
-                                                  M.read (| char_len |)
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| i |))
+                                                  (M.read (| char_len |))
                                               ]
                                           |)
                                         |)
@@ -4088,11 +4071,10 @@ Module str.
                               |) in
                             let char_len :=
                               M.alloc (|
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| pre_len |),
-                                  M.read (| len |)
-                                |)
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| pre_len |))
+                                  (M.read (| len |))
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -4133,11 +4115,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Match"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| i |),
-                                                  M.read (| char_len |)
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| i |))
+                                                  (M.read (| char_len |))
                                               ]
                                           |)
                                         |)
@@ -4153,11 +4134,10 @@ Module str.
                                               "core::str::pattern::SearchStep::Reject"
                                               [
                                                 M.read (| i |);
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| i |),
-                                                  M.read (| char_len |)
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| i |))
+                                                  (M.read (| char_len |))
                                               ]
                                           |)
                                         |)
@@ -7422,13 +7402,13 @@ Module str.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let i :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (| Ty.path "str", "len", [] |),
                               [ M.read (| haystack |) ]
-                            |),
-                            M.call_closure (|
+                            |))
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                 "len",
@@ -7440,8 +7420,7 @@ Module str.
                                   [ M.read (| self |) ]
                                 |)
                               ]
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -8352,18 +8331,17 @@ Module str.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| β |),
-                                        M.call_closure (|
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "char",
                                             "len_utf8",
                                             []
                                           |),
                                           [ M.read (| ch |) ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.alloc (|
                                     Value.StructTuple
@@ -8549,11 +8527,10 @@ Module str.
                                                   let β := b in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -9105,18 +9082,17 @@ Module str.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| β |),
-                                        M.call_closure (|
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "char",
                                             "len_utf8",
                                             []
                                           |),
                                           [ M.read (| ch |) ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.alloc (|
                                     Value.StructTuple
@@ -9287,11 +9263,10 @@ Module str.
                                                   let β := a in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.sub (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -10080,11 +10055,10 @@ Module str.
                                                               [
                                                                 ("start", M.read (| period |));
                                                                 ("end_",
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| period |),
-                                                                    M.read (| crit_pos |)
-                                                                  |))
+                                                                  BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| period |))
+                                                                    (M.read (| crit_pos |)))
                                                               ]
                                                           ]
                                                         |)
@@ -10098,17 +10072,17 @@ Module str.
                                                 |) in
                                               let crit_pos_back :=
                                                 M.alloc (|
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.call_closure (|
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
                                                       [ M.read (| needle |) ]
-                                                    |),
-                                                    M.call_closure (|
+                                                    |))
+                                                    (M.call_closure (|
                                                       M.get_function (|
                                                         "core::cmp::max",
                                                         [ Ty.path "usize" ]
@@ -10141,8 +10115,7 @@ Module str.
                                                           ]
                                                         |)
                                                       ]
-                                                    |)
-                                                  |)
+                                                    |))
                                                 |) in
                                               M.alloc (|
                                                 Value.StructRecord
@@ -10209,18 +10182,18 @@ Module str.
                                                     ("crit_pos", M.read (| crit_pos |));
                                                     ("crit_pos_back", M.read (| crit_pos |));
                                                     ("period",
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_function (|
                                                             "core::cmp::max",
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [
                                                             M.read (| crit_pos |);
-                                                            BinOp.Panic.sub (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            BinOp.Wrap.sub
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
@@ -10229,13 +10202,11 @@ Module str.
                                                                   []
                                                                 |),
                                                                 [ M.read (| needle |) ]
-                                                              |),
-                                                              M.read (| crit_pos |)
-                                                            |)
+                                                              |))
+                                                              (M.read (| crit_pos |))
                                                           ]
-                                                        |),
-                                                        Value.Integer 1
-                                                      |));
+                                                        |))
+                                                        (Value.Integer 1));
                                                     ("byteset",
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -10324,10 +10295,11 @@ Module str.
                                         (let γ := M.read (| γ |) in
                                         let b := M.copy (| γ |) in
                                         BinOp.Pure.bit_or
-                                          (BinOp.Panic.shl (|
-                                            Value.Integer 1,
-                                            BinOp.Pure.bit_and (M.read (| b |)) (Value.Integer 63)
-                                          |))
+                                          (BinOp.Wrap.shl
+                                            (Value.Integer 1)
+                                            (BinOp.Pure.bit_and
+                                              (M.read (| b |))
+                                              (Value.Integer 63)))
                                           (M.read (| a |))))
                                   ]
                                 |)))
@@ -10356,16 +10328,15 @@ Module str.
             let byte := M.alloc (| byte |) in
             BinOp.Pure.ne
               (BinOp.Pure.bit_and
-                (BinOp.Panic.shr (|
-                  M.read (|
+                (BinOp.Wrap.shr
+                  (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::str::pattern::TwoWaySearcher",
                       "byteset"
                     |)
-                  |),
-                  M.rust_cast (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 63))
-                |))
+                  |))
+                  (M.rust_cast (BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 63))))
                 (Value.Integer 1))
               (Value.Integer 0)))
         | _, _ => M.impossible
@@ -10466,18 +10437,17 @@ Module str.
                     |) in
                   let needle_last :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                             "len",
                             []
                           |),
                           [ M.read (| needle |) ]
-                        |),
-                        Value.Integer 1
-                      |)
+                        |))
+                        (Value.Integer 1)
                     |) in
                   M.alloc (|
                     M.never_to_any (|
@@ -10496,17 +10466,16 @@ Module str.
                                       |),
                                       [
                                         M.read (| haystack |);
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::str::pattern::TwoWaySearcher",
                                               "position"
                                             |)
-                                          |),
-                                          M.read (| needle_last |)
-                                        |)
+                                          |))
+                                          (M.read (| needle_last |))
                                       ]
                                     |)
                                   |),
@@ -10673,18 +10642,17 @@ Module str.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  M.call_closure (|
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| needle |) ]
-                                                  |)
-                                                |)
+                                                  |))
                                               |) in
                                             let _ :=
                                               M.match_operator (|
@@ -10860,17 +10828,16 @@ Module str.
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              |))
+                                                                              (M.read (| i |))
                                                                           |)
                                                                         |)
                                                                       |))
@@ -10892,25 +10859,22 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Panic.add (|
-                                                                          Integer.Usize,
-                                                                          M.read (| β |),
-                                                                          BinOp.Panic.add (|
-                                                                            Integer.Usize,
-                                                                            BinOp.Panic.sub (|
-                                                                              Integer.Usize,
-                                                                              M.read (| i |),
-                                                                              M.read (|
+                                                                        BinOp.Wrap.add
+                                                                          Integer.Usize
+                                                                          (M.read (| β |))
+                                                                          (BinOp.Wrap.add
+                                                                            Integer.Usize
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.Usize
+                                                                              (M.read (| i |))
+                                                                              (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "crit_pos"
                                                                                 |)
-                                                                              |)
-                                                                            |),
-                                                                            Value.Integer 1
-                                                                          |)
-                                                                        |)
+                                                                              |)))
+                                                                            (Value.Integer 1))
                                                                       |) in
                                                                     let _ :=
                                                                       M.match_operator (|
@@ -11103,17 +11067,16 @@ Module str.
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (| self |),
                                                                                   "core::str::pattern::TwoWaySearcher",
                                                                                   "position"
                                                                                 |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              |))
+                                                                              (M.read (| i |))
                                                                           |)
                                                                         |)
                                                                       |))
@@ -11135,17 +11098,16 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Panic.add (|
-                                                                          Integer.Usize,
-                                                                          M.read (| β |),
-                                                                          M.read (|
+                                                                        BinOp.Wrap.add
+                                                                          Integer.Usize
+                                                                          (M.read (| β |))
+                                                                          (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
-                                                                          |)
-                                                                        |)
+                                                                          |))
                                                                       |) in
                                                                     let _ :=
                                                                       M.match_operator (|
@@ -11177,9 +11139,9 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "memory"
                                                                                   |),
-                                                                                  BinOp.Panic.sub (|
-                                                                                    Integer.Usize,
-                                                                                    M.call_closure (|
+                                                                                  BinOp.Wrap.sub
+                                                                                    Integer.Usize
+                                                                                    (M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -11196,8 +11158,8 @@ Module str.
                                                                                           needle
                                                                                         |)
                                                                                       ]
-                                                                                    |),
-                                                                                    M.read (|
+                                                                                    |))
+                                                                                    (M.read (|
                                                                                       M.SubPointer.get_struct_record_field (|
                                                                                         M.read (|
                                                                                           self
@@ -11205,8 +11167,7 @@ Module str.
                                                                                         "core::str::pattern::TwoWaySearcher",
                                                                                         "period"
                                                                                       |)
-                                                                                    |)
-                                                                                  |)
+                                                                                    |))
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 Value.Tuple []
@@ -11250,18 +11211,17 @@ Module str.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| β |),
-                                  M.call_closure (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (| β |))
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |)
-                                |)
+                                  |))
                               |) in
                             let _ :=
                               M.match_operator (|
@@ -11303,18 +11263,17 @@ Module str.
                                 |),
                                 [
                                   M.read (| match_pos |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| match_pos |),
-                                    M.call_closure (|
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| match_pos |))
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| needle |) ]
-                                    |)
-                                  |)
+                                    |))
                                 ]
                               |)
                             |)))
@@ -11613,18 +11572,17 @@ Module str.
                                                 |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  M.call_closure (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| needle |) ]
-                                                  |)
-                                                |)
+                                                  |))
                                               |) in
                                             let _ :=
                                               M.match_operator (|
@@ -11822,11 +11780,11 @@ Module str.
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              BinOp.Panic.sub (|
-                                                                                Integer.Usize,
-                                                                                M.read (|
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (BinOp.Wrap.sub
+                                                                                Integer.Usize
+                                                                                (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -11834,8 +11792,8 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
                                                                                   |)
-                                                                                |),
-                                                                                M.call_closure (|
+                                                                                |))
+                                                                                (M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -11850,10 +11808,8 @@ Module str.
                                                                                       needle
                                                                                     |)
                                                                                   ]
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                                |)))
+                                                                              (M.read (| i |))
                                                                           |)
                                                                         |)
                                                                       |))
@@ -11875,21 +11831,19 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Panic.sub (|
-                                                                          Integer.Usize,
-                                                                          M.read (| β |),
-                                                                          BinOp.Panic.sub (|
-                                                                            Integer.Usize,
-                                                                            M.read (|
+                                                                        BinOp.Wrap.sub
+                                                                          Integer.Usize
+                                                                          (M.read (| β |))
+                                                                          (BinOp.Wrap.sub
+                                                                            Integer.Usize
+                                                                            (M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.read (| self |),
                                                                                 "core::str::pattern::TwoWaySearcher",
                                                                                 "crit_pos_back"
                                                                               |)
-                                                                            |),
-                                                                            M.read (| i |)
-                                                                          |)
-                                                                        |)
+                                                                            |))
+                                                                            (M.read (| i |)))
                                                                       |) in
                                                                     let _ :=
                                                                       M.match_operator (|
@@ -12087,11 +12041,11 @@ Module str.
                                                                         M.SubPointer.get_array_field (|
                                                                           M.read (| haystack |),
                                                                           M.alloc (|
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              BinOp.Panic.sub (|
-                                                                                Integer.Usize,
-                                                                                M.read (|
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (BinOp.Wrap.sub
+                                                                                Integer.Usize
+                                                                                (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       self
@@ -12099,8 +12053,8 @@ Module str.
                                                                                     "core::str::pattern::TwoWaySearcher",
                                                                                     "end"
                                                                                   |)
-                                                                                |),
-                                                                                M.call_closure (|
+                                                                                |))
+                                                                                (M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -12115,10 +12069,8 @@ Module str.
                                                                                       needle
                                                                                     |)
                                                                                   ]
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                                |)))
+                                                                              (M.read (| i |))
                                                                           |)
                                                                         |)
                                                                       |))
@@ -12140,17 +12092,16 @@ Module str.
                                                                         |) in
                                                                       M.write (|
                                                                         β,
-                                                                        BinOp.Panic.sub (|
-                                                                          Integer.Usize,
-                                                                          M.read (| β |),
-                                                                          M.read (|
+                                                                        BinOp.Wrap.sub
+                                                                          Integer.Usize
+                                                                          (M.read (| β |))
+                                                                          (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
                                                                               "core::str::pattern::TwoWaySearcher",
                                                                               "period"
                                                                             |)
-                                                                          |)
-                                                                        |)
+                                                                          |))
                                                                       |) in
                                                                     let _ :=
                                                                       M.match_operator (|
@@ -12219,24 +12170,23 @@ Module str.
                                 |)) in
                             let match_pos :=
                               M.alloc (|
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (|
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::str::pattern::TwoWaySearcher",
                                       "end"
                                     |)
-                                  |),
-                                  M.call_closure (|
+                                  |))
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |)
-                                |)
+                                  |))
                               |) in
                             let _ :=
                               let β :=
@@ -12247,18 +12197,17 @@ Module str.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| β |),
-                                  M.call_closure (|
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| β |))
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| needle |) ]
-                                  |)
-                                |)
+                                  |))
                               |) in
                             let _ :=
                               M.match_operator (|
@@ -12307,18 +12256,17 @@ Module str.
                                 |),
                                 [
                                   M.read (| match_pos |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| match_pos |),
-                                    M.call_closure (|
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| match_pos |))
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| needle |) ]
-                                    |)
-                                  |)
+                                    |))
                                 ]
                               |)
                             |)))
@@ -12397,11 +12345,10 @@ Module str.
                                   |),
                                   [
                                     M.read (| arr |);
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| right |),
-                                      M.read (| offset |)
-                                    |)
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| right |))
+                                      (M.read (| offset |))
                                   ]
                                 |)
                               |) in
@@ -12418,11 +12365,10 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| left |),
-                                      M.read (| offset |)
-                                    |)
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| left |))
+                                      (M.read (| offset |))
                                   |)
                                 |)
                               |) in
@@ -12456,25 +12402,22 @@ Module str.
                                       let β := right in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| β |),
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| offset |),
-                                            Value.Integer 1
-                                          |)
-                                        |)
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (| β |))
+                                          (BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| offset |))
+                                            (Value.Integer 1))
                                       |) in
                                     let _ := M.write (| offset, Value.Integer 0 |) in
                                     let _ :=
                                       M.write (|
                                         period,
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| right |),
-                                          M.read (| left |)
-                                        |)
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| right |))
+                                          (M.read (| left |))
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -12503,11 +12446,10 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           BinOp.Pure.eq
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| offset |),
-                                                              Value.Integer 1
-                                                            |))
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| offset |))
+                                                              (Value.Integer 1))
                                                             (M.read (| period |))
                                                         |)) in
                                                     let _ :=
@@ -12519,15 +12461,13 @@ Module str.
                                                       let β := right in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Panic.add (|
-                                                          Integer.Usize,
-                                                          M.read (| β |),
-                                                          BinOp.Panic.add (|
-                                                            Integer.Usize,
-                                                            M.read (| offset |),
-                                                            Value.Integer 1
-                                                          |)
-                                                        |)
+                                                        BinOp.Wrap.add
+                                                          Integer.Usize
+                                                          (M.read (| β |))
+                                                          (BinOp.Wrap.add
+                                                            Integer.Usize
+                                                            (M.read (| offset |))
+                                                            (Value.Integer 1))
                                                       |) in
                                                     let _ :=
                                                       M.write (| offset, Value.Integer 0 |) in
@@ -12538,11 +12478,10 @@ Module str.
                                                       let β := offset in
                                                       M.write (|
                                                         β,
-                                                        BinOp.Panic.add (|
-                                                          Integer.Usize,
-                                                          M.read (| β |),
-                                                          Value.Integer 1
-                                                        |)
+                                                        BinOp.Wrap.add
+                                                          Integer.Usize
+                                                          (M.read (| β |))
+                                                          (Value.Integer 1)
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)))
                                               ]
@@ -12554,11 +12493,10 @@ Module str.
                                               let β := right in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (Value.Integer 1)
                                               |) in
                                             let _ := M.write (| offset, Value.Integer 0 |) in
                                             let _ := M.write (| period, Value.Integer 1 |) in
@@ -12664,11 +12602,10 @@ Module str.
                               M.use
                                 (M.alloc (|
                                   BinOp.Pure.lt
-                                    (BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| right |),
-                                      M.read (| offset |)
-                                    |))
+                                    (BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| right |))
+                                      (M.read (| offset |)))
                                     (M.read (| n |))
                                 |)) in
                             let _ :=
@@ -12678,19 +12615,16 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          Value.Integer 1,
-                                          M.read (| right |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| n |))
+                                      (BinOp.Wrap.add
+                                        Integer.Usize
+                                        (BinOp.Wrap.add
+                                          Integer.Usize
+                                          (Value.Integer 1)
+                                          (M.read (| right |)))
+                                        (M.read (| offset |)))
                                   |)
                                 |)
                               |) in
@@ -12699,19 +12633,16 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.read (| arr |),
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          Value.Integer 1,
-                                          M.read (| left |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| n |))
+                                      (BinOp.Wrap.add
+                                        Integer.Usize
+                                        (BinOp.Wrap.add
+                                          Integer.Usize
+                                          (Value.Integer 1)
+                                          (M.read (| left |)))
+                                        (M.read (| offset |)))
                                   |)
                                 |)
                               |) in
@@ -12746,25 +12677,22 @@ Module str.
                                         let β := right in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| offset |),
-                                              Value.Integer 1
-                                            |)
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| offset |))
+                                              (Value.Integer 1))
                                         |) in
                                       let _ := M.write (| offset, Value.Integer 0 |) in
                                       let _ :=
                                         M.write (|
                                           period,
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| right |),
-                                            M.read (| left |)
-                                          |)
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| right |))
+                                            (M.read (| left |))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -12793,11 +12721,10 @@ Module str.
                                                         M.use
                                                           (M.alloc (|
                                                             BinOp.Pure.eq
-                                                              (BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| offset |),
-                                                                Value.Integer 1
-                                                              |))
+                                                              (BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| offset |))
+                                                                (Value.Integer 1))
                                                               (M.read (| period |))
                                                           |)) in
                                                       let _ :=
@@ -12809,15 +12736,13 @@ Module str.
                                                         let β := right in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Panic.add (|
-                                                            Integer.Usize,
-                                                            M.read (| β |),
-                                                            BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| offset |),
-                                                              Value.Integer 1
-                                                            |)
-                                                          |)
+                                                          BinOp.Wrap.add
+                                                            Integer.Usize
+                                                            (M.read (| β |))
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| offset |))
+                                                              (Value.Integer 1))
                                                         |) in
                                                       let _ :=
                                                         M.write (| offset, Value.Integer 0 |) in
@@ -12828,11 +12753,10 @@ Module str.
                                                         let β := offset in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Panic.add (|
-                                                            Integer.Usize,
-                                                            M.read (| β |),
-                                                            Value.Integer 1
-                                                          |)
+                                                          BinOp.Wrap.add
+                                                            Integer.Usize
+                                                            (M.read (| β |))
+                                                            (Value.Integer 1)
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)))
                                                 ]
@@ -12844,11 +12768,10 @@ Module str.
                                                 let β := right in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               let _ := M.write (| offset, Value.Integer 0 |) in
                                               let _ := M.write (| period, Value.Integer 1 |) in
@@ -13300,18 +13223,17 @@ Module str.
                   |) in
                 let last_byte_offset :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                           "len",
                           []
                         |),
                         [ M.read (| needle |) ]
-                      |),
-                      Value.Integer 1
-                    |)
+                      |))
+                      (Value.Integer 1)
                   |) in
                 let second_probe_offset :=
                   M.copy (|
@@ -13451,13 +13373,12 @@ Module str.
                                     |),
                                     [ M.read (| haystack |) ]
                                   |))
-                                  (BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (|
+                                  (BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (|
                                       M.get_constant (| "core::core_simd::vector::LEN" |)
-                                    |),
-                                    M.read (| last_byte_offset |)
-                                  |))
+                                    |))
+                                    (M.read (| last_byte_offset |)))
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13694,18 +13615,16 @@ Module str.
                                                                         |) in
                                                                       let offset :=
                                                                         M.alloc (|
-                                                                          BinOp.Panic.add (|
-                                                                            Integer.Usize,
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              M.read (| idx |),
-                                                                              M.rust_cast
+                                                                          BinOp.Wrap.add
+                                                                            Integer.Usize
+                                                                            (BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (| idx |))
+                                                                              (M.rust_cast
                                                                                 (M.read (|
                                                                                   trailing
-                                                                                |))
-                                                                            |),
-                                                                            Value.Integer 1
-                                                                          |)
+                                                                                |))))
+                                                                            (Value.Integer 1)
                                                                         |) in
                                                                       let _ :=
                                                                         let sub :=
@@ -13839,12 +13758,11 @@ Module str.
                                                                           BinOp.Pure.bit_and
                                                                             (M.read (| β |))
                                                                             (UnOp.Pure.not
-                                                                              (BinOp.Panic.shl (|
-                                                                                Value.Integer 1,
-                                                                                M.read (|
+                                                                              (BinOp.Wrap.shl
+                                                                                (Value.Integer 1)
+                                                                                (M.read (|
                                                                                   trailing
-                                                                                |)
-                                                                              |)))
+                                                                                |))))
                                                                         |) in
                                                                       M.alloc (|
                                                                         Value.Tuple []
@@ -14102,25 +14020,22 @@ Module str.
                                   (M.alloc (|
                                     LogicalOp.and (|
                                       BinOp.Pure.lt
-                                        (BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| i |),
-                                            M.read (| last_byte_offset |)
-                                          |),
-                                          BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (|
+                                        (BinOp.Wrap.add
+                                          Integer.Usize
+                                          (BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| i |))
+                                            (M.read (| last_byte_offset |)))
+                                          (BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (|
                                               M.get_constant (|
                                                 "core::str::pattern::simd_contains::UNROLL"
                                               |)
-                                            |),
-                                            M.read (|
+                                            |))
+                                            (M.read (|
                                               M.get_constant (| "core::core_simd::vector::LEN" |)
-                                            |)
-                                          |)
-                                        |))
+                                            |))))
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -14226,19 +14141,17 @@ Module str.
                                                                 test_chunk;
                                                                 Value.Tuple
                                                                   [
-                                                                    BinOp.Panic.add (|
-                                                                      Integer.Usize,
-                                                                      M.read (| i |),
-                                                                      BinOp.Panic.mul (|
-                                                                        Integer.Usize,
-                                                                        M.read (| j |),
-                                                                        M.read (|
+                                                                    BinOp.Wrap.add
+                                                                      Integer.Usize
+                                                                      (M.read (| i |))
+                                                                      (BinOp.Wrap.mul
+                                                                        Integer.Usize
+                                                                        (M.read (| j |))
+                                                                        (M.read (|
                                                                           M.get_constant (|
                                                                             "core::core_simd::vector::LEN"
                                                                           |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
+                                                                        |)))
                                                                   ]
                                                               ]
                                                             |)
@@ -14376,19 +14289,17 @@ Module str.
                                                                           check_mask;
                                                                           Value.Tuple
                                                                             [
-                                                                              BinOp.Panic.add (|
-                                                                                Integer.Usize,
-                                                                                M.read (| i |),
-                                                                                BinOp.Panic.mul (|
-                                                                                  Integer.Usize,
-                                                                                  M.read (| j |),
-                                                                                  M.read (|
+                                                                              BinOp.Wrap.add
+                                                                                Integer.Usize
+                                                                                (M.read (| i |))
+                                                                                (BinOp.Wrap.mul
+                                                                                  Integer.Usize
+                                                                                  (M.read (| j |))
+                                                                                  (M.read (|
                                                                                     M.get_constant (|
                                                                                       "core::core_simd::vector::LEN"
                                                                                     |)
-                                                                                  |)
-                                                                                |)
-                                                                              |);
+                                                                                  |)));
                                                                               M.read (| mask |);
                                                                               M.read (| result |)
                                                                             ]
@@ -14411,21 +14322,19 @@ Module str.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    BinOp.Panic.mul (|
-                                      Integer.Usize,
-                                      M.read (|
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| β |))
+                                    (BinOp.Wrap.mul
+                                      Integer.Usize
+                                      (M.read (|
                                         M.get_constant (|
                                           "core::str::pattern::simd_contains::UNROLL"
                                         |)
-                                      |),
-                                      M.read (|
+                                      |))
+                                      (M.read (|
                                         M.get_constant (| "core::core_simd::vector::LEN" |)
-                                      |)
-                                    |)
-                                  |)
+                                      |)))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -14457,17 +14366,15 @@ Module str.
                                   (M.alloc (|
                                     LogicalOp.and (|
                                       BinOp.Pure.lt
-                                        (BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| i |),
-                                            M.read (| last_byte_offset |)
-                                          |),
-                                          M.read (|
+                                        (BinOp.Wrap.add
+                                          Integer.Usize
+                                          (BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| i |))
+                                            (M.read (| last_byte_offset |)))
+                                          (M.read (|
                                             M.get_constant (| "core::core_simd::vector::LEN" |)
-                                          |)
-                                        |))
+                                          |)))
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -14562,11 +14469,12 @@ Module str.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| β |))
+                                    (M.read (|
+                                      M.get_constant (| "core::core_simd::vector::LEN" |)
+                                    |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -14587,22 +14495,20 @@ Module str.
                   |) in
                 let i :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                             "len",
                             []
                           |),
                           [ M.read (| haystack |) ]
-                        |),
-                        M.read (| last_byte_offset |)
-                      |),
-                      M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |)
-                    |)
+                        |))
+                        (M.read (| last_byte_offset |)))
+                      (M.read (| M.get_constant (| "core::core_simd::vector::LEN" |) |))
                   |) in
                 let mask :=
                   M.alloc (|
@@ -15056,18 +14962,17 @@ Module str.
                                   |),
                                   [
                                     M.read (| px |);
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| x |) ]
-                                      |),
-                                      Value.Integer 4
-                                    |)
+                                      |))
+                                      (Value.Integer 4)
                                   ]
                                 |);
                                 M.call_closure (|
@@ -15078,18 +14983,17 @@ Module str.
                                   |),
                                   [
                                     M.read (| py |);
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| y |) ]
-                                      |),
-                                      Value.Integer 4
-                                    |)
+                                      |))
+                                      (Value.Integer 4)
                                   ]
                                 |)
                               ]

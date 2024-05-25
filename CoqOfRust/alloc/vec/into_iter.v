@@ -1189,8 +1189,7 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| step_size |) |)
-                      ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -2063,8 +2062,7 @@ Module vec.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| step_size |) |)
-                      ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"

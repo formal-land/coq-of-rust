@@ -364,6 +364,11 @@ Module instructions.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_get_memory_input_and_out_ranges :
+        M.IsFunction
+          "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges"
+          get_memory_input_and_out_ranges.
+      
       (*
       pub fn resize_memory_and_return_range(
           interpreter: &mut Interpreter,
@@ -755,11 +760,7 @@ Module instructions.
                           [
                             ("start", M.read (| offset |));
                             ("end_",
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| offset |),
-                                M.read (| len |)
-                              |))
+                              BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| len |)))
                           ]
                       ]
                   |)
@@ -767,6 +768,11 @@ Module instructions.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_resize_memory_and_return_range :
+        M.IsFunction
+          "revm_interpreter::instructions::contract::call_helpers::resize_memory_and_return_range"
+          resize_memory_and_return_range.
       
       (*
       pub fn calc_call_gas<H: Host + ?Sized, SPEC: Spec>(
@@ -922,15 +928,13 @@ Module instructions.
                                 M.call_closure (|
                                   M.get_function (| "core::cmp::min", [ Ty.path "u64" ] |),
                                   [
-                                    BinOp.Panic.sub (|
-                                      Integer.U64,
-                                      M.read (| gas |),
-                                      BinOp.Panic.div (|
-                                        Integer.U64,
-                                        M.read (| gas |),
-                                        Value.Integer 64
-                                      |)
-                                    |);
+                                    BinOp.Wrap.sub
+                                      Integer.U64
+                                      (M.read (| gas |))
+                                      (BinOp.Wrap.div
+                                        Integer.U64
+                                        (M.read (| gas |))
+                                        (Value.Integer 64));
                                     M.read (| local_gas_limit |)
                                   ]
                                 |)
@@ -946,6 +950,11 @@ Module instructions.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_calc_call_gas :
+        M.IsFunction
+          "revm_interpreter::instructions::contract::call_helpers::calc_call_gas"
+          calc_call_gas.
     End call_helpers.
   End contract.
 End instructions.

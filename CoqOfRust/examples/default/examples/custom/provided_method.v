@@ -8,10 +8,10 @@ Module ProvidedAndRequired.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Panic.add (|
-          Integer.I32,
-          Value.Integer 42,
-          M.call_closure (|
+        BinOp.Wrap.add
+          Integer.I32
+          (Value.Integer 42)
+          (M.call_closure (|
             M.get_trait_method (|
               "provided_method::ProvidedAndRequired",
               Self,
@@ -20,8 +20,7 @@ Module ProvidedAndRequired.
               []
             |),
             [ M.read (| self |) ]
-          |)
-        |)))
+          |))))
     | _, _ => M.impossible
     end.
   

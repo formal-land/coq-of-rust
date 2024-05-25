@@ -943,15 +943,14 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
             |) in
           let y :=
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_or
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u8", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)),
-                BinOp.Panic.sub (| Integer.I32, Value.Integer 8, Value.Integer 1 |)
-              |)
+                  |)))
+                (BinOp.Wrap.sub Integer.I32 (Value.Integer 8) (Value.Integer 1))
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1057,15 +1056,14 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
             |) in
           let y :=
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_or
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u16", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)),
-                BinOp.Panic.sub (| Integer.I32, Value.Integer 16, Value.Integer 1 |)
-              |)
+                  |)))
+                (BinOp.Wrap.sub Integer.I32 (Value.Integer 16) (Value.Integer 1))
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1167,15 +1165,14 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
             |) in
           let y :=
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_or
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u32", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)),
-                BinOp.Panic.sub (| Integer.I32, Value.Integer 32, Value.Integer 1 |)
-              |)
+                  |)))
+                (BinOp.Wrap.sub Integer.I32 (Value.Integer 32) (Value.Integer 1))
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1277,15 +1274,14 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
             |) in
           let y :=
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_or
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)),
-                BinOp.Panic.sub (| Integer.I32, Value.Integer 64, Value.Integer 1 |)
-              |)
+                  |)))
+                (BinOp.Wrap.sub Integer.I32 (Value.Integer 64) (Value.Integer 1))
             |) in
           M.alloc (|
             M.call_closure (|
@@ -1387,26 +1383,23 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
             |) in
           let y :=
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_or
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_or
                   (M.read (| x |))
                   (M.call_closure (|
                     M.get_associated_function (| Ty.path "usize", "wrapping_neg", [] |),
                     [ M.read (| x |) ]
-                  |)),
-                BinOp.Panic.sub (|
-                  Integer.Usize,
-                  BinOp.Panic.mul (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  |)))
+                (BinOp.Wrap.sub
+                  Integer.Usize
+                  (BinOp.Wrap.mul
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                       []
-                    |),
-                    Value.Integer 8
-                  |),
-                  Value.Integer 1
-                |)
-              |)
+                    |))
+                    (Value.Integer 8))
+                  (Value.Integer 1))
             |) in
           M.alloc (|
             M.call_closure (|
@@ -4170,13 +4163,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4217,13 +4210,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4371,13 +4364,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4418,13 +4411,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4568,13 +4561,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4615,13 +4608,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4765,13 +4758,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| ltb |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
@@ -4812,13 +4805,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                             β,
                             BinOp.Pure.bit_or
                               (M.read (| β |))
-                              (BinOp.Panic.shr (| M.read (| bit |), M.read (| pow |) |))
+                              (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
                         let _ :=
                           let β := pow in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| pow |) |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| pow |))
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>

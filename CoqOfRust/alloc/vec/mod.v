@@ -991,17 +991,16 @@ Module vec.
                   |) in
                 let remaining_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::Vec",
                           "len"
                         |)
-                      |),
-                      M.read (| len |)
-                    |)
+                      |))
+                      (M.read (| len |))
                   |) in
                 let s :=
                   M.alloc (|
@@ -1403,7 +1402,7 @@ Module vec.
                         M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
                         [
                           M.read (| base_ptr |);
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                         ]
                       |));
                     M.call_closure (|
@@ -1424,7 +1423,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -1580,11 +1579,7 @@ Module vec.
                                   |),
                                   [ M.read (| p |); Value.Integer 1 ]
                                 |);
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  M.read (| index |)
-                                |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| index |))
                               ]
                             |)
                           |) in
@@ -1643,7 +1638,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                    BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -1770,11 +1765,10 @@ Module vec.
                           [ M.read (| ptr |); Value.Integer 1 ]
                         |));
                       M.read (| ptr |);
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| index |) |),
-                        Value.Integer 1
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| index |)))
+                        (Value.Integer 1)
                     ]
                   |)
                 |) in
@@ -1789,7 +1783,7 @@ Module vec.
                   |),
                   [
                     M.read (| self |);
-                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -2406,11 +2400,7 @@ Module vec.
                                 let β := first_duplicate_idx in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -2454,11 +2444,10 @@ Module vec.
                       "alloc::vec::dedup_by::FillGapOnDrop"
                       [
                         ("read",
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| first_duplicate_idx |),
-                            Value.Integer 1
-                          |));
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| first_duplicate_idx |))
+                            (Value.Integer 1));
                         ("write", M.read (| first_duplicate_idx |));
                         ("vec", M.read (| self |))
                       ]
@@ -2599,11 +2588,10 @@ Module vec.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       let _ :=
                                         M.alloc (|
@@ -2659,11 +2647,10 @@ Module vec.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       let _ :=
                                         let β :=
@@ -2674,11 +2661,10 @@ Module vec.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -2865,10 +2851,7 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -2989,7 +2972,7 @@ Module vec.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                      BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -3053,7 +3036,7 @@ Module vec.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -3264,10 +3247,7 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| count |) |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| count |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -3388,11 +3368,7 @@ Module vec.
                                 M.read (| start |)
                               ]
                             |);
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| end_ |),
-                              M.read (| start |)
-                            |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
                           ]
                         |)
                       |) in
@@ -3402,11 +3378,7 @@ Module vec.
                         [
                           ("tail_start", M.read (| end_ |));
                           ("tail_len",
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| len |),
-                              M.read (| end_ |)
-                            |));
+                            BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| end_ |)));
                           ("iter",
                             M.call_closure (|
                               M.get_associated_function (|
@@ -3715,17 +3687,16 @@ Module vec.
                   |) in
                 let other_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::Vec",
                           "len"
                         |)
-                      |),
-                      M.read (| at_ |)
-                    |)
+                      |))
+                      (M.read (| at_ |))
                   |) in
                 let other :=
                   M.alloc (|
@@ -3907,11 +3878,10 @@ Module vec.
                                   |),
                                   [ M.read (| f |) ]
                                 |);
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| new_len |),
-                                  M.read (| len |)
-                                |)
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| new_len |))
+                                  (M.read (| len |))
                               ]
                             |)
                           ]
@@ -4071,9 +4041,9 @@ Module vec.
                     |)
                   ]
                 |));
-              BinOp.Panic.sub (|
-                Integer.Usize,
-                M.call_closure (|
+              BinOp.Wrap.sub
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
                     "capacity",
@@ -4086,15 +4056,14 @@ Module vec.
                       "buf"
                     |)
                   ]
-                |),
-                M.read (|
+                |))
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::vec::Vec",
                     "len"
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _ => M.impossible
@@ -4220,9 +4189,9 @@ Module vec.
               |) in
             let spare_len :=
               M.alloc (|
-                BinOp.Panic.sub (|
-                  Integer.Usize,
-                  M.call_closure (|
+                BinOp.Wrap.sub
+                  Integer.Usize
+                  (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
                       "capacity",
@@ -4235,15 +4204,14 @@ Module vec.
                         "buf"
                       |)
                     ]
-                  |),
-                  M.read (|
+                  |))
+                  (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "alloc::vec::Vec",
                       "len"
                     |)
-                  |)
-                |)
+                  |))
               |) in
             let initialized :=
               M.alloc (|
@@ -4342,11 +4310,7 @@ Module vec.
                         |),
                         [
                           M.read (| self |);
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.read (| new_len |),
-                            M.read (| len |)
-                          |);
+                          BinOp.Wrap.sub Integer.Usize (M.read (| new_len |)) (M.read (| len |));
                           M.read (| value |)
                         ]
                       |)
@@ -4973,11 +4937,7 @@ Module vec.
                               |),
                               [
                                 M.read (| self |);
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  Value.Integer 1
-                                |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1)
                               ]
                             |)
                           |) in
@@ -5956,11 +5916,10 @@ Module vec.
                                               let β := M.read (| len |) in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (Value.Integer 1)
                                               |)
                                             |)))
                                       ]
@@ -6110,10 +6069,7 @@ Module vec.
                   "alloc::vec::Vec",
                   "len"
                 |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| count |) |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| count |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible

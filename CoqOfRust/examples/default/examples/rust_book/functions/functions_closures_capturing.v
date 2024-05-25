@@ -195,7 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 let β := count in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
+                                  BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               let _ :=
                                 let _ :=

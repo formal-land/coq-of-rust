@@ -2708,7 +2708,7 @@ Module slice.
                     |)
                   |) in
                 let _ :=
-                  let m := M.alloc (| BinOp.Panic.shr (| M.read (| n |), Value.Integer 1 |) |) in
+                  let m := M.alloc (| BinOp.Wrap.shr (M.read (| n |)) (Value.Integer 1) |) in
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -2813,11 +2813,10 @@ Module slice.
                                       |),
                                       [
                                         buf;
-                                        BinOp.Panic.mul (|
-                                          Integer.Usize,
-                                          M.read (| buf_len |),
-                                          Value.Integer 2
-                                        |)
+                                        BinOp.Wrap.mul
+                                          Integer.Usize
+                                          (M.read (| buf_len |))
+                                          (Value.Integer 2)
                                       ]
                                     |)
                                   |) in
@@ -2826,7 +2825,7 @@ Module slice.
                                 let β := m in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.shr (| M.read (| β |), Value.Integer 1 |)
+                                  BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -2847,10 +2846,10 @@ Module slice.
                   |) in
                 let rem_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (| capacity |),
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (| capacity |))
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -2859,8 +2858,7 @@ Module slice.
                           []
                         |),
                         [ buf ]
-                      |)
-                    |)
+                      |))
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -3470,11 +3468,11 @@ Module slice.
                   |) in
                 let size :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (BinOp.Wrap.add
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -3549,18 +3547,16 @@ Module slice.
                               ]
                             |)
                           ]
-                        |),
-                        M.call_closure (|
+                        |))
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ V ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |)
-                      |),
-                      Value.Integer 1
-                    |)
+                        |)))
+                      (Value.Integer 1)
                   |) in
                 let result :=
                   M.alloc (|
@@ -3811,9 +3807,9 @@ Module slice.
                   |) in
                 let size :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -3888,31 +3884,28 @@ Module slice.
                             ]
                           |)
                         ]
-                      |),
-                      BinOp.Panic.mul (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      |))
+                      (BinOp.Wrap.mul
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ T ],
                             "len",
                             []
                           |),
                           [ M.read (| sep |) ]
-                        |),
-                        BinOp.Panic.sub (|
-                          Integer.Usize,
-                          M.call_closure (|
+                        |))
+                        (BinOp.Wrap.sub
+                          Integer.Usize
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ V ],
                               "len",
                               []
                             |),
                             [ M.read (| slice |) ]
-                          |),
-                          Value.Integer 1
-                        |)
-                      |)
-                    |)
+                          |))
+                          (Value.Integer 1)))
                   |) in
                 let result :=
                   M.alloc (|

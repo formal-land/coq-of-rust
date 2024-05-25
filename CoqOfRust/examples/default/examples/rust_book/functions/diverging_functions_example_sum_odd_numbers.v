@@ -172,11 +172,10 @@ Module main.
                                         M.match_operator (|
                                           M.alloc (|
                                             BinOp.Pure.eq
-                                              (BinOp.Panic.rem (|
-                                                Integer.U32,
-                                                M.read (| i |),
-                                                Value.Integer 2
-                                              |))
+                                              (BinOp.Wrap.rem
+                                                Integer.U32
+                                                (M.read (| i |))
+                                                (Value.Integer 2))
                                               (Value.Integer 1)
                                           |),
                                           [
@@ -205,11 +204,10 @@ Module main.
                                       let β := acc in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (|
-                                          Integer.U32,
-                                          M.read (| β |),
-                                          M.read (| addition |)
-                                        |)
+                                        BinOp.Wrap.add
+                                          Integer.U32
+                                          (M.read (| β |))
+                                          (M.read (| addition |))
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]

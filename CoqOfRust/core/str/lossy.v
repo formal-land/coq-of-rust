@@ -966,12 +966,12 @@ Module str.
                                                                                 let _ :=
                                                                                   M.write (|
                                                                                     from,
-                                                                                    BinOp.Panic.add (|
-                                                                                      Integer.Usize,
-                                                                                      M.read (|
+                                                                                    BinOp.Wrap.add
+                                                                                      Integer.Usize
+                                                                                      (M.read (|
                                                                                         i
-                                                                                      |),
-                                                                                      M.call_closure (|
+                                                                                      |))
+                                                                                      (M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "char",
@@ -983,8 +983,7 @@ Module str.
                                                                                             c
                                                                                           |)
                                                                                         ]
-                                                                                      |)
-                                                                                    |)
+                                                                                      |))
                                                                                   |) in
                                                                                 M.alloc (|
                                                                                   Value.Tuple []
@@ -1699,11 +1698,7 @@ Module str.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 let _ :=
                                   M.match_operator (|
@@ -1800,11 +1795,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -1915,11 +1909,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -1975,11 +1968,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -2077,11 +2069,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -2137,11 +2128,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   let _ :=
                                                     M.match_operator (|
@@ -2197,11 +2187,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| β |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>

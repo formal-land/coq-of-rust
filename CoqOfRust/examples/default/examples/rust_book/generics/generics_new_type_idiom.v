@@ -31,17 +31,16 @@ Module Impl_generics_new_type_idiom_Years.
         Value.StructTuple
           "generics_new_type_idiom::Days"
           [
-            BinOp.Panic.mul (|
-              Integer.I64,
-              M.read (|
+            BinOp.Wrap.mul
+              Integer.I64
+              (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_new_type_idiom::Years",
                   0
                 |)
-              |),
-              Value.Integer 365
-            |)
+              |))
+              (Value.Integer 365)
           ]))
     | _, _ => M.impossible
     end.
@@ -65,17 +64,16 @@ Module Impl_generics_new_type_idiom_Days.
         Value.StructTuple
           "generics_new_type_idiom::Years"
           [
-            BinOp.Panic.div (|
-              Integer.I64,
-              M.read (|
+            BinOp.Wrap.div
+              Integer.I64
+              (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_new_type_idiom::Days",
                   0
                 |)
-              |),
-              Value.Integer 365
-            |)
+              |))
+              (Value.Integer 365)
           ]))
     | _, _ => M.impossible
     end.

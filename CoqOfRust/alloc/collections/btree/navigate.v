@@ -5424,10 +5424,10 @@ Module collections.
                                                   let β := result in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      M.call_closure (|
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -5444,8 +5444,7 @@ Module collections.
                                                           []
                                                         |),
                                                         [ node ]
-                                                      |)
-                                                    |)
+                                                      |))
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -5459,10 +5458,10 @@ Module collections.
                                                   let β := result in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      M.call_closure (|
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -5479,8 +5478,7 @@ Module collections.
                                                           []
                                                         |),
                                                         [ node ]
-                                                      |)
-                                                    |)
+                                                      |))
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic

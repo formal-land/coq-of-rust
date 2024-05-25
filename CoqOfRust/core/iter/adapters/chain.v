@@ -414,7 +414,7 @@ Module iter.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.Panic.add (| Integer.Usize, M.read (| a_count |), M.read (| b_count |) |)
+                  BinOp.Wrap.add Integer.Usize (M.read (| a_count |)) (M.read (| b_count |))
                 |)
               |)))
           | _, _ => M.impossible

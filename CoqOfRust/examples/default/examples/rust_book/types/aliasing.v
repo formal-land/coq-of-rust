@@ -80,11 +80,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.U64,
-                                      M.read (| nanoseconds |),
-                                      M.read (| inches |)
-                                    |)
+                                    BinOp.Wrap.add
+                                      Integer.U64
+                                      (M.read (| nanoseconds |))
+                                      (M.read (| inches |))
                                   |)
                                 ]
                               |)

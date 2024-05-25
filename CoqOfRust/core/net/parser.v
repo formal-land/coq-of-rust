@@ -1828,11 +1828,10 @@ Module net.
                                                   let β := digit_count in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -2682,15 +2681,13 @@ Module net.
                                           let tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
                                           let limit :=
                                             M.alloc (|
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                Value.Integer 8,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| head_size |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (Value.Integer 8)
+                                                (BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| head_size |))
+                                                  (Value.Integer 1))
                                             |) in
                                           M.match_operator (|
                                             M.alloc (|
@@ -2764,11 +2761,10 @@ Module net.
                                                                 "core::ops::range::Range"
                                                                 [
                                                                   ("start",
-                                                                    BinOp.Panic.sub (|
-                                                                      Integer.Usize,
-                                                                      Value.Integer 8,
-                                                                      M.read (| tail_size |)
-                                                                    |));
+                                                                    BinOp.Wrap.sub
+                                                                      Integer.Usize
+                                                                      (Value.Integer 8)
+                                                                      (M.read (| tail_size |)));
                                                                   ("end_", Value.Integer 8)
                                                                 ]
                                                             ]

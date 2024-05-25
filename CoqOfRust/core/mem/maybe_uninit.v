@@ -1070,11 +1070,10 @@ Module mem.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| β |),
-                                              Value.Integer 1
-                                            |)
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]

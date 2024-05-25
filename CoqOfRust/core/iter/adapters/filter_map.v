@@ -553,10 +553,10 @@ Module iter.
                                                 "core::iter::adapters::filter_map::next_chunk::Guard",
                                                 "initialized"
                                               |),
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                M.rust_cast
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (M.rust_cast
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
@@ -566,8 +566,7 @@ Module iter.
                                                       []
                                                     |),
                                                     [ val ]
-                                                  |))
-                                              |)
+                                                  |)))
                                             |) in
                                           let _ :=
                                             let opt_payload_at :=

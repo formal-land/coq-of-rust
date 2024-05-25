@@ -526,10 +526,10 @@ Module iter.
                                                 "core::iter::adapters::filter::next_chunk::Guard",
                                                 "initialized"
                                               |),
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                M.rust_cast
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (M.rust_cast
                                                   (M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
@@ -550,8 +550,7 @@ Module iter.
                                                       |);
                                                       Value.Tuple [ element ]
                                                     ]
-                                                  |))
-                                              |)
+                                                  |)))
                                             |) in
                                           let _ :=
                                             M.alloc (|

@@ -375,11 +375,10 @@ Module instructions.
                                 [
                                   ("start", M.read (| offset |));
                                   ("end_",
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| offset |),
-                                      M.read (| len |)
-                                    |))
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| offset |))
+                                      (M.read (| len |)))
                                 ]
                             ]
                         |)));
@@ -403,6 +402,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_resize_memory :
+      M.IsFunction "revm_interpreter::instructions::contract::resize_memory" resize_memory.
     
     (*
     pub fn eofcreate<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1130,6 +1132,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_eofcreate :
+      M.IsFunction "revm_interpreter::instructions::contract::eofcreate" eofcreate.
     
     (*
     pub fn txcreate<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
@@ -2195,6 +2200,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_txcreate :
+      M.IsFunction "revm_interpreter::instructions::contract::txcreate" txcreate.
+    
     (*
     pub fn return_contract<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         require_init_eof!(interpreter);
@@ -2886,9 +2894,9 @@ Module instructions.
                           |) in
                         let new_data_size :=
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.call_closure (|
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "bytes::bytes::Bytes",
                                   "len",
@@ -2916,16 +2924,15 @@ Module instructions.
                                     ]
                                   |)
                                 ]
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| aux_slice |) ]
-                              |)
-                            |)
+                              |))
                           |) in
                         let _ :=
                           M.match_operator (|
@@ -3135,6 +3142,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_return_contract :
+      M.IsFunction "revm_interpreter::instructions::contract::return_contract" return_contract.
     
     (*
     pub fn extcall_input(interpreter: &mut Interpreter) -> Option<Bytes> {
@@ -3359,6 +3369,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extcall_input :
+      M.IsFunction "revm_interpreter::instructions::contract::extcall_input" extcall_input.
     
     (*
     pub fn extcall_gas_calc<H: Host + ?Sized>(
@@ -3606,9 +3619,9 @@ Module instructions.
                             M.call_closure (|
                               M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
                               [
-                                BinOp.Panic.div (|
-                                  Integer.U64,
-                                  M.call_closure (|
+                                BinOp.Wrap.div
+                                  Integer.U64
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "revm_interpreter::gas::Gas",
                                       "remaining",
@@ -3621,9 +3634,8 @@ Module instructions.
                                         "gas"
                                       |)
                                     ]
-                                  |),
-                                  Value.Integer 64
-                                |);
+                                  |))
+                                  (Value.Integer 64);
                                 Value.Integer 5000
                               ]
                             |)
@@ -3756,6 +3768,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extcall_gas_calc :
+      M.IsFunction "revm_interpreter::instructions::contract::extcall_gas_calc" extcall_gas_calc.
     
     (*
     pub fn extcall<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -4149,6 +4164,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_extcall :
+      M.IsFunction "revm_interpreter::instructions::contract::extcall" extcall.
+    
     (*
     pub fn extdcall<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         require_eof!(interpreter);
@@ -4469,6 +4487,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_extdcall :
+      M.IsFunction "revm_interpreter::instructions::contract::extdcall" extdcall.
+    
     (*
     pub fn extscall<H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
         require_eof!(interpreter);
@@ -4778,6 +4799,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extscall :
+      M.IsFunction "revm_interpreter::instructions::contract::extscall" extscall.
     
     (*
     pub fn create<const IS_CREATE2: bool, H: Host + ?Sized, SPEC: Spec>(
@@ -5974,15 +5998,13 @@ Module instructions.
                                   let β := gas_limit in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.U64,
-                                      M.read (| β |),
-                                      BinOp.Panic.div (|
-                                        Integer.U64,
-                                        M.read (| gas_limit |),
-                                        Value.Integer 64
-                                      |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.U64
+                                      (M.read (| β |))
+                                      (BinOp.Wrap.div
+                                        Integer.U64
+                                        (M.read (| gas_limit |))
+                                        (Value.Integer 64))
                                   |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
@@ -6105,6 +6127,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_create : M.IsFunction "revm_interpreter::instructions::contract::create" create.
     
     (*
     pub fn call<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -6738,6 +6762,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_call : M.IsFunction "revm_interpreter::instructions::contract::call" call.
+    
     (*
     pub fn call_code<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         pop!(interpreter, local_gas_limit);
@@ -7338,6 +7364,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_call_code :
+      M.IsFunction "revm_interpreter::instructions::contract::call_code" call_code.
+    
     (*
     pub fn delegate_call<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, HOMESTEAD);
@@ -7861,6 +7890,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_delegate_call :
+      M.IsFunction "revm_interpreter::instructions::contract::delegate_call" delegate_call.
+    
     (*
     pub fn static_call<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, BYZANTIUM);
@@ -8357,5 +8389,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_static_call :
+      M.IsFunction "revm_interpreter::instructions::contract::static_call" static_call.
   End contract.
 End instructions.

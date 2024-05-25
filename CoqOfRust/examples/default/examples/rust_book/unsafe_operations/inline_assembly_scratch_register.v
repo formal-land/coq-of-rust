@@ -33,10 +33,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
-                [
-                  x;
-                  M.alloc (| BinOp.Panic.mul (| Integer.U64, Value.Integer 4, Value.Integer 6 |) |)
-                ]
+                [ x; M.alloc (| BinOp.Wrap.mul Integer.U64 (Value.Integer 4) (Value.Integer 6) |) ]
             |),
             [
               fun γ =>

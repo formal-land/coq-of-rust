@@ -101,11 +101,10 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let n := M.copy (| γ |) in
-                                                    BinOp.Panic.mul (|
-                                                      Integer.I32,
-                                                      Value.Integer 2,
-                                                      M.read (| n |)
-                                                    |)))
+                                                    BinOp.Wrap.mul
+                                                      Integer.I32
+                                                      (Value.Integer 2)
+                                                      (M.read (| n |))))
                                               ]
                                             |)
                                           | _ => M.impossible (||)

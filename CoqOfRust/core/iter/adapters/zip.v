@@ -236,11 +236,10 @@ Module iter.
                                     let β := n in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| β |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (Value.Integer 1)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
@@ -886,11 +885,10 @@ Module iter.
                                               [
                                                 ("start", Value.Integer 0);
                                                 ("end_",
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| a_sz |),
-                                                    M.read (| b_sz |)
-                                                  |))
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| a_sz |))
+                                                    (M.read (| b_sz |)))
                                               ]
                                           ]
                                         |)
@@ -980,11 +978,10 @@ Module iter.
                                               [
                                                 ("start", Value.Integer 0);
                                                 ("end_",
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| b_sz |),
-                                                    M.read (| a_sz |)
-                                                  |))
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| b_sz |))
+                                                    (M.read (| a_sz |)))
                                               ]
                                           ]
                                         |)
@@ -1781,11 +1778,10 @@ Module iter.
                                               [
                                                 ("start", Value.Integer 0);
                                                 ("end_",
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| a_sz |),
-                                                    M.read (| b_sz |)
-                                                  |))
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| a_sz |))
+                                                    (M.read (| b_sz |)))
                                               ]
                                           ]
                                         |)
@@ -1875,11 +1871,10 @@ Module iter.
                                               [
                                                 ("start", Value.Integer 0);
                                                 ("end_",
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| b_sz |),
-                                                    M.read (| a_sz |)
-                                                  |))
+                                                  BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| b_sz |))
+                                                    (M.read (| a_sz |)))
                                               ]
                                           ]
                                         |)
@@ -2119,17 +2114,16 @@ Module iter.
               M.read (|
                 let idx :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |),
-                      M.read (| idx |)
-                    |)
+                      |))
+                      (M.read (| idx |))
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -2488,7 +2482,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2589,11 +2583,7 @@ Module iter.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 let _ :=
                                   let β :=
@@ -2604,11 +2594,7 @@ Module iter.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 let _ :=
                                   let _ :=
@@ -2659,23 +2645,22 @@ Module iter.
               M.read (|
                 let len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "len"
                         |)
-                      |),
-                      M.read (|
+                      |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -2730,39 +2715,37 @@ Module iter.
                       M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                       [
                         M.read (| n |);
-                        BinOp.Panic.sub (|
-                          Integer.Usize,
-                          M.read (|
+                        BinOp.Wrap.sub
+                          Integer.Usize
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::zip::Zip",
                               "len"
                             |)
-                          |),
-                          M.read (|
+                          |))
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::zip::Zip",
                               "index"
                             |)
-                          |)
-                        |)
+                          |))
                       ]
                     |)
                   |) in
                 let end_ :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |),
-                      M.read (| delta |)
-                    |)
+                      |))
+                      (M.read (| delta |))
                   |) in
                 let _ :=
                   M.loop (|
@@ -2807,11 +2790,7 @@ Module iter.
                                   |) in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               let _ :=
                                 M.match_operator (|
@@ -2917,7 +2896,7 @@ Module iter.
                     |),
                     [
                       M.read (| self |);
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| delta |) |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| delta |))
                     ]
                   |)
                 |)
@@ -3128,17 +3107,16 @@ Module iter.
                                                           [
                                                             ("start", Value.Integer 0);
                                                             ("end_",
-                                                              BinOp.Panic.sub (|
-                                                                Integer.Usize,
-                                                                M.read (| sz_a |),
-                                                                M.read (|
+                                                              BinOp.Wrap.sub
+                                                                Integer.Usize
+                                                                (M.read (| sz_a |))
+                                                                (M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
                                                                     M.read (| self |),
                                                                     "core::iter::adapters::zip::Zip",
                                                                     "len"
                                                                   |)
-                                                                |)
-                                                              |))
+                                                                |)))
                                                           ]
                                                       ]
                                                     |)
@@ -3191,11 +3169,10 @@ Module iter.
                                                                           |) in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Panic.sub (|
-                                                                            Integer.Usize,
-                                                                            M.read (| β |),
-                                                                            Value.Integer 1
-                                                                          |)
+                                                                          BinOp.Wrap.sub
+                                                                            Integer.Usize
+                                                                            (M.read (| β |))
+                                                                            (Value.Integer 1)
                                                                         |) in
                                                                       let _ :=
                                                                         M.alloc (|
@@ -3421,17 +3398,16 @@ Module iter.
                                                       [
                                                         ("start", Value.Integer 0);
                                                         ("end_",
-                                                          BinOp.Panic.sub (|
-                                                            Integer.Usize,
-                                                            M.read (| sz_b |),
-                                                            M.read (|
+                                                          BinOp.Wrap.sub
+                                                            Integer.Usize
+                                                            (M.read (| sz_b |))
+                                                            (M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.read (| self |),
                                                                 "core::iter::adapters::zip::Zip",
                                                                 "len"
                                                               |)
-                                                            |)
-                                                          |))
+                                                            |)))
                                                       ]
                                                   ]
                                                 |)
@@ -3545,7 +3521,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         let _ :=
                           let β :=
@@ -3556,7 +3532,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         let i :=
                           M.copy (|

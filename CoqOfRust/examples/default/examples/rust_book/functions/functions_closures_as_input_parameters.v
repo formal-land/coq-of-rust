@@ -298,7 +298,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let x := M.copy (| γ |) in
-                            BinOp.Panic.mul (| Integer.I32, Value.Integer 2, M.read (| x |) |)))
+                            BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| x |))))
                       ]
                     |)
                   | _ => M.impossible (||)

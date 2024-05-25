@@ -20,7 +20,7 @@ Definition sum (τ : list Ty.t) (α : list Value.t) : M :=
               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
               let x := M.copy (| γ0_0 |) in
               let y := M.copy (| γ0_1 |) in
-              BinOp.Panic.add (| Integer.I32, M.read (| x |), M.read (| y |) |)))
+              BinOp.Wrap.add Integer.I32 (M.read (| x |)) (M.read (| y |))))
         ]
       |)))
   | _, _ => M.impossible
@@ -84,11 +84,10 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                   |) in
                                 let count :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.U32,
-                                      M.read (| end_ |),
-                                      M.read (| start |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.U32
+                                      (M.read (| end_ |))
+                                      (M.read (| start |))
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -135,11 +134,10 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Panic.sub (|
-                                                    Integer.U32,
-                                                    M.read (| count |),
-                                                    Value.Integer 2048
-                                                  |)
+                                                  BinOp.Wrap.sub
+                                                    Integer.U32
+                                                    (M.read (| count |))
+                                                    (Value.Integer 2048)
                                                 ]
                                               |)
                                             ]

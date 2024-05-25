@@ -192,24 +192,23 @@ Module net.
                                       |)
                                     |));
                                   ("end_",
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (|
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::net::display_buffer::DisplayBuffer",
                                           "len"
                                         |)
-                                      |),
-                                      M.call_closure (|
+                                      |))
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| bytes |) ]
-                                      |)
-                                    |))
+                                      |)))
                                 ]
                             ]
                           |)
@@ -243,18 +242,17 @@ Module net.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| β |))
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
                               [ M.read (| bytes |) ]
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]

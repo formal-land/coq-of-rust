@@ -12,7 +12,7 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.add (| Integer.I32, M.read (| a |), M.read (| b |) |)))
+      BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
   | _, _ => M.impossible
   end.
 
@@ -29,7 +29,7 @@ Definition bad_add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.sub (| Integer.I32, M.read (| a |), M.read (| b |) |)))
+      BinOp.Wrap.sub Integer.I32 (M.read (| a |)) (M.read (| b |))))
   | _, _ => M.impossible
   end.
 

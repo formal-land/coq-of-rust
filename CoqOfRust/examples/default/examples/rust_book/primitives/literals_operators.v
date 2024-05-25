@@ -60,11 +60,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.U32,
-                                      Value.Integer 1,
-                                      Value.Integer 2
-                                    |)
+                                    BinOp.Wrap.add Integer.U32 (Value.Integer 1) (Value.Integer 2)
                                   |)
                                 ]
                               |)
@@ -105,11 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.I32,
-                                      Value.Integer 1,
-                                      Value.Integer 2
-                                    |)
+                                    BinOp.Wrap.sub Integer.I32 (Value.Integer 1) (Value.Integer 2)
                                   |)
                                 ]
                               |)
@@ -517,11 +509,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_display",
                                   [ Ty.path "u32" ]
                                 |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Panic.shl (| Value.Integer 1, Value.Integer 5 |)
-                                  |)
-                                ]
+                                [ M.alloc (| BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 5) |) ]
                               |)
                             ]
                         |))
@@ -561,10 +549,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "new_lower_hex",
                                   [ Ty.path "u32" ]
                                 |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Panic.shr (| Value.Integer 128, Value.Integer 2 |)
-                                  |)
+                                [ M.alloc (| BinOp.Wrap.shr (Value.Integer 128) (Value.Integer 2) |)
                                 ]
                               |)
                             ]

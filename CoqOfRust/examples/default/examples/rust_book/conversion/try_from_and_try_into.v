@@ -126,7 +126,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                     M.use
                       (M.alloc (|
                         BinOp.Pure.eq
-                          (BinOp.Panic.rem (| Integer.I32, M.read (| value |), Value.Integer 2 |))
+                          (BinOp.Wrap.rem Integer.I32 (M.read (| value |)) (Value.Integer 2))
                           (Value.Integer 0)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

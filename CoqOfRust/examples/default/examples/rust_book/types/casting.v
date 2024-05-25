@@ -299,11 +299,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.rem (|
-                                      Integer.I32,
-                                      Value.Integer 1000,
-                                      Value.Integer 256
-                                    |)
+                                    BinOp.Wrap.rem
+                                      Integer.I32
+                                      (Value.Integer 1000)
+                                      (Value.Integer 256)
                                   |)
                                 ]
                               |)

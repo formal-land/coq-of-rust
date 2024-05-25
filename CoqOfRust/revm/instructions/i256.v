@@ -404,11 +404,10 @@ Module instructions.
                             M.get_associated_function (| Ty.path "ruint::Uint", "bit", [] |),
                             [
                               M.read (| val |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| M.get_constant (| "ruint::BITS'1" |) |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| M.get_constant (| "ruint::BITS'1" |) |))
+                                (Value.Integer 1)
                             ]
                           |)
                         |)) in
@@ -443,6 +442,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i256_sign :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_sign" i256_sign.
     
     (*
     pub fn i256_sign_compl(val: &mut U256) -> Sign {
@@ -513,6 +515,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i256_sign_compl :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
+    
     (*
     fn u256_remove_sign(val: &mut U256) {
         // SAFETY: U256 does not have any padding bytes
@@ -549,6 +554,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_u256_remove_sign :
+      M.IsFunction "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
+    
     (*
     pub fn two_compl_mut(op: &mut U256) {
         *op = two_compl( *op);
@@ -573,6 +581,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_two_compl_mut :
+      M.IsFunction "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
+    
     (*
     pub fn two_compl(op: U256) -> U256 {
         op.wrapping_neg()
@@ -589,6 +600,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_two_compl :
+      M.IsFunction "revm_interpreter::instructions::i256::two_compl" two_compl.
     
     (*
     pub fn i256_cmp(first: &U256, second: &U256) -> Ordering {
@@ -660,6 +674,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i256_cmp :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
     
     (*
     pub fn i256_div(mut first: U256, mut second: U256) -> U256 {
@@ -962,6 +979,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i256_div :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_div" i256_div.
+    
     (*
     pub fn i256_mod(mut first: U256, mut second: U256) -> U256 {
         let first_sign = i256_sign_compl(&mut first);
@@ -1160,5 +1180,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i256_mod :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_mod" i256_mod.
   End i256.
 End instructions.

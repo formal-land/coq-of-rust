@@ -1237,7 +1237,7 @@ Module ffi.
                           |),
                           [ M.read (| ptr |) ]
                         |);
-                        BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1)
                       ]
                     |)
                   ]
@@ -1306,11 +1306,7 @@ Module ffi.
                                 |),
                                 [ M.read (| bytes |) ]
                               |);
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| nul_pos |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1)
                             ]
                           |)
                         |) in
@@ -1390,11 +1386,7 @@ Module ffi.
                       let γ :=
                         M.alloc (|
                           BinOp.Pure.eq
-                            (BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (| nul_pos |),
-                              Value.Integer 1
-                            |))
+                            (BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1))
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -1580,9 +1572,9 @@ Module ffi.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.Usize,
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.Usize
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
                   "len",
@@ -1595,9 +1587,8 @@ Module ffi.
                     "inner"
                   |)
                 ]
-              |),
-              Value.Integer 1
-            |)))
+              |))
+              (Value.Integer 1)))
         | _, _ => M.impossible
         end.
       
@@ -1676,18 +1667,17 @@ Module ffi.
                       |),
                       [ M.read (| bytes |) ]
                     |);
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                           "len",
                           []
                         |),
                         [ M.read (| bytes |) ]
-                      |),
-                      Value.Integer 1
-                    |)
+                      |))
+                      (Value.Integer 1)
                   ]
                 |)
               |)
@@ -2217,7 +2207,7 @@ Module ffi.
                               let β := len in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>

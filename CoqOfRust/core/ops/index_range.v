@@ -982,18 +982,17 @@ Module ops.
                         []
                       |),
                       [
-                        BinOp.Panic.sub (|
-                          Integer.Usize,
-                          M.read (| n |),
-                          M.call_closure (|
+                        BinOp.Wrap.sub
+                          Integer.Usize
+                          (M.read (| n |))
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |)
-                        |)
+                          |))
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
@@ -1135,18 +1134,17 @@ Module ops.
                         []
                       |),
                       [
-                        BinOp.Panic.sub (|
-                          Integer.Usize,
-                          M.read (| n |),
-                          M.call_closure (|
+                        BinOp.Wrap.sub
+                          Integer.Usize
+                          (M.read (| n |))
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |)
-                        |)
+                          |))
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];

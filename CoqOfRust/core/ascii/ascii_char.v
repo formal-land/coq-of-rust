@@ -1474,11 +1474,7 @@ Module ascii.
                                                 "from",
                                                 []
                                               |),
-                                              [
-                                                BinOp.Panic.shr (|
-                                                  M.read (| byte |),
-                                                  Value.Integer 4
-                                                |)
+                                              [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4)
                                               ]
                                             |)
                                           |)

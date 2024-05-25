@@ -779,10 +779,10 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                Value.Integer 1,
-                                M.call_closure (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (Value.Integer 1)
+                                (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -797,8 +797,7 @@ Module collections.
                                       "a"
                                     |)
                                   ]
-                                |)
-                              |);
+                                |));
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
@@ -850,10 +849,10 @@ Module collections.
                                   |)
                                 ]
                               |);
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                Value.Integer 1,
-                                M.call_closure (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (Value.Integer 1)
+                                (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -868,8 +867,7 @@ Module collections.
                                       "b"
                                     |)
                                   ]
-                                |)
-                              |)
+                                |))
                             ]
                         |)));
                     fun γ =>

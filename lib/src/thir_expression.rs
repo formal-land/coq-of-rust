@@ -36,16 +36,16 @@ fn path_of_bin_op(
     };
 
     match bin_op {
-        BinOp::Add => ("BinOp.Panic.add", CallKind::Effectful, additional_args),
-        BinOp::Sub => ("BinOp.Panic.sub", CallKind::Effectful, additional_args),
-        BinOp::Mul => ("BinOp.Panic.mul", CallKind::Effectful, additional_args),
-        BinOp::Div => ("BinOp.Panic.div", CallKind::Effectful, additional_args),
-        BinOp::Rem => ("BinOp.Panic.rem", CallKind::Effectful, additional_args),
+        BinOp::Add => ("BinOp.Wrap.add", CallKind::Pure, additional_args),
+        BinOp::Sub => ("BinOp.Wrap.sub", CallKind::Pure, additional_args),
+        BinOp::Mul => ("BinOp.Wrap.mul", CallKind::Pure, additional_args),
+        BinOp::Div => ("BinOp.Wrap.div", CallKind::Pure, additional_args),
+        BinOp::Rem => ("BinOp.Wrap.rem", CallKind::Pure, additional_args),
         BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure, additional_args),
         BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure, additional_args),
         BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure, additional_args),
-        BinOp::Shl => ("BinOp.Panic.shl", CallKind::Effectful, additional_args),
-        BinOp::Shr => ("BinOp.Panic.shr", CallKind::Effectful, additional_args),
+        BinOp::Shl => ("BinOp.Wrap.shl", CallKind::Pure, additional_args),
+        BinOp::Shr => ("BinOp.Wrap.shr", CallKind::Pure, additional_args),
         BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure, additional_args),
         BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure, additional_args),
         BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure, additional_args),

@@ -165,6 +165,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_add : M.IsFunction "revm_interpreter::instructions::arithmetic::add" add.
+    
     (*
     pub fn mul<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -324,6 +326,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_mul : M.IsFunction "revm_interpreter::instructions::arithmetic::mul" mul.
     
     (*
     pub fn sub<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -486,6 +490,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sub : M.IsFunction "revm_interpreter::instructions::arithmetic::sub" sub.
     
     (*
     pub fn div<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -676,6 +682,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_div : M.IsFunction "revm_interpreter::instructions::arithmetic::div" div.
+    
     (*
     pub fn sdiv<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -834,6 +842,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sdiv : M.IsFunction "revm_interpreter::instructions::arithmetic::sdiv" sdiv.
     
     (*
     pub fn rem<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1024,6 +1034,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_rem : M.IsFunction "revm_interpreter::instructions::arithmetic::rem" rem.
+    
     (*
     pub fn smod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -1181,6 +1193,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_smod : M.IsFunction "revm_interpreter::instructions::arithmetic::smod" smod.
+    
     (*
     pub fn addmod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::MID);
@@ -1337,6 +1351,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_addmod :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::addmod" addmod.
+    
     (*
     pub fn mulmod<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::MID);
@@ -1492,6 +1509,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_mulmod :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::mulmod" mulmod.
     
     (*
     pub fn exp<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1696,6 +1716,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_exp : M.IsFunction "revm_interpreter::instructions::arithmetic::exp" exp.
+    
     (*
     pub fn signextend<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::LOW);
@@ -1896,15 +1918,13 @@ Module instructions.
                                 let bit_index :=
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.U64,
-                                        BinOp.Panic.mul (|
-                                          Integer.U64,
-                                          Value.Integer 8,
-                                          M.read (| ext |)
-                                        |),
-                                        Value.Integer 7
-                                      |))
+                                      (BinOp.Wrap.add
+                                        Integer.U64
+                                        (BinOp.Wrap.mul
+                                          Integer.U64
+                                          (Value.Integer 8)
+                                          (M.read (| ext |)))
+                                        (Value.Integer 7))
                                   |) in
                                 let bit :=
                                   M.alloc (|
@@ -2026,5 +2046,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_signextend :
+      M.IsFunction "revm_interpreter::instructions::arithmetic::signextend" signextend.
   End arithmetic.
 End instructions.

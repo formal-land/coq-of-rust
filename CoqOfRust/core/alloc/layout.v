@@ -411,22 +411,20 @@ Module alloc.
         | [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
-            BinOp.Panic.sub (|
-              Integer.Usize,
-              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
-              BinOp.Panic.sub (|
-                Integer.Usize,
-                M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.Usize
+              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+              (BinOp.Wrap.sub
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
                     []
                   |),
                   [ M.read (| align |) ]
-                |),
-                Value.Integer 1
-              |)
-            |)))
+                |))
+                (Value.Integer 1))))
         | _, _ => M.impossible
         end.
       
@@ -942,18 +940,17 @@ Module alloc.
                 |) in
               let new_size :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |),
-                    M.read (| pad |)
-                  |)
+                    |))
+                    (M.read (| pad |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1007,17 +1004,17 @@ Module alloc.
                 (M.read (|
                   let padded_size :=
                     M.alloc (|
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "size",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.call_closure (|
+                        |))
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "padding_needed_for",
@@ -1034,8 +1031,7 @@ Module alloc.
                               [ M.read (| self |) ]
                             |)
                           ]
-                        |)
-                      |)
+                        |))
                     |) in
                   let alloc_size :=
                     M.copy (|

@@ -82,11 +82,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.use
                                             (M.alloc (|
                                               BinOp.Pure.eq
-                                                (BinOp.Panic.rem (|
-                                                  Integer.I32,
-                                                  M.read (| n |),
-                                                  Value.Integer 15
-                                                |))
+                                                (BinOp.Wrap.rem
+                                                  Integer.I32
+                                                  (M.read (| n |))
+                                                  (Value.Integer 15))
                                                 (Value.Integer 0)
                                             |)) in
                                         let _ :=
@@ -133,11 +132,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.use
                                                     (M.alloc (|
                                                       BinOp.Pure.eq
-                                                        (BinOp.Panic.rem (|
-                                                          Integer.I32,
-                                                          M.read (| n |),
-                                                          Value.Integer 3
-                                                        |))
+                                                        (BinOp.Wrap.rem
+                                                          Integer.I32
+                                                          (M.read (| n |))
+                                                          (Value.Integer 3))
                                                         (Value.Integer 0)
                                                     |)) in
                                                 let _ :=
@@ -190,11 +188,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.Pure.eq
-                                                                (BinOp.Panic.rem (|
-                                                                  Integer.I32,
-                                                                  M.read (| n |),
-                                                                  Value.Integer 5
-                                                                |))
+                                                                (BinOp.Wrap.rem
+                                                                  Integer.I32
+                                                                  (M.read (| n |))
+                                                                  (Value.Integer 5))
                                                                 (Value.Integer 0)
                                                             |)) in
                                                         let _ :=

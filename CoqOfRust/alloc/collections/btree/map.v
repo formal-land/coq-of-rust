@@ -1703,7 +1703,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -1836,7 +1836,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9323,7 +9323,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9550,7 +9550,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -9789,7 +9789,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -10006,7 +10006,7 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -12502,11 +12502,10 @@ Module collections.
                                                               |) in
                                                             M.write (|
                                                               β,
-                                                              BinOp.Panic.sub (|
-                                                                Integer.Usize,
-                                                                M.read (| β |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.sub
+                                                                Integer.Usize
+                                                                (M.read (| β |))
+                                                                (Value.Integer 1)
                                                             |) in
                                                           M.match_operator (|
                                                             M.alloc (|
@@ -21256,11 +21255,10 @@ Module collections.
                                                   |) in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               M.return_ (| Value.Tuple [] |)
                                             |)
@@ -21724,7 +21722,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (| Value.Tuple [] |)
                   |)))
@@ -21985,11 +21983,10 @@ Module collections.
                                                   |) in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               M.return_ (| Value.Tuple [] |)
                                             |)
@@ -22453,7 +22450,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (| Value.Tuple [] |)
                   |)))
@@ -23182,7 +23179,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let _ :=
                               M.match_operator (|
@@ -23622,7 +23619,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let _ :=
                               M.match_operator (|

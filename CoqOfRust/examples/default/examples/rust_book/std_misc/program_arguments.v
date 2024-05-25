@@ -125,9 +125,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -139,9 +139,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [ args ]
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                      |))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |);

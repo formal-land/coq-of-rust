@@ -22,30 +22,26 @@ Module num.
             M.read (|
               let nbits :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.I64,
-                    Value.Integer 64,
-                    M.rust_cast
+                  BinOp.Wrap.sub
+                    Integer.I64
+                    (Value.Integer 64)
+                    (M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
-                        [ BinOp.Panic.sub (| Integer.U64, M.read (| mant |), Value.Integer 1 |) ]
-                      |))
-                  |)
+                        [ BinOp.Wrap.sub Integer.U64 (M.read (| mant |)) (Value.Integer 1) ]
+                      |)))
                 |) in
               M.alloc (|
                 M.rust_cast
-                  (BinOp.Panic.shr (|
-                    BinOp.Panic.mul (|
-                      Integer.I64,
-                      BinOp.Panic.add (|
-                        Integer.I64,
-                        M.read (| nbits |),
-                        M.rust_cast (M.read (| exp |))
-                      |),
-                      Value.Integer 1292913986
-                    |),
-                    Value.Integer 32
-                  |))
+                  (BinOp.Wrap.shr
+                    (BinOp.Wrap.mul
+                      Integer.I64
+                      (BinOp.Wrap.add
+                        Integer.I64
+                        (M.read (| nbits |))
+                        (M.rust_cast (M.read (| exp |))))
+                      (Value.Integer 1292913986))
+                    (Value.Integer 32))
               |)
             |)))
         | _, _ => M.impossible

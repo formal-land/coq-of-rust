@@ -77,36 +77,34 @@ Module vec.
                         let step_expand := M.copy (| γ1_0 |) in
                         M.alloc (|
                           BinOp.Pure.ge
-                            (BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.call_closure (|
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ SRC ] |),
                                 []
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_merge |) ]
-                              |)
-                            |))
-                            (BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.call_closure (|
+                              |)))
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ DEST ] |),
                                 []
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
                                   []
                                 |),
                                 [ M.read (| step_expand |) ]
-                              |)
-                            |))
+                              |)))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
@@ -200,22 +198,20 @@ Module vec.
                       BinOp.Pure.gt (M.read (| src_cap |)) (Value.Integer 0),
                       ltac:(M.monadic
                         (BinOp.Pure.ne
-                          (BinOp.Panic.mul (|
-                            Integer.Usize,
-                            M.read (| src_cap |),
-                            M.call_closure (|
+                          (BinOp.Wrap.mul
+                            Integer.Usize
+                            (M.read (| src_cap |))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ SRC ] |),
                               []
-                            |)
-                          |))
-                          (BinOp.Panic.mul (|
-                            Integer.Usize,
-                            M.read (| dst_cap |),
-                            M.call_closure (|
+                            |)))
+                          (BinOp.Wrap.mul
+                            Integer.Usize
+                            (M.read (| dst_cap |))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ DEST ] |),
                               []
-                            |)
-                          |))))
+                            |)))))
                     |)
                   |)
                 |)
@@ -468,27 +464,25 @@ Module vec.
                                 "end"
                               |)
                             |));
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            BinOp.Panic.mul (|
-                              Integer.Usize,
-                              M.read (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (BinOp.Wrap.mul
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| inner |),
                                   "alloc::vec::into_iter::IntoIter",
                                   "cap"
                                 |)
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_function (| "core::mem::size_of", [ Ty.associated ] |),
                                 []
-                              |)
-                            |),
-                            M.call_closure (|
+                              |)))
+                            (M.call_closure (|
                               M.get_function (| "core::mem::size_of", [ T ] |),
                               []
-                            |)
-                          |)
+                            |))
                         ]
                     |),
                     [
@@ -1159,30 +1153,28 @@ Module vec.
                                                     Value.Tuple
                                                       [
                                                         M.alloc (|
-                                                          BinOp.Panic.mul (|
-                                                            Integer.Usize,
-                                                            M.read (| src_cap |),
-                                                            M.call_closure (|
+                                                          BinOp.Wrap.mul
+                                                            Integer.Usize
+                                                            (M.read (| src_cap |))
+                                                            (M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ Ty.associated ]
                                                               |),
                                                               []
-                                                            |)
-                                                          |)
+                                                            |))
                                                         |);
                                                         M.alloc (|
-                                                          BinOp.Panic.mul (|
-                                                            Integer.Usize,
-                                                            M.read (| dst_cap |),
-                                                            M.call_closure (|
+                                                          BinOp.Wrap.mul
+                                                            Integer.Usize
+                                                            (M.read (| dst_cap |))
+                                                            (M.call_closure (|
                                                               M.get_function (|
                                                                 "core::mem::size_of",
                                                                 [ T ]
                                                               |),
                                                               []
-                                                            |)
-                                                          |)
+                                                            |))
                                                         |)
                                                       ]
                                                   |),

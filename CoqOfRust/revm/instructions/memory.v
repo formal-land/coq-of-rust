@@ -368,6 +368,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mload : M.IsFunction "revm_interpreter::instructions::memory::mload" mload.
+    
     (*
     pub fn mstore<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -749,6 +751,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_mstore : M.IsFunction "revm_interpreter::instructions::memory::mstore" mstore.
     
     (*
     pub fn mstore8<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1132,6 +1136,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mstore8 : M.IsFunction "revm_interpreter::instructions::memory::mstore8" mstore8.
+    
     (*
     pub fn msize<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -1284,6 +1290,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_msize : M.IsFunction "revm_interpreter::instructions::memory::msize" msize.
     
     (*
     pub fn mcopy<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2024,5 +2032,7 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_mcopy : M.IsFunction "revm_interpreter::instructions::memory::mcopy" mcopy.
   End memory.
 End instructions.

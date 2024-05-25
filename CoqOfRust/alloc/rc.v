@@ -3724,9 +3724,9 @@ Module rc.
       | [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
-          BinOp.Panic.sub (|
-            Integer.Usize,
-            M.call_closure (|
+          BinOp.Wrap.sub
+            Integer.Usize
+            (M.call_closure (|
               M.get_trait_method (|
                 "alloc::rc::RcInnerPtr",
                 Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
@@ -3744,9 +3744,8 @@ Module rc.
                   [ M.read (| this |) ]
                 |)
               ]
-            |),
-            Value.Integer 1
-          |)))
+            |))
+            (Value.Integer 1)))
       | _, _ => M.impossible
       end.
     
@@ -5427,11 +5426,10 @@ Module rc.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -9411,9 +9409,9 @@ Module rc.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_trait_method (|
                                     "alloc::rc::RcInnerPtr",
                                     Ty.path "alloc::rc::WeakInner",
@@ -9422,9 +9420,8 @@ Module rc.
                                     []
                                   |),
                                   [ inner ]
-                                |),
-                                Value.Integer 1
-                              |)
+                                |))
+                                (Value.Integer 1)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                       ]
@@ -10141,14 +10138,13 @@ Module rc.
                       M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "strong_ref", [] |),
                       [ M.read (| self |) ]
                     |);
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "strong", [] |),
                         [ M.read (| self |) ]
-                      |),
-                      Value.Integer 1
-                    |)
+                      |))
+                      (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -10273,14 +10269,13 @@ Module rc.
                       M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "weak_ref", [] |),
                       [ M.read (| self |) ]
                     |);
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.call_closure (|
                         M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], "weak", [] |),
                         [ M.read (| self |) ]
-                      |),
-                      Value.Integer 1
-                    |)
+                      |))
+                      (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -10535,21 +10530,20 @@ Module rc.
               |)
             |) in
           M.alloc (|
-            BinOp.Panic.add (|
-              Integer.Usize,
-              M.call_closure (|
+            BinOp.Wrap.add
+              Integer.Usize
+              (M.call_closure (|
                 M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
                 [ layout ]
-              |),
-              M.call_closure (|
+              |))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "padding_needed_for",
                   []
                 |),
                 [ layout; M.read (| align |) ]
-              |)
-            |)
+              |))
           |)
         |)))
     | _, _ => M.impossible

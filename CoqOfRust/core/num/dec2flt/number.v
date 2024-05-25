@@ -681,21 +681,20 @@ Module num.
                                       ltac:(M.monadic
                                         (let shift :=
                                           M.alloc (|
-                                            BinOp.Panic.sub (|
-                                              Integer.I64,
-                                              M.read (|
+                                            BinOp.Wrap.sub
+                                              Integer.I64
+                                              (M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::num::dec2flt::number::Number",
                                                   "exponent"
                                                 |)
-                                              |),
-                                              M.read (|
+                                              |))
+                                              (M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
                                                 |)
-                                              |)
-                                            |)
+                                              |))
                                           |) in
                                         let mantissa :=
                                           M.copy (|

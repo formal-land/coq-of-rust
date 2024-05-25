@@ -19,7 +19,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let _ :=
           let val :=
-            M.alloc (| BinOp.Panic.add (| Integer.Usize, Value.Integer 1, Value.Integer 2 |) |) in
+            M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2) |) in
           let _ :=
             let _ :=
               M.alloc (|
@@ -61,11 +61,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let val :=
           M.alloc (|
-            BinOp.Panic.mul (|
-              Integer.Usize,
-              BinOp.Panic.add (| Integer.Usize, Value.Integer 1, Value.Integer 2 |),
-              BinOp.Panic.div (| Integer.Usize, Value.Integer 3, Value.Integer 4 |)
-            |)
+            BinOp.Wrap.mul
+              Integer.Usize
+              (BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2))
+              (BinOp.Wrap.div Integer.Usize (Value.Integer 3) (Value.Integer 4))
           |) in
         let _ :=
           let _ :=

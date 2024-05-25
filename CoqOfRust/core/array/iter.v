@@ -748,18 +748,17 @@ Module array.
                 |) in
               let remaining :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| n |),
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| n |))
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |)
-                  |)
+                    |))
                 |) in
               let _ :=
                 let slice :=
@@ -1223,18 +1222,17 @@ Module array.
                 |) in
               let remaining :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| n |),
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| n |))
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |)
-                  |)
+                    |))
                 |) in
               let _ :=
                 let slice :=
@@ -1699,9 +1697,9 @@ Module array.
                                                 []
                                               |),
                                               [
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.call_closure (|
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
@@ -1714,9 +1712,8 @@ Module array.
                                                         "alive"
                                                       |)
                                                     ]
-                                                  |),
-                                                  Value.Integer 1
-                                                |)
+                                                  |))
+                                                  (Value.Integer 1)
                                               ]
                                             |)
                                           |) in

@@ -833,26 +833,23 @@ Module num.
                                                         let _ :=
                                                           M.write (|
                                                             M.read (| c |),
-                                                            BinOp.Panic.add (|
-                                                              Integer.U8,
-                                                              M.read (| UnsupportedLiteral |),
-                                                              M.rust_cast
-                                                                (BinOp.Panic.rem (|
-                                                                  Integer.U16,
-                                                                  M.read (| v |),
-                                                                  Value.Integer 10
-                                                                |))
-                                                            |)
+                                                            BinOp.Wrap.add
+                                                              Integer.U8
+                                                              (M.read (| UnsupportedLiteral |))
+                                                              (M.rust_cast
+                                                                (BinOp.Wrap.rem
+                                                                  Integer.U16
+                                                                  (M.read (| v |))
+                                                                  (Value.Integer 10)))
                                                           |) in
                                                         let _ :=
                                                           let β := v in
                                                           M.write (|
                                                             β,
-                                                            BinOp.Panic.div (|
-                                                              Integer.U16,
-                                                              M.read (| β |),
-                                                              Value.Integer 10
-                                                            |)
+                                                            BinOp.Wrap.div
+                                                              Integer.U16
+                                                              (M.read (| β |))
+                                                              (Value.Integer 10)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)))
                                                   ]
@@ -1103,18 +1100,17 @@ Module num.
                                           let β := len in
                                           M.write (|
                                             β,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| β |),
-                                              M.call_closure (|
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::num::fmt::Part",
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| part |) ]
-                                              |)
-                                            |)
+                                              |))
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1435,11 +1431,10 @@ Module num.
                                               let β := written in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  M.read (| len |)
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (M.read (| len |))
                                               |) in
                                             M.alloc (| Value.Tuple [] |)))
                                       ]

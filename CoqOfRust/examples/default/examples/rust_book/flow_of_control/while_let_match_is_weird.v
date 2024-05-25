@@ -143,13 +143,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 optional,
                                 Value.StructTuple
                                   "core::option::Option::Some"
-                                  [
-                                    BinOp.Panic.add (|
-                                      Integer.I32,
-                                      M.read (| i |),
-                                      Value.Integer 1
-                                    |)
-                                  ]
+                                  [ BinOp.Wrap.add Integer.I32 (M.read (| i |)) (Value.Integer 1) ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]

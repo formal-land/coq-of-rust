@@ -54,7 +54,7 @@ Module vec.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| increment |) |)
+                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| increment |))
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

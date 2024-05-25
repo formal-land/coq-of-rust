@@ -289,15 +289,14 @@ Module str.
                                         let β := bytes_skipped in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            M.read (|
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (M.read (|
                                               M.get_constant (|
                                                 "core::str::iter::advance_by::CHUNK_SIZE"
                                               |)
-                                            |)
-                                          |)
+                                            |))
                                         |) in
                                       let start_bytes :=
                                         M.alloc (| repeat (Value.Bool false) 32 |) in
@@ -403,10 +402,10 @@ Module str.
                                         let β := remainder in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            M.rust_cast
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (M.rust_cast
                                               (M.call_closure (|
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
@@ -472,8 +471,7 @@ Module str.
                                                     ]
                                                   |)
                                                 ]
-                                              |))
-                                          |)
+                                              |)))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
@@ -708,7 +706,7 @@ Module str.
                               let β := remainder in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let b :=
                               M.copy (|
@@ -861,11 +859,10 @@ Module str.
               M.alloc (|
                 Value.Tuple
                   [
-                    BinOp.Panic.div (|
-                      Integer.Usize,
-                      BinOp.Panic.add (| Integer.Usize, M.read (| len |), Value.Integer 3 |),
-                      Value.Integer 4
-                    |);
+                    BinOp.Wrap.div
+                      Integer.Usize
+                      (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 3))
+                      (Value.Integer 4);
                     Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
                   ]
               |)
@@ -1580,15 +1577,10 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| pre_len |),
-                              M.read (| len |)
-                            |)
-                          |)
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| β |))
+                            (BinOp.Wrap.sub Integer.Usize (M.read (| pre_len |)) (M.read (| len |)))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1758,16 +1750,16 @@ Module str.
                                 M.read (|
                                   let index :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (|
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::str::iter::CharIndices",
                                             "front_offset"
                                           |)
-                                        |),
-                                        M.call_closure (|
+                                        |))
+                                        (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
@@ -1788,8 +1780,7 @@ Module str.
                                               "iter"
                                             |)
                                           ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.alloc (| Value.Tuple [ M.read (| index |); M.read (| ch |) ] |)
                                 |)))
@@ -2885,23 +2876,22 @@ Module str.
                                             |),
                                             ltac:(M.monadic
                                               (BinOp.Pure.gt
-                                                (BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (|
+                                                (BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::iter::SplitInternal",
                                                       "end"
                                                     |)
-                                                  |),
-                                                  M.read (|
+                                                  |))
+                                                  (M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| self |),
                                                       "core::str::iter::SplitInternal",
                                                       "start"
                                                     |)
-                                                  |)
-                                                |))
+                                                  |)))
                                                 (Value.Integer 0)))
                                           |)
                                         |)) in
@@ -5344,7 +5334,7 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5449,7 +5439,7 @@ Module str.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -9294,15 +9284,10 @@ Module str.
                       M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Panic.div (|
-                              Integer.Usize,
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 2
-                              |),
-                              Value.Integer 3
-                            |);
+                            BinOp.Wrap.div
+                              Integer.Usize
+                              (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 2))
+                              (Value.Integer 3);
                             Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
                           ]
                       |)));
@@ -9311,28 +9296,16 @@ Module str.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              BinOp.Panic.div (|
-                                Integer.Usize,
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  Value.Integer 2
-                                |),
-                                Value.Integer 3
-                              |),
-                              Value.Integer 1
-                            |);
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (BinOp.Wrap.div
+                                Integer.Usize
+                                (BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 2))
+                                (Value.Integer 3))
+                              (Value.Integer 1);
                             Value.StructTuple
                               "core::option::Option::Some"
-                              [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  Value.Integer 1
-                                |)
-                              ]
+                              [ BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 1) ]
                           ]
                       |)))
                 ]

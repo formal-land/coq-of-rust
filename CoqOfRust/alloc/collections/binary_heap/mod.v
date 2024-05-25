@@ -1435,7 +1435,7 @@ Module collections.
                               let β := end_ in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let _ :=
                               let ptr :=
@@ -1609,11 +1609,11 @@ Module collections.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let parent :=
                               M.alloc (|
-                                BinOp.Panic.div (|
-                                  Integer.Usize,
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                BinOp.Wrap.div
+                                  Integer.Usize
+                                  (BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
@@ -1622,11 +1622,9 @@ Module collections.
                                         []
                                       |),
                                       [ hole ]
-                                    |),
-                                    Value.Integer 1
-                                  |),
-                                  Value.Integer 2
-                                |)
+                                    |))
+                                    (Value.Integer 1))
+                                  (Value.Integer 2)
                               |) in
                             let _ :=
                               M.match_operator (|
@@ -1812,22 +1810,20 @@ Module collections.
                     |) in
                   let child :=
                     M.alloc (|
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        BinOp.Panic.mul (|
-                          Integer.Usize,
-                          Value.Integer 2,
-                          M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (BinOp.Wrap.mul
+                          Integer.Usize
+                          (Value.Integer 2)
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
                               "pos",
                               []
                             |),
                             [ hole ]
-                          |)
-                        |),
-                        Value.Integer 1
-                      |)
+                          |)))
+                        (Value.Integer 1)
                     |) in
                   let _ :=
                     M.loop (|
@@ -1860,10 +1856,10 @@ Module collections.
                                   let β := child in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      M.rust_cast
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| β |))
+                                      (M.rust_cast
                                         (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
@@ -1898,17 +1894,15 @@ Module collections.
                                                 |),
                                                 [
                                                   hole;
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| child |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| child |))
+                                                    (Value.Integer 1)
                                                 ]
                                               |)
                                             |)
                                           ]
-                                        |))
-                                    |)
+                                        |)))
                                   |) in
                                 let _ :=
                                   M.match_operator (|
@@ -1986,12 +1980,12 @@ Module collections.
                                 let _ :=
                                   M.write (|
                                     child,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      BinOp.Panic.mul (|
-                                        Integer.Usize,
-                                        Value.Integer 2,
-                                        M.call_closure (|
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (BinOp.Wrap.mul
+                                        Integer.Usize
+                                        (Value.Integer 2)
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::binary_heap::Hole")
@@ -2000,10 +1994,8 @@ Module collections.
                                             []
                                           |),
                                           [ hole ]
-                                        |)
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                        |)))
+                                      (Value.Integer 1)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -2033,11 +2025,10 @@ Module collections.
                                 LogicalOp.and (|
                                   BinOp.Pure.eq
                                     (M.read (| child |))
-                                    (BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| end_ |),
-                                      Value.Integer 1
-                                    |)),
+                                    (BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| end_ |))
+                                      (Value.Integer 1)),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
@@ -2237,22 +2228,20 @@ Module collections.
                 |) in
               let child :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    BinOp.Panic.mul (|
-                      Integer.Usize,
-                      Value.Integer 2,
-                      M.call_closure (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (BinOp.Wrap.mul
+                      Integer.Usize
+                      (Value.Integer 2)
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
                           "pos",
                           []
                         |),
                         [ hole ]
-                      |)
-                    |),
-                    Value.Integer 1
-                  |)
+                      |)))
+                    (Value.Integer 1)
                 |) in
               let _ :=
                 M.loop (|
@@ -2282,10 +2271,10 @@ Module collections.
                               let β := child in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| β |),
-                                  M.rust_cast
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (| β |))
+                                  (M.rust_cast
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
@@ -2318,17 +2307,15 @@ Module collections.
                                             |),
                                             [
                                               hole;
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| child |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| child |))
+                                                (Value.Integer 1)
                                             ]
                                           |)
                                         |)
                                       ]
-                                    |))
-                                |)
+                                    |)))
                               |) in
                             let _ :=
                               M.alloc (|
@@ -2346,12 +2333,12 @@ Module collections.
                             let _ :=
                               M.write (|
                                 child,
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  BinOp.Panic.mul (|
-                                    Integer.Usize,
-                                    Value.Integer 2,
-                                    M.call_closure (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (BinOp.Wrap.mul
+                                    Integer.Usize
+                                    (Value.Integer 2)
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
@@ -2360,10 +2347,8 @@ Module collections.
                                         []
                                       |),
                                       [ hole ]
-                                    |)
-                                  |),
-                                  Value.Integer 1
-                                |)
+                                    |)))
+                                  (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -2391,11 +2376,7 @@ Module collections.
                             (M.alloc (|
                               BinOp.Pure.eq
                                 (M.read (| child |))
-                                (BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| end_ |),
-                                  Value.Integer 1
-                                |))
+                                (BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (Value.Integer 1))
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2535,9 +2516,9 @@ Module collections.
                     |) in
                   let tail_len :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::binary_heap::BinaryHeap")
@@ -2546,9 +2527,8 @@ Module collections.
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.read (| start |)
-                      |)
+                        |))
+                        (M.read (| start |))
                     |) in
                   let better_to_rebuild :=
                     M.copy (|
@@ -2599,10 +2579,10 @@ Module collections.
                                         |) in
                                       M.alloc (|
                                         BinOp.Pure.lt
-                                          (BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            Value.Integer 2,
-                                            M.call_closure (|
+                                          (BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (Value.Integer 2)
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -2612,29 +2592,27 @@ Module collections.
                                                 []
                                               |),
                                               [ M.read (| self |) ]
-                                            |)
-                                          |))
-                                          (BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (| tail_len |),
-                                            M.call_closure (|
+                                            |)))
+                                          (BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (| tail_len |))
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Self,
                                                 "log2_fast.rebuild_tail",
                                                 []
                                               |),
                                               [ M.read (| start |) ]
-                                            |)
-                                          |))
+                                            |)))
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
                                         BinOp.Pure.lt
-                                          (BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            Value.Integer 2,
-                                            M.call_closure (|
+                                          (BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (Value.Integer 2)
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -2644,13 +2622,11 @@ Module collections.
                                                 []
                                               |),
                                               [ M.read (| self |) ]
-                                            |)
-                                          |))
-                                          (BinOp.Panic.mul (|
-                                            Integer.Usize,
-                                            M.read (| tail_len |),
-                                            Value.Integer 11
-                                          |))
+                                            |)))
+                                          (BinOp.Wrap.mul
+                                            Integer.Usize
+                                            (M.read (| tail_len |))
+                                            (Value.Integer 11))
                                       |)))
                                 ]
                               |)))
@@ -2809,18 +2785,17 @@ Module collections.
             M.read (|
               let n :=
                 M.alloc (|
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
                         "len",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |),
-                    Value.Integer 2
-                  |)
+                    |))
+                    (Value.Integer 2)
                 |) in
               M.loop (|
                 ltac:(M.monadic
@@ -2838,7 +2813,7 @@ Module collections.
                             let β := n in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                             |) in
                           let _ :=
                             M.alloc (|
@@ -3167,11 +3142,10 @@ Module collections.
                                           let β := i in
                                           M.write (|
                                             β,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| β |),
-                                              Value.Integer 1
-                                            |)
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
                                           |) in
                                         keep
                                       |)))

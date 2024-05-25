@@ -805,11 +805,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     let β := M.read (| x |) in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.mul (|
-                                        Integer.I32,
-                                        M.read (| β |),
-                                        Value.Integer 3
-                                      |)
+                                      BinOp.Wrap.mul Integer.I32 (M.read (| β |)) (Value.Integer 3)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
                             ]

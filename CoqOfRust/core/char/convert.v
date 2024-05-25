@@ -984,11 +984,10 @@ Module char.
                                 Value.Integer 2048
                               ]
                             |))
-                            (BinOp.Panic.sub (|
-                              Integer.U32,
-                              Value.Integer 1114112,
-                              Value.Integer 2048
-                            |))
+                            (BinOp.Wrap.sub
+                              Integer.U32
+                              (Value.Integer 1114112)
+                              (Value.Integer 2048))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1352,11 +1351,10 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Panic.add (|
-                                      Integer.U8,
-                                      M.read (| UnsupportedLiteral |),
-                                      M.read (| num |)
-                                    |))
+                                    (BinOp.Wrap.add
+                                      Integer.U8
+                                      (M.read (| UnsupportedLiteral |))
+                                      (M.read (| num |)))
                                 ]
                             |)));
                         fun γ =>
@@ -1366,15 +1364,13 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Panic.sub (|
-                                      Integer.U8,
-                                      BinOp.Panic.add (|
-                                        Integer.U8,
-                                        M.read (| UnsupportedLiteral |),
-                                        M.read (| num |)
-                                      |),
-                                      Value.Integer 10
-                                    |))
+                                    (BinOp.Wrap.sub
+                                      Integer.U8
+                                      (BinOp.Wrap.add
+                                        Integer.U8
+                                        (M.read (| UnsupportedLiteral |))
+                                        (M.read (| num |)))
+                                      (Value.Integer 10))
                                 ]
                             |)))
                       ]

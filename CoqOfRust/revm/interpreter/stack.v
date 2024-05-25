@@ -999,7 +999,7 @@ Module interpreter.
                         |)
                       ]
                     |);
-                    BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                   ]
                 |)
               |)
@@ -1689,11 +1689,11 @@ Module interpreter.
                                     "revm_interpreter::interpreter::stack::Stack",
                                     "data"
                                   |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -1709,11 +1709,9 @@ Module interpreter.
                                             "data"
                                           |)
                                         ]
-                                      |),
-                                      M.read (| no_from_top |)
-                                    |),
-                                    Value.Integer 1
-                                  |)
+                                      |))
+                                      (M.read (| no_from_top |)))
+                                    (Value.Integer 1)
                                 ]
                               |)
                             |)
@@ -1910,11 +1908,10 @@ Module interpreter.
                                 M.use
                                   (M.alloc (|
                                     BinOp.Pure.gt
-                                      (BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| len |),
-                                        Value.Integer 1
-                                      |))
+                                      (BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| len |))
+                                        (Value.Integer 1))
                                       (M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::interpreter::stack::STACK_LIMIT"
@@ -2009,11 +2006,10 @@ Module interpreter.
                                           "revm_interpreter::interpreter::stack::Stack",
                                           "data"
                                         |);
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| len |),
-                                          Value.Integer 1
-                                        |)
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (| len |))
+                                          (Value.Integer 1)
                                       ]
                                     |)
                                   |) in
@@ -2207,9 +2203,7 @@ Module interpreter.
                       |)
                     |) in
                   let n_m_index :=
-                    M.alloc (|
-                      BinOp.Panic.add (| Integer.Usize, M.read (| n |), M.read (| m |) |)
-                    |) in
+                    M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| n |)) (M.read (| m |)) |) in
                   let _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2267,7 +2261,7 @@ Module interpreter.
                                 |)
                               ]
                             |);
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| len |), Value.Integer 1 |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                           ]
                         |)
                       |) in
@@ -2414,28 +2408,26 @@ Module interpreter.
                     |) in
                   let n_words :=
                     M.alloc (|
-                      BinOp.Panic.div (|
-                        Integer.Usize,
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.call_closure (|
+                      BinOp.Wrap.div
+                        Integer.Usize
+                        (BinOp.Wrap.add
+                          Integer.Usize
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                               "len",
                               []
                             |),
                             [ M.read (| slice |) ]
-                          |),
-                          Value.Integer 31
-                        |),
-                        Value.Integer 32
-                      |)
+                          |))
+                          (Value.Integer 31))
+                        (Value.Integer 32)
                     |) in
                   let new_len :=
                     M.alloc (|
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -2450,9 +2442,8 @@ Module interpreter.
                               "data"
                             |)
                           ]
-                        |),
-                        M.read (| n_words |)
-                      |)
+                        |))
+                        (M.read (| n_words |))
                     |) in
                   let _ :=
                     M.match_operator (|
@@ -2806,11 +2797,10 @@ Module interpreter.
                                                                         let β := i in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Panic.add (|
-                                                                            Integer.Usize,
-                                                                            M.read (| β |),
-                                                                            Value.Integer 1
-                                                                          |)
+                                                                          BinOp.Wrap.add
+                                                                            Integer.Usize
+                                                                            (M.read (| β |))
+                                                                            (Value.Integer 1)
                                                                         |) in
                                                                       M.alloc (| Value.Tuple [] |)))
                                                                 ]
@@ -3010,11 +3000,10 @@ Module interpreter.
                                                 let β := i in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
                                         ]
@@ -3075,18 +3064,17 @@ Module interpreter.
                                             "core::ops::range::RangeFrom"
                                             [
                                               ("start",
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  Value.Integer 8,
-                                                  M.call_closure (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (Value.Integer 8)
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| partial_last_limb |) ]
-                                                  |)
-                                                |))
+                                                  |)))
                                             ]
                                         ]
                                       |);
@@ -3126,11 +3114,7 @@ Module interpreter.
                                 let β := i in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -3154,15 +3138,13 @@ Module interpreter.
                                     Value.Tuple
                                       [
                                         M.alloc (|
-                                          BinOp.Panic.div (|
-                                            Integer.Usize,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| i |),
-                                              Value.Integer 3
-                                            |),
-                                            Value.Integer 4
-                                          |)
+                                          BinOp.Wrap.div
+                                            Integer.Usize
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| i |))
+                                              (Value.Integer 3))
+                                            (Value.Integer 4)
                                         |);
                                         n_words
                                       ]
@@ -3252,7 +3234,7 @@ Module interpreter.
                       |) in
                     let m :=
                       M.alloc (|
-                        BinOp.Panic.rem (| Integer.Usize, M.read (| i |), Value.Integer 4 |)
+                        BinOp.Wrap.rem Integer.Usize (M.read (| i |)) (Value.Integer 4)
                       |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -3282,11 +3264,7 @@ Module interpreter.
                                       [ M.read (| dst |); M.read (| i |) ]
                                     |);
                                     Value.Integer 0;
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      Value.Integer 4,
-                                      M.read (| m |)
-                                    |)
+                                    BinOp.Wrap.sub Integer.Usize (Value.Integer 4) (M.read (| m |))
                                   ]
                                 |)
                               |) in
@@ -3386,15 +3364,13 @@ Module interpreter.
                                 "revm_interpreter::interpreter::stack::Stack",
                                 "data"
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| len |),
-                                  M.read (| no_from_top |)
-                                |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| len |))
+                                  (M.read (| no_from_top |)))
+                                (Value.Integer 1)
                             ]
                           |),
                           M.read (| val |)

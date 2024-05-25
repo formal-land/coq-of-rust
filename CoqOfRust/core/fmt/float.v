@@ -767,11 +767,7 @@ Module fmt.
                           M.read (| fmt |);
                           M.read (| num |);
                           M.read (| sign |);
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| precision |),
-                            Value.Integer 1
-                          |);
+                          BinOp.Wrap.add Integer.Usize (M.read (| precision |)) (Value.Integer 1);
                           M.read (| upper |)
                         ]
                       |)

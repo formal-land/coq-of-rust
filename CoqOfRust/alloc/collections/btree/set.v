@@ -1894,9 +1894,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| self |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1906,13 +1906,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2398,9 +2397,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| self |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2410,13 +2409,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2458,9 +2456,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| other |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2470,13 +2468,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -3150,9 +3147,9 @@ Module collections.
                                                         |),
                                                         [ self_iter ]
                                                       |))
-                                                      (BinOp.Panic.div (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      (BinOp.Wrap.div
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -3162,13 +3159,12 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| other |) ]
-                                                        |),
-                                                        M.read (|
+                                                        |))
+                                                        (M.read (|
                                                           M.get_constant (|
                                                             "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                           |)
-                                                        |)
-                                                      |))
+                                                        |)))
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -8394,11 +8390,10 @@ Module collections.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| a_len |),
-                                    M.read (| b_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| a_len |))
+                                    (M.read (| b_len |))
                                 ]
                             ]
                         |)))
@@ -9621,11 +9616,10 @@ Module collections.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| a_len |),
-                                    M.read (| b_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| a_len |))
+                                    (M.read (| b_len |))
                                 ]
                             ]
                         |)))

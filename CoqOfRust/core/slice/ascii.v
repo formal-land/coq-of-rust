@@ -1620,15 +1620,14 @@ Module slice.
                                   (M.alloc (|
                                     BinOp.Pure.lt
                                       (M.read (| byte_pos |))
-                                      (BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| len |),
-                                        M.read (|
+                                      (BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| len |))
+                                        (M.read (|
                                           M.get_constant (|
                                             "core::slice::ascii::is_ascii::USIZE_SIZE"
                                           |)
-                                        |)
-                                      |))
+                                        |)))
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1658,15 +1657,14 @@ Module slice.
                                                       (M.alloc (|
                                                         UnOp.Pure.not
                                                           (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| byte_pos |),
-                                                              M.read (|
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| byte_pos |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                             (M.read (| len |)))
                                                       |)) in
                                                   let _ :=
@@ -1877,15 +1875,14 @@ Module slice.
                                 let β := byte_pos in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    M.read (|
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| β |))
+                                    (M.read (|
                                       M.get_constant (|
                                         "core::slice::ascii::is_ascii::USIZE_SIZE"
                                       |)
-                                    |)
-                                  |)
+                                    |))
                                 |) in
                               let _ :=
                                 M.write (|
@@ -1941,11 +1938,10 @@ Module slice.
                                                 (M.read (| len |)),
                                               ltac:(M.monadic
                                                 (BinOp.Pure.le
-                                                  (BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.read (| len |),
-                                                    M.read (| byte_pos |)
-                                                  |))
+                                                  (BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.read (| len |))
+                                                    (M.read (| byte_pos |)))
                                                   (M.read (|
                                                     M.get_constant (|
                                                       "core::slice::ascii::is_ascii::USIZE_SIZE"
@@ -1996,13 +1992,12 @@ Module slice.
                             |),
                             [
                               M.read (| start |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                M.read (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| len |))
+                                (M.read (|
                                   M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)
-                                |)
-                              |)
+                                |))
                             ]
                           |))
                       ]

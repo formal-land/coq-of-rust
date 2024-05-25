@@ -1634,14 +1634,13 @@ Module ffi.
             M.read (|
               let len :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [] |),
                       [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
-                    |),
-                    Value.Integer 1
-                  |)
+                    |))
+                    (Value.Integer 1)
                 |) in
               let slice :=
                 M.alloc (|
@@ -2023,9 +2022,9 @@ Module ffi.
                   "core::ops::range::RangeTo"
                   [
                     ("end_",
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                             "len",
@@ -2040,9 +2039,8 @@ Module ffi.
                               |)
                             |)
                           ]
-                        |),
-                        Value.Integer 1
-                      |))
+                        |))
+                        (Value.Integer 1))
                   ]
               ]
             |)))
@@ -2249,9 +2247,9 @@ Module ffi.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.eq
-                                            (BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.call_closure (|
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -2285,9 +2283,8 @@ Module ffi.
                                                     ]
                                                   |)
                                                 ]
-                                              |),
-                                              Value.Integer 1
-                                            |))
+                                              |))
+                                              (Value.Integer 1))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -2434,11 +2431,7 @@ Module ffi.
                       let γ :=
                         M.alloc (|
                           BinOp.Pure.eq
-                            (BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (| nul_pos |),
-                              Value.Integer 1
-                            |))
+                            (BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1))
                             (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply

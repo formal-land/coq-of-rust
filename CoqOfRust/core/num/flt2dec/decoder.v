@@ -839,18 +839,16 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer 2
-                                                      |));
+                                                      BinOp.Wrap.shl
+                                                        (M.read (| mant |))
+                                                        (Value.Integer 2));
                                                     ("minus", Value.Integer 1);
                                                     ("plus", Value.Integer 2);
                                                     ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        Integer.I16,
-                                                        M.read (| exp |),
-                                                        Value.Integer 2
-                                                      |));
+                                                      BinOp.Wrap.sub
+                                                        Integer.I16
+                                                        (M.read (| exp |))
+                                                        (Value.Integer 2));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]
@@ -865,18 +863,16 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer 1
-                                                      |));
+                                                      BinOp.Wrap.shl
+                                                        (M.read (| mant |))
+                                                        (Value.Integer 1));
                                                     ("minus", Value.Integer 1);
                                                     ("plus", Value.Integer 1);
                                                     ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        Integer.I16,
-                                                        M.read (| exp |),
-                                                        Value.Integer 1
-                                                      |));
+                                                      BinOp.Wrap.sub
+                                                        Integer.I16
+                                                        (M.read (| exp |))
+                                                        (Value.Integer 1));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]

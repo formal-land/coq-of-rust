@@ -99,7 +99,7 @@ Module num.
                       let β := M.SubPointer.get_array_field (| M.read (| d |), i |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.U8, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.U8 (M.read (| β |)) (Value.Integer 1)
                       |) in
                     let _ :=
                       M.use
@@ -118,11 +118,10 @@ Module num.
                                   "core::ops::range::Range"
                                   [
                                     ("start",
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| i |),
-                                        Value.Integer 1
-                                      |));
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| i |))
+                                        (Value.Integer 1));
                                     ("end_",
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -589,18 +588,17 @@ Module num.
                                       |)),
                                     ltac:(M.monadic
                                       (BinOp.Pure.gt
-                                        (BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| frac_digits |),
-                                          M.call_closure (|
+                                        (BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| frac_digits |))
+                                          (M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| buf |) ]
-                                          |)
-                                        |))
+                                          |)))
                                         (M.read (| minus_exp |))))
                                   |)
                                 |)) in
@@ -624,22 +622,20 @@ Module num.
                                     Value.StructTuple
                                       "core::num::fmt::Part::Zero"
                                       [
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| frac_digits |),
-                                            M.call_closure (|
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| frac_digits |))
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| buf |) ]
-                                            |)
-                                          |),
-                                          M.read (| minus_exp |)
-                                        |)
+                                            |)))
+                                          (M.read (| minus_exp |))
                                       ]
                                   ]
                                 |)
@@ -864,18 +860,17 @@ Module num.
                                         (M.alloc (|
                                           BinOp.Pure.gt
                                             (M.read (| frac_digits |))
-                                            (BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.call_closure (|
+                                            (BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| buf |) ]
-                                              |),
-                                              M.read (| exp |)
-                                            |))
+                                              |))
+                                              (M.read (| exp |)))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -900,22 +895,20 @@ Module num.
                                             Value.StructTuple
                                               "core::num::fmt::Part::Zero"
                                               [
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (| frac_digits |),
-                                                  BinOp.Panic.sub (|
-                                                    Integer.Usize,
-                                                    M.call_closure (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (| frac_digits |))
+                                                  (BinOp.Wrap.sub
+                                                    Integer.Usize
+                                                    (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
                                                       [ M.read (| buf |) ]
-                                                    |),
-                                                    M.read (| exp |)
-                                                  |)
-                                                |)
+                                                    |))
+                                                    (M.read (| exp |)))
                                               ]
                                           ]
                                         |)
@@ -1041,18 +1034,17 @@ Module num.
                                     Value.StructTuple
                                       "core::num::fmt::Part::Zero"
                                       [
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| exp |),
-                                          M.call_closure (|
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| exp |))
+                                          (M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| buf |) ]
-                                          |)
-                                        |)
+                                          |))
                                       ]
                                   ]
                                 |)
@@ -1397,10 +1389,7 @@ Module num.
               |) in
             let _ :=
               let β := n in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
             let _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -1450,7 +1439,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                             |)
                           |),
                           M.call_closure (|
@@ -1492,7 +1481,7 @@ Module num.
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 2 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 2)
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1533,18 +1522,17 @@ Module num.
                                       Value.StructTuple
                                         "core::num::fmt::Part::Zero"
                                         [
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| min_ndigits |),
-                                            M.call_closure (|
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| min_ndigits |))
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| buf |) ]
-                                            |)
-                                          |)
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -1553,11 +1541,7 @@ Module num.
                                 let β := n in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| β |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1568,7 +1552,7 @@ Module num.
               |) in
             let exp :=
               M.alloc (|
-                BinOp.Panic.sub (| Integer.I32, M.rust_cast (M.read (| exp |)), Value.Integer 1 |)
+                BinOp.Wrap.sub Integer.I32 (M.rust_cast (M.read (| exp |))) (Value.Integer 1)
               |) in
             let _ :=
               M.match_operator (|
@@ -1628,7 +1612,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                             |)
                           |),
                           M.call_closure (|
@@ -1698,7 +1682,7 @@ Module num.
                           M.SubPointer.get_array_field (|
                             M.read (| parts |),
                             M.alloc (|
-                              BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                             |)
                           |),
                           M.call_closure (|
@@ -1747,9 +1731,7 @@ Module num.
                       M.read (| parts |);
                       Value.StructRecord
                         "core::ops::range::RangeTo"
-                        [
-                          ("end_",
-                            BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 2 |))
+                        [ ("end_", BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 2))
                         ]
                     ]
                   |)
@@ -3151,11 +3133,10 @@ Module num.
                                     let exp := M.copy (| γ0_1 |) in
                                     let vis_exp :=
                                       M.alloc (|
-                                        BinOp.Panic.sub (|
-                                          Integer.I32,
-                                          M.rust_cast (M.read (| exp |)),
-                                          Value.Integer 1
-                                        |)
+                                        BinOp.Wrap.sub
+                                          Integer.I32
+                                          (M.rust_cast (M.read (| exp |)))
+                                          (Value.Integer 1)
                                       |) in
                                     let parts :=
                                       M.copy (|
@@ -3257,14 +3238,14 @@ Module num.
       | [], [ exp ] =>
         ltac:(M.monadic
           (let exp := M.alloc (| exp |) in
-          BinOp.Panic.add (|
-            Integer.Usize,
-            Value.Integer 21,
-            BinOp.Panic.shr (|
-              M.rust_cast
-                (BinOp.Panic.mul (|
-                  Integer.I32,
-                  M.read (|
+          BinOp.Wrap.add
+            Integer.Usize
+            (Value.Integer 21)
+            (BinOp.Wrap.shr
+              (M.rust_cast
+                (BinOp.Wrap.mul
+                  Integer.I32
+                  (M.read (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3281,12 +3262,9 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 5 |)))
                       ]
                     |)
-                  |),
-                  M.rust_cast (M.read (| exp |))
-                |)),
-              Value.Integer 4
-            |)
-          |)))
+                  |))
+                  (M.rust_cast (M.read (| exp |)))))
+              (Value.Integer 4))))
       | _, _ => M.impossible
       end.
     
@@ -3651,11 +3629,10 @@ Module num.
                                             Value.StructTuple
                                               "core::num::fmt::Part::Zero"
                                               [
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (| ndigits |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (| ndigits |))
+                                                  (Value.Integer 1)
                                               ]
                                           ]
                                         |)

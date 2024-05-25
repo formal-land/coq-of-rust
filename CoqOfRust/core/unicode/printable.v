@@ -51,9 +51,7 @@ Module unicode.
             ltac:(M.monadic
               (M.read (|
                 let xupper :=
-                  M.alloc (|
-                    M.rust_cast (BinOp.Panic.shr (| M.read (| x |), Value.Integer 8 |))
-                  |) in
+                  M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| x |)) (Value.Integer 8)) |) in
                 let lowerstart := M.alloc (| Value.Integer 0 |) in
                 let _ :=
                   M.use
@@ -119,11 +117,10 @@ Module unicode.
                                           let lowercount := M.copy (| γ2_1 |) in
                                           let lowerend :=
                                             M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| lowerstart |),
-                                                M.rust_cast (M.read (| lowercount |))
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| lowerstart |))
+                                                (M.rust_cast (M.read (| lowercount |)))
                                             |) in
                                           let _ :=
                                             M.match_operator (|
@@ -407,13 +404,12 @@ Module unicode.
                                             |) in
                                           M.alloc (|
                                             BinOp.Pure.bit_or
-                                              (BinOp.Panic.shl (|
-                                                M.rust_cast
+                                              (BinOp.Wrap.shl
+                                                (M.rust_cast
                                                   (BinOp.Pure.bit_and
                                                     (M.read (| v |))
-                                                    (Value.Integer 127)),
-                                                Value.Integer 8
-                                              |))
+                                                    (Value.Integer 127)))
+                                                (Value.Integer 8))
                                               (M.rust_cast
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
@@ -454,11 +450,7 @@ Module unicode.
                                 let β := x in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.sub (|
-                                    Integer.I32,
-                                    M.read (| β |),
-                                    M.read (| len |)
-                                  |)
+                                  BinOp.Wrap.sub Integer.I32 (M.read (| β |)) (M.read (| len |))
                                 |) in
                               let _ :=
                                 M.match_operator (|

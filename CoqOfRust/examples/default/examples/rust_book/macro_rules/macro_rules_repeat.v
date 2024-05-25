@@ -76,11 +76,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.call_closure (|
                                       M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
                                       [
-                                        BinOp.Panic.add (|
-                                          Integer.I32,
-                                          Value.Integer 1,
-                                          Value.Integer 2
-                                        |);
+                                        BinOp.Wrap.add
+                                          Integer.I32
+                                          (Value.Integer 1)
+                                          (Value.Integer 2);
                                         Value.Integer 2
                                       ]
                                     |)
@@ -131,11 +130,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.call_closure (|
                                           M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
                                           [
-                                            BinOp.Panic.mul (|
-                                              Integer.I32,
-                                              Value.Integer 2,
-                                              Value.Integer 3
-                                            |);
+                                            BinOp.Wrap.mul
+                                              Integer.I32
+                                              (Value.Integer 2)
+                                              (Value.Integer 3);
                                             Value.Integer 4
                                           ]
                                         |)

@@ -153,11 +153,10 @@ Module Impl_derive_Inches.
                     Value.StructTuple
                       "derive::Centimeters"
                       [
-                        BinOp.Panic.mul (|
-                          Integer.Usize,
-                          M.rust_cast (M.read (| inches |)),
-                          M.read (| UnsupportedLiteral |)
-                        |)
+                        BinOp.Wrap.mul
+                          Integer.Usize
+                          (M.rust_cast (M.read (| inches |)))
+                          (M.read (| UnsupportedLiteral |))
                       ]
                   |)))
             ]

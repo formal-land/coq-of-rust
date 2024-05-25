@@ -117,9 +117,9 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Panic.sub (|
-                Integer.Isize,
-                M.rust_cast
+              BinOp.Wrap.sub
+                Integer.Isize
+                (M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -127,8 +127,8 @@ Module num.
                       []
                     |),
                     [ M.read (| other |) ]
-                  |)),
-                M.rust_cast
+                  |)))
+                (M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -136,8 +136,7 @@ Module num.
                       []
                     |),
                     [ M.read (| self |) ]
-                  |))
-              |)))
+                  |)))))
           | _, _ => M.impossible
           end.
         

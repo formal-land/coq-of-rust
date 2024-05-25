@@ -586,21 +586,20 @@ Module num.
                 β,
                 BinOp.Pure.bit_or
                   (M.read (| β |))
-                  (BinOp.Panic.shl (|
-                    M.rust_cast
+                  (BinOp.Wrap.shl
+                    (M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           x,
                           "core::num::dec2flt::common::BiasedFp",
                           "e"
                         |)
-                      |)),
-                    M.read (|
+                      |)))
+                    (M.read (|
                       M.get_constant (|
                         "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                       |)
-                    |)
-                  |))
+                    |)))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1015,17 +1014,16 @@ Module num.
                                                   "exponent"
                                                 |)
                                               |);
-                                              BinOp.Panic.add (|
-                                                Integer.U64,
-                                                M.read (|
+                                              BinOp.Wrap.add
+                                                Integer.U64
+                                                (M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     num,
                                                     "core::num::dec2flt::number::Number",
                                                     "mantissa"
                                                   |)
-                                                |),
-                                                Value.Integer 1
-                                              |)
+                                                |))
+                                                (Value.Integer 1)
                                             ]
                                           |)
                                         |)

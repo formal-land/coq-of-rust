@@ -631,18 +631,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       ("start", Value.Integer 0);
                       ("end_",
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.call_closure (|
+                        BinOp.Wrap.add
+                          Integer.Usize
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                               "len",
                               []
                             |),
                             [ (* Unsize *) M.pointer_coercion xs ]
-                          |),
-                          Value.Integer 1
-                        |))
+                          |))
+                          (Value.Integer 1))
                     ]
                 ]
               |)

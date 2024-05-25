@@ -2105,17 +2105,16 @@ Module ops.
             M.read (|
               let exclusive_end :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::RangeInclusive",
                         "end"
                       |)
-                    |),
-                    Value.Integer 1
-                  |)
+                    |))
+                    (Value.Integer 1)
                 |) in
               let start :=
                 M.copy (|

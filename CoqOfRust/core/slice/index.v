@@ -4421,11 +4421,7 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| i |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
                           ]
@@ -4446,11 +4442,7 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| i |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic

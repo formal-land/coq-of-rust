@@ -1882,13 +1882,12 @@ Module Impl_erc721_Erc721.
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let c := M.copy (| γ |) in
-                                                          BinOp.Panic.sub (|
-                                                            Integer.U32,
-                                                            M.read (| c |),
-                                                            M.read (|
+                                                          BinOp.Wrap.sub
+                                                            Integer.U32
+                                                            (M.read (| c |))
+                                                            (M.read (|
                                                               M.use (M.alloc (| Value.Integer 1 |))
-                                                            |)
-                                                          |)))
+                                                            |))))
                                                     ]
                                                   |)
                                                 | _ => M.impossible (||)

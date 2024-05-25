@@ -175,13 +175,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.Isize,
-                                        M.get_constant (|
+                                      (BinOp.Wrap.add
+                                        Integer.Isize
+                                        (M.get_constant (|
                                           "enums_c_like::Color::Red_discriminant"
-                                        |),
-                                        Value.Integer 0
-                                      |))
+                                        |))
+                                        (Value.Integer 0))
                                   |)
                                 ]
                               |)
@@ -260,13 +259,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.Isize,
-                                        M.get_constant (|
+                                      (BinOp.Wrap.add
+                                        Integer.Isize
+                                        (M.get_constant (|
                                           "enums_c_like::Color::Blue_discriminant"
-                                        |),
-                                        Value.Integer 0
-                                      |))
+                                        |))
+                                        (Value.Integer 0))
                                   |)
                                 ]
                               |)

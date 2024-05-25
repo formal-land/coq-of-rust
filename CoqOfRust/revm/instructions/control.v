@@ -156,7 +156,7 @@ Module instructions.
                             "instruction_pointer"
                           |)
                         |);
-                        BinOp.Panic.add (| Integer.Isize, M.read (| offset |), Value.Integer 2 |)
+                        BinOp.Wrap.add Integer.Isize (M.read (| offset |)) (Value.Integer 2)
                       ]
                     |)
                   |) in
@@ -165,6 +165,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_rjump : M.IsFunction "revm_interpreter::instructions::control::rjump" rjump.
     
     (*
     pub fn rjumpi<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -376,10 +378,10 @@ Module instructions.
                             let β := offset in
                             M.write (|
                               β,
-                              BinOp.Panic.add (|
-                                Integer.Isize,
-                                M.read (| β |),
-                                M.rust_cast
+                              BinOp.Wrap.add
+                                Integer.Isize
+                                (M.read (| β |))
+                                (M.rust_cast
                                   (M.call_closure (|
                                     M.get_function (|
                                       "revm_interpreter::instructions::utility::read_i16",
@@ -394,8 +396,7 @@ Module instructions.
                                         |)
                                       |)
                                     ]
-                                  |))
-                              |)
+                                  |)))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -431,6 +432,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_rjumpi : M.IsFunction "revm_interpreter::instructions::control::rjumpi" rjumpi.
     
     (*
     pub fn rjumpv<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -732,19 +735,13 @@ Module instructions.
                   |) in
                 let offset :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Isize,
-                      BinOp.Panic.mul (|
-                        Integer.Isize,
-                        BinOp.Panic.add (|
-                          Integer.Isize,
-                          M.read (| max_index |),
-                          Value.Integer 1
-                        |),
-                        Value.Integer 2
-                      |),
-                      Value.Integer 1
-                    |)
+                    BinOp.Wrap.add
+                      Integer.Isize
+                      (BinOp.Wrap.mul
+                        Integer.Isize
+                        (BinOp.Wrap.add Integer.Isize (M.read (| max_index |)) (Value.Integer 1))
+                        (Value.Integer 2))
+                      (Value.Integer 1)
                   |) in
                 let _ :=
                   M.match_operator (|
@@ -763,10 +760,10 @@ Module instructions.
                             let β := offset in
                             M.write (|
                               β,
-                              BinOp.Panic.add (|
-                                Integer.Isize,
-                                M.read (| β |),
-                                M.rust_cast
+                              BinOp.Wrap.add
+                                Integer.Isize
+                                (M.read (| β |))
+                                (M.rust_cast
                                   (M.call_closure (|
                                     M.get_function (|
                                       "revm_interpreter::instructions::utility::read_i16",
@@ -787,20 +784,17 @@ Module instructions.
                                               "instruction_pointer"
                                             |)
                                           |);
-                                          BinOp.Panic.add (|
-                                            Integer.Isize,
-                                            Value.Integer 1,
-                                            BinOp.Panic.mul (|
-                                              Integer.Isize,
-                                              M.read (| case |),
-                                              Value.Integer 2
-                                            |)
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Isize
+                                            (Value.Integer 1)
+                                            (BinOp.Wrap.mul
+                                              Integer.Isize
+                                              (M.read (| case |))
+                                              (Value.Integer 2))
                                         ]
                                       |)
                                     ]
-                                  |))
-                              |)
+                                  |)))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -836,6 +830,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_rjumpv : M.IsFunction "revm_interpreter::instructions::control::rjumpv" rjumpv.
     
     (*
     pub fn jump<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -985,6 +981,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_jump : M.IsFunction "revm_interpreter::instructions::control::jump" jump.
     
     (*
     pub fn jumpi<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1174,6 +1172,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_jumpi : M.IsFunction "revm_interpreter::instructions::control::jumpi" jumpi.
     
     (*
     fn jump_inner(interpreter: &mut Interpreter, target: U256) {
@@ -1413,6 +1413,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_jump_inner :
+      M.IsFunction "revm_interpreter::instructions::control::jump_inner" jump_inner.
+    
     (*
     pub fn jumpdest_or_nop<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::JUMPDEST);
@@ -1485,6 +1488,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_jumpdest_or_nop :
+      M.IsFunction "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
     
     (*
     pub fn callf<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1691,18 +1697,17 @@ Module instructions.
                           "revm_interpreter::interpreter::Interpreter",
                           "function_stack"
                         |);
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.call_closure (|
+                        BinOp.Wrap.add
+                          Integer.Usize
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "revm_interpreter::interpreter::Interpreter",
                               "program_counter",
                               []
                             |),
                             [ M.read (| interpreter |) ]
-                          |),
-                          Value.Integer 2
-                        |);
+                          |))
+                          (Value.Integer 2);
                         M.read (| idx |)
                       ]
                     |)
@@ -1721,6 +1726,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_callf : M.IsFunction "revm_interpreter::instructions::control::callf" callf.
     
     (*
     pub fn retf<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1899,6 +1906,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_retf : M.IsFunction "revm_interpreter::instructions::control::retf" retf.
+    
     (*
     pub fn jumpf<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         require_eof!(interpreter);
@@ -2065,6 +2074,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_jumpf : M.IsFunction "revm_interpreter::instructions::control::jumpf" jumpf.
+    
     (*
     pub fn pc<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -2156,18 +2167,17 @@ Module instructions.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "revm_interpreter::interpreter::Interpreter",
                                     "program_counter",
                                     []
                                   |),
                                   [ M.read (| interpreter |) ]
-                                |),
-                                Value.Integer 1
-                              |)
+                                |))
+                                (Value.Integer 1)
                             ]
                           |)
                         ]
@@ -2215,6 +2225,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_pc : M.IsFunction "revm_interpreter::instructions::control::pc" pc.
     
     (*
     fn return_inner(interpreter: &mut Interpreter, instruction_result: InstructionResult) {
@@ -2768,6 +2780,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_return_inner :
+      M.IsFunction "revm_interpreter::instructions::control::return_inner" return_inner.
+    
     (*
     pub fn ret<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         return_inner(interpreter, InstructionResult::Return);
@@ -2796,6 +2811,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_ret : M.IsFunction "revm_interpreter::instructions::control::ret" ret.
     
     (*
     pub fn revert<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2881,6 +2898,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_revert : M.IsFunction "revm_interpreter::instructions::control::revert" revert.
+    
     (*
     pub fn stop<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         interpreter.instruction_result = InstructionResult::Stop;
@@ -2906,6 +2925,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_stop : M.IsFunction "revm_interpreter::instructions::control::stop" stop.
     
     (*
     pub fn invalid<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2935,6 +2956,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_invalid :
+      M.IsFunction "revm_interpreter::instructions::control::invalid" invalid.
+    
     (*
     pub fn unknown<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         interpreter.instruction_result = InstructionResult::OpcodeNotFound;
@@ -2962,5 +2986,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_unknown :
+      M.IsFunction "revm_interpreter::instructions::control::unknown" unknown.
   End control.
 End instructions.

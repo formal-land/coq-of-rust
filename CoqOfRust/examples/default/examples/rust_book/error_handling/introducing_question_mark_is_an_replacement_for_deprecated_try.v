@@ -130,11 +130,10 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
               Value.StructTuple
                 "core::result::Result::Ok"
                 [
-                  BinOp.Panic.mul (|
-                    Integer.I32,
-                    M.read (| first_number |),
-                    M.read (| second_number |)
-                  |)
+                  BinOp.Wrap.mul
+                    Integer.I32
+                    (M.read (| first_number |))
+                    (M.read (| second_number |))
                 ]
             |)
           |)))

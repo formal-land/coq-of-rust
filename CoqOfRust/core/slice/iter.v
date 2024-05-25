@@ -1369,11 +1369,10 @@ Module slice.
                                     "core::ops::range::RangeFrom"
                                     [
                                       ("start",
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| idx |),
-                                          Value.Integer 1
-                                        |))
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (| idx |))
+                                          (Value.Integer 1))
                                     ]
                                 ]
                               |)
@@ -1433,9 +1432,9 @@ Module slice.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.call_closure (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
@@ -1450,9 +1449,8 @@ Module slice.
                                         |)
                                       |)
                                     ]
-                                  |),
-                                  Value.Integer 1
-                                |)
+                                  |))
+                                  (Value.Integer 1)
                               ]
                           ]
                       |)))
@@ -1650,11 +1648,10 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| idx |),
-                                              Value.Integer 1
-                                            |))
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| idx |))
+                                              (Value.Integer 1))
                                         ]
                                     ]
                                   |)
@@ -2149,11 +2146,10 @@ Module slice.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let idx := M.copy (| γ |) in
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                Value.Integer 1
-                                              |)))
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (Value.Integer 1)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
@@ -2498,9 +2494,9 @@ Module slice.
                                       "core::ops::range::RangeTo"
                                       [
                                         ("end_",
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.call_closure (|
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [ T ],
                                                 "len",
@@ -2515,9 +2511,8 @@ Module slice.
                                                   |)
                                                 |)
                                               ]
-                                            |),
-                                            Value.Integer 1
-                                          |))
+                                            |))
+                                            (Value.Integer 1))
                                       ]
                                   ]
                                 |)
@@ -2612,11 +2607,10 @@ Module slice.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let idx := M.copy (| γ |) in
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                Value.Integer 1
-                                              |)))
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (Value.Integer 1)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
@@ -3124,11 +3118,7 @@ Module slice.
                                 |),
                                 [
                                   M.read (| tmp |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| idx |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add Integer.Usize (M.read (| idx |)) (Value.Integer 1)
                                 ]
                               |)
                             |),
@@ -3229,9 +3219,9 @@ Module slice.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.call_closure (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
@@ -3246,9 +3236,8 @@ Module slice.
                                         |)
                                       |)
                                     ]
-                                  |),
-                                  Value.Integer 1
-                                |)
+                                  |))
+                                  (Value.Integer 1)
                               ]
                           ]
                       |)))
@@ -3836,11 +3825,10 @@ Module slice.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let idx := M.copy (| γ |) in
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                Value.Integer 1
-                                              |)))
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (Value.Integer 1)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
@@ -4190,9 +4178,9 @@ Module slice.
                                         "core::ops::range::RangeTo"
                                         [
                                           ("end_",
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.call_closure (|
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ T ],
                                                   "len",
@@ -4207,9 +4195,8 @@ Module slice.
                                                     |)
                                                   |)
                                                 ]
-                                              |),
-                                              Value.Integer 1
-                                            |))
+                                              |))
+                                              (Value.Integer 1))
                                         ]
                                     ]
                                   |)
@@ -4304,11 +4291,10 @@ Module slice.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let idx := M.copy (| γ |) in
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                Value.Integer 1
-                                              |)))
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (Value.Integer 1)))
                                         ]
                                       |)
                                     | _ => M.impossible (||)
@@ -5216,7 +5202,7 @@ Module slice.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5247,7 +5233,7 @@ Module slice.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -6208,11 +6194,11 @@ Module slice.
                     ltac:(M.monadic
                       (let size :=
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [ T ],
                                   "len",
@@ -6227,8 +6213,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |),
-                              M.call_closure (|
+                              |))
+                              (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                   "get",
@@ -6243,10 +6229,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |)
-                            |),
-                            Value.Integer 1
-                          |)
+                              |)))
+                            (Value.Integer 1)
                         |) in
                       M.alloc (|
                         Value.Tuple
@@ -6444,11 +6428,10 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| n |),
-                                              Value.Integer 1
-                                            |))
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| n |))
+                                              (Value.Integer 1))
                                         ]
                                     ]
                                   |)
@@ -6529,9 +6512,9 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -6546,8 +6529,8 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.call_closure (|
+                            |))
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::num::nonzero::NonZeroUsize",
                                 "get",
@@ -6562,8 +6545,7 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -6778,9 +6760,9 @@ Module slice.
                                     "core::ops::range::RangeFrom"
                                     [
                                       ("start",
-                                        BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.call_closure (|
+                                        BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
@@ -6795,8 +6777,8 @@ Module slice.
                                                 |)
                                               |)
                                             ]
-                                          |),
-                                          M.call_closure (|
+                                          |))
+                                          (M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::num::nonzero::NonZeroUsize",
                                               "get",
@@ -6811,8 +6793,7 @@ Module slice.
                                                 |)
                                               |)
                                             ]
-                                          |)
-                                        |))
+                                          |)))
                                     ]
                                 ]
                               |)
@@ -6846,9 +6827,9 @@ Module slice.
                                 "core::ops::range::RangeTo"
                                 [
                                   ("end_",
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ T ],
                                           "len",
@@ -6863,9 +6844,8 @@ Module slice.
                                             |)
                                           |)
                                         ]
-                                      |),
-                                      Value.Integer 1
-                                    |))
+                                      |))
+                                      (Value.Integer 1))
                                 ]
                             ]
                           |)
@@ -6999,10 +6979,10 @@ Module slice.
                                         "core::ops::range::Range"
                                         [
                                           ("start",
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (| end_ |),
-                                              M.call_closure (|
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (| end_ |))
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.path "core::num::nonzero::NonZeroUsize",
                                                   "get",
@@ -7017,8 +6997,7 @@ Module slice.
                                                     |)
                                                   |)
                                                 ]
-                                              |)
-                                            |));
+                                              |)));
                                           ("end_", M.read (| end_ |))
                                         ]
                                     ]
@@ -7055,11 +7034,10 @@ Module slice.
                                         "core::ops::range::RangeTo"
                                         [
                                           ("end_",
-                                            BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (| end_ |),
-                                              Value.Integer 1
-                                            |))
+                                            BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (| end_ |))
+                                              (Value.Integer 1))
                                         ]
                                     ]
                                   |)
@@ -7479,9 +7457,9 @@ Module slice.
                     ltac:(M.monadic
                       (let n :=
                         M.alloc (|
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -7496,21 +7474,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -7525,15 +7502,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let n :=
                         M.copy (|
@@ -7553,11 +7529,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -7898,13 +7870,13 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.div (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.div
+                              Integer.Usize
+                              (BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
@@ -7919,25 +7891,22 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                Value.Integer 1
-                              |),
-                              M.read (|
+                                |))
+                                (Value.Integer 1))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::slice::iter::Chunks",
                                   "chunk_size"
                                 |)
-                              |)
-                            |),
-                            M.read (|
+                              |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -8002,17 +7971,16 @@ Module slice.
             M.read (|
               let start :=
                 M.alloc (|
-                  BinOp.Panic.mul (|
-                    Integer.Usize,
-                    M.read (| idx |),
-                    M.read (|
+                  BinOp.Wrap.mul
+                    Integer.Usize
+                    (M.read (| idx |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::Chunks",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               let len :=
                 M.alloc (|
@@ -8171,9 +8139,9 @@ Module slice.
                     ltac:(M.monadic
                       (let remainder :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -8188,15 +8156,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let chunksz :=
                         M.copy (|
@@ -8242,9 +8209,9 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
@@ -8259,9 +8226,8 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                M.read (| chunksz |)
-                              |)
+                                |))
+                                (M.read (| chunksz |))
                             ]
                           |)
                         |),
@@ -8355,25 +8321,19 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.copy (|
@@ -8887,9 +8847,9 @@ Module slice.
                     ltac:(M.monadic
                       (let n :=
                         M.alloc (|
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -8904,21 +8864,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -8933,15 +8892,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let n :=
                         M.copy (|
@@ -8961,11 +8919,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -9319,13 +9273,13 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.div (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.div
+                              Integer.Usize
+                              (BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                     "len",
@@ -9340,25 +9294,22 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                Value.Integer 1
-                              |),
-                              M.read (|
+                                |))
+                                (Value.Integer 1))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::slice::iter::ChunksMut",
                                   "chunk_size"
                                 |)
-                              |)
-                            |),
-                            M.read (|
+                              |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -9420,17 +9371,16 @@ Module slice.
             M.read (|
               let start :=
                 M.alloc (|
-                  BinOp.Panic.mul (|
-                    Integer.Usize,
-                    M.read (| idx |),
-                    M.read (|
+                  BinOp.Wrap.mul
+                    Integer.Usize
+                    (M.read (| idx |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksMut",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.read (|
@@ -9586,9 +9536,9 @@ Module slice.
                     ltac:(M.monadic
                       (let remainder :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -9603,15 +9553,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let sz :=
                         M.copy (|
@@ -9676,7 +9625,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| sz |) |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| sz |))
                             ]
                           |)
                         |),
@@ -9774,25 +9723,19 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.copy (|
@@ -10144,25 +10087,23 @@ Module slice.
             M.read (|
               let rem :=
                 M.alloc (|
-                  BinOp.Panic.rem (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.rem
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| chunk_size |)
-                  |)
+                    |))
+                    (M.read (| chunk_size |))
                 |) in
               let fst_len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| rem |)
-                  |)
+                    |))
+                    (M.read (| rem |))
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -10413,9 +10354,9 @@ Module slice.
             M.read (|
               let n :=
                 M.alloc (|
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
@@ -10426,15 +10367,14 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExact",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -10662,17 +10602,16 @@ Module slice.
             M.read (|
               let start :=
                 M.alloc (|
-                  BinOp.Panic.mul (|
-                    Integer.Usize,
-                    M.read (| idx |),
-                    M.read (|
+                  BinOp.Wrap.mul
+                    Integer.Usize
+                    (M.read (| idx |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExact",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10807,9 +10746,9 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
@@ -10824,15 +10763,14 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                M.read (|
+                                |))
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ChunksExact",
                                     "chunk_size"
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |),
@@ -10923,39 +10861,32 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExact",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| start |),
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| start |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExact",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let nth_back :=
                         M.alloc (|
@@ -11237,25 +11168,23 @@ Module slice.
             M.read (|
               let rem :=
                 M.alloc (|
-                  BinOp.Panic.rem (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.rem
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| chunk_size |)
-                  |)
+                    |))
+                    (M.read (| chunk_size |))
                 |) in
               let fst_len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| rem |)
-                  |)
+                    |))
+                    (M.read (| rem |))
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -11454,9 +11383,9 @@ Module slice.
             M.read (|
               let n :=
                 M.alloc (|
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                         "len",
@@ -11471,15 +11400,14 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExactMut",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -11712,17 +11640,16 @@ Module slice.
             M.read (|
               let start :=
                 M.alloc (|
-                  BinOp.Panic.mul (|
-                    Integer.Usize,
-                    M.read (| idx |),
-                    M.read (|
+                  BinOp.Wrap.mul
+                    Integer.Usize
+                    (M.read (| idx |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExactMut",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11859,9 +11786,9 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                     "len",
@@ -11876,15 +11803,14 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                M.read (|
+                                |))
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ChunksExactMut",
                                     "chunk_size"
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |),
@@ -11979,39 +11905,32 @@ Module slice.
                     ltac:(M.monadic
                       (let start :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| start |),
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| start |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       M.match_operator (|
                         M.alloc (|
@@ -12421,11 +12340,10 @@ Module slice.
                         M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                         [ M.read (| slice |) ]
                       |);
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| M.get_constant (| "core::slice::iter::N" |) |),
-                        Value.Integer 1
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| M.get_constant (| "core::slice::iter::N" |) |))
+                        (Value.Integer 1)
                     ]
                   |)
                 |) in
@@ -12572,7 +12490,7 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
@@ -12752,7 +12670,7 @@ Module slice.
                               "slice_head"
                             |)
                           |);
-                          BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                         ]
                       |)
                     |) in
@@ -12765,11 +12683,10 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| β |),
-                        BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| β |))
+                        (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
@@ -12980,17 +12897,16 @@ Module slice.
                                   "slice_head"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ArrayWindows",
                                     "num"
                                   |)
-                                |),
-                                Value.Integer 1
-                              |)
+                                |))
+                                (Value.Integer 1)
                             ]
                           |)
                         ]
@@ -13005,7 +12921,7 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
@@ -13098,17 +13014,16 @@ Module slice.
                                   "slice_head"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ArrayWindows",
                                     "num"
                                   |)
-                                |),
-                                BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
-                              |)
+                                |))
+                                (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
                             ]
                           |)
                         ]
@@ -13123,11 +13038,10 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| β |),
-                        BinOp.Panic.add (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| β |))
+                        (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
@@ -14605,11 +14519,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                M.read (| chunksz |)
-                              |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| chunksz |))
                             ]
                           |)
                         |),
@@ -14696,9 +14606,9 @@ Module slice.
                     ltac:(M.monadic
                       (let n :=
                         M.alloc (|
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -14713,21 +14623,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -14742,15 +14651,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let n :=
                         M.copy (|
@@ -14770,11 +14678,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -14916,9 +14820,9 @@ Module slice.
                             ltac:(M.monadic
                               (let end_ :=
                                 M.alloc (|
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ T ],
                                         "len",
@@ -14933,9 +14837,8 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |),
-                                    M.read (| end_ |)
-                                  |)
+                                    |))
+                                    (M.read (| end_ |))
                                 |) in
                               let start :=
                                 M.copy (|
@@ -15096,9 +14999,9 @@ Module slice.
                     ltac:(M.monadic
                       (let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -15113,15 +15016,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.copy (|
@@ -15204,9 +15106,9 @@ Module slice.
             M.read (|
               let end_ :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
@@ -15217,19 +15119,17 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    BinOp.Panic.mul (|
-                      Integer.Usize,
-                      M.read (| idx |),
-                      M.read (|
+                    |))
+                    (BinOp.Wrap.mul
+                      Integer.Usize
+                      (M.read (| idx |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunks",
                           "chunk_size"
                         |)
-                      |)
-                    |)
-                  |)
+                      |)))
                 |) in
               let start :=
                 M.copy (|
@@ -15290,7 +15190,7 @@ Module slice.
                         M.read (| start |)
                       ]
                     |);
-                    BinOp.Panic.sub (| Integer.Usize, M.read (| end_ |), M.read (| start |) |)
+                    BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
                   ]
                 |)
               |)
@@ -15371,9 +15271,9 @@ Module slice.
                     ltac:(M.monadic
                       (let remainder :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -15388,15 +15288,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let chunksz :=
                         M.copy (|
@@ -15535,31 +15434,25 @@ Module slice.
                     ltac:(M.monadic
                       (let offset_from_end :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -15574,9 +15467,8 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (| offset_from_end |)
-                          |)
+                            |))
+                            (M.read (| offset_from_end |))
                         |) in
                       let start :=
                         M.alloc (|
@@ -15968,7 +15860,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| sz |) |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| sz |))
                             ]
                           |)
                         |),
@@ -16055,9 +15947,9 @@ Module slice.
                     ltac:(M.monadic
                       (let n :=
                         M.alloc (|
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -16072,21 +15964,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -16101,15 +15992,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let n :=
                         M.copy (|
@@ -16129,11 +16019,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| n |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -16283,9 +16169,9 @@ Module slice.
                             ltac:(M.monadic
                               (let end_ :=
                                 M.alloc (|
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*mut")
@@ -16302,9 +16188,8 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |),
-                                    M.read (| end_ |)
-                                  |)
+                                    |))
+                                    (M.read (| end_ |))
                                 |) in
                               let start :=
                                 M.copy (|
@@ -16384,11 +16269,10 @@ Module slice.
                                             |),
                                             [
                                               M.read (| tail |);
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                M.read (| end_ |),
-                                                M.read (| start |)
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (M.read (| end_ |))
+                                                (M.read (| start |))
                                             ]
                                           |)
                                         |),
@@ -16475,9 +16359,9 @@ Module slice.
                     ltac:(M.monadic
                       (let rem :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -16492,15 +16376,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.copy (|
@@ -16581,9 +16464,9 @@ Module slice.
             M.read (|
               let end_ :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                         "len",
@@ -16598,19 +16481,17 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    BinOp.Panic.mul (|
-                      Integer.Usize,
-                      M.read (| idx |),
-                      M.read (|
+                    |))
+                    (BinOp.Wrap.mul
+                      Integer.Usize
+                      (M.read (| idx |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksMut",
                           "chunk_size"
                         |)
-                      |)
-                    |)
-                  |)
+                      |)))
                 |) in
               let start :=
                 M.copy (|
@@ -16671,7 +16552,7 @@ Module slice.
                         M.read (| start |)
                       ]
                     |);
-                    BinOp.Panic.sub (| Integer.Usize, M.read (| end_ |), M.read (| start |) |)
+                    BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
                   ]
                 |)
               |)
@@ -16753,9 +16634,9 @@ Module slice.
                     ltac:(M.monadic
                       (let remainder :=
                         M.alloc (|
-                          BinOp.Panic.rem (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.rem
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -16770,15 +16651,14 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let sz :=
                         M.copy (|
@@ -16921,31 +16801,25 @@ Module slice.
                     ltac:(M.monadic
                       (let offset_from_end :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                Value.Integer 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
+                              (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -16960,9 +16834,8 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (| offset_from_end |)
-                          |)
+                            |))
+                            (M.read (| offset_from_end |))
                         |) in
                       let start :=
                         M.alloc (|
@@ -17249,14 +17122,13 @@ Module slice.
             M.read (|
               let rem :=
                 M.alloc (|
-                  BinOp.Panic.rem (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.rem
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| chunk_size |)
-                  |)
+                    |))
+                    (M.read (| chunk_size |))
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -17455,9 +17327,9 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
@@ -17472,15 +17344,14 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                M.read (|
+                                |))
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::RChunksExact",
                                     "chunk_size"
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |),
@@ -17526,9 +17397,9 @@ Module slice.
             M.read (|
               let n :=
                 M.alloc (|
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
@@ -17539,15 +17410,14 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExact",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -17691,9 +17561,9 @@ Module slice.
                                           "v"
                                         |)
                                       |);
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.call_closure (|
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
@@ -17708,9 +17578,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |),
-                                        M.read (| end_ |)
-                                      |)
+                                        |))
+                                        (M.read (| end_ |))
                                     ]
                                   |)
                                 |),
@@ -17795,9 +17664,9 @@ Module slice.
             M.read (|
               let end_ :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [
                         M.read (|
@@ -17808,33 +17677,30 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    BinOp.Panic.mul (|
-                      Integer.Usize,
-                      M.read (| idx |),
-                      M.read (|
+                    |))
+                    (BinOp.Wrap.mul
+                      Integer.Usize
+                      (M.read (| idx |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksExact",
                           "chunk_size"
                         |)
-                      |)
-                    |)
-                  |)
+                      |)))
                 |) in
               let start :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| end_ |),
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| end_ |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExact",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18069,23 +17935,22 @@ Module slice.
                     ltac:(M.monadic
                       (let offset :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| n |) |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExact",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let start :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
@@ -18100,23 +17965,21 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (| offset |)
-                          |)
+                            |))
+                            (M.read (| offset |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| start |),
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| start |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExact",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let nth_back :=
                         M.alloc (|
@@ -18387,14 +18250,13 @@ Module slice.
             M.read (|
               let rem :=
                 M.alloc (|
-                  BinOp.Panic.rem (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.rem
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| slice |) ]
-                    |),
-                    M.read (| chunk_size |)
-                  |)
+                    |))
+                    (M.read (| chunk_size |))
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -18560,17 +18422,16 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                M.read (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| len |))
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::RChunksExactMut",
                                     "chunk_size"
                                   |)
-                                |)
-                              |)
+                                |))
                             ]
                           |)
                         |),
@@ -18616,9 +18477,9 @@ Module slice.
             M.read (|
               let n :=
                 M.alloc (|
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                         "len",
@@ -18633,15 +18494,14 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExactMut",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -18812,11 +18672,10 @@ Module slice.
                                           "v"
                                         |)
                                       |);
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| len |),
-                                        M.read (| end_ |)
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| len |))
+                                        (M.read (| end_ |))
                                     ]
                                   |)
                                 |),
@@ -18901,9 +18760,9 @@ Module slice.
             M.read (|
               let end_ :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                         "len",
@@ -18918,33 +18777,30 @@ Module slice.
                           |)
                         |)
                       ]
-                    |),
-                    BinOp.Panic.mul (|
-                      Integer.Usize,
-                      M.read (| idx |),
-                      M.read (|
+                    |))
+                    (BinOp.Wrap.mul
+                      Integer.Usize
+                      (M.read (| idx |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksExactMut",
                           "chunk_size"
                         |)
-                      |)
-                    |)
-                  |)
+                      |)))
                 |) in
               let start :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| end_ |),
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| end_ |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExactMut",
                         "chunk_size"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -19185,23 +19041,22 @@ Module slice.
                     ltac:(M.monadic
                       (let offset :=
                         M.alloc (|
-                          BinOp.Panic.mul (|
-                            Integer.Usize,
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| n |) |),
-                            M.read (|
+                          BinOp.Wrap.mul
+                            Integer.Usize
+                            (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| n |)))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       let start :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
                                 "len",
@@ -19216,23 +19071,21 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |),
-                            M.read (| offset |)
-                          |)
+                            |))
+                            (M.read (| offset |))
                         |) in
                       let end_ :=
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| start |),
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| start |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
                               |)
-                            |)
-                          |)
+                            |))
                         |) in
                       M.match_operator (|
                         M.alloc (|
@@ -19696,11 +19549,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20039,11 +19891,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20084,9 +19935,9 @@ Module slice.
                                   "slice"
                                 |)
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
@@ -20101,9 +19952,8 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |),
-                                M.read (| len |)
-                              |)
+                                |))
+                                (M.read (| len |))
                             ]
                           |)
                         |),
@@ -20412,11 +20262,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20763,11 +20612,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20818,18 +20666,17 @@ Module slice.
                             |),
                             [
                               M.read (| slice |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |),
-                                M.read (| len |)
-                              |)
+                                |))
+                                (M.read (| len |))
                             ]
                           |)
                         |),

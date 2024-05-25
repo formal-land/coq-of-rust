@@ -33,8 +33,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ BinOp.Panic.div (| Integer.I32, M.read (| dividend |), M.read (| divisor |) |)
-                    ]
+                    [ BinOp.Wrap.div Integer.I32 (M.read (| dividend |)) (M.read (| divisor |)) ]
                 |)))
           ]
         |)

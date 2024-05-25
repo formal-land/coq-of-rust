@@ -703,22 +703,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroU8",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -2423,22 +2421,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroU16",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -4155,22 +4151,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroU32",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -5879,22 +5873,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroU64",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -7603,22 +7595,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroU128",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -9332,22 +9322,20 @@ Module num.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                Value.Integer 1
-              |),
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.sub
+                Integer.U32
+                (M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |))
+                (Value.Integer 1))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::num::nonzero::NonZeroUsize",
                   "leading_zeros",
                   []
                 |),
                 [ M.read (| self |) ]
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       

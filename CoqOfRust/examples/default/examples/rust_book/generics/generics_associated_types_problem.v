@@ -136,9 +136,9 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   | [ A; B; C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
-      BinOp.Panic.sub (|
-        Integer.I32,
-        M.call_closure (|
+      BinOp.Wrap.sub
+        Integer.I32
+        (M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
@@ -147,8 +147,8 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |),
           [ M.read (| container |) ]
-        |),
-        M.call_closure (|
+        |))
+        (M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
@@ -157,8 +157,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |),
           [ M.read (| container |) ]
-        |)
-      |)))
+        |))))
   | _, _ => M.impossible
   end.
 

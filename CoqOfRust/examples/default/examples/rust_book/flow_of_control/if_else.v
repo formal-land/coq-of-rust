@@ -242,9 +242,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |) in
-                    M.alloc (|
-                      BinOp.Panic.mul (| Integer.I32, Value.Integer 10, M.read (| n |) |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.mul Integer.I32 (Value.Integer 10) (M.read (| n |)) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -277,9 +275,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |) in
-                    M.alloc (|
-                      BinOp.Panic.div (| Integer.I32, M.read (| n |), Value.Integer 2 |)
-                    |)))
+                    M.alloc (| BinOp.Wrap.div Integer.I32 (M.read (| n |)) (Value.Integer 2) |)))
               ]
             |)
           |) in

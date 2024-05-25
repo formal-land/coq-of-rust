@@ -1250,7 +1250,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -2313,11 +2313,7 @@ Module slice.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -2482,11 +2478,7 @@ Module slice.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -3257,7 +3249,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -4636,7 +4628,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -5701,11 +5693,7 @@ Module slice.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -5870,11 +5858,7 @@ Module slice.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -6561,7 +6545,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"

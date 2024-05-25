@@ -746,23 +746,22 @@ Module str.
                 |) in
               let len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.rust_cast
@@ -926,23 +925,22 @@ Module str.
                 |) in
               let len :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "end"
                       |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::Range",
                         "start"
                       |)
-                    |)
-                  |)
+                    |))
                 |) in
               M.alloc (|
                 M.rust_cast

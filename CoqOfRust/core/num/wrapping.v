@@ -23403,55 +23403,50 @@ Module num.
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 3 |),
-                Value.Integer 1
-              |)
+              BinOp.Wrap.sub
+                Integer.U32
+                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 3))
+                (Value.Integer 1)
             |))).
       
       Definition i16 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 4 |),
-                Value.Integer 1
-              |)
+              BinOp.Wrap.sub
+                Integer.U32
+                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 4))
+                (Value.Integer 1)
             |))).
       
       Definition i32 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 5 |),
-                Value.Integer 1
-              |)
+              BinOp.Wrap.sub
+                Integer.U32
+                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 5))
+                (Value.Integer 1)
             |))).
       
       Definition i64 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 6 |),
-                Value.Integer 1
-              |)
+              BinOp.Wrap.sub
+                Integer.U32
+                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 6))
+                (Value.Integer 1)
             |))).
       
       Definition i128 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                BinOp.Panic.shl (| Value.Integer 1, Value.Integer 7 |),
-                Value.Integer 1
-              |)
+              BinOp.Wrap.sub
+                Integer.U32
+                (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 7))
+                (Value.Integer 1)
             |))).
       
       Definition u8 : Value.t :=

@@ -144,11 +144,10 @@ Module collections.
                                   let _ :=
                                     M.write (|
                                       length_b,
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| total_num |),
-                                        M.read (| length_a |)
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| total_num |))
+                                        (M.read (| length_a |))
                                     |) in
                                   let _ :=
                                     M.match_operator (|
@@ -327,11 +326,10 @@ Module collections.
                                   let _ :=
                                     M.write (|
                                       length_a,
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| total_num |),
-                                        M.read (| length_b |)
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| total_num |))
+                                        (M.read (| length_b |))
                                     |) in
                                   let _ :=
                                     M.match_operator (|

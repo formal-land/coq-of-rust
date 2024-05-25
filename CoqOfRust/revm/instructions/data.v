@@ -384,6 +384,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_data_load :
+      M.IsFunction "revm_interpreter::instructions::data::data_load" data_load.
+    
     (*
     pub fn data_loadn<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         require_eof!(interpreter);
@@ -711,6 +714,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_data_loadn :
+      M.IsFunction "revm_interpreter::instructions::data::data_loadn" data_loadn.
+    
     (*
     pub fn data_size<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         require_eof!(interpreter);
@@ -926,6 +932,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_data_size :
+      M.IsFunction "revm_interpreter::instructions::data::data_size" data_size.
     
     (*
     pub fn data_copy<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1641,5 +1650,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_data_copy :
+      M.IsFunction "revm_interpreter::instructions::data::data_copy" data_copy.
   End data.
 End instructions.

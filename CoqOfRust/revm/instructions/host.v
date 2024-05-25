@@ -370,6 +370,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_balance : M.IsFunction "revm_interpreter::instructions::host::balance" balance.
+    
     (*
     pub fn selfbalance<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, ISTANBUL);
@@ -584,6 +586,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_selfbalance :
+      M.IsFunction "revm_interpreter::instructions::host::selfbalance" selfbalance.
     
     (*
     pub fn extcodesize<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -1031,6 +1036,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extcodesize :
+      M.IsFunction "revm_interpreter::instructions::host::extcodesize" extcodesize.
     
     (*
     pub fn extcodehash<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -1516,6 +1524,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extcodehash :
+      M.IsFunction "revm_interpreter::instructions::host::extcodehash" extcodehash.
     
     (*
     pub fn extcodecopy<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -2373,6 +2384,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_extcodecopy :
+      M.IsFunction "revm_interpreter::instructions::host::extcodecopy" extcodecopy.
+    
     (*
     pub fn blockhash<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         gas!(interpreter, gas::BLOCKHASH);
@@ -2959,6 +2973,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_blockhash :
+      M.IsFunction "revm_interpreter::instructions::host::blockhash" blockhash.
+    
     (*
     pub fn sload<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         pop_top!(interpreter, index);
@@ -3163,6 +3180,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sload : M.IsFunction "revm_interpreter::instructions::host::sload" sload.
     
     (*
     pub fn sstore<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
@@ -3538,6 +3557,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_sstore : M.IsFunction "revm_interpreter::instructions::host::sstore" sstore.
+    
     (*
     pub fn tstore<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, CANCUN);
@@ -3804,6 +3825,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_tstore : M.IsFunction "revm_interpreter::instructions::host::tstore" tstore.
+    
     (*
     pub fn tload<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         check!(interpreter, CANCUN);
@@ -4017,6 +4040,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_tload : M.IsFunction "revm_interpreter::instructions::host::tload" tload.
     
     (*
     pub fn log<const N: usize, H: Host + ?Sized>(interpreter: &mut Interpreter, host: &mut H) {
@@ -4915,6 +4940,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_log : M.IsFunction "revm_interpreter::instructions::host::log" log.
+    
     (*
     pub fn selfdestruct<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) {
         require_non_staticcall!(interpreter);
@@ -5250,5 +5277,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_selfdestruct :
+      M.IsFunction "revm_interpreter::instructions::host::selfdestruct" selfdestruct.
   End host.
 End instructions.

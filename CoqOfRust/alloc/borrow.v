@@ -1211,25 +1211,24 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| rhs |) ]
-                                                |)
-                                              |)
+                                                |))
                                             ]
                                           |)
                                         |) in
@@ -1398,17 +1397,17 @@ Module borrow.
                                               []
                                             |),
                                             [
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
                                                     []
                                                   |),
                                                   [ M.read (| lhs |) ]
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "str",
                                                     "len",
@@ -1428,8 +1427,7 @@ Module borrow.
                                                       [ rhs ]
                                                     |)
                                                   ]
-                                                |)
-                                              |)
+                                                |))
                                             ]
                                           |)
                                         |) in

@@ -486,15 +486,14 @@ Module collections.
                                                                               |),
                                                                               [ left_parent_kv ]
                                                                             |))
-                                                                            (BinOp.Panic.sub (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              |))
+                                                                              (Value.Integer 1)))
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -731,15 +730,14 @@ Module collections.
                                                                               |),
                                                                               [ right_parent_kv ]
                                                                             |))
-                                                                            (BinOp.Panic.sub (|
-                                                                              Integer.Usize,
-                                                                              M.read (|
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.Usize
+                                                                              (M.read (|
                                                                                 M.get_constant (|
                                                                                   "alloc::collections::btree::map::MIN_LEN"
                                                                                 |)
-                                                                              |),
-                                                                              Value.Integer 1
-                                                                            |)))
+                                                                              |))
+                                                                              (Value.Integer 1)))
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|

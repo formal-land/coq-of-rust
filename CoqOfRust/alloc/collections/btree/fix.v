@@ -201,15 +201,14 @@ Module collections.
                                               |),
                                               [
                                                 left_parent_kv;
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
                                                     |)
-                                                  |),
-                                                  M.read (| len |)
-                                                |)
+                                                  |))
+                                                  (M.read (| len |))
                                               ]
                                             |)
                                           |) in
@@ -298,15 +297,14 @@ Module collections.
                                               |),
                                               [
                                                 right_parent_kv;
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  M.read (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (M.read (|
                                                     M.get_constant (|
                                                       "alloc::collections::btree::map::MIN_LEN"
                                                     |)
-                                                  |),
-                                                  M.read (| len |)
-                                                |)
+                                                  |))
+                                                  (M.read (| len |))
                                               ]
                                             |)
                                           |) in
@@ -1121,15 +1119,14 @@ Module collections.
                                                             |),
                                                             [ last_kv ]
                                                           |))
-                                                          (BinOp.Panic.mul (|
-                                                            Integer.Usize,
-                                                            M.read (|
+                                                          (BinOp.Wrap.mul
+                                                            Integer.Usize
+                                                            (M.read (|
                                                               M.get_constant (|
                                                                 "alloc::collections::btree::map::MIN_LEN"
                                                               |)
-                                                            |),
-                                                            Value.Integer 2
-                                                          |)))
+                                                            |))
+                                                            (Value.Integer 2)))
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1207,15 +1204,14 @@ Module collections.
                                             |),
                                             [
                                               last_kv;
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                M.read (|
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (M.read (|
                                                   M.get_constant (|
                                                     "alloc::collections::btree::map::MIN_LEN"
                                                   |)
-                                                |),
-                                                M.read (| right_child_len |)
-                                              |)
+                                                |))
+                                                (M.read (| right_child_len |))
                                             ]
                                           |)
                                         |) in
@@ -1999,13 +1995,12 @@ Module collections.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
-                                  |),
-                                  Value.Integer 1
-                                |);
+                                  |))
+                                  (Value.Integer 1);
                                 M.read (| left_len |)
                               ]
                             |)
@@ -2232,13 +2227,12 @@ Module collections.
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
                               [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (|
                                     M.get_constant (| "alloc::collections::btree::map::MIN_LEN" |)
-                                  |),
-                                  Value.Integer 1
-                                |);
+                                  |))
+                                  (Value.Integer 1);
                                 M.read (| right_len |)
                               ]
                             |)

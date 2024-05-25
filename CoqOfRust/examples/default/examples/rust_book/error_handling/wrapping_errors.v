@@ -475,7 +475,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Panic.mul (| Integer.I32, Value.Integer 2, M.read (| parsed |) |) ]
+                [ BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| parsed |)) ]
             |)
           |)))
       |)))

@@ -4226,11 +4226,7 @@ Module sync.
                                     "weak"
                                   |);
                                   M.read (| cur |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| cur |),
-                                    Value.Integer 1
-                                  |);
+                                  BinOp.Wrap.add Integer.Usize (M.read (| cur |)) (Value.Integer 1);
                                   Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                   Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                 ]
@@ -4456,7 +4452,7 @@ Module sync.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| cnt |), Value.Integer 1 |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| cnt |)) (Value.Integer 1)
                     |)))
               ]
             |)
@@ -6640,11 +6636,10 @@ Module sync.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -8725,11 +8720,7 @@ Module sync.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| weak |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| weak |)) (Value.Integer 1)
                             |)))
                       ]
                     |)));
@@ -11287,21 +11278,20 @@ Module sync.
               |)
             |) in
           M.alloc (|
-            BinOp.Panic.add (|
-              Integer.Usize,
-              M.call_closure (|
+            BinOp.Wrap.add
+              Integer.Usize
+              (M.call_closure (|
                 M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
                 [ layout ]
-              |),
-              M.call_closure (|
+              |))
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "padding_needed_for",
                   []
                 |),
                 [ layout; M.read (| align |) ]
-              |)
-            |)
+              |))
           |)
         |)))
     | _, _ => M.impossible

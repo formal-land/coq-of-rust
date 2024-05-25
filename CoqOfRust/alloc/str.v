@@ -535,11 +535,10 @@ Module str.
                           "core::ops::range::RangeTo"
                           [
                             ("end_",
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| reserved_len |),
-                                M.read (| pos |)
-                              |))
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| reserved_len |))
+                                (M.read (| pos |)))
                           ]
                       ]
                     |)
@@ -2714,10 +2713,10 @@ Module str.
                   |) in
                 let result_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (| reserved_len |),
-                      M.call_closure (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (| reserved_len |))
+                      (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
@@ -2726,8 +2725,7 @@ Module str.
                           []
                         |),
                         [ M.read (| remain |) ]
-                      |)
-                    |)
+                      |))
                   |) in
                 let _ :=
                   M.alloc (|
@@ -3102,18 +3100,17 @@ Module str.
                                       let _ :=
                                         M.write (|
                                           last_end,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| start |),
-                                            M.call_closure (|
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| start |))
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| part |) ]
-                                            |)
-                                          |)
+                                            |))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -3315,18 +3312,17 @@ Module str.
                                       let _ :=
                                         M.write (|
                                           last_end,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| start |),
-                                            M.call_closure (|
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| start |))
+                                            (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "str",
                                                 "len",
                                                 []
                                               |),
                                               [ M.read (| part |) ]
-                                            |)
-                                          |)
+                                            |))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -4350,13 +4346,12 @@ Module str.
                             M.use
                               (M.alloc (|
                                 BinOp.Pure.le
-                                  (BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| i |),
-                                    M.read (|
+                                  (BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| i |))
+                                    (M.read (|
                                       M.get_constant (| "alloc::str::convert_while_ascii::N" |)
-                                    |)
-                                  |))
+                                    |)))
                                   (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -4384,15 +4379,14 @@ Module str.
                                     [
                                       ("start", M.read (| i |));
                                       ("end_",
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| i |),
-                                          M.read (|
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (| i |))
+                                          (M.read (|
                                             M.get_constant (|
                                               "alloc::str::convert_while_ascii::N"
                                             |)
-                                          |)
-                                        |))
+                                          |)))
                                     ]
                                 ]
                               |)
@@ -4428,15 +4422,14 @@ Module str.
                                     [
                                       ("start", M.read (| i |));
                                       ("end_",
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (| i |),
-                                          M.read (|
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (| i |))
+                                          (M.read (|
                                             M.get_constant (|
                                               "alloc::str::convert_while_ascii::N"
                                             |)
-                                          |)
-                                        |))
+                                          |)))
                                     ]
                                 ]
                               |)
@@ -4723,13 +4716,12 @@ Module str.
                             let β := i in
                             M.write (|
                               β,
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| β |),
-                                M.read (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (| β |))
+                                (M.read (|
                                   M.get_constant (| "alloc::str::convert_while_ascii::N" |)
-                                |)
-                              |)
+                                |))
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -4783,11 +4775,10 @@ Module str.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.mul (|
-              Integer.Usize,
-              M.read (| M.get_constant (| "alloc::str::convert_while_ascii::USIZE_SIZE" |) |),
-              M.read (| M.get_constant (| "alloc::str::convert_while_ascii::MAGIC_UNROLL" |) |)
-            |)
+            BinOp.Wrap.mul
+              Integer.Usize
+              (M.read (| M.get_constant (| "alloc::str::convert_while_ascii::USIZE_SIZE" |) |))
+              (M.read (| M.get_constant (| "alloc::str::convert_while_ascii::MAGIC_UNROLL" |) |))
           |))).
     
     Definition value_NONASCII_MASK : Value.t :=

@@ -368,11 +368,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U8,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.U8
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -442,11 +441,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.U8,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.U8
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -498,11 +496,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Panic.sub (|
-                                Integer.U8,
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
-                              |))
+                              (BinOp.Wrap.sub
+                                Integer.U8
+                                (M.read (| M.read (| end_ |) |))
+                                (M.read (| M.read (| start |) |)))
                           ]
                       |)));
                   fun γ =>
@@ -743,11 +740,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.I8,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.I8
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -817,11 +813,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.I8,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.I8
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1202,11 +1197,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U16,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.U16
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1276,11 +1270,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.U16,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.U16
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1332,11 +1325,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Panic.sub (|
-                                Integer.U16,
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
-                              |))
+                              (BinOp.Wrap.sub
+                                Integer.U16
+                                (M.read (| M.read (| end_ |) |))
+                                (M.read (| M.read (| start |) |)))
                           ]
                       |)));
                   fun γ =>
@@ -1577,11 +1569,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.I16,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.I16
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1651,11 +1642,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.I16,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.I16
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2036,11 +2026,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U32,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.U32
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2110,11 +2099,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.U32,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.U32
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2166,11 +2154,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Panic.sub (|
-                                Integer.U32,
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
-                              |))
+                              (BinOp.Wrap.sub
+                                Integer.U32
+                                (M.read (| M.read (| end_ |) |))
+                                (M.read (| M.read (| start |) |)))
                           ]
                       |)));
                   fun γ =>
@@ -2411,11 +2398,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.I32,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.I32
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2485,11 +2471,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.I32,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.I32
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2870,11 +2855,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U64,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.U64
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2944,11 +2928,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.U64,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.U64
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3000,11 +2983,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Panic.sub (|
-                                Integer.U64,
-                                M.read (| M.read (| end_ |) |),
-                                M.read (| M.read (| start |) |)
-                              |))
+                              (BinOp.Wrap.sub
+                                Integer.U64
+                                (M.read (| M.read (| end_ |) |))
+                                (M.read (| M.read (| start |) |)))
                           ]
                       |)));
                   fun γ =>
@@ -3245,11 +3227,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.I64,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.I64
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3319,11 +3300,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.I64,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.I64
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3704,11 +3684,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3778,11 +3757,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3836,11 +3814,10 @@ Module iter.
                             M.read (|
                               M.use
                                 (M.alloc (|
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| M.read (| end_ |) |),
-                                    M.read (| M.read (| start |) |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| M.read (| end_ |) |))
+                                    (M.read (| M.read (| start |) |))
                                 |))
                             |)
                           ]
@@ -4083,11 +4060,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.Isize,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.Isize
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4157,11 +4133,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.Isize,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.Isize
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4542,11 +4517,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.U128,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.U128
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4616,11 +4590,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.U128,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.U128
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4685,11 +4658,10 @@ Module iter.
                                 []
                               |),
                               [
-                                BinOp.Panic.sub (|
-                                  Integer.U128,
-                                  M.read (| M.read (| end_ |) |),
-                                  M.read (| M.read (| start |) |)
-                                |)
+                                BinOp.Wrap.sub
+                                  Integer.U128
+                                  (M.read (| M.read (| end_ |) |))
+                                  (M.read (| M.read (| start |) |))
                               ]
                             |)
                           ]
@@ -4851,11 +4823,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.I128,
-                              M.read (| M.get_constant (| "core::num::MAX" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.add
+                              Integer.I128
+                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4925,11 +4896,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.I128,
-                              M.read (| M.get_constant (| "core::num::MIN" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.I128
+                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
+                              (Value.Integer 1)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -5147,11 +5117,10 @@ Module iter.
                                         |) in
                                       let count :=
                                         M.alloc (|
-                                          BinOp.Panic.sub (|
-                                            Integer.U32,
-                                            M.read (| end_ |),
-                                            M.read (| start |)
-                                          |)
+                                          BinOp.Wrap.sub
+                                            Integer.U32
+                                            (M.read (| end_ |))
+                                            (M.read (| start |))
                                         |) in
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -5198,11 +5167,10 @@ Module iter.
                                                         []
                                                       |),
                                                       [
-                                                        BinOp.Panic.sub (|
-                                                          Integer.U32,
-                                                          M.read (| count |),
-                                                          Value.Integer 2048
-                                                        |)
+                                                        BinOp.Wrap.sub
+                                                          Integer.U32
+                                                          (M.read (| count |))
+                                                          (Value.Integer 2048)
                                                       ]
                                                     |)
                                                   ]
@@ -7313,7 +7281,7 @@ Module iter.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| taken |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -7792,7 +7760,7 @@ Module iter.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| taken |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -8209,7 +8177,7 @@ Module iter.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| taken |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -8620,7 +8588,7 @@ Module iter.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| taken |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"

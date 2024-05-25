@@ -473,23 +473,22 @@ Module collections.
                     |)
                   ]
                 |);
-                BinOp.Panic.sub (|
-                  Integer.Usize,
-                  M.read (|
+                BinOp.Wrap.sub
+                  Integer.Usize
+                  (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       range,
                       "core::ops::range::Range",
                       "end"
                     |)
-                  |),
-                  M.read (|
+                  |))
+                  (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       range,
                       "core::ops::range::Range",
                       "start"
                     |)
-                  |)
-                |)
+                  |))
               ]
             |)))
         | _, _ => M.impossible
@@ -710,11 +709,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| dst |),
-                                              M.read (| len |)
-                                            |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| dst |))
+                                              (M.read (| len |)))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -841,11 +839,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| src |),
-                                              M.read (| len |)
-                                            |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| src |))
+                                              (M.read (| len |)))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -1059,11 +1056,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| dst |),
-                                              M.read (| len |)
-                                            |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| dst |))
+                                              (M.read (| len |)))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -1190,11 +1186,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| src |),
-                                              M.read (| len |)
-                                            |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| src |))
+                                              (M.read (| len |)))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -1519,9 +1514,9 @@ Module collections.
                                           (M.alloc (|
                                             UnOp.Pure.not
                                               (BinOp.Pure.le
-                                                (BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.call_closure (|
+                                                (BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.call_closure (|
                                                     M.get_function (|
                                                       "core::cmp::min",
                                                       [ Ty.path "usize" ]
@@ -1535,9 +1530,9 @@ Module collections.
                                                         |),
                                                         [ M.read (| src |); M.read (| dst |) ]
                                                       |);
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -1547,20 +1542,18 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
-                                                        |),
-                                                        M.call_closure (|
+                                                        |))
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path "usize",
                                                             "abs_diff",
                                                             []
                                                           |),
                                                           [ M.read (| src |); M.read (| dst |) ]
-                                                        |)
-                                                      |)
+                                                        |))
                                                     ]
-                                                  |),
-                                                  M.read (| len |)
-                                                |))
+                                                  |))
+                                                  (M.read (| len |)))
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply
@@ -1713,33 +1706,31 @@ Module collections.
                     |) in
                   let src_pre_wrap_len :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
                             "capacity",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.read (| src |)
-                      |)
+                        |))
+                        (M.read (| src |))
                     |) in
                   let dst_pre_wrap_len :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
                             "capacity",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.read (| dst |)
-                      |)
+                        |))
+                        (M.read (| dst |))
                     |) in
                   let src_wraps :=
                     M.alloc (|
@@ -1837,17 +1828,15 @@ Module collections.
                                 |),
                                 [
                                   M.read (| self |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| src |),
-                                    M.read (| dst_pre_wrap_len |)
-                                  |);
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| src |))
+                                    (M.read (| dst_pre_wrap_len |));
                                   Value.Integer 0;
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| dst_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| dst_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -1878,17 +1867,15 @@ Module collections.
                                 |),
                                 [
                                   M.read (| self |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| src |),
-                                    M.read (| dst_pre_wrap_len |)
-                                  |);
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| src |))
+                                    (M.read (| dst_pre_wrap_len |));
                                   Value.Integer 0;
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| dst_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| dst_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -1959,16 +1946,14 @@ Module collections.
                                 [
                                   M.read (| self |);
                                   Value.Integer 0;
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| dst |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| dst |))
+                                    (M.read (| src_pre_wrap_len |));
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| src_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -2000,16 +1985,14 @@ Module collections.
                                 [
                                   M.read (| self |);
                                   Value.Integer 0;
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| dst |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| dst |))
+                                    (M.read (| src_pre_wrap_len |));
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| src_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -2102,11 +2085,10 @@ Module collections.
                             |) in
                           let delta :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| dst_pre_wrap_len |),
-                                M.read (| src_pre_wrap_len |)
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| dst_pre_wrap_len |))
+                                (M.read (| src_pre_wrap_len |))
                             |) in
                           let _ :=
                             M.alloc (|
@@ -2139,11 +2121,10 @@ Module collections.
                                 [
                                   M.read (| self |);
                                   Value.Integer 0;
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| dst |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |);
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| dst |))
+                                    (M.read (| src_pre_wrap_len |));
                                   M.read (| delta |)
                                 ]
                               |)
@@ -2162,11 +2143,10 @@ Module collections.
                                   M.read (| self |);
                                   M.read (| delta |);
                                   Value.Integer 0;
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| dst_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| dst_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -2238,11 +2218,10 @@ Module collections.
                             |) in
                           let delta :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| src_pre_wrap_len |),
-                                M.read (| dst_pre_wrap_len |)
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| src_pre_wrap_len |))
+                                (M.read (| dst_pre_wrap_len |))
                             |) in
                           let _ :=
                             M.alloc (|
@@ -2258,11 +2237,10 @@ Module collections.
                                   M.read (| self |);
                                   Value.Integer 0;
                                   M.read (| delta |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    M.read (| src_pre_wrap_len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (M.read (| src_pre_wrap_len |))
                                 ]
                               |)
                             |) in
@@ -2278,9 +2256,9 @@ Module collections.
                                 |),
                                 [
                                   M.read (| self |);
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -2289,9 +2267,8 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |),
-                                    M.read (| delta |)
-                                  |);
+                                    |))
+                                    (M.read (| delta |));
                                   Value.Integer 0;
                                   M.read (| delta |)
                                 ]
@@ -2420,18 +2397,17 @@ Module collections.
                 |) in
               let head_room :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
                         "capacity",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |),
-                    M.read (| dst |)
-                  |)
+                    |))
+                    (M.read (| dst |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -2689,11 +2665,10 @@ Module collections.
                                               |),
                                               [
                                                 M.read (| self |);
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| dst |),
-                                                  M.read (| i |)
-                                                |);
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| dst |))
+                                                  (M.read (| i |));
                                                 M.read (| element |)
                                               ]
                                             |)
@@ -2702,11 +2677,10 @@ Module collections.
                                           let β := M.read (| written |) in
                                           M.write (|
                                             β,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| β |),
-                                              Value.Integer 1
-                                            |)
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)
                                       |)))
@@ -2776,18 +2750,17 @@ Module collections.
             M.read (|
               let head_room :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
                         "capacity",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |),
-                    M.read (| dst |)
-                  |)
+                    |))
+                    (M.read (| dst |))
                 |) in
               let guard :=
                 M.alloc (|
@@ -3068,17 +3041,16 @@ Module collections.
                                     "head"
                                   |)
                                 |))
-                                (BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| old_capacity |),
-                                  M.read (|
+                                (BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| old_capacity |))
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::vec_deque::VecDeque",
                                       "len"
                                     |)
-                                  |)
-                                |))
+                                  |)))
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3087,31 +3059,29 @@ Module collections.
                       ltac:(M.monadic
                         (let head_len :=
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (| old_capacity |),
-                              M.read (|
+                            BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (| old_capacity |))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::VecDeque",
                                   "head"
                                 |)
-                              |)
-                            |)
+                              |))
                           |) in
                         let tail_len :=
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (|
+                            BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::VecDeque",
                                   "len"
                                 |)
-                              |),
-                              M.read (| head_len |)
-                            |)
+                              |))
+                              (M.read (| head_len |))
                           |) in
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -3127,11 +3097,10 @@ Module collections.
                                           (M.read (| tail_len |)),
                                         ltac:(M.monadic
                                           (BinOp.Pure.ge
-                                            (BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.read (| new_capacity |),
-                                              M.read (| old_capacity |)
-                                            |))
+                                            (BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.read (| new_capacity |))
+                                              (M.read (| old_capacity |)))
                                             (M.read (| tail_len |))))
                                       |)
                                     |)) in
@@ -3163,11 +3132,10 @@ Module collections.
                               ltac:(M.monadic
                                 (let new_head :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| new_capacity |),
-                                      M.read (| head_len |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| new_capacity |))
+                                      (M.read (| head_len |))
                                   |) in
                                 let _ :=
                                   let _ :=
@@ -4907,11 +4875,10 @@ Module collections.
                                 []
                               |),
                               [
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| target_cap |),
-                                  Value.Integer 1
-                                |);
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (| target_cap |))
+                                  (Value.Integer 1);
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -4926,23 +4893,22 @@ Module collections.
                             |)
                           |);
                           M.alloc (|
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (|
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::VecDeque",
                                   "head"
                                 |)
-                              |),
-                              M.read (|
+                              |))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::VecDeque",
                                   "len"
                                 |)
-                              |)
-                            |)
+                              |))
                           |)
                         ]
                       |)
@@ -5078,27 +5044,25 @@ Module collections.
                                               |) in
                                             let len :=
                                               M.alloc (|
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (|
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
                                                         "alloc::collections::vec_deque::VecDeque",
                                                         "head"
                                                       |)
-                                                    |),
-                                                    M.read (|
+                                                    |))
+                                                    (M.read (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
                                                         "alloc::collections::vec_deque::VecDeque",
                                                         "len"
                                                       |)
-                                                    |)
-                                                  |),
-                                                  M.read (| target_cap |)
-                                                |)
+                                                    |)))
+                                                  (M.read (| target_cap |))
                                               |) in
                                             let _ :=
                                               M.alloc (|
@@ -5150,9 +5114,9 @@ Module collections.
                                                       |) in
                                                     let head_len :=
                                                       M.alloc (|
-                                                        BinOp.Panic.sub (|
-                                                          Integer.Usize,
-                                                          M.call_closure (|
+                                                        BinOp.Wrap.sub
+                                                          Integer.Usize
+                                                          (M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -5162,23 +5126,21 @@ Module collections.
                                                               []
                                                             |),
                                                             [ M.read (| self |) ]
-                                                          |),
-                                                          M.read (|
+                                                          |))
+                                                          (M.read (|
                                                             M.SubPointer.get_struct_record_field (|
                                                               M.read (| self |),
                                                               "alloc::collections::vec_deque::VecDeque",
                                                               "head"
                                                             |)
-                                                          |)
-                                                        |)
+                                                          |))
                                                       |) in
                                                     let new_head :=
                                                       M.alloc (|
-                                                        BinOp.Panic.sub (|
-                                                          Integer.Usize,
-                                                          M.read (| target_cap |),
-                                                          M.read (| head_len |)
-                                                        |)
+                                                        BinOp.Wrap.sub
+                                                          Integer.Usize
+                                                          (M.read (| target_cap |))
+                                                          (M.read (| head_len |))
                                                       |) in
                                                     let _ :=
                                                       let _ :=
@@ -5525,18 +5487,17 @@ Module collections.
                                     |) in
                                   let begin :=
                                     M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.read (| len |),
-                                        M.call_closure (|
+                                      BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.read (| len |))
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| front |) ]
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   let drop_back :=
                                     M.copy (|
@@ -6095,7 +6056,7 @@ Module collections.
                       let end_ := M.copy (| γ0_1 |) in
                       let len :=
                         M.alloc (|
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| end_ |), M.read (| start |) |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
                         |) in
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -6140,9 +6101,9 @@ Module collections.
                                 |) in
                               let head_len :=
                                 M.alloc (|
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -6151,9 +6112,8 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |),
-                                    M.read (| wrapped_start |)
-                                  |)
+                                    |))
+                                    (M.read (| wrapped_start |))
                                 |) in
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -6178,11 +6138,10 @@ Module collections.
                                               [
                                                 ("start", M.read (| wrapped_start |));
                                                 ("end_",
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| wrapped_start |),
-                                                    M.read (| len |)
-                                                  |))
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| wrapped_start |))
+                                                    (M.read (| len |)))
                                               ];
                                             Value.StructRecord
                                               "core::ops::range::Range"
@@ -6196,11 +6155,10 @@ Module collections.
                                     ltac:(M.monadic
                                       (let tail_len :=
                                         M.alloc (|
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| len |),
-                                            M.read (| head_len |)
-                                          |)
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| len |))
+                                            (M.read (| head_len |))
                                         |) in
                                       M.alloc (|
                                         Value.Tuple
@@ -6556,7 +6514,7 @@ Module collections.
                       let drain_start := M.copy (| start |) in
                       let drain_len :=
                         M.alloc (|
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| end_ |), M.read (| start |) |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -6898,7 +6856,7 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -6975,7 +6933,7 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -7118,10 +7076,7 @@ Module collections.
                     "alloc::collections::vec_deque::VecDeque",
                     "len"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
-                |) in
+                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               let _ :=
                 M.alloc (|
                   M.call_closure (|
@@ -7247,10 +7202,7 @@ Module collections.
                     "alloc::collections::vec_deque::VecDeque",
                     "len"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
-                |) in
+                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
         | _, _ => M.impossible
@@ -7280,24 +7232,23 @@ Module collections.
                   "head"
                 |)
               |))
-              (BinOp.Panic.sub (|
-                Integer.Usize,
-                M.call_closure (|
+              (BinOp.Wrap.sub
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
                     "capacity",
                     []
                   |),
                   [ M.read (| self |) ]
-                |),
-                M.read (|
+                |))
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::collections::vec_deque::VecDeque",
                     "len"
                   |)
-                |)
-              |))))
+                |)))))
         | _, _ => M.impossible
         end.
       
@@ -7458,11 +7409,10 @@ Module collections.
                                     ltac:(M.monadic
                                       (BinOp.Pure.lt
                                         (M.read (| index |))
-                                        (BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| length |),
-                                          Value.Integer 1
-                                        |))))
+                                        (BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| length |))
+                                          (Value.Integer 1))))
                                   |)
                                 |)) in
                             let _ :=
@@ -7480,11 +7430,10 @@ Module collections.
                                   [
                                     M.read (| self |);
                                     M.read (| index |);
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| length |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| length |))
+                                      (Value.Integer 1)
                                   ]
                                 |)
                               |) in
@@ -7670,17 +7619,16 @@ Module collections.
                 |) in
               let k :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::vec_deque::VecDeque",
                         "len"
                       |)
-                    |),
-                    M.read (| index |)
-                  |)
+                    |))
+                    (M.read (| index |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -7720,11 +7668,10 @@ Module collections.
                                 |),
                                 [
                                   M.read (| self |);
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| index |),
-                                    Value.Integer 1
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| index |))
+                                    (Value.Integer 1)
                                 ]
                               |);
                               M.read (| k |)
@@ -7764,7 +7711,7 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -7858,7 +7805,7 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                 ]
@@ -7967,21 +7914,19 @@ Module collections.
                     |) in
                   let k :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        BinOp.Panic.sub (|
-                          Integer.Usize,
-                          M.read (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (BinOp.Wrap.sub
+                          Integer.Usize
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "alloc::collections::vec_deque::VecDeque",
                               "len"
                             |)
-                          |),
-                          M.read (| index |)
-                        |),
-                        Value.Integer 1
-                      |)
+                          |))
+                          (M.read (| index |)))
+                        (Value.Integer 1)
                     |) in
                   let _ :=
                     M.match_operator (|
@@ -8033,7 +7978,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -8097,7 +8042,7 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -8217,9 +8162,7 @@ Module collections.
                   ]
                 |) in
               let other_len :=
-                M.alloc (|
-                  BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| at_ |) |)
-                |) in
+                M.alloc (| BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| at_ |)) |) in
               let other :=
                 M.alloc (|
                   M.call_closure (|
@@ -8304,11 +8247,10 @@ Module collections.
                                   |) in
                                 let amount_in_first :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| first_len |),
-                                      M.read (| at_ |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| first_len |))
+                                      (M.read (| at_ |))
                                   |) in
                                 let _ :=
                                   M.alloc (|
@@ -8396,19 +8338,17 @@ Module collections.
                               ltac:(M.monadic
                                 (let offset :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| at_ |),
-                                      M.read (| first_len |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| at_ |))
+                                      (M.read (| first_len |))
                                   |) in
                                 let amount_in_second :=
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| second_len |),
-                                      M.read (| offset |)
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| second_len |))
+                                      (M.read (| offset |))
                                   |) in
                                 let _ :=
                                   M.alloc (|
@@ -8694,24 +8634,23 @@ Module collections.
                                       |),
                                       [
                                         M.read (| self |);
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          M.read (|
+                                        BinOp.Wrap.add
+                                          Integer.Usize
+                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "alloc::collections::vec_deque::VecDeque",
                                               "len"
                                             |)
-                                          |),
-                                          M.call_closure (|
+                                          |))
+                                          (M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [ T ],
                                               "len",
                                               []
                                             |),
                                             [ M.read (| left |) ]
-                                          |)
-                                        |)
+                                          |))
                                       ]
                                     |);
                                     M.read (| right |)
@@ -8730,17 +8669,16 @@ Module collections.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (| β |),
-                        M.read (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "alloc::collections::vec_deque::VecDeque",
                             "len"
                           |)
-                        |)
-                      |)
+                        |))
                     |) in
                   let _ :=
                     M.write (|
@@ -8956,11 +8894,10 @@ Module collections.
                                               let β := cur in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (Value.Integer 1)
                                               |) in
                                             M.break (||)
                                           |)
@@ -8973,13 +8910,13 @@ Module collections.
                               let β := cur in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let _ :=
                               let β := idx in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -9062,11 +8999,10 @@ Module collections.
                                               let β := cur in
                                               M.write (|
                                                 β,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| β |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| β |))
+                                                  (Value.Integer 1)
                                               |) in
                                             M.continue (||)
                                           |)
@@ -9092,13 +9028,13 @@ Module collections.
                               let β := cur in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             let _ :=
                               let β := idx in
                               M.write (|
                                 β,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -9401,11 +9337,10 @@ Module collections.
                                   |),
                                   [ M.read (| generator |) ]
                                 |);
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  M.read (| new_len |),
-                                  M.read (| len |)
-                                |)
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (M.read (| new_len |))
+                                  (M.read (| len |))
                               ]
                             |)
                           ]
@@ -9718,27 +9653,18 @@ Module collections.
                             |) in
                           let free :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| cap |),
-                                M.read (| len |)
-                              |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| cap |)) (M.read (| len |))
                             |) in
                           let head_len :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| cap |),
-                                M.read (| head |)
-                              |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| cap |)) (M.read (| head |))
                             |) in
                           let tail :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                M.read (| head_len |)
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| len |))
+                                (M.read (| head_len |))
                             |) in
                           let tail_len := M.copy (| tail |) in
                           let _ :=
@@ -9858,11 +9784,10 @@ Module collections.
                                                     [
                                                       M.read (| self |);
                                                       Value.Integer 0;
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| tail |),
-                                                        M.read (| head_len |)
-                                                      |);
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| tail |))
+                                                        (M.read (| head_len |));
                                                       M.read (| tail_len |)
                                                     ]
                                                   |)
@@ -10206,17 +10131,16 @@ Module collections.
                 |) in
               let k :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::vec_deque::VecDeque",
                         "len"
                       |)
-                    |),
-                    M.read (| n |)
-                  |)
+                    |))
+                    (M.read (| n |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -10315,17 +10239,16 @@ Module collections.
                 |) in
               let k :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "alloc::collections::vec_deque::VecDeque",
                         "len"
                       |)
-                    |),
-                    M.read (| n |)
-                  |)
+                    |))
+                    (M.read (| n |))
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -10404,11 +10327,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.mul (|
-                                              Integer.Usize,
-                                              M.read (| mid |),
-                                              Value.Integer 2
-                                            |))
+                                            (BinOp.Wrap.mul
+                                              Integer.Usize
+                                              (M.read (| mid |))
+                                              (Value.Integer 2))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -10547,11 +10469,10 @@ Module collections.
                                       (M.alloc (|
                                         UnOp.Pure.not
                                           (BinOp.Pure.le
-                                            (BinOp.Panic.mul (|
-                                              Integer.Usize,
-                                              M.read (| k |),
-                                              Value.Integer 2
-                                            |))
+                                            (BinOp.Wrap.mul
+                                              Integer.Usize
+                                              (M.read (| k |))
+                                              (Value.Integer 2))
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
@@ -10899,10 +10820,10 @@ Module collections.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let idx := M.copy (| γ |) in
-                                                                BinOp.Panic.add (|
-                                                                  Integer.Usize,
-                                                                  M.read (| idx |),
-                                                                  M.call_closure (|
+                                                                BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (M.read (| idx |))
+                                                                  (M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -10911,8 +10832,7 @@ Module collections.
                                                                       []
                                                                     |),
                                                                     [ M.read (| front |) ]
-                                                                  |)
-                                                                |)))
+                                                                  |))))
                                                           ]
                                                         |)
                                                       | _ => M.impossible (||)
@@ -10930,18 +10850,17 @@ Module collections.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let idx := M.copy (| γ |) in
-                                                            BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| idx |),
-                                                              M.call_closure (|
+                                                            BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| idx |))
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply (Ty.path "slice") [ T ],
                                                                   "len",
                                                                   []
                                                                 |),
                                                                 [ M.read (| front |) ]
-                                                              |)
-                                                            |)))
+                                                              |))))
                                                       ]
                                                     |)
                                                   | _ => M.impossible (||)
@@ -11158,25 +11077,24 @@ Module collections.
                                   Value.Bool true
                                 |) in
                               M.alloc (|
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.call_closure (|
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "partition_point",
                                       [ P ]
                                     |),
                                     [ M.read (| back |); M.read (| pred |) ]
-                                  |),
-                                  M.call_closure (|
+                                  |))
+                                  (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [ T ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| front |) ]
-                                  |)
-                                |)
+                                  |))
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -11244,10 +11162,10 @@ Module collections.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let extra :=
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.read (| new_len |),
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.read (| new_len |))
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -11256,8 +11174,7 @@ Module collections.
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -11417,11 +11334,10 @@ Module collections.
                                           |),
                                           ltac:(M.monadic
                                             (BinOp.Pure.lt
-                                              (BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                M.read (| logical_index |),
-                                                M.read (| capacity |)
-                                              |))
+                                              (BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (M.read (| logical_index |))
+                                                (M.read (| capacity |)))
                                               (M.read (| capacity |))))
                                         |))
                                     |)) in
@@ -11463,11 +11379,10 @@ Module collections.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| logical_index |),
-                        M.read (| capacity |)
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| logical_index |))
+                        (M.read (| capacity |))
                     |)));
                 fun γ => ltac:(M.monadic logical_index)
               ]
@@ -11717,18 +11632,17 @@ Module collections.
                                                     |) in
                                                   let mid :=
                                                     M.alloc (|
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [ T ],
                                                             "len",
                                                             []
                                                           |),
                                                           [ M.read (| oa |) ]
-                                                        |),
-                                                        M.read (| front |)
-                                                      |)
+                                                        |))
+                                                        (M.read (| front |))
                                                     |) in
                                                   M.match_operator (|
                                                     M.alloc (|
@@ -12409,18 +12323,17 @@ Module collections.
                                                     |) in
                                                   let mid :=
                                                     M.alloc (|
-                                                      BinOp.Panic.sub (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      BinOp.Wrap.sub
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply (Ty.path "slice") [ T ],
                                                             "len",
                                                             []
                                                           |),
                                                           [ M.read (| sa |) ]
-                                                        |),
-                                                        M.read (| front |)
-                                                      |)
+                                                        |))
+                                                        (M.read (| front |))
                                                     |) in
                                                   M.match_operator (|
                                                     M.alloc (|

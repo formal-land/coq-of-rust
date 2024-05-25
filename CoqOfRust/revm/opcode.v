@@ -559,6 +559,9 @@ Module opcode.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_make_instruction_table :
+    M.IsFunction "revm_interpreter::opcode::make_instruction_table" make_instruction_table.
+  
   Module make_instruction_table.
     (* StructRecord
       {
@@ -642,7 +645,7 @@ Module opcode.
                             let β := i in
                             M.write (|
                               β,
-                              BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                              BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -761,6 +764,11 @@ Module opcode.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_make_boxed_instruction_table :
+    M.IsFunction
+      "revm_interpreter::opcode::make_boxed_instruction_table"
+      make_boxed_instruction_table.
   
   (* StructTuple
     {
@@ -5388,25 +5396,24 @@ Module opcode.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.sub (|
-            Integer.I16,
-            M.rust_cast
+          BinOp.Wrap.sub
+            Integer.I16
+            (M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::opcode::OpCodeInfo",
                   "outputs"
                 |)
-              |)),
-            M.rust_cast
+              |)))
+            (M.rust_cast
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::opcode::OpCodeInfo",
                   "inputs"
                 |)
-              |))
-          |)))
+              |)))))
       | _, _ => M.impossible
       end.
     
@@ -5552,6 +5559,8 @@ Module opcode.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_not_eof : M.IsFunction "revm_interpreter::opcode::not_eof" not_eof.
+  
   (*
   pub const fn immediate_size(mut op: OpCodeInfo, n: u8) -> OpCodeInfo {
       op.immediate_size = n;
@@ -5579,6 +5588,9 @@ Module opcode.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_immediate_size :
+    M.IsFunction "revm_interpreter::opcode::immediate_size" immediate_size.
+  
   (*
   pub const fn terminating(mut op: OpCodeInfo) -> OpCodeInfo {
       op.terminating = true;
@@ -5604,6 +5616,8 @@ Module opcode.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_terminating : M.IsFunction "revm_interpreter::opcode::terminating" terminating.
   
   (*
   pub const fn stack_io(mut op: OpCodeInfo, inputs: u8, outputs: u8) -> OpCodeInfo {
@@ -5642,6 +5656,8 @@ Module opcode.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_stack_io : M.IsFunction "revm_interpreter::opcode::stack_io" stack_io.
   
   Definition value_NOP : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |))).
@@ -21208,4 +21224,6 @@ Module opcode.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_instruction : M.IsFunction "revm_interpreter::opcode::instruction" instruction.
 End opcode.

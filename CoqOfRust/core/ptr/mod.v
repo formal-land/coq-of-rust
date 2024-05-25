@@ -513,17 +513,16 @@ Module ptr.
                                           M.get_function (| "core::mem::size_of", [ T ] |),
                                           []
                                         |))
-                                        (BinOp.Panic.mul (|
-                                          Integer.Usize,
-                                          M.call_closure (|
+                                        (BinOp.Wrap.mul
+                                          Integer.Usize
+                                          (M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
                                               [ Ty.path "usize" ]
                                             |),
                                             []
-                                          |),
-                                          Value.Integer 2
-                                        |))))
+                                          |))
+                                          (Value.Integer 2))))
                                   |)))
                               |)
                             |)) in
@@ -553,20 +552,19 @@ Module ptr.
                                             |)),
                                           ltac:(M.monadic
                                             (BinOp.Pure.eq
-                                              (BinOp.Panic.rem (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              (BinOp.Wrap.rem
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)
-                                              |))
+                                                |)))
                                               (Value.Integer 0)))
                                         |)
                                       |)) in
@@ -602,24 +600,22 @@ Module ptr.
                                           |) in
                                         let count :=
                                           M.alloc (|
-                                            BinOp.Panic.mul (|
-                                              Integer.Usize,
-                                              M.read (| count |),
-                                              BinOp.Panic.div (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                            BinOp.Wrap.mul
+                                              Integer.Usize
+                                              (M.read (| count |))
+                                              (BinOp.Wrap.div
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)
-                                              |)
-                                            |)
+                                                |)))
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -660,20 +656,19 @@ Module ptr.
                                             |)),
                                           ltac:(M.monadic
                                             (BinOp.Pure.eq
-                                              (BinOp.Panic.rem (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                              (BinOp.Wrap.rem
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)
-                                              |))
+                                                |)))
                                               (Value.Integer 0)))
                                         |)
                                       |)) in
@@ -709,24 +704,22 @@ Module ptr.
                                           |) in
                                         let count :=
                                           M.alloc (|
-                                            BinOp.Panic.mul (|
-                                              Integer.Usize,
-                                              M.read (| count |),
-                                              BinOp.Panic.div (|
-                                                Integer.Usize,
-                                                M.call_closure (|
+                                            BinOp.Wrap.mul
+                                              Integer.Usize
+                                              (M.read (| count |))
+                                              (BinOp.Wrap.div
+                                                Integer.Usize
+                                                (M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |),
-                                                M.call_closure (|
+                                                |))
+                                                (M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)
-                                              |)
-                                            |)
+                                                |)))
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -859,7 +852,7 @@ Module ptr.
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -1930,20 +1923,18 @@ Module ptr.
                     M.SubPointer.get_array_field (|
                       M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
                       M.alloc (|
-                        BinOp.Panic.shr (|
-                          BinOp.Pure.bit_and
+                        BinOp.Wrap.shr
+                          (BinOp.Pure.bit_and
                             (M.read (| x |))
-                            (BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (|
+                            (BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (|
                                 M.get_constant (|
                                   "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
                                 |)
-                              |),
-                              Value.Integer 1
-                            |)),
-                          Value.Integer 1
-                        |)
+                              |))
+                              (Value.Integer 1)))
+                          (Value.Integer 1)
                       |)
                     |)
                   |))

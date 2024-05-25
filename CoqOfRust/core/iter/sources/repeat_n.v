@@ -403,7 +403,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -613,11 +613,10 @@ Module iter.
                                   []
                                 |),
                                 [
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| skip |),
-                                    M.read (| len |)
-                                  |)
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| skip |))
+                                    (M.read (| len |))
                                 ]
                               |)
                             ]
@@ -631,7 +630,7 @@ Module iter.
                               "core::iter::sources::repeat_n::RepeatN",
                               "count"
                             |),
-                            BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| skip |) |)
+                            BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| skip |))
                           |) in
                         M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]

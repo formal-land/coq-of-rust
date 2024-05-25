@@ -675,22 +675,20 @@ Module char.
                                     |) in
                                   let c :=
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        BinOp.Pure.bit_or
-                                          (BinOp.Panic.shl (|
-                                            M.rust_cast
+                                      BinOp.Wrap.add
+                                        Integer.U32
+                                        (BinOp.Pure.bit_or
+                                          (BinOp.Wrap.shl
+                                            (M.rust_cast
                                               (BinOp.Pure.bit_and
                                                 (M.read (| u |))
-                                                (Value.Integer 1023)),
-                                            Value.Integer 10
-                                          |))
+                                                (Value.Integer 1023)))
+                                            (Value.Integer 10))
                                           (M.rust_cast
                                             (BinOp.Pure.bit_and
                                               (M.read (| u2 |))
-                                              (Value.Integer 1023))),
-                                        Value.Integer 65536
-                                      |)
+                                              (Value.Integer 1023))))
+                                        (Value.Integer 65536)
                                     |) in
                                   M.alloc (|
                                     Value.StructTuple
@@ -885,18 +883,17 @@ Module char.
                               let high_buf := M.copy (| γ0_1 |) in
                               let low :=
                                 M.alloc (|
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "div_ceil",
                                         []
                                       |),
                                       [ M.read (| low |); Value.Integer 2 ]
-                                    |),
-                                    M.read (| low_buf |)
-                                  |)
+                                    |))
+                                    (M.read (| low_buf |))
                                 |) in
                               let high :=
                                 M.alloc (|

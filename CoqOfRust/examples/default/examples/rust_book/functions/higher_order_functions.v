@@ -12,7 +12,7 @@ Definition is_odd (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
       BinOp.Pure.eq
-        (BinOp.Panic.rem (| Integer.U32, M.read (| n |), Value.Integer 2 |))
+        (BinOp.Wrap.rem Integer.U32 (M.read (| n |)) (Value.Integer 2))
         (Value.Integer 1)))
   | _, _ => M.impossible
   end.
@@ -138,11 +138,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   let n := M.copy (| γ0_0 |) in
                                   let n_squared :=
                                     M.alloc (|
-                                      BinOp.Panic.mul (|
-                                        Integer.U32,
-                                        M.read (| n |),
-                                        M.read (| n |)
-                                      |)
+                                      BinOp.Wrap.mul Integer.U32 (M.read (| n |)) (M.read (| n |))
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -191,11 +187,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     let β := acc in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Panic.add (|
-                                                        Integer.U32,
-                                                        M.read (| β |),
-                                                        M.read (| n_squared |)
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.U32
+                                                        (M.read (| β |))
+                                                        (M.read (| n_squared |))
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -349,11 +344,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let n := M.copy (| γ |) in
-                                            BinOp.Panic.mul (|
-                                              Integer.U32,
-                                              M.read (| n |),
-                                              M.read (| n |)
-                                            |)))
+                                            BinOp.Wrap.mul
+                                              Integer.U32
+                                              (M.read (| n |))
+                                              (M.read (| n |))))
                                       ]
                                     |)
                                   | _ => M.impossible (||)

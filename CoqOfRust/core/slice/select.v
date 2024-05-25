@@ -260,11 +260,10 @@ Module slice.
                                       let β := limit in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.sub (|
-                                          Integer.I32,
-                                          M.read (| β |),
-                                          Value.Integer 1
-                                        |)
+                                        BinOp.Wrap.sub
+                                          Integer.I32
+                                          (M.read (| β |))
+                                          (Value.Integer 1)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -414,11 +413,10 @@ Module slice.
                                                           let _ :=
                                                             M.write (|
                                                               index,
-                                                              BinOp.Panic.sub (|
-                                                                Integer.Usize,
-                                                                M.read (| index |),
-                                                                M.read (| mid |)
-                                                              |)
+                                                              BinOp.Wrap.sub
+                                                                Integer.Usize
+                                                                (M.read (| index |))
+                                                                (M.read (| mid |))
                                                             |) in
                                                           let _ :=
                                                             M.write (|
@@ -465,32 +463,30 @@ Module slice.
                                                   |),
                                                   [
                                                     M.read (| mid |);
-                                                    BinOp.Panic.sub (|
-                                                      Integer.Usize,
-                                                      M.call_closure (|
+                                                    BinOp.Wrap.sub
+                                                      Integer.Usize
+                                                      (M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply (Ty.path "slice") [ T ],
                                                           "len",
                                                           []
                                                         |),
                                                         [ M.read (| v |) ]
-                                                      |),
-                                                      M.read (| mid |)
-                                                    |)
+                                                      |))
+                                                      (M.read (| mid |))
                                                   ]
                                                 |))
-                                                (BinOp.Panic.div (|
-                                                  Integer.Usize,
-                                                  M.call_closure (|
+                                                (BinOp.Wrap.div
+                                                  Integer.Usize
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [ T ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| v |) ]
-                                                  |),
-                                                  Value.Integer 8
-                                                |))
+                                                  |))
+                                                  (Value.Integer 8))
                                             |) in
                                           M.match_operator (|
                                             M.alloc (|
@@ -570,15 +566,13 @@ Module slice.
                                                                   let _ :=
                                                                     M.write (|
                                                                       index,
-                                                                      BinOp.Panic.sub (|
-                                                                        Integer.Usize,
-                                                                        BinOp.Panic.sub (|
-                                                                          Integer.Usize,
-                                                                          M.read (| index |),
-                                                                          M.read (| mid |)
-                                                                        |),
-                                                                        Value.Integer 1
-                                                                      |)
+                                                                      BinOp.Wrap.sub
+                                                                        Integer.Usize
+                                                                        (BinOp.Wrap.sub
+                                                                          Integer.Usize
+                                                                          (M.read (| index |))
+                                                                          (M.read (| mid |)))
+                                                                        (Value.Integer 1)
                                                                     |) in
                                                                   let _ :=
                                                                     M.write (|
@@ -1146,18 +1140,17 @@ Module slice.
                                   (M.alloc (|
                                     BinOp.Pure.eq
                                       (M.read (| index |))
-                                      (BinOp.Panic.sub (|
-                                        Integer.Usize,
-                                        M.call_closure (|
+                                      (BinOp.Wrap.sub
+                                        Integer.Usize
+                                        (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| v |) ]
-                                        |),
-                                        Value.Integer 1
-                                      |))
+                                        |))
+                                        (Value.Integer 1))
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1589,18 +1582,17 @@ Module slice.
                                         (M.alloc (|
                                           BinOp.Pure.eq
                                             (M.read (| k |))
-                                            (BinOp.Panic.sub (|
-                                              Integer.Usize,
-                                              M.call_closure (|
+                                            (BinOp.Wrap.sub
+                                              Integer.Usize
+                                              (M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [ T ],
                                                   "len",
                                                   []
                                                 |),
                                                 [ M.read (| v |) ]
-                                              |),
-                                              Value.Integer 1
-                                            |))
+                                              |))
+                                              (Value.Integer 1))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1807,11 +1799,10 @@ Module slice.
                                                     "core::ops::range::RangeFrom"
                                                     [
                                                       ("start",
-                                                        BinOp.Panic.add (|
-                                                          Integer.Usize,
-                                                          M.read (| p |),
-                                                          Value.Integer 1
-                                                        |))
+                                                        BinOp.Wrap.add
+                                                          Integer.Usize
+                                                          (M.read (| p |))
+                                                          (Value.Integer 1))
                                                     ]
                                                 ]
                                               |)
@@ -1820,15 +1811,13 @@ Module slice.
                                             let β := k in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| p |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| p |))
+                                                  (Value.Integer 1))
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -1905,18 +1894,17 @@ Module slice.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          BinOp.Panic.div (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.div
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| v |) ]
-                            |),
-                            Value.Integer 12
-                          |)
+                            |))
+                            (Value.Integer 12)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1952,34 +1940,32 @@ Module slice.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
-                                  BinOp.Panic.div (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.div
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ T ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| v |) ]
-                                    |),
-                                    Value.Integer 64
-                                  |)
+                                    |))
+                                    (Value.Integer 64)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
-                                  BinOp.Panic.div (|
-                                    Integer.Usize,
-                                    M.call_closure (|
+                                  BinOp.Wrap.div
+                                    Integer.Usize
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ T ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| v |) ]
-                                    |),
-                                    Value.Integer 1024
-                                  |)
+                                    |))
+                                    (Value.Integer 1024)
                                 |)))
                           ]
                         |)))
@@ -1987,59 +1973,47 @@ Module slice.
                 |)
               |) in
             let pivot :=
-              M.alloc (|
-                BinOp.Panic.div (| Integer.Usize, M.read (| frac |), Value.Integer 2 |)
-              |) in
+              M.alloc (| BinOp.Wrap.div Integer.Usize (M.read (| frac |)) (Value.Integer 2) |) in
             let lo :=
               M.alloc (|
-                BinOp.Panic.sub (|
-                  Integer.Usize,
-                  BinOp.Panic.div (|
-                    Integer.Usize,
-                    M.call_closure (|
+                BinOp.Wrap.sub
+                  Integer.Usize
+                  (BinOp.Wrap.div
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| v |) ]
-                    |),
-                    Value.Integer 2
-                  |),
-                  M.read (| pivot |)
-                |)
+                    |))
+                    (Value.Integer 2))
+                  (M.read (| pivot |))
               |) in
             let hi :=
-              M.alloc (|
-                BinOp.Panic.add (| Integer.Usize, M.read (| frac |), M.read (| lo |) |)
-              |) in
+              M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| frac |)) (M.read (| lo |)) |) in
             let gap :=
               M.alloc (|
-                BinOp.Panic.div (|
-                  Integer.Usize,
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.call_closure (|
+                BinOp.Wrap.div
+                  Integer.Usize
+                  (BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                       [ M.read (| v |) ]
-                    |),
-                    BinOp.Panic.mul (| Integer.Usize, Value.Integer 9, M.read (| frac |) |)
-                  |),
-                  Value.Integer 4
-                |)
+                    |))
+                    (BinOp.Wrap.mul Integer.Usize (Value.Integer 9) (M.read (| frac |))))
+                  (Value.Integer 4)
               |) in
             let a :=
               M.alloc (|
-                BinOp.Panic.sub (|
-                  Integer.Usize,
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| lo |),
-                    BinOp.Panic.mul (| Integer.Usize, Value.Integer 4, M.read (| frac |) |)
-                  |),
-                  M.read (| gap |)
-                |)
+                BinOp.Wrap.sub
+                  Integer.Usize
+                  (BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| lo |))
+                    (BinOp.Wrap.mul Integer.Usize (Value.Integer 4) (M.read (| frac |))))
+                  (M.read (| gap |))
               |) in
             let b :=
-              M.alloc (|
-                BinOp.Panic.add (| Integer.Usize, M.read (| hi |), M.read (| gap |) |)
-              |) in
+              M.alloc (| BinOp.Wrap.add Integer.Usize (M.read (| hi |)) (M.read (| gap |)) |) in
             let _ :=
               M.use
                 (M.match_operator (|
@@ -2107,38 +2081,32 @@ Module slice.
                                               M.read (| v |);
                                               M.read (| is_less |);
                                               M.read (| a |);
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                M.read (| i |),
-                                                M.read (| frac |)
-                                              |);
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (M.read (| i |))
+                                                (M.read (| frac |));
                                               M.read (| b |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| a |),
-                                                Value.Integer 1
-                                              |);
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| a |))
+                                                (Value.Integer 1);
                                               M.read (| i |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| b |),
-                                                Value.Integer 1
-                                              |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| a |),
-                                                Value.Integer 2
-                                              |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| i |),
-                                                M.read (| frac |)
-                                              |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| b |),
-                                                Value.Integer 2
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| b |))
+                                                (Value.Integer 1);
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| a |))
+                                                (Value.Integer 2);
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| i |))
+                                                (M.read (| frac |));
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| b |))
+                                                (Value.Integer 2)
                                             ]
                                           |)
                                         |) in
@@ -2146,21 +2114,19 @@ Module slice.
                                         let β := a in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 3
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 3)
                                         |) in
                                       let _ :=
                                         let β := b in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 3
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 3)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -2189,11 +2155,7 @@ Module slice.
                           [
                             ("start", M.read (| lo |));
                             ("end_",
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| lo |),
-                                M.read (| frac |)
-                              |))
+                              BinOp.Wrap.add Integer.Usize (M.read (| lo |)) (M.read (| frac |)))
                           ]
                       ]
                     |);
@@ -2208,7 +2170,7 @@ Module slice.
                   M.get_function (| "core::slice::sort::partition", [ T; F ] |),
                   [
                     M.read (| v |);
-                    BinOp.Panic.add (| Integer.Usize, M.read (| lo |), M.read (| pivot |) |);
+                    BinOp.Wrap.add Integer.Usize (M.read (| lo |)) (M.read (| pivot |));
                     M.read (| is_less |)
                   ]
                 |)

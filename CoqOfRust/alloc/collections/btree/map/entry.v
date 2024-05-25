@@ -1800,11 +1800,10 @@ Module collections.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| β |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| β |))
+                                        (Value.Integer 1)
                                     |) in
                                   val_ptr
                                 |)
@@ -2288,7 +2287,7 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                             |) in
                           let _ :=
                             M.match_operator (|

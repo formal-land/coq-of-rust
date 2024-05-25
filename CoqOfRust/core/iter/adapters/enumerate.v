@@ -265,7 +265,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -407,17 +407,16 @@ Module iter.
                       |) in
                     let i :=
                       M.alloc (|
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.read (|
+                        BinOp.Wrap.add
+                          Integer.Usize
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::enumerate::Enumerate",
                               "count"
                             |)
-                          |),
-                          M.read (| n |)
-                        |)
+                          |))
+                          (M.read (| n |))
                       |) in
                     let _ :=
                       M.write (|
@@ -426,7 +425,7 @@ Module iter.
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
-                        BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -659,18 +658,17 @@ Module iter.
                               |) in
                             let rem := M.copy (| γ0_0 |) in
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| n |),
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| n |))
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::num::nonzero::NonZeroUsize",
                                     "get",
                                     []
                                   |),
                                   [ M.read (| rem |) ]
-                                |)
-                              |)
+                                |))
                             |)))
                       ]
                     |)
@@ -684,7 +682,7 @@ Module iter.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| advanced |) |)
+                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| advanced |))
                   |) in
                 remaining
               |)))
@@ -727,17 +725,16 @@ Module iter.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::enumerate::Enumerate",
                             "count"
                           |)
-                        |),
-                        M.read (| idx |)
-                      |);
+                        |))
+                        (M.read (| idx |));
                       M.read (| value |)
                     ]
                 |)
@@ -891,17 +888,16 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |),
-                                M.read (| len |)
-                              |);
+                                |))
+                                (M.read (| len |));
                               M.read (| a |)
                             ]
                         ]
@@ -1035,17 +1031,16 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |),
-                                M.read (| len |)
-                              |);
+                                |))
+                                (M.read (| len |));
                               M.read (| a |)
                             ]
                         ]
@@ -1089,16 +1084,16 @@ Module iter.
               M.read (|
                 let count :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |),
-                      M.call_closure (|
+                      |))
+                      (M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1113,8 +1108,7 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1175,16 +1169,16 @@ Module iter.
               M.read (|
                 let count :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |),
-                      M.call_closure (|
+                      |))
+                      (M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1199,8 +1193,7 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   M.call_closure (|

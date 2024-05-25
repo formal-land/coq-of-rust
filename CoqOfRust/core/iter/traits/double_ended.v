@@ -123,11 +123,10 @@ Module iter.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      BinOp.Panic.sub (|
-                                                                        Integer.Usize,
-                                                                        M.read (| n |),
-                                                                        M.read (| i |)
-                                                                      |)
+                                                                      BinOp.Wrap.sub
+                                                                        Integer.Usize
+                                                                        (M.read (| n |))
+                                                                        (M.read (| i |))
                                                                     ]
                                                                   |)
                                                                 ]

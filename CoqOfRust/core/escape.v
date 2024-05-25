@@ -196,7 +196,7 @@ Module escape.
                                         "from",
                                         []
                                       |),
-                                      [ BinOp.Panic.shr (| M.read (| byte |), Value.Integer 4 |) ]
+                                      [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4) ]
                                     |)
                                   |)
                                 |)
@@ -333,7 +333,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 20 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 20))
                         (Value.Integer 15))
                   |)
                 |)
@@ -348,7 +348,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 16 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 16))
                         (Value.Integer 15))
                   |)
                 |)
@@ -363,7 +363,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 12 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 12))
                         (Value.Integer 15))
                   |)
                 |)
@@ -378,7 +378,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 8 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 8))
                         (Value.Integer 15))
                   |)
                 |)
@@ -393,7 +393,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 4 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 4))
                         (Value.Integer 15))
                   |)
                 |)
@@ -408,7 +408,7 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 0 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 0))
                         (Value.Integer 15))
                   |)
                 |)
@@ -416,19 +416,17 @@ Module escape.
             |) in
           let start :=
             M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.Usize,
-                BinOp.Panic.div (|
-                  Integer.Usize,
-                  M.rust_cast
+              BinOp.Wrap.sub
+                Integer.Usize
+                (BinOp.Wrap.div
+                  Integer.Usize
+                  (M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
                       [ BinOp.Pure.bit_or (M.read (| ch |)) (Value.Integer 1) ]
-                    |)),
-                  Value.Integer 4
-                |),
-                Value.Integer 2
-              |)
+                    |)))
+                  (Value.Integer 4))
+                (Value.Integer 2)
             |) in
           let _ :=
             M.alloc (|
@@ -988,9 +986,9 @@ Module escape.
               []
             |),
             [
-              BinOp.Panic.sub (|
-                Integer.U8,
-                M.read (|
+              BinOp.Wrap.sub
+                Integer.U8
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1000,8 +998,8 @@ Module escape.
                     "core::ops::range::Range",
                     "end"
                   |)
-                |),
-                M.read (|
+                |))
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1011,8 +1009,7 @@ Module escape.
                     "core::ops::range::Range",
                     "start"
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _ => M.impossible

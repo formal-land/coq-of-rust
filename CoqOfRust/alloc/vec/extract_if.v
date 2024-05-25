@@ -278,11 +278,7 @@ Module vec.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -307,11 +303,10 @@ Module vec.
                                                   |) in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.add (|
-                                                    Integer.Usize,
-                                                    M.read (| β |),
-                                                    Value.Integer 1
-                                                  |)
+                                                  BinOp.Wrap.add
+                                                    Integer.Usize
+                                                    (M.read (| β |))
+                                                    (Value.Integer 1)
                                                 |) in
                                               M.return_ (|
                                                 Value.StructTuple
@@ -376,11 +371,10 @@ Module vec.
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| v |),
                                                       M.alloc (|
-                                                        BinOp.Panic.sub (|
-                                                          Integer.Usize,
-                                                          M.read (| i |),
-                                                          M.read (| del |)
-                                                        |)
+                                                        BinOp.Wrap.sub
+                                                          Integer.Usize
+                                                          (M.read (| i |))
+                                                          (M.read (| del |))
                                                       |)
                                                     |)
                                                   |) in
@@ -443,23 +437,22 @@ Module vec.
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::extract_if::ExtractIf",
                           "old_len"
                         |)
-                      |),
-                      M.read (|
+                      |))
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::vec::extract_if::ExtractIf",
                           "idx"
                         |)
-                      |)
-                    |)
+                      |))
                   ]
               ]))
         | _, _ => M.impossible
@@ -610,23 +603,22 @@ Module vec.
                           |) in
                         let tail_len :=
                           M.alloc (|
-                            BinOp.Panic.sub (|
-                              Integer.Usize,
-                              M.read (|
+                            BinOp.Wrap.sub
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "old_len"
                                 |)
-                              |),
-                              M.read (|
+                              |))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::vec::extract_if::ExtractIf",
                                   "idx"
                                 |)
-                              |)
-                            |)
+                              |))
                           |) in
                         let _ :=
                           M.alloc (|
@@ -659,23 +651,22 @@ Module vec.
                           "vec"
                         |)
                       |);
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (|
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::vec::extract_if::ExtractIf",
                             "old_len"
                           |)
-                        |),
-                        M.read (|
+                        |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "alloc::vec::extract_if::ExtractIf",
                             "del"
                           |)
-                        |)
-                      |)
+                        |))
                     ]
                   |)
                 |) in

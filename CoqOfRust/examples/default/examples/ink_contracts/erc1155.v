@@ -720,7 +720,7 @@ Module Impl_erc1155_Contract.
                 "erc1155::Contract",
                 "token_id_nonce"
               |) in
-            M.write (| β, BinOp.Panic.add (| Integer.U128, M.read (| β |), Value.Integer 1 |) |) in
+            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (Value.Integer 1) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1054,10 +1054,7 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β := sender_balance in
-            M.write (|
-              β,
-              BinOp.Panic.sub (| Integer.U128, M.read (| β |), M.read (| value |) |)
-            |) in
+            M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|
@@ -1112,10 +1109,7 @@ Module Impl_erc1155_Contract.
             |) in
           let _ :=
             let β := recipient_balance in
-            M.write (|
-              β,
-              BinOp.Panic.add (| Integer.U128, M.read (| β |), M.read (| value |) |)
-            |) in
+            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
           let _ :=
             M.alloc (|
               M.call_closure (|

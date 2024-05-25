@@ -6010,11 +6010,10 @@ Module net.
                                                                             |) in
                                                                           M.write (|
                                                                             β,
-                                                                            BinOp.Panic.add (|
-                                                                              Integer.Usize,
-                                                                              M.read (| β |),
-                                                                              Value.Integer 1
-                                                                            |)
+                                                                            BinOp.Wrap.add
+                                                                              Integer.Usize
+                                                                              (M.read (| β |))
+                                                                              (Value.Integer 1)
                                                                           |) in
                                                                         M.match_operator (|
                                                                           M.alloc (|
@@ -6336,23 +6335,22 @@ Module net.
                                                       "core::ops::range::RangeFrom"
                                                       [
                                                         ("start",
-                                                          BinOp.Panic.add (|
-                                                            Integer.Usize,
-                                                            M.read (|
+                                                          BinOp.Wrap.add
+                                                            Integer.Usize
+                                                            (M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 zeroes,
                                                                 "core::net::ip_addr::fmt::Span",
                                                                 "start"
                                                               |)
-                                                            |),
-                                                            M.read (|
+                                                            |))
+                                                            (M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 zeroes,
                                                                 "core::net::ip_addr::fmt::Span",
                                                                 "len"
                                                               |)
-                                                            |)
-                                                          |))
+                                                            |)))
                                                       ]
                                                   ]
                                                 |)

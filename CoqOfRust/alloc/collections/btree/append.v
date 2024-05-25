@@ -560,9 +560,9 @@ Module collections.
                                                       |) in
                                                     let tree_height :=
                                                       M.alloc (|
-                                                        BinOp.Panic.sub (|
-                                                          Integer.Usize,
-                                                          M.call_closure (|
+                                                        BinOp.Wrap.sub
+                                                          Integer.Usize
+                                                          (M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -579,9 +579,8 @@ Module collections.
                                                               []
                                                             |),
                                                             [ open_node ]
-                                                          |),
-                                                          Value.Integer 1
-                                                        |)
+                                                          |))
+                                                          (Value.Integer 1)
                                                       |) in
                                                     let right_tree :=
                                                       M.alloc (|
@@ -824,11 +823,10 @@ Module collections.
                                             let β := M.read (| length |) in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]

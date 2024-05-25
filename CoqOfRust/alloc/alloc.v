@@ -845,11 +845,10 @@ Module alloc.
                                             [ M.read (| raw_ptr |); M.read (| old_size |) ]
                                           |);
                                           Value.Integer 0;
-                                          BinOp.Panic.sub (|
-                                            Integer.Usize,
-                                            M.read (| new_size |),
-                                            M.read (| old_size |)
-                                          |)
+                                          BinOp.Wrap.sub
+                                            Integer.Usize
+                                            (M.read (| new_size |))
+                                            (M.read (| old_size |))
                                         ]
                                       |)
                                     |) in

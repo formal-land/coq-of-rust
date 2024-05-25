@@ -3092,7 +3092,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -3243,7 +3243,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -4251,7 +4251,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -4317,11 +4317,10 @@ Module cell.
                           |),
                           [
                             M.read (| borrow |);
-                            BinOp.Panic.sub (|
-                              Integer.Isize,
-                              M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.Isize
+                              (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))
+                              (Value.Integer 1)
                           ]
                         |)
                       |) in
@@ -4472,7 +4471,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in

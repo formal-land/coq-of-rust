@@ -177,11 +177,10 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (|
-              Integer.Usize,
-              M.read (| UnsupportedLiteral |),
-              M.read (| UnsupportedLiteral |)
-            |)
+            BinOp.Wrap.div
+              Integer.Usize
+              (M.read (| UnsupportedLiteral |))
+              (M.read (| UnsupportedLiteral |))
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
@@ -192,11 +191,10 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (|
-              Integer.Usize,
-              M.read (| UnsupportedLiteral |),
-              M.read (| UnsupportedLiteral |)
-            |)
+            BinOp.Wrap.div
+              Integer.Usize
+              (M.read (| UnsupportedLiteral |))
+              (M.read (| UnsupportedLiteral |))
           |))).
     
     Axiom AssociatedConstant_value_INFINITY :
@@ -208,11 +206,10 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Panic.div (|
-              Integer.Usize,
-              M.read (| UnsupportedLiteral |),
-              M.read (| UnsupportedLiteral |)
-            |)
+            BinOp.Wrap.div
+              Integer.Usize
+              (M.read (| UnsupportedLiteral |))
+              (M.read (| UnsupportedLiteral |))
           |))).
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
@@ -781,20 +778,18 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        M.read (| bits |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.U32
+                                        (M.read (| bits |))
+                                        (Value.Integer 1)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.U32,
-                                        M.read (| bits |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.U32
+                                        (M.read (| bits |))
+                                        (Value.Integer 1)
                                     |)))
                               ]
                             |)))
@@ -930,20 +925,18 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Panic.sub (|
-                                        Integer.U32,
-                                        M.read (| bits |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.sub
+                                        Integer.U32
+                                        (M.read (| bits |))
+                                        (Value.Integer 1)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        M.read (| bits |),
-                                        Value.Integer 1
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.U32
+                                        (M.read (| bits |))
+                                        (Value.Integer 1)
                                     |)))
                               ]
                             |)))
@@ -973,7 +966,7 @@ Module f32.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.div (| Integer.Usize, M.read (| UnsupportedLiteral |), M.read (| self |) |)))
+          BinOp.Wrap.div Integer.Usize (M.read (| UnsupportedLiteral |)) (M.read (| self |))))
       | _, _ => M.impossible
       end.
     
@@ -991,11 +984,10 @@ Module f32.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.mul (|
-            Integer.Usize,
-            M.read (| self |),
-            M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |)
-          |)))
+          BinOp.Wrap.mul
+            Integer.Usize
+            (M.read (| self |))
+            (M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |))))
       | _, _ => M.impossible
       end.
     
@@ -1015,15 +1007,13 @@ Module f32.
           M.read (|
             let value := M.copy (| M.get_constant (| "core::f32::consts::PI" |) |) in
             M.alloc (|
-              BinOp.Panic.mul (|
-                Integer.Usize,
-                M.read (| self |),
-                BinOp.Panic.div (|
-                  Integer.Usize,
-                  M.read (| value |),
-                  M.read (| UnsupportedLiteral |)
-                |)
-              |)
+              BinOp.Wrap.mul
+                Integer.Usize
+                (M.read (| self |))
+                (BinOp.Wrap.div
+                  Integer.Usize
+                  (M.read (| value |))
+                  (M.read (| UnsupportedLiteral |)))
             |)
           |)))
       | _, _ => M.impossible
@@ -1173,11 +1163,10 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| self |),
-                                        M.read (| other |)
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| self |))
+                                        (M.read (| other |))
                                     |)))
                               ]
                             |)))
@@ -1294,11 +1283,10 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| self |),
-                                        M.read (| other |)
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| self |))
+                                        (M.read (| other |))
                                     |)))
                               ]
                             |)))
@@ -1389,11 +1377,10 @@ Module f32.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              BinOp.Panic.div (|
-                                Integer.Usize,
-                                BinOp.Panic.add (| Integer.Usize, M.read (| a |), M.read (| b |) |),
-                                M.read (| UnsupportedLiteral |)
-                              |)
+                              BinOp.Wrap.div
+                                Integer.Usize
+                                (BinOp.Wrap.add Integer.Usize (M.read (| a |)) (M.read (| b |)))
+                                (M.read (| UnsupportedLiteral |))
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1417,15 +1404,13 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| a |),
-                                        BinOp.Panic.div (|
-                                          Integer.Usize,
-                                          M.read (| b |),
-                                          M.read (| UnsupportedLiteral |)
-                                        |)
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| a |))
+                                        (BinOp.Wrap.div
+                                          Integer.Usize
+                                          (M.read (| b |))
+                                          (M.read (| UnsupportedLiteral |)))
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
@@ -1449,32 +1434,27 @@ Module f32.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                BinOp.Panic.div (|
-                                                  Integer.Usize,
-                                                  M.read (| a |),
-                                                  M.read (| UnsupportedLiteral |)
-                                                |),
-                                                M.read (| b |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (BinOp.Wrap.div
+                                                  Integer.Usize
+                                                  (M.read (| a |))
+                                                  (M.read (| UnsupportedLiteral |)))
+                                                (M.read (| b |))
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                BinOp.Panic.div (|
-                                                  Integer.Usize,
-                                                  M.read (| a |),
-                                                  M.read (| UnsupportedLiteral |)
-                                                |),
-                                                BinOp.Panic.div (|
-                                                  Integer.Usize,
-                                                  M.read (| b |),
-                                                  M.read (| UnsupportedLiteral |)
-                                                |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (BinOp.Wrap.div
+                                                  Integer.Usize
+                                                  (M.read (| a |))
+                                                  (M.read (| UnsupportedLiteral |)))
+                                                (BinOp.Wrap.div
+                                                  Integer.Usize
+                                                  (M.read (| b |))
+                                                  (M.read (| UnsupportedLiteral |)))
                                             |)))
                                       ]
                                     |)))
@@ -1887,10 +1867,9 @@ Module f32.
                 BinOp.Pure.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Panic.shr (|
-                      M.rust_cast (BinOp.Panic.shr (| M.read (| left |), Value.Integer 31 |)),
-                      Value.Integer 1
-                    |)))
+                    (BinOp.Wrap.shr
+                      (M.rust_cast (BinOp.Wrap.shr (M.read (| left |)) (Value.Integer 31)))
+                      (Value.Integer 1)))
               |) in
             let _ :=
               let β := right in
@@ -1899,10 +1878,9 @@ Module f32.
                 BinOp.Pure.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Panic.shr (|
-                      M.rust_cast (BinOp.Panic.shr (| M.read (| right |), Value.Integer 31 |)),
-                      Value.Integer 1
-                    |)))
+                    (BinOp.Wrap.shr
+                      (M.rust_cast (BinOp.Wrap.shr (M.read (| right |)) (Value.Integer 31)))
+                      (Value.Integer 1)))
               |) in
             M.alloc (|
               M.call_closure (|

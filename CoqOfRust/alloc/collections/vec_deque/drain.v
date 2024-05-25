@@ -70,15 +70,13 @@ Module collections.
                   |) in
                 let tail_len :=
                   M.alloc (|
-                    BinOp.Panic.sub (|
-                      Integer.Usize,
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| orig_len |),
-                        M.read (| drain_start |)
-                      |),
-                      M.read (| drain_len |)
-                    |)
+                    BinOp.Wrap.sub
+                      Integer.Usize
+                      (BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| orig_len |))
+                        (M.read (| drain_start |)))
+                      (M.read (| drain_len |))
                   |) in
                 M.alloc (|
                   Value.StructRecord
@@ -183,23 +181,22 @@ Module collections.
                             |)
                           |));
                         ("end_",
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "idx"
                               |)
-                            |),
-                            M.read (|
+                            |))
+                            (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "alloc::collections::vec_deque::drain::Drain",
                                 "remaining"
                               |)
-                            |)
-                          |))
+                            |)))
                       ]
                   |) in
                 M.match_operator (|
@@ -586,10 +583,10 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      M.call_closure (|
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| β |))
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
@@ -598,8 +595,7 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| front |) ]
-                                      |)
-                                    |)
+                                      |))
                                   |) in
                                 let _ :=
                                   let β :=
@@ -616,10 +612,10 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.read (| β |))
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*mut")
@@ -628,8 +624,7 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| front |) ]
-                                      |)
-                                    |)
+                                      |))
                                   |) in
                                 let _ :=
                                   M.alloc (|
@@ -796,7 +791,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     let _ :=
                       let β :=
@@ -807,7 +802,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -964,7 +959,7 @@ Module collections.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     let wrapped_idx :=
                       M.alloc (|
@@ -995,23 +990,22 @@ Module collections.
                                 |)
                               ]
                             |);
-                            BinOp.Panic.add (|
-                              Integer.Usize,
-                              M.read (|
+                            BinOp.Wrap.add
+                              Integer.Usize
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "idx"
                                 |)
-                              |),
-                              M.read (|
+                              |))
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::vec_deque::drain::Drain",
                                   "remaining"
                                 |)
-                              |)
-                            |)
+                              |))
                           ]
                         |)
                       |) in

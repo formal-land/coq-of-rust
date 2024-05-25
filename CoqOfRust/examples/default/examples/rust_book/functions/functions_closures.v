@@ -49,11 +49,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (|
-                              Integer.I32,
-                              M.read (| i |),
-                              M.read (| outer_var |)
-                            |)))
+                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
                       ]
                     |)
                   | _ => M.impossible (||)
@@ -72,11 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let i := M.copy (| γ |) in
-                            BinOp.Panic.add (|
-                              Integer.I32,
-                              M.read (| i |),
-                              M.read (| outer_var |)
-                            |)))
+                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
                       ]
                     |)
                   | _ => M.impossible (||)

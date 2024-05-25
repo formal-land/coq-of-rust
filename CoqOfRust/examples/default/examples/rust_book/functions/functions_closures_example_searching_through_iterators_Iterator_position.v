@@ -113,11 +113,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (let γ := M.read (| γ |) in
                                 let x := M.copy (| γ |) in
                                 BinOp.Pure.eq
-                                  (BinOp.Panic.rem (|
-                                    Integer.I32,
-                                    M.read (| x |),
-                                    Value.Integer 2
-                                  |))
+                                  (BinOp.Wrap.rem Integer.I32 (M.read (| x |)) (Value.Integer 2))
                                   (Value.Integer 0)))
                           ]
                         |)

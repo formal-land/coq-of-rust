@@ -2989,11 +2989,10 @@ Module cmp.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.I8,
-                    M.rust_cast (M.read (| M.read (| self |) |)),
-                    M.rust_cast (M.read (| M.read (| other |) |))
-                  |)
+                  BinOp.Wrap.sub
+                    Integer.I8
+                    (M.rust_cast (M.read (| M.read (| self |) |)))
+                    (M.rust_cast (M.read (| M.read (| other |) |)))
                 |),
                 [
                   fun γ =>

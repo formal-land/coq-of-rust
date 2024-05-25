@@ -28,10 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let _ :=
                   let β := counter in
-                  M.write (|
-                    β,
-                    BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
-                  |) in
+                  M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

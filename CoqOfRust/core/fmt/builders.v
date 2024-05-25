@@ -2881,10 +2881,7 @@ Module fmt.
                     "core::fmt::builders::DebugTuple",
                     "fields"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
-                |) in
+                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
               M.alloc (| M.read (| self |) |)
             |)))
         | _, _ => M.impossible

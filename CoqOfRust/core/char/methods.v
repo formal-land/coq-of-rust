@@ -2179,7 +2179,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
                                 (Value.Integer 31)))
                             (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
                         |) in
@@ -2212,7 +2212,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 12))
                                 (Value.Integer 15)))
                             (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
                         |) in
@@ -2222,7 +2222,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
@@ -2257,7 +2257,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 18 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 18))
                                 (Value.Integer 7)))
                             (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
                         |) in
@@ -2267,7 +2267,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 12 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 12))
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
@@ -2277,7 +2277,7 @@ Module char.
                           BinOp.Pure.bit_or
                             (M.rust_cast
                               (BinOp.Pure.bit_and
-                                (BinOp.Panic.shr (| M.read (| code |), Value.Integer 6 |))
+                                (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 6))
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
@@ -2507,11 +2507,10 @@ Module char.
                                   let β := code in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.U32,
-                                      M.read (| β |),
-                                      Value.Integer 65536
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.U32
+                                      (M.read (| β |))
+                                      (Value.Integer 65536)
                                   |) in
                                 let _ :=
                                   M.write (|
@@ -2526,7 +2525,7 @@ Module char.
                                     BinOp.Pure.bit_or
                                       (Value.Integer 55296)
                                       (M.rust_cast
-                                        (BinOp.Panic.shr (| M.read (| code |), Value.Integer 10 |)))
+                                        (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 10)))
                                   |) in
                                 let _ :=
                                   M.write (|

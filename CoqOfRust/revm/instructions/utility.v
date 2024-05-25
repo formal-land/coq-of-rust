@@ -50,6 +50,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_read_i16 :
+      M.IsFunction "revm_interpreter::instructions::utility::read_i16" read_i16.
+    
     (*
     pub(crate) unsafe fn read_u16(ptr: *const u8) -> u16 {
         u16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())
@@ -96,5 +99,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_read_u16 :
+      M.IsFunction "revm_interpreter::instructions::utility::read_u16" read_u16.
   End utility.
 End instructions.

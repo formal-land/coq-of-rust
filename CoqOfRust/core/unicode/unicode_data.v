@@ -67,31 +67,29 @@ Module unicode.
                 let bucket_idx :=
                   M.alloc (|
                     M.rust_cast
-                      (BinOp.Panic.div (| Integer.U32, M.read (| needle |), Value.Integer 64 |))
+                      (BinOp.Wrap.div Integer.U32 (M.read (| needle |)) (Value.Integer 64))
                   |) in
                 let chunk_map_idx :=
                   M.alloc (|
-                    BinOp.Panic.div (|
-                      Integer.Usize,
-                      M.read (| bucket_idx |),
-                      M.read (|
+                    BinOp.Wrap.div
+                      Integer.Usize
+                      (M.read (| bucket_idx |))
+                      (M.read (|
                         M.get_constant (|
                           "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
                         |)
-                      |)
-                    |)
+                      |))
                   |) in
                 let chunk_piece :=
                   M.alloc (|
-                    BinOp.Panic.rem (|
-                      Integer.Usize,
-                      M.read (| bucket_idx |),
-                      M.read (|
+                    BinOp.Wrap.rem
+                      Integer.Usize
+                      (M.read (| bucket_idx |))
+                      (M.read (|
                         M.get_constant (|
                           "core::unicode::unicode_data::bitset_search::CHUNK_SIZE"
                         |)
-                      |)
-                    |)
+                      |))
                   |) in
                 let chunk_idx :=
                   M.copy (|
@@ -175,10 +173,10 @@ Module unicode.
                               M.SubPointer.get_array_field (|
                                 M.read (| bitset_canonicalized |),
                                 M.alloc (|
-                                  BinOp.Panic.sub (|
-                                    Integer.Usize,
-                                    M.read (| idx |),
-                                    M.call_closure (|
+                                  BinOp.Wrap.sub
+                                    Integer.Usize
+                                    (M.read (| idx |))
+                                    (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [ Ty.path "u64" ],
                                         "len",
@@ -188,8 +186,7 @@ Module unicode.
                                         (* Unsize *)
                                         M.pointer_coercion (M.read (| bitset_canonical |))
                                       ]
-                                    |)
-                                  |)
+                                    |))
                                 |)
                               |),
                               [
@@ -211,10 +208,7 @@ Module unicode.
                                         BinOp.Pure.ne
                                           (BinOp.Pure.bit_and
                                             (M.read (| mapping |))
-                                            (BinOp.Panic.shl (|
-                                              Value.Integer 1,
-                                              Value.Integer 6
-                                            |)))
+                                            (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 6)))
                                           (Value.Integer 0)
                                       |) in
                                     let _ :=
@@ -242,11 +236,10 @@ Module unicode.
                                       M.alloc (|
                                         BinOp.Pure.bit_and
                                           (M.read (| mapping |))
-                                          (BinOp.Panic.sub (|
-                                            Integer.U8,
-                                            BinOp.Panic.shl (| Value.Integer 1, Value.Integer 6 |),
-                                            Value.Integer 1
-                                          |))
+                                          (BinOp.Wrap.sub
+                                            Integer.U8
+                                            (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 6))
+                                            (Value.Integer 1))
                                       |) in
                                     let _ :=
                                       M.match_operator (|
@@ -260,10 +253,9 @@ Module unicode.
                                                     BinOp.Pure.ne
                                                       (BinOp.Pure.bit_and
                                                         (M.read (| mapping |))
-                                                        (BinOp.Panic.shl (|
-                                                          Value.Integer 1,
-                                                          Value.Integer 7
-                                                        |)))
+                                                        (BinOp.Wrap.shl
+                                                          (Value.Integer 1)
+                                                          (Value.Integer 7)))
                                                       (Value.Integer 0)
                                                   |)) in
                                               let _ :=
@@ -275,10 +267,9 @@ Module unicode.
                                                 let β := word in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Panic.shr (|
-                                                    M.read (| β |),
-                                                    M.rust_cast (M.read (| quantity |))
-                                                  |)
+                                                  BinOp.Wrap.shr
+                                                    (M.read (| β |))
+                                                    (M.rust_cast (M.read (| quantity |)))
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
@@ -311,11 +302,10 @@ Module unicode.
                   BinOp.Pure.ne
                     (BinOp.Pure.bit_and
                       (M.read (| word |))
-                      (BinOp.Panic.shl (|
-                        Value.Integer 1,
-                        M.rust_cast
-                          (BinOp.Panic.rem (| Integer.U32, M.read (| needle |), Value.Integer 64 |))
-                      |)))
+                      (BinOp.Wrap.shl
+                        (Value.Integer 1)
+                        (M.rust_cast
+                          (BinOp.Wrap.rem Integer.U32 (M.read (| needle |)) (Value.Integer 64)))))
                     (Value.Integer 0)
                 |)
               |)))
@@ -338,11 +328,10 @@ Module unicode.
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
           BinOp.Pure.bit_and
             (M.read (| short_offset_run_header |))
-            (BinOp.Panic.sub (|
-              Integer.U32,
-              BinOp.Panic.shl (| Value.Integer 1, Value.Integer 21 |),
-              Value.Integer 1
-            |))))
+            (BinOp.Wrap.sub
+              Integer.U32
+              (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 21))
+              (Value.Integer 1))))
       | _, _ => M.impossible
       end.
     
@@ -359,8 +348,7 @@ Module unicode.
       | [], [ short_offset_run_header ] =>
         ltac:(M.monadic
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
-          M.rust_cast
-            (BinOp.Panic.shr (| M.read (| short_offset_run_header |), Value.Integer 21 |))))
+          M.rust_cast (BinOp.Wrap.shr (M.read (| short_offset_run_header |)) (Value.Integer 21))))
       | _, _ => M.impossible
       end.
     
@@ -433,7 +421,7 @@ Module unicode.
                       |),
                       [
                         (* Unsize *) M.pointer_coercion (M.read (| short_offset_runs |));
-                        M.alloc (| BinOp.Panic.shl (| M.read (| needle |), Value.Integer 11 |) |);
+                        M.alloc (| BinOp.Wrap.shl (M.read (| needle |)) (Value.Integer 11) |);
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
@@ -473,7 +461,7 @@ Module unicode.
                           |) in
                         let idx := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          BinOp.Panic.add (| Integer.Usize, M.read (| idx |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| idx |)) (Value.Integer 1)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -516,11 +504,10 @@ Module unicode.
                               |),
                               [
                                 (* Unsize *) M.pointer_coercion (M.read (| short_offset_runs |));
-                                BinOp.Panic.add (|
-                                  Integer.Usize,
-                                  M.read (| last_idx |),
-                                  Value.Integer 1
-                                |)
+                                BinOp.Wrap.add
+                                  Integer.Usize
+                                  (M.read (| last_idx |))
+                                  (Value.Integer 1)
                               ]
                             |)
                           |) in
@@ -532,30 +519,28 @@ Module unicode.
                           |) in
                         let next := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_function (| "core::unicode::unicode_data::decode_length", [] |),
                               [ M.read (| M.read (| next |) |) ]
-                            |),
-                            M.read (| offset_idx |)
-                          |)
+                            |))
+                            (M.read (| offset_idx |))
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          BinOp.Panic.sub (|
-                            Integer.Usize,
-                            M.call_closure (|
+                          BinOp.Wrap.sub
+                            Integer.Usize
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
                               [ (* Unsize *) M.pointer_coercion (M.read (| offsets |)) ]
-                            |),
-                            M.read (| offset_idx |)
-                          |)
+                            |))
+                            (M.read (| offset_idx |))
                         |)))
                   ]
                 |)
@@ -619,9 +604,7 @@ Module unicode.
                 |)
               |) in
             let total :=
-              M.alloc (|
-                BinOp.Panic.sub (| Integer.U32, M.read (| needle |), M.read (| prev |) |)
-              |) in
+              M.alloc (| BinOp.Wrap.sub Integer.U32 (M.read (| needle |)) (M.read (| prev |)) |) in
             let prefix_sum := M.alloc (| Value.Integer 0 |) in
             let _ :=
               M.use
@@ -641,11 +624,7 @@ Module unicode.
                           [
                             ("start", Value.Integer 0);
                             ("end_",
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| length |),
-                                Value.Integer 1
-                              |))
+                              BinOp.Wrap.sub Integer.Usize (M.read (| length |)) (Value.Integer 1))
                           ]
                       ]
                     |)
@@ -697,11 +676,10 @@ Module unicode.
                                         let β := prefix_sum in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.U32,
-                                            M.read (| β |),
-                                            M.rust_cast (M.read (| offset |))
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.U32
+                                            (M.read (| β |))
+                                            (M.rust_cast (M.read (| offset |)))
                                         |) in
                                       let _ :=
                                         M.match_operator (|
@@ -731,11 +709,10 @@ Module unicode.
                                         let β := offset_idx in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            Value.Integer 1
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (Value.Integer 1)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -746,7 +723,7 @@ Module unicode.
                 |)) in
             M.alloc (|
               BinOp.Pure.eq
-                (BinOp.Panic.rem (| Integer.Usize, M.read (| offset_idx |), Value.Integer 2 |))
+                (BinOp.Wrap.rem Integer.Usize (M.read (| offset_idx |)) (Value.Integer 2))
                 (Value.Integer 1)
             |)
           |)))
@@ -6476,7 +6453,7 @@ Module unicode.
             (let c := M.alloc (| c |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| BinOp.Panic.shr (| M.rust_cast (M.read (| c |)), Value.Integer 8 |) |),
+                M.alloc (| BinOp.Wrap.shr (M.rust_cast (M.read (| c |))) (Value.Integer 8) |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -6828,15 +6805,15 @@ Module unicode.
                                                                               M.rust_cast
                                                                                 (BinOp.Pure.bit_and
                                                                                   (M.read (| u |))
-                                                                                  (BinOp.Panic.sub (|
-                                                                                    Integer.U32,
-                                                                                    M.read (|
+                                                                                  (BinOp.Wrap.sub
+                                                                                    Integer.U32
+                                                                                    (M.read (|
                                                                                       M.get_constant (|
                                                                                         "core::unicode::unicode_data::conversions::INDEX_MASK"
                                                                                       |)
-                                                                                    |),
-                                                                                    Value.Integer 1
-                                                                                  |)))
+                                                                                    |))
+                                                                                    (Value.Integer
+                                                                                      1)))
                                                                             ]
                                                                           |)
                                                                         |)))
@@ -7140,15 +7117,15 @@ Module unicode.
                                                                               M.rust_cast
                                                                                 (BinOp.Pure.bit_and
                                                                                   (M.read (| u |))
-                                                                                  (BinOp.Panic.sub (|
-                                                                                    Integer.U32,
-                                                                                    M.read (|
+                                                                                  (BinOp.Wrap.sub
+                                                                                    Integer.U32
+                                                                                    (M.read (|
                                                                                       M.get_constant (|
                                                                                         "core::unicode::unicode_data::conversions::INDEX_MASK"
                                                                                       |)
-                                                                                    |),
-                                                                                    Value.Integer 1
-                                                                                  |)))
+                                                                                    |))
+                                                                                    (Value.Integer
+                                                                                      1)))
                                                                             ]
                                                                           |)
                                                                         |)))

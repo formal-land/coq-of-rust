@@ -76,12 +76,7 @@ Module interpreter.
                                   "with_capacity",
                                   []
                                 |),
-                                [
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    Value.Integer 33
-                                  |)
+                                [ BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 33)
                                 ]
                               |)
                             |) in
@@ -133,11 +128,10 @@ Module interpreter.
                                 |),
                                 [
                                   padded_bytecode;
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| len |),
-                                    Value.Integer 33
-                                  |);
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| len |))
+                                    (Value.Integer 33);
                                   Value.Integer 0
                                 ]
                               |)
@@ -219,6 +213,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_to_analysed :
+      M.IsFunction "revm_interpreter::interpreter::analysis::to_analysed" to_analysed.
     
     (*
     fn analyze(code: &[u8]) -> JumpTable {
@@ -431,11 +428,10 @@ Module interpreter.
                                                 [
                                                   M.read (| iterator |);
                                                   M.rust_cast
-                                                    (BinOp.Panic.add (|
-                                                      Integer.U8,
-                                                      M.read (| push_offset |),
-                                                      Value.Integer 2
-                                                    |))
+                                                    (BinOp.Wrap.add
+                                                      Integer.U8
+                                                      (M.read (| push_offset |))
+                                                      (Value.Integer 2))
                                                 ]
                                               |)
                                             |) in
@@ -497,6 +493,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_analyze :
+      M.IsFunction "revm_interpreter::interpreter::analysis::analyze" analyze.
     
     (*
     pub fn validate_raw_eof(bytecode: Bytes) -> Result<Eof, EofError> {
@@ -683,6 +682,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_validate_raw_eof :
+      M.IsFunction "revm_interpreter::interpreter::analysis::validate_raw_eof" validate_raw_eof.
     
     (*
     pub fn validate_eof(eof: &Eof) -> Result<(), EofError> {
@@ -1088,6 +1090,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_validate_eof :
+      M.IsFunction "revm_interpreter::interpreter::analysis::validate_eof" validate_eof.
     
     (*
     pub fn validate_eof_codes(eof: &Eof) -> Result<(), EofValidationError> {
@@ -1894,6 +1899,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_validate_eof_codes :
+      M.IsFunction "revm_interpreter::interpreter::analysis::validate_eof_codes" validate_eof_codes.
     
     (*
     Enum EofError
@@ -3917,10 +3925,10 @@ Module interpreter.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.Pure.ge
-                                                                  (BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| i |),
-                                                                    M.rust_cast
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| i |))
+                                                                    (M.rust_cast
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
@@ -3929,8 +3937,7 @@ Module interpreter.
                                                                           []
                                                                         |),
                                                                         [ M.read (| opcode |) ]
-                                                                      |))
-                                                                  |))
+                                                                      |))))
                                                                   (M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
@@ -3986,9 +3993,9 @@ Module interpreter.
                                                             [
                                                               ("start", Value.Integer 1);
                                                               ("end_",
-                                                                BinOp.Panic.add (|
-                                                                  Integer.Usize,
-                                                                  M.rust_cast
+                                                                BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (M.rust_cast
                                                                     (M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.path
@@ -3997,9 +4004,8 @@ Module interpreter.
                                                                         []
                                                                       |),
                                                                       [ M.read (| opcode |) ]
-                                                                    |)),
-                                                                  Value.Integer 1
-                                                                |))
+                                                                    |)))
+                                                                  (Value.Integer 1))
                                                             ]
                                                         ]
                                                       |)
@@ -4095,15 +4101,14 @@ Module interpreter.
                                                                                         |),
                                                                                         [
                                                                                           jumps;
-                                                                                          BinOp.Panic.add (|
-                                                                                            Integer.Usize,
-                                                                                            M.read (|
+                                                                                          BinOp.Wrap.add
+                                                                                            Integer.Usize
+                                                                                            (M.read (|
                                                                                               i
-                                                                                            |),
-                                                                                            M.read (|
+                                                                                            |))
+                                                                                            (M.read (|
                                                                                               imm
-                                                                                            |)
-                                                                                          |)
+                                                                                            |))
                                                                                         ]
                                                                                       |)
                                                                                     ]
@@ -4296,11 +4301,10 @@ Module interpreter.
                                                                           |),
                                                                           [ M.read (| code |) ]
                                                                         |);
-                                                                        BinOp.Panic.add (|
-                                                                          Integer.Usize,
-                                                                          M.read (| i |),
-                                                                          Value.Integer 1
-                                                                        |)
+                                                                        BinOp.Wrap.add
+                                                                          Integer.Usize
+                                                                          (M.read (| i |))
+                                                                          (Value.Integer 1)
                                                                       ]
                                                                     |)
                                                                   ]
@@ -4340,18 +4344,19 @@ Module interpreter.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                BinOp.Panic.add (|
-                                                                                  Integer.Isize,
-                                                                                  BinOp.Panic.add (|
-                                                                                    Integer.Isize,
-                                                                                    M.read (|
+                                                                                BinOp.Wrap.add
+                                                                                  Integer.Isize
+                                                                                  (BinOp.Wrap.add
+                                                                                    Integer.Isize
+                                                                                    (M.read (|
                                                                                       offset
-                                                                                    |),
-                                                                                    Value.Integer 3
-                                                                                  |),
-                                                                                  M.rust_cast
-                                                                                    (M.read (| i |))
-                                                                                |)
+                                                                                    |))
+                                                                                    (Value.Integer
+                                                                                      3))
+                                                                                  (M.rust_cast
+                                                                                    (M.read (|
+                                                                                      i
+                                                                                    |)))
                                                                               ]
                                                                           |)
                                                                         ]
@@ -4378,31 +4383,28 @@ Module interpreter.
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| code |),
                                                           M.alloc (|
-                                                            BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| i |),
-                                                              Value.Integer 1
-                                                            |)
+                                                            BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| i |))
+                                                              (Value.Integer 1)
                                                           |)
                                                         |)
                                                       |))
                                                   |) in
                                                 let len :=
                                                   M.alloc (|
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| max_index |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| max_index |))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 let _ :=
                                                   M.write (|
                                                     rjumpv_additional_immediates,
-                                                    BinOp.Panic.mul (|
-                                                      Integer.Usize,
-                                                      M.read (| len |),
-                                                      Value.Integer 2
-                                                    |)
+                                                    BinOp.Wrap.mul
+                                                      Integer.Usize
+                                                      (M.read (| len |))
+                                                      (Value.Integer 2)
                                                   |) in
                                                 let _ :=
                                                   M.match_operator (|
@@ -4414,17 +4416,15 @@ Module interpreter.
                                                             M.use
                                                               (M.alloc (|
                                                                 BinOp.Pure.ge
-                                                                  (BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    BinOp.Panic.add (|
-                                                                      Integer.Usize,
-                                                                      M.read (| i |),
-                                                                      Value.Integer 1
-                                                                    |),
-                                                                    M.read (|
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (BinOp.Wrap.add
+                                                                      Integer.Usize
+                                                                      (M.read (| i |))
+                                                                      (Value.Integer 1))
+                                                                    (M.read (|
                                                                       rjumpv_additional_immediates
-                                                                    |)
-                                                                  |))
+                                                                    |)))
                                                                   (M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
@@ -4579,20 +4579,18 @@ Module interpreter.
                                                                                           |),
                                                                                           [
                                                                                             jumps;
-                                                                                            BinOp.Panic.add (|
-                                                                                              Integer.Usize,
-                                                                                              BinOp.Panic.add (|
-                                                                                                Integer.Usize,
-                                                                                                M.read (|
+                                                                                            BinOp.Wrap.add
+                                                                                              Integer.Usize
+                                                                                              (BinOp.Wrap.add
+                                                                                                Integer.Usize
+                                                                                                (M.read (|
                                                                                                   i
-                                                                                                |),
-                                                                                                Value.Integer
-                                                                                                  2
-                                                                                              |),
-                                                                                              M.read (|
+                                                                                                |))
+                                                                                                (Value.Integer
+                                                                                                  2))
+                                                                                              (M.read (|
                                                                                                 imm
-                                                                                              |)
-                                                                                            |)
+                                                                                              |))
                                                                                           ]
                                                                                         |)
                                                                                       ]
@@ -4807,25 +4805,22 @@ Module interpreter.
                                                                                             |)
                                                                                           ]
                                                                                         |);
-                                                                                        BinOp.Panic.add (|
-                                                                                          Integer.Usize,
-                                                                                          BinOp.Panic.add (|
-                                                                                            Integer.Usize,
-                                                                                            M.read (|
+                                                                                        BinOp.Wrap.add
+                                                                                          Integer.Usize
+                                                                                          (BinOp.Wrap.add
+                                                                                            Integer.Usize
+                                                                                            (M.read (|
                                                                                               i
-                                                                                            |),
-                                                                                            Value.Integer
-                                                                                              2
-                                                                                          |),
-                                                                                          BinOp.Panic.mul (|
-                                                                                            Integer.Usize,
-                                                                                            Value.Integer
-                                                                                              2,
-                                                                                            M.read (|
+                                                                                            |))
+                                                                                            (Value.Integer
+                                                                                              2))
+                                                                                          (BinOp.Wrap.mul
+                                                                                            Integer.Usize
+                                                                                            (Value.Integer
+                                                                                              2)
+                                                                                            (M.read (|
                                                                                               vtablei
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
+                                                                                            |)))
                                                                                       ]
                                                                                     |)
                                                                                   ]
@@ -4849,28 +4844,25 @@ Module interpreter.
                                                                                 |),
                                                                                 [
                                                                                   jumps;
-                                                                                  BinOp.Panic.add (|
-                                                                                    Integer.Isize,
-                                                                                    BinOp.Panic.add (|
-                                                                                      Integer.Isize,
-                                                                                      BinOp.Panic.add (|
-                                                                                        Integer.Isize,
-                                                                                        M.read (|
+                                                                                  BinOp.Wrap.add
+                                                                                    Integer.Isize
+                                                                                    (BinOp.Wrap.add
+                                                                                      Integer.Isize
+                                                                                      (BinOp.Wrap.add
+                                                                                        Integer.Isize
+                                                                                        (M.read (|
                                                                                           offset
-                                                                                        |),
-                                                                                        M.rust_cast
+                                                                                        |))
+                                                                                        (M.rust_cast
                                                                                           (M.read (|
                                                                                             i
-                                                                                          |))
-                                                                                      |),
-                                                                                      Value.Integer
-                                                                                        2
-                                                                                    |),
-                                                                                    M.rust_cast
+                                                                                          |))))
+                                                                                      (Value.Integer
+                                                                                        2))
+                                                                                    (M.rust_cast
                                                                                       (M.read (|
                                                                                         rjumpv_additional_immediates
-                                                                                      |))
-                                                                                  |)
+                                                                                      |)))
                                                                                 ]
                                                                               |)
                                                                             |) in
@@ -4922,11 +4914,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1)
                                                             ]
                                                           |)
                                                         ]
@@ -5063,22 +5054,21 @@ Module interpreter.
                                                                   M.use
                                                                     (M.alloc (|
                                                                       BinOp.Pure.gt
-                                                                        (BinOp.Panic.add (|
-                                                                          Integer.I32,
-                                                                          BinOp.Panic.sub (|
-                                                                            Integer.I32,
-                                                                            M.read (|
+                                                                        (BinOp.Wrap.add
+                                                                          Integer.I32
+                                                                          (BinOp.Wrap.sub
+                                                                            Integer.I32
+                                                                            (M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 this_instruction,
                                                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                 "biggest"
                                                                               |)
-                                                                            |),
-                                                                            M.read (|
+                                                                            |))
+                                                                            (M.read (|
                                                                               stack_requirement
-                                                                            |)
-                                                                          |),
-                                                                          M.rust_cast
+                                                                            |)))
+                                                                          (M.rust_cast
                                                                             (M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.read (|
@@ -5087,8 +5077,7 @@ Module interpreter.
                                                                                 "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                 "max_stack_size"
                                                                               |)
-                                                                            |))
-                                                                        |))
+                                                                            |))))
                                                                         (M.rust_cast
                                                                           (M.read (|
                                                                             M.get_constant (|
@@ -5158,11 +5147,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1)
                                                             ]
                                                           |)
                                                         ]
@@ -5207,18 +5195,18 @@ Module interpreter.
                                                                     M.use
                                                                       (M.alloc (|
                                                                         BinOp.Pure.gt
-                                                                          (BinOp.Panic.add (|
-                                                                            Integer.I32,
-                                                                            BinOp.Panic.sub (|
-                                                                              Integer.I32,
-                                                                              M.read (|
+                                                                          (BinOp.Wrap.add
+                                                                            Integer.I32
+                                                                            (BinOp.Wrap.sub
+                                                                              Integer.I32
+                                                                              (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   this_instruction,
                                                                                   "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                   "biggest"
                                                                                 |)
-                                                                              |),
-                                                                              M.rust_cast
+                                                                              |))
+                                                                              (M.rust_cast
                                                                                 (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
@@ -5227,9 +5215,8 @@ Module interpreter.
                                                                                     "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                     "inputs"
                                                                                   |)
-                                                                                |))
-                                                                            |),
-                                                                            M.rust_cast
+                                                                                |))))
+                                                                            (M.rust_cast
                                                                               (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (|
@@ -5238,8 +5225,7 @@ Module interpreter.
                                                                                   "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                   "max_stack_size"
                                                                                 |)
-                                                                              |))
-                                                                          |))
+                                                                              |))))
                                                                           (M.rust_cast
                                                                             (M.read (|
                                                                               M.get_constant (|
@@ -5396,11 +5382,11 @@ Module interpreter.
                                                                 let _ :=
                                                                   M.write (|
                                                                     stack_requirement,
-                                                                    BinOp.Panic.sub (|
-                                                                      Integer.I32,
-                                                                      BinOp.Panic.add (|
-                                                                        Integer.I32,
-                                                                        M.rust_cast
+                                                                    BinOp.Wrap.sub
+                                                                      Integer.I32
+                                                                      (BinOp.Wrap.add
+                                                                        Integer.I32
+                                                                        (M.rust_cast
                                                                           (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
@@ -5409,8 +5395,8 @@ Module interpreter.
                                                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                               "outputs"
                                                                             |)
-                                                                          |)),
-                                                                        M.rust_cast
+                                                                          |)))
+                                                                        (M.rust_cast
                                                                           (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
@@ -5419,9 +5405,8 @@ Module interpreter.
                                                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                               "inputs"
                                                                             |)
-                                                                          |))
-                                                                      |),
-                                                                      M.rust_cast
+                                                                          |))))
+                                                                      (M.rust_cast
                                                                         (M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (|
@@ -5430,8 +5415,7 @@ Module interpreter.
                                                                             "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                             "outputs"
                                                                           |)
-                                                                        |))
-                                                                    |)
+                                                                        |)))
                                                                   |) in
                                                                 let _ :=
                                                                   M.match_operator (|
@@ -5490,19 +5474,18 @@ Module interpreter.
                                                                           M.use
                                                                             (M.alloc (|
                                                                               BinOp.Pure.gt
-                                                                                (BinOp.Panic.add (|
-                                                                                  Integer.I32,
-                                                                                  M.read (|
+                                                                                (BinOp.Wrap.add
+                                                                                  Integer.I32
+                                                                                  (M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
                                                                                       this_instruction,
                                                                                       "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                       "biggest"
                                                                                     |)
-                                                                                  |),
-                                                                                  M.read (|
+                                                                                  |))
+                                                                                  (M.read (|
                                                                                     stack_requirement
-                                                                                  |)
-                                                                                |))
+                                                                                  |)))
                                                                                 (M.rust_cast
                                                                                   (M.read (|
                                                                                     M.get_constant (|
@@ -5555,11 +5538,10 @@ Module interpreter.
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| code |),
                                                           M.alloc (|
-                                                            BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              M.read (| i |),
-                                                              Value.Integer 1
-                                                            |)
+                                                            BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| i |))
+                                                              (Value.Integer 1)
                                                           |)
                                                         |)
                                                       |))
@@ -5636,11 +5618,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1)
                                                             ]
                                                           |)
                                                         ]
@@ -5661,12 +5642,11 @@ Module interpreter.
                                                                 ltac:(M.monadic
                                                                   (BinOp.Pure.gt
                                                                     (M.read (| index |))
-                                                                    (BinOp.Panic.sub (|
-                                                                      Integer.Isize,
-                                                                      M.rust_cast
-                                                                        (M.read (| data_size |)),
-                                                                      Value.Integer 32
-                                                                    |))))
+                                                                    (BinOp.Wrap.sub
+                                                                      Integer.Isize
+                                                                      (M.rust_cast
+                                                                        (M.read (| data_size |)))
+                                                                      (Value.Integer 32))))
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -5766,23 +5746,21 @@ Module interpreter.
                                                 let _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Panic.add (|
-                                                      Integer.I32,
-                                                      M.rust_cast
+                                                    BinOp.Wrap.add
+                                                      Integer.I32
+                                                      (M.rust_cast
                                                         (M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| code |),
                                                             M.alloc (|
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1)
                                                             |)
                                                           |)
-                                                        |)),
-                                                      Value.Integer 1
-                                                    |)
+                                                        |)))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -5795,23 +5773,21 @@ Module interpreter.
                                                 let _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Panic.add (|
-                                                      Integer.I32,
-                                                      M.rust_cast
+                                                    BinOp.Wrap.add
+                                                      Integer.I32
+                                                      (M.rust_cast
                                                         (M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| code |),
                                                             M.alloc (|
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |)
+                                                              BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1)
                                                             |)
                                                           |)
-                                                        |)),
-                                                      Value.Integer 2
-                                                    |)
+                                                        |)))
+                                                      (Value.Integer 2)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -5826,47 +5802,41 @@ Module interpreter.
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| code |),
                                                       M.alloc (|
-                                                        BinOp.Panic.add (|
-                                                          Integer.Usize,
-                                                          M.read (| i |),
-                                                          Value.Integer 1
-                                                        |)
+                                                        BinOp.Wrap.add
+                                                          Integer.Usize
+                                                          (M.read (| i |))
+                                                          (Value.Integer 1)
                                                       |)
                                                     |)
                                                   |) in
                                                 let n :=
                                                   M.alloc (|
-                                                    BinOp.Panic.add (|
-                                                      Integer.U8,
-                                                      BinOp.Panic.shr (|
-                                                        M.read (| imm |),
-                                                        Value.Integer 4
-                                                      |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.U8
+                                                      (BinOp.Wrap.shr
+                                                        (M.read (| imm |))
+                                                        (Value.Integer 4))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 let m :=
                                                   M.alloc (|
-                                                    BinOp.Panic.add (|
-                                                      Integer.U8,
-                                                      BinOp.Pure.bit_and
+                                                    BinOp.Wrap.add
+                                                      Integer.U8
+                                                      (BinOp.Pure.bit_and
                                                         (M.read (| imm |))
-                                                        (Value.Integer 15),
-                                                      Value.Integer 1
-                                                    |)
+                                                        (Value.Integer 15))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 let _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Panic.add (|
-                                                      Integer.I32,
-                                                      BinOp.Panic.add (|
-                                                        Integer.I32,
-                                                        M.rust_cast (M.read (| n |)),
-                                                        M.rust_cast (M.read (| m |))
-                                                      |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.I32
+                                                      (BinOp.Wrap.add
+                                                        Integer.I32
+                                                        (M.rust_cast (M.read (| n |)))
+                                                        (M.rust_cast (M.read (| m |))))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -5917,32 +5887,30 @@ Module interpreter.
                                       let _ :=
                                         M.write (|
                                           next_smallest,
-                                          BinOp.Panic.add (|
-                                            Integer.I32,
-                                            M.read (|
+                                          BinOp.Wrap.add
+                                            Integer.I32
+                                            (M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 this_instruction,
                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                 "smallest"
                                               |)
-                                            |),
-                                            M.read (| stack_io_diff |)
-                                          |)
+                                            |))
+                                            (M.read (| stack_io_diff |))
                                         |) in
                                       let _ :=
                                         M.write (|
                                           next_biggest,
-                                          BinOp.Panic.add (|
-                                            Integer.I32,
-                                            M.read (|
+                                          BinOp.Wrap.add
+                                            Integer.I32
+                                            (M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 this_instruction,
                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                 "biggest"
                                               |)
-                                            |),
-                                            M.read (| stack_io_diff |)
-                                          |)
+                                            |))
+                                            (M.read (| stack_io_diff |))
                                         |) in
                                       let _ :=
                                         M.use
@@ -6392,15 +6360,15 @@ Module interpreter.
                                         let β := i in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| β |),
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                Value.Integer 1,
-                                                M.rust_cast
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| β |))
+                                            (BinOp.Wrap.add
+                                              Integer.Usize
+                                              (BinOp.Wrap.add
+                                                Integer.Usize
+                                                (Value.Integer 1)
+                                                (M.rust_cast
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path
@@ -6409,11 +6377,8 @@ Module interpreter.
                                                       []
                                                     |),
                                                     [ M.read (| opcode |) ]
-                                                  |))
-                                              |),
-                                              M.read (| rjumpv_additional_immediates |)
-                                            |)
-                                          |)
+                                                  |))))
+                                              (M.read (| rjumpv_additional_immediates |)))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -6603,6 +6568,9 @@ Module interpreter.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_validate_eof_code :
+      M.IsFunction "revm_interpreter::interpreter::analysis::validate_eof_code" validate_eof_code.
     
     Module validate_eof_code.
       (* StructRecord

@@ -1800,9 +1800,9 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [
-                  BinOp.Panic.add (|
-                    Integer.U32,
-                    M.rust_cast
+                  BinOp.Wrap.add
+                    Integer.U32
+                    (M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
@@ -1818,9 +1818,8 @@ Module Impl_multisig_Multisig.
                             "owners"
                           |)
                         ]
-                      |)),
-                    Value.Integer 1
-                  |);
+                      |)))
+                    (Value.Integer 1);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -2195,11 +2194,10 @@ Module Impl_multisig_Multisig.
                                             let β := count in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.sub (|
-                                                Integer.U32,
-                                                M.read (| β |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.U32
+                                                (M.read (| β |))
+                                                (Value.Integer 1)
                                             |) in
                                           let _ :=
                                             M.alloc (|
@@ -2282,9 +2280,9 @@ Module Impl_multisig_Multisig.
             |) in
           let len :=
             M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.U32,
-                M.rust_cast
+              BinOp.Wrap.sub
+                Integer.U32
+                (M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
@@ -2300,9 +2298,8 @@ Module Impl_multisig_Multisig.
                         "owners"
                       |)
                     ]
-                  |)),
-                Value.Integer 1
-              |)
+                  |)))
+                (Value.Integer 1)
             |) in
           let requirement :=
             M.alloc (|
@@ -2799,7 +2796,7 @@ Module Impl_multisig_Multisig.
                       let β := count in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1)
                       |) in
                     let _ :=
                       M.alloc (|
@@ -2878,17 +2875,16 @@ Module Impl_multisig_Multisig.
                         Value.StructTuple
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
                           [
-                            BinOp.Panic.sub (|
-                              Integer.U32,
-                              M.read (|
+                            BinOp.Wrap.sub
+                              Integer.U32
+                              (M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "multisig::Multisig",
                                   "requirement"
                                 |)
-                              |),
-                              M.read (| count |)
-                            |)
+                              |))
+                              (M.read (| count |))
                           ]
                       |)))
                 ]
@@ -3773,7 +3769,7 @@ Module Impl_multisig_Multisig.
                     let β := confirmation_count in
                     M.write (|
                       β,
-                      BinOp.Panic.sub (| Integer.U32, M.read (| β |), Value.Integer 1 |)
+                      BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (Value.Integer 1)
                     |) in
                   let _ :=
                     M.alloc (|

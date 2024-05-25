@@ -72,7 +72,7 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
       M.read (|
         let _ :=
           let β := M.read (| x |) in
-          M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
+          M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

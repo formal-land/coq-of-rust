@@ -176,6 +176,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_lt : M.IsFunction "revm_interpreter::instructions::bitwise::lt" lt.
+    
     (*
     pub fn gt<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -348,6 +350,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_gt : M.IsFunction "revm_interpreter::instructions::bitwise::gt" gt.
     
     (*
     pub fn slt<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -532,6 +536,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_slt : M.IsFunction "revm_interpreter::instructions::bitwise::slt" slt.
     
     (*
     pub fn sgt<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -719,6 +725,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_sgt : M.IsFunction "revm_interpreter::instructions::bitwise::sgt" sgt.
+    
     (*
     pub fn eq<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -892,6 +900,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_eq : M.IsFunction "revm_interpreter::instructions::bitwise::eq" eq.
+    
     (*
     pub fn iszero<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -1055,6 +1065,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_iszero : M.IsFunction "revm_interpreter::instructions::bitwise::iszero" iszero.
     
     (*
     pub fn bitand<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1220,6 +1232,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_bitand : M.IsFunction "revm_interpreter::instructions::bitwise::bitand" bitand.
+    
     (*
     pub fn bitor<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -1383,6 +1397,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_bitor : M.IsFunction "revm_interpreter::instructions::bitwise::bitor" bitor.
     
     (*
     pub fn bitxor<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1548,6 +1564,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_bitxor : M.IsFunction "revm_interpreter::instructions::bitwise::bitxor" bitxor.
+    
     (*
     pub fn not<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -1702,6 +1720,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_not : M.IsFunction "revm_interpreter::instructions::bitwise::not" not.
     
     (*
     pub fn byte<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1978,11 +1998,10 @@ Module instructions.
                                               |),
                                               [
                                                 M.read (| op2 |);
-                                                BinOp.Panic.sub (|
-                                                  Integer.Usize,
-                                                  Value.Integer 31,
-                                                  M.read (| o1 |)
-                                                |)
+                                                BinOp.Wrap.sub
+                                                  Integer.Usize
+                                                  (Value.Integer 31)
+                                                  (M.read (| o1 |))
                                               ]
                                             |)
                                           ]
@@ -2000,6 +2019,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_byte : M.IsFunction "revm_interpreter::instructions::bitwise::byte" byte.
     
     (*
     pub fn shl<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -2305,6 +2326,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_shl : M.IsFunction "revm_interpreter::instructions::bitwise::shl" shl.
+    
     (*
     pub fn shr<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
         check!(interpreter, CONSTANTINOPLE);
@@ -2608,6 +2631,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_shr : M.IsFunction "revm_interpreter::instructions::bitwise::shr" shr.
     
     (*
     pub fn sar<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -3046,6 +3071,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sar : M.IsFunction "revm_interpreter::instructions::bitwise::sar" sar.
     
     Module sar.
       Definition value_ONE : Value.t :=

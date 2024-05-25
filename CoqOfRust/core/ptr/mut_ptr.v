@@ -2137,7 +2137,7 @@ Module ptr.
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
                       [
                         M.read (| tail |);
-                        BinOp.Panic.sub (| Integer.Usize, M.read (| len |), M.read (| mid |) |)
+                        BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
                       ]
                     |)
                   ]
