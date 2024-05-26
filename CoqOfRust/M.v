@@ -96,7 +96,7 @@ Module Integer.
   | Usize : t.
 End Integer.
 
-Module Pointer.
+(* Module Pointer.
   Module Index.
     (** We are very explicit for the indexes, so that if the target is mutated
         and the index does not make any sense anymore we can detect it. This
@@ -172,7 +172,7 @@ Module Pointer.
       (fun x => Some x)
       (fun _ y => Some y)
     ).
-End Pointer.
+End Pointer. *)
 
 Module Value.
   Inductive t : Set :=
@@ -186,7 +186,7 @@ Module Value.
   | Array : list t -> t
   | StructRecord : string -> list (string * t) -> t
   | StructTuple : string -> list t -> t
-  | Pointer : Pointer.t t -> t
+  | Pointer : nat -> t
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
@@ -205,7 +205,7 @@ Module Value.
   (** Read the part of the value that is at a given pointer path, starting from
       the main value. It might return [None] if the path does not have a shape
       compatible with the value. *)
-  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) :
+  Fixpoint read_index (value : Value.t) (path : Pointer.Path.t) :
       option Value.t :=
     match path with
     | [] => Some value
