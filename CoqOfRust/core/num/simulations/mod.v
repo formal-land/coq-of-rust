@@ -9,9 +9,9 @@ Import Run.
 
 Module Impl_u64.
   Definition run_overflowing_sub (self rhs : Z) :
-    {{ _, _, _ |
+    {{ _, _ |
       num.Impl_u64.overflowing_sub [] [φ self; φ rhs] ⇓
-      (fun (v : (Z * bool)) => inl (φ v))
+      fun (v : (Z * bool)) => inl (φ v)
     | _ }}.
   Proof.
     intros.

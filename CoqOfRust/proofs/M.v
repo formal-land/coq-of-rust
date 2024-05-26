@@ -1,6 +1,6 @@
 Require Import Coq.Strings.String.
 Require Import CoqOfRust.M.
-Require Import CoqOfRust.simulations.M.
+Require Import simulations.M.
 
 Import List.ListNotations.
 
@@ -41,20 +41,31 @@ Module State.
   End Valid.
 End State.
 
-Definition IsTraitMethod
-    (trait_name : string)
-    (self_ty : Ty.t)
-    (trait_tys : list Ty.t)
-    (method_name : string)
-    (method : list Ty.t -> list Value.t -> M) :
-    Prop :=
-  exists (instance : Instance.t),
-  M.IsTraitInstance
-    trait_name
-    self_ty
-    trait_tys
-    instance /\
-  List.assoc instance method_name = Some (InstanceField.Method method).
+Module IsTraitMethod.
+  Inductive t
+      (trait_name : string)
+      (self_ty : Ty.t)
+      (trait_tys : list Ty.t)
+      (method_name : string) :
+      (list Ty.t -> list Value.t -> M) -> Prop :=
+  | Explicit (instance : Instance.t) (method : list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = Some (InstanceField.Method method) ->
+    t trait_name self_ty trait_tys method_name method
+  | Implicit (instance : Instance.t) (method : Ty.t -> list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = None ->
+    M.IsProvidedMethod trait_name method_name method ->
+    t trait_name self_ty trait_tys method_name (method self_ty).
+End IsTraitMethod.
 
 Module IsRead.
   Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Prop :=
@@ -86,10 +97,9 @@ Module HasRead.
 End HasRead.
 
 Module Run.
-  Reserved Notation "{{ env , env_to_value , state | e ⇓ to_value | P_state }}".
+  Reserved Notation "{{ env , state | e ⇓ to_value | P_state }}".
 
-  Inductive t `{State.Trait} {Env A : Set} (env : Env) (env_to_value : Env -> Value.t)
-      (state : State)
+  Inductive t `{State.Trait} {A : Set} (env : Value.t) (state : State)
       (to_value : A -> Value.t + Exception.t) (P_state : State -> Prop) :
       M -> Set :=
   | Pure
@@ -97,14 +107,14 @@ Module Run.
       (result' : Value.t + Exception.t) :
     result' = to_value result ->
     P_state state ->
-    {{ env, env_to_value, state | LowM.Pure result' ⇓ to_value | P_state }}
+    {{ env, state | LowM.Pure result' ⇓ to_value | P_state }}
   | CallPrimitiveStateAllocImmediate
       (v : Value.t)
       (k : Value.t -> M) :
-    {{ env, env_to_value, state |
+    {{ env, state |
       k (Value.Pointer (Pointer.Immediate v)) ⇓ to_value
     | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ to_value
     | P_state }}
   | CallPrimitiveStateAllocMutable
@@ -118,8 +128,8 @@ Module Run.
     value' = pointer_to_value value ->
     State.read address state = None ->
     State.alloc_write address state value = Some state_inter ->
-    {{ env, env_to_value, state_inter | k r ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state_inter | k r ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ to_value
     | P_state }}
   | CallPrimitiveStateRead
@@ -127,11 +137,11 @@ Module Run.
       (value : Value.t)
       (k : Value.t -> M) :
     IsRead.t state pointer value ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       k value ⇓
       to_value
     | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓
       to_value
     | P_state }}
@@ -154,8 +164,8 @@ Module Run.
     State.read address state = Some big_value ->
     injection big_value value = Some new_big_value ->
     State.alloc_write address state new_big_value = Some state_inter ->
-    {{ env, env_to_value, state_inter | k (Value.Tuple []) ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state_inter | k (Value.Tuple []) ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive (Primitive.StateWrite mutable value') k ⇓
       to_value
     | P_state }}
@@ -173,31 +183,30 @@ Module Run.
       Option.map (sub_injection a sub_a) pointer_to_value =
       Value.write_value (pointer_to_value a) [index] (sub_to_value sub_a)
     ) ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       k (Value.Pointer (Pointer.Mutable (Pointer.Mutable.get_sub
         mutable index sub_projection sub_injection sub_to_value
       ))) ⇓
       to_value
     | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓
       to_value
     | P_state }}
   | CallPrimitiveEnvRead
       (k : Value.t -> M) :
-    {{ env, env_to_value, state | k (env_to_value env) ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state | k env ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive Primitive.EnvRead k ⇓ to_value
     | P_state }}
   | CallPrimitiveGetFunction
       (name : string) (generic_tys : list Ty.t)
       (function : list Ty.t -> list Value.t -> M)
       (k : Value.t -> M) :
-    let closure :=
-      Value.Closure (existS (Value.t, M) (function generic_tys)) in
+    let closure := Value.Closure (existS (_, _) (function generic_tys)) in
     M.IsFunction name function ->
-    {{ env, env_to_value, state | k closure ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state | k closure ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive (Primitive.GetFunction name generic_tys) k ⇓
       to_value
     | P_state }}
@@ -205,11 +214,10 @@ Module Run.
       (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
       (associated_function : list Ty.t -> list Value.t -> M)
       (k : Value.t -> M) :
-    let closure :=
-      Value.Closure (existS (Value.t, M) (associated_function generic_tys)) in
+    let closure := Value.Closure (existS (_, _) (associated_function generic_tys)) in
     M.IsAssociatedFunction ty name associated_function ->
-    {{ env, env_to_value, state | k closure ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state | k closure ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive
         (Primitive.GetAssociatedFunction ty name generic_tys) k ⇓
         to_value
@@ -219,11 +227,10 @@ Module Run.
       (method_name : string) (generic_tys : list Ty.t)
       (method : list Ty.t -> list Value.t -> M)
       (k : Value.t -> M) :
-    let closure :=
-      Value.Closure (existS (Value.t, M) (method generic_tys)) in
-    IsTraitMethod trait_name self_ty trait_tys method_name method ->
-    {{ env, env_to_value, state | k closure ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state |
+    let closure := Value.Closure (existS (_, _) (method generic_tys)) in
+    IsTraitMethod.t trait_name self_ty trait_tys method_name method ->
+    {{ env, state | k closure ⇓ to_value | P_state }} ->
+    {{ env, state |
       LowM.CallPrimitive
         (Primitive.GetTraitMethod
           trait_name
@@ -238,39 +245,47 @@ Module Run.
       (to_value_inter : A_inter -> Value.t + Exception.t) (P_state_inter : State -> Prop)
       (f : list Value.t -> M) (args : list Value.t)
       (k : Value.t + Exception.t -> M) :
-    let closure := Value.Closure (existS (Value.t, M) f) in
-    {{ env, env_to_value, state | f args ⇓ to_value_inter | P_state_inter }} ->
+    let closure := Value.Closure (existS (_, _) f) in
+    {{ env, state | f args ⇓ to_value_inter | P_state_inter }} ->
     (forall (value_inter : A_inter) (state_inter : State),
       P_state_inter state_inter ->
-      {{ env, env_to_value, state_inter | k (to_value_inter value_inter) ⇓ to_value | P_state }}
+      {{ env, state_inter | k (to_value_inter value_inter) ⇓ to_value | P_state }}
     ) ->
-    {{ env, env_to_value, state | LowM.CallClosure closure args k ⇓ to_value | P_state }}
+    {{ env, state | LowM.CallClosure closure args k ⇓ to_value | P_state }}
+  | Let {A_inter : Set}
+      (to_value_inter : A_inter -> Value.t + Exception.t) (P_state_inter : State -> Prop)
+      (e : M) (k : Value.t + Exception.t -> M) :
+    {{ env, state | e ⇓ to_value_inter | P_state_inter }} ->
+    (forall (value_inter : A_inter) (state_inter : State),
+      {{ env, state_inter | k (to_value_inter value_inter) ⇓ to_value | P_state }}
+    ) ->
+    {{ env, state | LowM.Let e k ⇓ to_value | P_state }}
   | Rewrite (e e' : M) :
     e = e' ->
-    {{ env, env_to_value, state | e' ⇓ to_value | P_state }} ->
-    {{ env, env_to_value, state | e ⇓ to_value | P_state }}
+    {{ env, state | e' ⇓ to_value | P_state }} ->
+    {{ env, state | e ⇓ to_value | P_state }}
 
-  where "{{ env , env_to_value , state | e ⇓ to_value | P_state }}" :=
-    (t env env_to_value state to_value P_state e).
+  where "{{ env , state | e ⇓ to_value | P_state }}" :=
+    (t env state to_value P_state e).
 
-  Notation "{{ '_' , '_' , state | e ⇓ to_value | P_state }}" :=
-    (forall (Env : Set) (env : Env) (env_to_value : Env -> Value.t),
-      {{ env, env_to_value, state | e ⇓ to_value | P_state }}
+  Notation "{{ '_' , state | e ⇓ to_value | P_state }}" :=
+    (forall (env : Value.t),
+      {{ env, state | e ⇓ to_value | P_state }}
     ).
 
-  Notation "{{ '_' , '_' , '_' | e ⇓ to_value | '_' }}" :=
+  Notation "{{ '_' , '_' | e ⇓ to_value | '_' }}" :=
     (forall (State Address : Set) `(State.Trait State Address) (state : State),
-      {{ _, _, state | e ⇓ to_value | fun state' => state' = state }}
+      {{ _, state | e ⇓ to_value | fun state' => state' = state }}
     ).
 End Run.
 
 Import Run.
 
-Fixpoint evaluate `{State.Trait} {Env A : Set}
-    {env : Env} {env_to_value : Env -> Value.t} {state : State}
+Fixpoint evaluate `{State.Trait} {A : Set}
+    {env : Value.t} {state : State}
     {e : M} {to_value : A -> Value.t + Exception.t}
     {P_state : State -> Prop}
-    (run : {{ env, env_to_value, state | e ⇓ to_value | P_state }}) :
+    (run : {{ env, state | e ⇓ to_value | P_state }}) :
   A * { state : State | P_state state }.
 Proof.
   destruct run.
@@ -309,12 +324,18 @@ Proof.
   { eapply evaluate.
     exact run.
   }
-  { destruct (evaluate _ _ _ _ _ _ _ _ _ _ _ run) as [value_inter [state_inter H_state_inter]].
+  { destruct (evaluate _ _ _ _ _ _ _ _ _ run) as [value_inter [state_inter H_state_inter]].
     eapply evaluate.
     match goal with
-    | H : forall _ _ _, _ |- _ => apply (H value_inter)
+    | H : forall _ _ _, _ |- _ => apply (H value_inter state_inter)
     end.
     exact H_state_inter.
+  }
+  { destruct (evaluate _ _ _ _ _ _ _ _ _ run) as [value_inter [state_inter H_state_inter]].
+    eapply evaluate.
+    match goal with
+    | H : forall _ _, _ |- _ => apply (H value_inter state_inter)
+    end.
   }
   { eapply evaluate.
     exact run.
@@ -349,16 +370,16 @@ Module SubPointer.
       {runner : SubPointer.Runner.t A Sub_A}
       (H_runner : Runner.Valid.t runner)
       (mutable : Pointer.Mutable.t (A := A) Value.t φ)
-      `{State.Trait} {Env : Set} (env : Env) (env_to_value : Env -> Value.t) (state : State)
+      `{State.Trait} (env : Value.t) (state : State)
       (to_value : Result -> Value.t + Exception.t) (P_state : State -> Prop)
       (k : Value.t -> M)
       (index : Pointer.Index.t)
       (H_index : index = runner.(SubPointer.Runner.index)) :
-    {{ env, env_to_value, state |
+    {{ env, state |
       k (Value.Pointer (Pointer.Mutable (SubPointer.get_sub mutable runner))) ⇓
       to_value
     | P_state }} ->
-    {{ env, env_to_value, state |
+    {{ env, state |
       LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓
       to_value
     | P_state }}.
@@ -370,7 +391,7 @@ Module SubPointer.
       rewrite H_index; reflexivity.
     }
     apply (Run.CallPrimitiveGetSubPointer
-      _ _ _ _ _ _
+      _ _ _ _ _
       runner.(SubPointer.Runner.index)
       runner.(SubPointer.Runner.projection)
       runner.(SubPointer.Runner.injection)
@@ -394,14 +415,14 @@ Ltac run_symbolic_state_read :=
 
 Ltac run_symbolic_state_write :=
   match goal with
-  | |- Run.t ?env ?env_to_value ?state ?to_value ?P_state
+  | |- Run.t ?env ?state ?to_value ?P_state
       (LowM.CallPrimitive (Primitive.StateWrite (
         Pointer.Mutable.Make ?address ?path ?big_to_value ?projection ?injection
       ) ?value') ?k) =>
     let H := fresh "H" in
     epose proof (H :=
       Run.CallPrimitiveStateWrite
-        env env_to_value state to_value P_state address path big_to_value projection injection _
+        env state to_value P_state address path big_to_value projection injection _
         value' _ _ _ k
     );
     apply H; try reflexivity;
@@ -410,7 +431,7 @@ Ltac run_symbolic_state_write :=
 
 Ltac run_symbolic_one_step :=
   match goal with
-  | |- Run.t _ _ _ _ _ _ =>
+  | |- Run.t _ _ _ _ _ =>
     (* We do not use [Run.CallClosure] and let the user use existing lemma
        for this kind of case. *)
     (eapply Run.Pure; trivial) ||
@@ -425,3 +446,25 @@ Ltac run_symbolic :=
     cbn ||
     run_symbolic_one_step
   ).
+
+Module StatelessFunction.
+  (** We describe a stateless function as its implementation together the ability to get a run in a
+      stateless environment. *)
+  Record t {Args Output : Set}
+      {args_to_value : Args -> list Value.t} {output_to_value : Output -> Value.t} : 
+      Set := {
+    f : list Value.t -> M;
+    run (args : Args) :
+      {{ _, _ |
+        f (args_to_value args) ⇓
+        fun v => inl (output_to_value v)
+      | _ }}
+  }.
+  Arguments t {_ _}.
+
+  Global Instance IsToValue {Args Output : Set}
+      (args_to_value : Args -> list Value.t) (output_to_value : Output -> Value.t) :
+      ToValue (t args_to_value output_to_value) := {
+    φ v := Value.Closure (existS (_, _) v.(f));
+  }.
+End StatelessFunction.

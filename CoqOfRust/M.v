@@ -190,7 +190,7 @@ Module Value.
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
-  | Closure : {'(t, M) : Set * Set @ list t -> M} -> t
+  | Closure : {'(Value, M) : (Set * Set) @ list Value -> M} -> t
   (** A special value that does not appear in the translation, but that we use
       to implement primitive functions over values that are not total. We
       statically know, from the fact that the source Rust code is well-typed,
@@ -867,7 +867,7 @@ Parameter pointer_coercion : Value.t -> Value.t.
 Parameter rust_cast : Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
-  Value.Closure (existS (Value.t, M) f).
+  Value.Closure (existS (_, _) f).
 
 Definition constructor_as_closure (constructor : string) : Value.t :=
   closure (fun args =>

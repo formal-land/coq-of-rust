@@ -21,7 +21,7 @@ Axiom sub_with_overflow_u64_eq :
     end.
 
 Definition run_sub_with_overflow_u64_u64 (self rhs : Z) :
-  {{ _, _, _ |
+  {{ _, _ |
     core.intrinsics.intrinsics.sub_with_overflow [Ty.path "u64"] [φ self; φ rhs] ⇓
       (fun (v : (Z * bool)) => inl (φ v))
   | _ }}.

@@ -9,8 +9,11 @@ Import Run.
 Module Default.
   Record RunImpl (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
     default : {default @
-      IsTraitMethod "core::default::Default" Self_ty [] "default" default *
-      {{ _, _, _ | default [] [] ⇓ (fun v => inl (φ v)) | _ }}
+      IsTraitMethod.t "core::default::Default" Self_ty [] "default" default *
+      {{ _, _ |
+        default [] [] ⇓
+        fun (v : Self) => inl (φ v)
+      | _ }}
     };
   }.
 End Default.
@@ -20,11 +23,8 @@ Module Impl_core_default_Default_for_i64.
   Proof.
     constructor.
     { eexists; split.
-      { unfold IsTraitMethod.
-        eexists; split.
-        { cbn.
-          apply default.Impl_core_default_Default_for_i64.Implements.
-        }
+      { eapply IsTraitMethod.Explicit.
+        { apply default.Impl_core_default_Default_for_i64.Implements. }
         { reflexivity. }
       }
       { intros.
@@ -39,11 +39,8 @@ Module Impl_core_default_Default_for_u64.
   Proof.
     constructor.
     { eexists; split.
-      { unfold IsTraitMethod.
-        eexists; split.
-        { cbn.
-          apply default.Impl_core_default_Default_for_u64.Implements.
-        }
+      { eapply IsTraitMethod.Explicit.
+        { apply default.Impl_core_default_Default_for_u64.Implements. }
         { reflexivity. }
       }
       { intros.
