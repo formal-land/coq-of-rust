@@ -4224,7 +4224,10 @@ Module slice.
                             ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                        M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
               |) in
@@ -4304,7 +4307,10 @@ Module slice.
                         let γ0_0 := M.read (| γ0_0 |) in
                         let end_ := M.copy (| γ0_0 |) in
                         end_));
-                    fun γ => ltac:(M.monadic len)
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                        len))
                   ]
                 |)
               |) in
@@ -4423,7 +4429,11 @@ Module slice.
                                 M.alloc (|
                                   BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in
@@ -4454,7 +4464,11 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 i));
-                            fun γ => ltac:(M.monadic len)
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                len))
                           ]
                         |)
                       |) in
@@ -4612,7 +4626,14 @@ Module slice.
                                             val))
                                       ]
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "core::ops::range::Bound::Unbounded"
+                                      |) in
+                                    M.alloc (| Value.Integer 0 |)))
                               ]
                             |)
                           |) in
@@ -4714,7 +4735,14 @@ Module slice.
                                       |) in
                                     let end_ := M.copy (| γ0_0 |) in
                                     end_));
-                                fun γ => ltac:(M.monadic len)
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (|
+                                        γ,
+                                        "core::ops::range::Bound::Unbounded"
+                                      |) in
+                                    len))
                               ]
                             |)
                           |) in
@@ -4846,7 +4874,11 @@ Module slice.
                                     ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in
@@ -4916,7 +4948,11 @@ Module slice.
                                   |) in
                                 let end_ := M.copy (| γ0_0 |) in
                                 end_));
-                            fun γ => ltac:(M.monadic len)
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                                len))
                           ]
                         |)
                       |) in

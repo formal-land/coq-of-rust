@@ -270,7 +270,8 @@ Module panic.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "cmp", [] |),
@@ -291,7 +292,8 @@ Module panic.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (|
+                              (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
@@ -471,6 +473,7 @@ Module panic.
                           "core::option::Option::Some",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
@@ -504,6 +507,7 @@ Module panic.
                                   "core::option::Option::Some",
                                   0
                                 |) in
+                              let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|

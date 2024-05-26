@@ -38,6 +38,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -116,7 +117,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
@@ -149,7 +151,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::Parse" |) in
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
@@ -218,7 +221,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             M.read (| self |),
             [
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=

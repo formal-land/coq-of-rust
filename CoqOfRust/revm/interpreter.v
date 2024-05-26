@@ -1148,22 +1148,47 @@ Module interpreter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Continue"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Stop"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Return"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                                  |) in
                                 Value.Tuple []))
                           ],
                           M.closure
@@ -1340,14 +1365,29 @@ Module interpreter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Revert"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                                  |) in
                                 Value.Tuple []))
                           ],
                           M.closure
@@ -1453,6 +1493,11 @@ Module interpreter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                          |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -1690,6 +1735,11 @@ Module interpreter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                          |) in
                         let~ _ :=
                           M.match_operator (|
                             M.alloc (|
@@ -1838,14 +1888,29 @@ Module interpreter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Revert"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                                  |) in
                                 Value.Tuple []))
                           ],
                           M.closure
@@ -1951,6 +2016,11 @@ Module interpreter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                          |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -2207,22 +2277,47 @@ Module interpreter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Continue"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Stop"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Return"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                                  |) in
                                 Value.Tuple []))
                           ],
                           M.closure
@@ -2447,14 +2542,29 @@ Module interpreter.
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::Revert"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                                  |) in
                                 Value.Tuple []));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
+                                let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                                  |) in
                                 Value.Tuple []))
                           ],
                           M.closure
@@ -2622,6 +2732,11 @@ Module interpreter.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                          |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|

@@ -2302,6 +2302,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2471,6 +2472,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                     M.alloc (| Value.StructTuple "core::char::CaseMappingIter::Zero" [] |)))
               ]
             |)
@@ -2714,7 +2716,9 @@ Module char.
                       Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -2746,10 +2750,12 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Three" |) in
                         M.alloc (| Value.Integer 3 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Two" |) in
                         M.alloc (| Value.Integer 2 |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2764,6 +2770,7 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                         M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
@@ -2898,7 +2905,9 @@ Module char.
                       Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -3259,7 +3268,8 @@ Module char.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                        M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
                         |)))
                   ]

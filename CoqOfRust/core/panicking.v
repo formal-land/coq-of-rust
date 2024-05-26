@@ -862,14 +862,17 @@ Module panicking.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
                         M.alloc (| M.read (| Value.String "Eq" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
                         M.alloc (| M.read (| Value.String "Ne" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
                         M.alloc (| M.read (| Value.String "Match" |) |)))
                   ]
                 |)
@@ -1055,9 +1058,18 @@ Module panicking.
               M.match_operator (|
                 kind,
                 [
-                  fun γ => ltac:(M.monadic (Value.String "=="));
-                  fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "!=" |) |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| M.read (| Value.String "matches" |) |)))
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
+                      Value.String "=="));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
+                      M.alloc (| M.read (| Value.String "!=" |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
+                      M.alloc (| M.read (| Value.String "matches" |) |)))
                 ]
               |)
             |) in
@@ -1147,7 +1159,8 @@ Module panicking.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::panicking::panic_fmt", [] |),
                       [

@@ -48,7 +48,9 @@ Module hash.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=

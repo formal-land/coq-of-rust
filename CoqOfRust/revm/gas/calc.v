@@ -604,7 +604,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1172,7 +1173,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1315,7 +1317,8 @@ Module gas.
                                 v));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1395,7 +1398,9 @@ Module gas.
                                       v));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -1423,7 +1428,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1487,7 +1493,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -2901,7 +2908,9 @@ Module gas.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>

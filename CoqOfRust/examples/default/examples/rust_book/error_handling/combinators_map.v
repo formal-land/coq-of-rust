@@ -47,14 +47,17 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Apple" |) in
                       M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Carrot" |) in
                       M.alloc (| M.read (| Value.String "Carrot" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Potato" |) in
                       M.alloc (| M.read (| Value.String "Potato" |) |)))
                 ]
               |)
@@ -244,7 +247,9 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Value.StructTuple "combinators_map::Peeled" [ M.read (| food |) ] ]
                 |)));
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
           ]
         |)
       |)))
@@ -283,7 +288,9 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Value.StructTuple "combinators_map::Chopped" [ M.read (| food |) ] ]
                 |)));
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
           ]
         |)
       |)))
@@ -531,7 +538,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

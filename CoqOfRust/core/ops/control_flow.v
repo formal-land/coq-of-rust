@@ -732,7 +732,12 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Continue"
+                        |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -858,7 +863,9 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Break" |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                 ]
               |)
             |)))

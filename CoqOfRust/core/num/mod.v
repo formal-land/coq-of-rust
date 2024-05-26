@@ -1455,7 +1455,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -1508,7 +1513,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -1655,7 +1665,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -1721,7 +1734,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -1835,7 +1851,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1946,7 +1963,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -1956,7 +1974,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -3537,7 +3558,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -4018,7 +4040,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -6426,7 +6449,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -6479,7 +6507,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -6626,7 +6659,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -6692,7 +6728,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -6806,7 +6845,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -6917,7 +6957,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -6927,7 +6968,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -8508,7 +8552,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -8992,7 +9037,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -11403,7 +11449,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -11456,7 +11507,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -11603,7 +11659,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -11669,7 +11728,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -11783,7 +11845,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -11894,7 +11957,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -11904,7 +11968,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -13485,7 +13552,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -13969,7 +14037,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -16380,7 +16449,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -16433,7 +16507,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -16580,7 +16659,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -16646,7 +16728,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -16760,7 +16845,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -16871,7 +16957,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -16881,7 +16968,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -18462,7 +18552,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -18946,7 +19037,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -21357,7 +21449,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -21410,7 +21507,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -21557,7 +21659,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -21623,7 +21728,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -21737,7 +21845,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -21848,7 +21957,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -21858,7 +21968,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -23442,7 +23555,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -23930,7 +24044,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -26341,7 +26456,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -26394,7 +26514,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -26541,7 +26666,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -26607,7 +26735,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MIN" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MIN" |)))
               ]
             |)
           |)))
@@ -26721,7 +26852,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -26832,7 +26964,8 @@ Module num.
                     x));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    let γ := M.alloc (| BinOp.Pure.lt (M.read (| self |)) (Value.Integer 0) |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let γ :=
                       M.alloc (|
@@ -26842,7 +26975,10 @@ Module num.
                       |) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.get_constant (| "core::num::MIN" |)));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -28426,7 +28562,8 @@ Module num.
                     sqrt));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -28914,7 +29051,8 @@ Module num.
                             x));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -31674,7 +31812,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -31727,7 +31870,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -31923,7 +32071,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -31988,7 +32139,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -33619,7 +33773,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -36535,7 +36690,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -36588,7 +36748,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -36784,7 +36949,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -36849,7 +37017,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -38484,7 +38655,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -40791,7 +40963,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -40844,7 +41021,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -41040,7 +41222,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -41105,7 +41290,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -42740,7 +42928,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -45012,7 +45201,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -45065,7 +45259,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -45261,7 +45460,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -45326,7 +45528,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -46961,7 +47166,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -49233,7 +49439,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -49286,7 +49497,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -49482,7 +49698,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -49547,7 +49766,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -51185,7 +51407,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -53372,7 +53595,12 @@ Module num.
                                                       x));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -53425,7 +53653,12 @@ Module num.
                                             x));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
@@ -53621,7 +53854,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -53686,7 +53922,10 @@ Module num.
                       |) in
                     let x := M.copy (| γ0_0 |) in
                     x));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::num::MAX" |)))
               ]
             |)
           |)))
@@ -55324,7 +55563,8 @@ Module num.
                           x));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             M.never_to_any (|
                               M.read (|
                                 M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -56081,22 +56321,27 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
                         M.alloc (| M.read (| Value.String "Nan" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
                         M.alloc (| M.read (| Value.String "Infinite" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
                         M.alloc (| M.read (| Value.String "Zero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
                         M.alloc (| M.read (| Value.String "Subnormal" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
                         M.alloc (| M.read (| Value.String "Normal" |) |)))
                   ]
                 |)
@@ -58086,7 +58331,12 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::option::Option::None"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -58333,7 +58583,12 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::option::Option::None"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -58595,7 +58850,12 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::option::Option::None"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -59110,7 +59370,12 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::option::Option::None"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)

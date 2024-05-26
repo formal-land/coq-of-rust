@@ -564,7 +564,9 @@ Module interpreter_action.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "revm_primitives::env::TransactTo::Create" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
                           [
@@ -706,7 +708,9 @@ Module interpreter_action.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "revm_primitives::env::CreateScheme::Create" |) in
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "alloy_primitives::bits::address::Address",

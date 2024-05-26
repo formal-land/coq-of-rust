@@ -403,7 +403,8 @@ Module iter.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (M.write (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::iter::adapters::map_windows::MapWindowsInner",
@@ -445,7 +446,9 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let~ _ :=
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|

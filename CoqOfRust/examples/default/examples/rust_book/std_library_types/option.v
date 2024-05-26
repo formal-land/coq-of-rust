@@ -71,7 +71,8 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

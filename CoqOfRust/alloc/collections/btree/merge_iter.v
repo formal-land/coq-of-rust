@@ -551,7 +551,8 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ _ :=
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          let~ _ :=
                             M.write (|
                               a_next,
                               M.call_closure (|
@@ -641,7 +642,9 @@ Module collections.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.write (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                                  M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
@@ -682,7 +685,9 @@ Module collections.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.write (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                                  M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
@@ -721,7 +726,11 @@ Module collections.
                                       ]
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                                  M.alloc (| Value.Tuple [] |)))
                             ]
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))

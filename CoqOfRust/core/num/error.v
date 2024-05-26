@@ -536,22 +536,41 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                           M.alloc (| M.read (| Value.String "Empty" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::num::error::IntErrorKind::InvalidDigit"
+                            |) in
                           M.alloc (| M.read (| Value.String "InvalidDigit" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::num::error::IntErrorKind::PosOverflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "PosOverflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::num::error::IntErrorKind::NegOverflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "NegOverflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                           M.alloc (| M.read (| Value.String "Zero" |) |)))
                     ]
                   |)
@@ -585,28 +604,36 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                       M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Empty" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
                       M.alloc (|
                         Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                       M.alloc (|
                         Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                       M.alloc (|
                         Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                       M.alloc (| Value.StructTuple "core::num::error::IntErrorKind::Zero" [] |)))
                 ]
               |)
@@ -805,25 +832,34 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
+                      M.alloc (|
                         M.read (| Value.String "cannot parse integer from empty string" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid digit found in string" |) |)));
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
+                      M.alloc (| M.read (| Value.String "invalid digit found in string" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
+                      M.alloc (|
                         M.read (| Value.String "number too large to fit in target type" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
+                      M.alloc (|
                         M.read (| Value.String "number too small to fit in target type" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
+                      M.alloc (|
                         M.read (| Value.String "number would be zero for non-zero type" |)
                       |)))
                 ]

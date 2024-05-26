@@ -586,6 +586,11 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
                       M.alloc (|
                         Value.StructTuple
                           "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
@@ -777,6 +782,11 @@ Module ffi.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2484,7 +2494,8 @@ Module ffi.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
                           [
@@ -3939,7 +3950,12 @@ Module ffi.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "alloc::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated"
+                        |) in
+                      M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",

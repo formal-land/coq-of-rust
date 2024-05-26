@@ -2491,6 +2491,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2661,6 +2662,7 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -6639,7 +6641,12 @@ Module collections.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.alloc (|
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.alloc (|
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
@@ -6939,7 +6946,12 @@ Module collections.
                                                   |)));
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.alloc (|
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.alloc (|
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|

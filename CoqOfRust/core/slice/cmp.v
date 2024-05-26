@@ -582,7 +582,12 @@ Module slice.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
                                         fun γ =>
@@ -624,6 +629,11 @@ Module slice.
                                                         γ,
                                                         "core::option::Option::Some",
                                                         0
+                                                      |) in
+                                                    let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ0_0,
+                                                        "core::cmp::Ordering::Equal"
                                                       |) in
                                                     M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
@@ -1082,7 +1092,12 @@ Module slice.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
                                         fun γ =>
@@ -1118,7 +1133,13 @@ Module slice.
                                               |),
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)));
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::cmp::Ordering::Equal"
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let non_eq := M.copy (| γ |) in

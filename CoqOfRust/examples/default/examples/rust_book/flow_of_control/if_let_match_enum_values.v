@@ -74,6 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := a in
+                  let _ := M.is_struct_tuple (| γ, "if_let_match_enum_values::Foo::Bar" |) in
                   let~ _ :=
                     let~ _ :=
                       M.alloc (|
@@ -110,6 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := b in
+                  let _ := M.is_struct_tuple (| γ, "if_let_match_enum_values::Foo::Bar" |) in
                   let~ _ :=
                     let~ _ :=
                       M.alloc (|

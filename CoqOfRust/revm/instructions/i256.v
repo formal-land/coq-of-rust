@@ -81,14 +81,29 @@ Module instructions.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Minus"
+                            |) in
                           M.alloc (| M.read (| Value.String "Minus" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Zero"
+                            |) in
                           M.alloc (| M.read (| Value.String "Zero" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Plus"
+                            |) in
                           M.alloc (| M.read (| Value.String "Plus" |) |)))
                     ]
                   |)
@@ -653,7 +668,8 @@ Module instructions.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::Ord",

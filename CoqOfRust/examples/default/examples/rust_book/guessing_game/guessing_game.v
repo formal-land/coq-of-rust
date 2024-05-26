@@ -249,7 +249,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ _ :=
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -275,7 +276,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ _ :=
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -301,7 +303,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.read (|
                           let~ _ :=

@@ -257,6 +257,11 @@ Module collections.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
@@ -510,6 +515,11 @@ Module collections.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -742,11 +752,21 @@ Module collections.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (Value.String
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                              |) in
+                            Value.String
                               " because the computed capacity exceeded the collection's maximum"));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "alloc::collections::TryReserveErrorKind::AllocError"
+                              |) in
+                            M.alloc (|
                               M.read (|
                                 Value.String " because the memory allocator returned an error"
                               |)

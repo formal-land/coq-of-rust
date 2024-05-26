@@ -1969,7 +1969,10 @@ Module instructions.
                                   ]
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.get_constant (| "ruint::ZERO" |)))
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.get_constant (| "ruint::ZERO" |)))
                         ]
                       |)
                     |)

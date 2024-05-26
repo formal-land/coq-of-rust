@@ -231,7 +231,12 @@ Module future.
                                         t));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "core::task::poll::Poll::Pending"
+                                          |) in
+                                        M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -280,7 +285,9 @@ Module future.
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::future::join::MaybeDone::Taken" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
                                   M.get_function (| "core::panicking::panic", [] |),

@@ -1031,7 +1031,8 @@ Module interpreter.
                               M.alloc (| M.read (| slice |) |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1245,7 +1246,8 @@ Module interpreter.
                           M.alloc (| M.read (| slice |) |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.match_operator (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

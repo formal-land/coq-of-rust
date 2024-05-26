@@ -712,7 +712,8 @@ Module str.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           BinOp.Pure.eq
                             (M.read (| index |))
                             (M.call_closure (|

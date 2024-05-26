@@ -99,7 +99,10 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         match γ with | [ value ] => value | _ => M.impossible (||) end))
                 |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "if_let::Container::Empty" |) in
+                M.alloc (| Value.Integer 0 |)))
           ]
         |)
       |)))
@@ -260,7 +263,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.alloc (| Value.Tuple [] |)))
             ]
           |) in
         let~ _ :=
@@ -405,7 +411,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                M.alloc (| Value.Tuple [] |)))
           ]
         |)
       |)))

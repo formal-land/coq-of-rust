@@ -132,7 +132,10 @@ Module Impl_enums_testcase_linked_list_List.
                         [ M.read (| M.read (| tail |) |) ]
                       |))
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "enums_testcase_linked_list::List::Nil" |) in
+                  M.alloc (| Value.Integer 0 |)))
             ]
           |)
         |)))
@@ -240,7 +243,8 @@ Module Impl_enums_testcase_linked_list_List.
                   res));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ res :=
+                  (let _ := M.is_struct_tuple (| γ, "enums_testcase_linked_list::List::Nil" |) in
+                  let~ res :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::fmt::format", [] |),

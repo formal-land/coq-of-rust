@@ -328,7 +328,10 @@ Module f32.
                 |)
               |),
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -357,7 +360,10 @@ Module f32.
                 |)
               |),
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)

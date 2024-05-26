@@ -178,7 +178,12 @@ Module iter.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                           fun γ =>
@@ -1591,7 +1596,8 @@ Module iter.
                                 i));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3086,8 +3092,14 @@ Module iter.
                         M.find_or_pattern (|
                           γ0_0,
                           [
-                            fun γ => ltac:(M.monadic (Value.Tuple []));
-                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                                Value.Tuple []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                                Value.Tuple []))
                           ],
                           M.closure
                             (fun γ =>
@@ -3177,8 +3189,15 @@ Module iter.
                         M.find_or_pattern (|
                           γ0_0,
                           [
-                            fun γ => ltac:(M.monadic (Value.Tuple []));
-                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                                Value.Tuple []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                                Value.Tuple []))
                           ],
                           M.closure
                             (fun γ =>
@@ -3270,7 +3289,8 @@ Module iter.
                                 e));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (| M.read (| M.return_ (| Value.Bool true |) |) |)
                                 |)))
                           ]
@@ -3487,7 +3507,9 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         Value.StructTuple "core::cmp::Ordering::Equal" []
                                       |)));
                                   fun γ =>
@@ -3574,7 +3596,9 @@ Module iter.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           Value.StructTuple
                                             "core::ops::control_flow::ControlFlow::Break"
                                             [

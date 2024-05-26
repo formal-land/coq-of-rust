@@ -933,7 +933,12 @@ Module interpreter.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::option::Option::None"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (| M.break (||) |)
                                                         |)
@@ -2453,7 +2458,8 @@ Module interpreter.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -2833,128 +2839,278 @@ Module interpreter.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::FalsePossitive"
+                            |) in
                           M.alloc (| M.read (| Value.String "FalsePossitive" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::UnknownOpcode"
+                            |) in
                           M.alloc (| M.read (| Value.String "UnknownOpcode" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::OpcodeDisabled"
+                            |) in
                           M.alloc (| M.read (| Value.String "OpcodeDisabled" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::InstructionNotForwardAccessed"
+                            |) in
                           M.alloc (| M.read (| Value.String "InstructionNotForwardAccessed" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::MissingImmediateBytes"
+                            |) in
                           M.alloc (| M.read (| Value.String "MissingImmediateBytes" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::MissingRJUMPVImmediateBytes"
+                            |) in
                           M.alloc (| M.read (| Value.String "MissingRJUMPVImmediateBytes" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JumpToImmediateBytes"
+                            |) in
                           M.alloc (| M.read (| Value.String "JumpToImmediateBytes" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::BackwardJumpToImmediateBytes"
+                            |) in
                           M.alloc (| M.read (| Value.String "BackwardJumpToImmediateBytes" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::RJUMPVZeroMaxIndex"
+                            |) in
                           M.alloc (| M.read (| Value.String "RJUMPVZeroMaxIndex" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JumpZeroOffset"
+                            |) in
                           M.alloc (| M.read (| Value.String "JumpZeroOffset" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::EOFCREATEInvalidIndex"
+                            |) in
                           M.alloc (| M.read (| Value.String "EOFCREATEInvalidIndex" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::CodeSectionOutOfBounds"
+                            |) in
                           M.alloc (| M.read (| Value.String "CodeSectionOutOfBounds" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::CALLFNonReturningFunction"
+                            |) in
                           M.alloc (| M.read (| Value.String "CALLFNonReturningFunction" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::StackOverflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "StackOverflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JUMPFEnoughOutputs"
+                            |) in
                           M.alloc (| M.read (| Value.String "JUMPFEnoughOutputs" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JUMPFStackHigherThanOutputs"
+                            |) in
                           M.alloc (| M.read (| Value.String "JUMPFStackHigherThanOutputs" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::DataLoadOutOfBounds"
+                            |) in
                           M.alloc (| M.read (| Value.String "DataLoadOutOfBounds" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::RETFBiggestStackNumMoreThenOutputs"
+                            |) in
                           M.alloc (|
                             M.read (| Value.String "RETFBiggestStackNumMoreThenOutputs" |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::StackUnderflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "StackUnderflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::TypesStackUnderflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "TypesStackUnderflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JumpUnderflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "JumpUnderflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::JumpOverflow"
+                            |) in
                           M.alloc (| M.read (| Value.String "JumpOverflow" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::BackwardJumpBiggestNumMismatch"
+                            |) in
                           M.alloc (|
                             M.read (| Value.String "BackwardJumpBiggestNumMismatch" |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::BackwardJumpSmallestNumMismatch"
+                            |) in
                           M.alloc (|
                             M.read (| Value.String "BackwardJumpSmallestNumMismatch" |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::LastInstructionNotTerminating"
+                            |) in
                           M.alloc (| M.read (| Value.String "LastInstructionNotTerminating" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::CodeSectionNotAccessed"
+                            |) in
                           M.alloc (| M.read (| Value.String "CodeSectionNotAccessed" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::InvalidTypesSection"
+                            |) in
                           M.alloc (| M.read (| Value.String "InvalidTypesSection" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::InvalidFirstTypesSection"
+                            |) in
                           M.alloc (| M.read (| Value.String "InvalidFirstTypesSection" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::MaxStackMismatch"
+                            |) in
                           M.alloc (| M.read (| Value.String "MaxStackMismatch" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter::analysis::EofValidationError::NoCodeSections"
+                            |) in
                           M.alloc (| M.read (| Value.String "NoCodeSections" |) |)))
                     ]
                   |)
@@ -4036,7 +4192,12 @@ Module interpreter.
                                                                   [
                                                                     fun γ =>
                                                                       ltac:(M.monadic
-                                                                        (M.alloc (|
+                                                                        (let _ :=
+                                                                          M.is_struct_tuple (|
+                                                                            γ,
+                                                                            "core::option::Option::None"
+                                                                          |) in
+                                                                        M.alloc (|
                                                                           M.never_to_any (|
                                                                             M.read (|
                                                                               M.break (||)
@@ -4514,7 +4675,12 @@ Module interpreter.
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
-                                                                          (M.alloc (|
+                                                                          (let _ :=
+                                                                            M.is_struct_tuple (|
+                                                                              γ,
+                                                                              "core::option::Option::None"
+                                                                            |) in
+                                                                          M.alloc (|
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 M.break (||)
@@ -4748,7 +4914,12 @@ Module interpreter.
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
-                                                                          (M.alloc (|
+                                                                          (let _ :=
+                                                                            M.is_struct_tuple (|
+                                                                              γ,
+                                                                              "core::option::Option::None"
+                                                                            |) in
+                                                                          M.alloc (|
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 M.break (||)
@@ -5961,7 +6132,12 @@ Module interpreter.
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (|
+                                                                (let _ :=
+                                                                  M.is_struct_tuple (|
+                                                                    γ,
+                                                                    "core::option::Option::None"
+                                                                  |) in
+                                                                M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (| M.break (||) |)
                                                                   |)
@@ -6479,7 +6655,12 @@ Module interpreter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>

@@ -475,7 +475,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>

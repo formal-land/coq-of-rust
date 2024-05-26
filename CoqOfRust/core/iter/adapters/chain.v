@@ -375,7 +375,10 @@ Module iter.
                                 [ M.read (| a |) ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
@@ -409,7 +412,10 @@ Module iter.
                                 [ M.read (| b |) ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (| Value.Integer 0 |)))
                       ]
                     |)
                   |) in
@@ -1047,7 +1053,13 @@ Module iter.
                                               |),
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Integer 0 |)));
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (| Value.Integer 0 |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in
@@ -1654,6 +1666,7 @@ Module iter.
                             0
                           |) in
                         let a := M.alloc (| γ2_0 |) in
+                        let _ := M.is_struct_tuple (| γ1_1, "core::option::Option::None" |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -1681,6 +1694,7 @@ Module iter.
                             "core::iter::adapters::chain::Chain",
                             "b"
                           |) in
+                        let _ := M.is_struct_tuple (| γ1_0, "core::option::Option::None" |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ1_1,
@@ -1715,6 +1729,8 @@ Module iter.
                             "core::iter::adapters::chain::Chain",
                             "b"
                           |) in
+                        let _ := M.is_struct_tuple (| γ1_0, "core::option::Option::None" |) in
+                        let _ := M.is_struct_tuple (| γ1_1, "core::option::Option::None" |) in
                         M.alloc (|
                           Value.Tuple
                             [
@@ -2214,7 +2230,13 @@ Module iter.
                                               |),
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Integer 0 |)));
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (| Value.Integer 0 |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let x := M.copy (| γ |) in

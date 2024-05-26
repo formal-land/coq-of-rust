@@ -289,10 +289,20 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::num::dec2flt::FloatErrorKind::Empty"
+                            |) in
                           M.alloc (| M.read (| Value.String "Empty" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::num::dec2flt::FloatErrorKind::Invalid"
+                            |) in
                           M.alloc (| M.read (| Value.String "Invalid" |) |)))
                     ]
                   |)
@@ -326,12 +336,16 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
                       M.alloc (|
                         Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Invalid" |) in
                       M.alloc (|
                         Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []
                       |)))
@@ -463,12 +477,16 @@ Module num.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
+                      M.alloc (|
                         M.read (| Value.String "cannot parse float from empty string" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid float literal" |) |)))
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Invalid" |) in
+                      M.alloc (| M.read (| Value.String "invalid float literal" |) |)))
                 ]
               |)
             |)))
@@ -839,7 +857,8 @@ Module num.
                             r));
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            let γ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -869,7 +888,8 @@ Module num.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|

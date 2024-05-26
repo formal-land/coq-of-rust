@@ -10744,6 +10744,7 @@ Module collections.
                                   "core::option::Option::Some",
                                   0
                                 |) in
+                              let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
@@ -10772,6 +10773,8 @@ Module collections.
                                           "core::option::Option::Some",
                                           0
                                         |) in
+                                      let _ :=
+                                        M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Less" |) in
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|

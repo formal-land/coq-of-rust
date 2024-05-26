@@ -3063,6 +3063,7 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
@@ -3157,6 +3158,7 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3492,7 +3494,8 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
             |)))
@@ -3548,7 +3551,8 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
             |)))
@@ -3581,7 +3585,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3668,7 +3673,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3784,7 +3790,10 @@ Module ops.
                             [ start; M.alloc (| M.read (| item |) |) ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                        M.alloc (| Value.Bool true |)))
                   ]
                 |)
               |),
@@ -3846,7 +3855,11 @@ Module ops.
                               [ item; M.alloc (| M.read (| end_ |) |) ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                          M.alloc (| Value.Bool true |)))
                     ]
                   |)
                 |)))
@@ -4290,6 +4303,7 @@ Module ops.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
@@ -4348,6 +4362,7 @@ Module ops.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_1, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)

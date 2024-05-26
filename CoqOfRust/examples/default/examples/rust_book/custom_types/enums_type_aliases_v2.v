@@ -46,10 +46,20 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+                    |) in
                   M.alloc (| BinOp.Wrap.add Integer.I32 (M.read (| x |)) (M.read (| y |)) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
+                    |) in
                   M.alloc (| BinOp.Wrap.sub Integer.I32 (M.read (| x |)) (M.read (| y |)) |)))
             ]
           |)

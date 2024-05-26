@@ -466,6 +466,8 @@ Module collections.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
+                                  let _ :=
+                                    M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (| M.return_ (| Value.Bool true |) |)

@@ -1339,6 +1339,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::Null"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1349,6 +1354,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1359,6 +1369,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::CarriageReturn"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1369,6 +1384,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::LineFeed"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1379,6 +1399,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1392,6 +1417,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1677,7 +1707,12 @@ Module ascii.
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (M.alloc (|
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (|
                                                       M.never_to_any (| M.read (| M.break (||) |) |)
                                                     |)));
                                                 fun γ =>

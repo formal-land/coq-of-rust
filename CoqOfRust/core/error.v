@@ -770,6 +770,7 @@ Module error.
                           "core::error::TaggedOption",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_tuple_field (|
@@ -845,6 +846,7 @@ Module error.
                           "core::error::TaggedOption",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
                       let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_tuple_field (|
@@ -983,6 +985,7 @@ Module error.
                         "core::error::TaggedOption",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ2_0, "core::option::Option::None" |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]

@@ -1299,7 +1299,8 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let~ map :=
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              let~ map :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|

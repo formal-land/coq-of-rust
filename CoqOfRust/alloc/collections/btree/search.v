@@ -87,7 +87,8 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                        M.alloc (|
                           Value.StructTuple
                             "alloc::collections::btree::search::SearchBound::AllIncluded"
                             []
@@ -1700,7 +1701,12 @@ Module collections.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                           fun γ =>
@@ -1744,10 +1750,21 @@ Module collections.
                                                 |),
                                                 [
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)));
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::cmp::Ordering::Greater"
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::cmp::Ordering::Equal"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -1765,7 +1782,12 @@ Module collections.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.alloc (|
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "core::cmp::Ordering::Less"
+                                                        |) in
+                                                      M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -1964,7 +1986,12 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "alloc::collections::btree::search::SearchBound::AllIncluded"
+                          |) in
+                        M.alloc (|
                           Value.Tuple
                             [
                               Value.Integer 0;
@@ -1975,7 +2002,12 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "alloc::collections::btree::search::SearchBound::AllExcluded"
+                          |) in
+                        M.alloc (|
                           Value.Tuple
                             [
                               M.call_closure (|
@@ -2157,7 +2189,12 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "alloc::collections::btree::search::SearchBound::AllIncluded"
+                          |) in
+                        M.alloc (|
                           Value.Tuple
                             [
                               M.call_closure (|
@@ -2177,7 +2214,12 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "alloc::collections::btree::search::SearchBound::AllExcluded"
+                          |) in
+                        M.alloc (|
                           Value.Tuple
                             [
                               M.read (| start_index |);

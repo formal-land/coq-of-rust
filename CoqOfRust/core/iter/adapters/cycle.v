@@ -193,7 +193,8 @@ Module iter.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),

@@ -1369,7 +1369,9 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -1603,7 +1605,9 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (| M.return_ (| M.read (| acc |) |) |)
                                         |)
@@ -1867,7 +1871,8 @@ Module iter.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
@@ -2056,7 +2061,10 @@ Module iter.
                     |)
                   |),
                   [
-                    fun γ => ltac:(M.monadic init);
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        init));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -2811,7 +2819,12 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -3561,7 +3574,12 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -4311,7 +4329,12 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -5061,7 +5084,12 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -5809,7 +5837,12 @@ Module iter.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>

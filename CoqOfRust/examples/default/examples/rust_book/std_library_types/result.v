@@ -48,14 +48,26 @@ Module checked.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (| γ, "result::checked::MathError::DivisionByZero" |) in
                         M.alloc (| M.read (| Value.String "DivisionByZero" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result::checked::MathError::NonPositiveLogarithm"
+                          |) in
                         M.alloc (| M.read (| Value.String "NonPositiveLogarithm" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "result::checked::MathError::NegativeSquareRoot"
+                          |) in
                         M.alloc (| M.read (| Value.String "NegativeSquareRoot" |) |)))
                   ]
                 |)

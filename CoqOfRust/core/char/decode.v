@@ -403,7 +403,8 @@ Module char.
                               buf));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|
@@ -594,7 +595,12 @@ Module char.
                                               u2));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -793,7 +799,8 @@ Module char.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 0 ] |)));
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer 0 ] |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=

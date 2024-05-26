@@ -57,22 +57,47 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or_else::Fruit::Apple"
+                        |) in
                       M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or_else::Fruit::Orange"
+                        |) in
                       M.alloc (| M.read (| Value.String "Orange" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or_else::Fruit::Banana"
+                        |) in
                       M.alloc (| M.read (| Value.String "Banana" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi"
+                        |) in
                       M.alloc (| M.read (| Value.String "Kiwi" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or_else::Fruit::Lemon"
+                        |) in
                       M.alloc (| M.read (| Value.String "Lemon" |) |)))
                 ]
               |)

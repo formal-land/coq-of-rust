@@ -80,14 +80,17 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
                         M.alloc (| M.read (| Value.String "Left" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
                         M.alloc (| M.read (| Value.String "Right" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
                         M.alloc (| M.read (| Value.String "Center" |) |)))
                   ]
                 |)
@@ -905,7 +908,8 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -2008,7 +2012,8 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::fmt::Write",
@@ -2334,16 +2339,25 @@ Module fmt.
                         "align"
                       |),
                       [
-                        fun γ => ltac:(M.monadic default);
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |)));
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Unknown" |) in
+                            default));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::fmt::Alignment::Right" [] |)));
+                            (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Left" |) in
+                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::fmt::Alignment::Center" [] |)))
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Right" |) in
+                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Right" [] |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Center" |) in
+                            M.alloc (| Value.StructTuple "core::fmt::Alignment::Center" [] |)))
                       ]
                     |)
                   |) in
@@ -2353,13 +2367,16 @@ Module fmt.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.Tuple [ Value.Integer 0; M.read (| padding |) ] |)));
+                          (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
+                          M.alloc (| Value.Tuple [ Value.Integer 0; M.read (| padding |) ] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.Tuple [ M.read (| padding |); Value.Integer 0 ] |)));
+                          (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
+                          M.alloc (| Value.Tuple [ M.read (| padding |); Value.Integer 0 ] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
+                          M.alloc (|
                             Value.Tuple
                               [
                                 BinOp.Wrap.div
@@ -2430,7 +2447,12 @@ Module fmt.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (M.alloc (|
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.alloc (|
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -3347,7 +3369,12 @@ Module fmt.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -3844,7 +3871,12 @@ Module fmt.
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (M.alloc (|
+                                                                            (let _ :=
+                                                                              M.is_struct_tuple (|
+                                                                                γ,
+                                                                                "core::option::Option::None"
+                                                                              |) in
+                                                                            M.alloc (|
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -4272,27 +4304,32 @@ Module fmt.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Left" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "core::fmt::Alignment::Left" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Right" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "core::fmt::Alignment::Right" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Center" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "core::fmt::Alignment::Center" [] ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Alignment::Unknown" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -5235,7 +5272,9 @@ Module fmt.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -5797,7 +5836,9 @@ Module fmt.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -6682,7 +6723,8 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.use
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.use
                           (M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -6764,7 +6806,12 @@ Module fmt.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (M.alloc (|
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.alloc (|
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -7129,7 +7176,12 @@ Module fmt.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (M.alloc (|
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.alloc (|
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -7793,7 +7845,9 @@ Module fmt.
                   let n := M.copy (| γ0_0 |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| n |) ] |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::fmt::rt::Count::Implied" |) in
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -7982,7 +8036,12 @@ Module fmt.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -8967,7 +9026,12 @@ Module fmt.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -9178,7 +9242,12 @@ Module fmt.
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (M.alloc (|
+                                                                            (let _ :=
+                                                                              M.is_struct_tuple (|
+                                                                                γ,
+                                                                                "core::option::Option::None"
+                                                                              |) in
+                                                                            M.alloc (|
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -9646,7 +9715,12 @@ Module fmt.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (M.alloc (|
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>

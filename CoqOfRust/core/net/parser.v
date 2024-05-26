@@ -2104,7 +2104,12 @@ Module net.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (|
+                                                            (let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ,
+                                                                "core::option::Option::None"
+                                                              |) in
+                                                            M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (| M.break (||) |)
                                                               |)
@@ -4682,26 +4687,35 @@ Module net.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                           M.alloc (| M.read (| Value.String "Ip" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                           M.alloc (| M.read (| Value.String "Ipv4" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                           M.alloc (| M.read (| Value.String "Ipv6" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                           M.alloc (| M.read (| Value.String "Socket" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                           M.alloc (| M.read (| Value.String "SocketV4" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                           M.alloc (| M.read (| Value.String "SocketV6" |) |)))
                     ]
                   |)
@@ -4735,26 +4749,32 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] |)))
                 ]
               |)
@@ -5108,26 +5128,32 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
+                      M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
+                      M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
+                      M.alloc (|
                         M.read (| Value.String "invalid IPv4 socket address syntax" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
-                        M.read (| Value.String "invalid IPv6 socket address syntax" |)
-                      |)))
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv6 socket address syntax" |) |)))
                 ]
               |)
             |)))

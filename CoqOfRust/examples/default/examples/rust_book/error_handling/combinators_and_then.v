@@ -47,14 +47,18 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
                       M.alloc (| M.read (| Value.String "CordonBleu" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Steak" |) in
                       M.alloc (| M.read (| Value.String "Steak" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
                       M.alloc (| M.read (| Value.String "Sushi" |) |)))
                 ]
               |)
@@ -118,14 +122,17 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Monday" |) in
                       M.alloc (| M.read (| Value.String "Monday" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Tuesday" |) in
                       M.alloc (| M.read (| Value.String "Tuesday" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Wednesday" |) in
                       M.alloc (| M.read (| Value.String "Wednesday" |) |)))
                 ]
               |)
@@ -161,7 +168,9 @@ Definition have_ingredients (τ : list Ty.t) (α : list Value.t) : M :=
           food,
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
@@ -194,7 +203,9 @@ Definition have_recipe (τ : list Ty.t) (α : list Value.t) : M :=
           food,
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
@@ -234,7 +245,9 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
           |),
           [
             fun γ =>
-              ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
@@ -250,7 +263,8 @@ Definition cookable_v1 (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 :=
@@ -389,7 +403,8 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

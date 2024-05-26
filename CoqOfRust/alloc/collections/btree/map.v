@@ -6687,7 +6687,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   Value.StructTuple
                                     "alloc::collections::btree::map::entry::Entry::Vacant"
                                     [
@@ -8168,7 +8169,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -8450,7 +8452,9 @@ Module collections.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -8720,7 +8724,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -9002,7 +9007,9 @@ Module collections.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -14921,7 +14928,9 @@ Module collections.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -15908,7 +15917,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -16322,7 +16332,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -17531,7 +17542,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -17992,7 +18004,8 @@ Module collections.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -19413,7 +19426,8 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -20132,7 +20146,8 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -21090,7 +21105,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.match_operator (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -21131,6 +21147,8 @@ Module collections.
                                       ltac:(M.monadic
                                         (let root := M.copy (| γ |) in
                                         let γ := M.read (| γ |) in
+                                        let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
@@ -21818,7 +21836,8 @@ Module collections.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.match_operator (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -21859,6 +21878,8 @@ Module collections.
                                       ltac:(M.monadic
                                         (let root := M.copy (| γ |) in
                                         let γ := M.read (| γ |) in
+                                        let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.read (|

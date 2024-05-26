@@ -69,7 +69,6 @@ Proof.
     apply (run_call_once compare (v1, v2)).
   }
   intros; run_symbolic.
-  eapply Run.CallClosure. {
 Admitted.
 
 (*

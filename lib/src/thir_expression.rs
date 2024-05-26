@@ -140,7 +140,7 @@ fn build_inner_match(
                     depth + 1,
                 );
 
-                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                let body = patterns.iter().enumerate().rfold(body, |body, (index, _)| {
                     Rc::new(Expr::Let {
                         is_user: false,
                         name: Some(format!("γ{depth}_{index}")),
@@ -155,7 +155,27 @@ fn build_inner_match(
                         }),
                         body,
                     })
-                })
+                });
+
+                // We add a test to cover the case where there are no parameters to the constructor,
+                // but we still need to check that we have the right one.
+                if patterns.is_empty() {
+                    return Rc::new(Expr::Let {
+                        is_user: false,
+                        name: None,
+                        init: Rc::new(Expr::Call {
+                            func: Expr::local_var("M.is_struct_tuple"),
+                            args: vec![
+                                Expr::local_var(&scrutinee),
+                                Rc::new(Expr::InternalString(path.to_string())),
+                            ],
+                            kind: CallKind::Effectful,
+                        }),
+                        body,
+                    });
+                }
+
+                body
             }
             Pattern::Deref(pattern) => Rc::new(Expr::Let {
                 is_user: false,

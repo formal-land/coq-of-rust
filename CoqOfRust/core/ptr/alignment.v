@@ -160,6 +160,11 @@ Module ptr.
                         "core::ptr::alignment::Alignment",
                         0
                       |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ0_0,
+                        "core::ptr::alignment::AlignmentEnum64::_Align1Shl0"
+                      |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]

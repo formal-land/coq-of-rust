@@ -1500,7 +1500,9 @@ Module opcode.
                         ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -4427,6 +4429,7 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -4460,6 +4463,7 @@ Module opcode.
                                 "core::option::Option::Some",
                                 0
                               |) in
+                            let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -4493,6 +4497,8 @@ Module opcode.
                                         "core::option::Option::Some",
                                         0
                                       |) in
+                                    let _ :=
+                                      M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -4525,6 +4531,11 @@ Module opcode.
                                                 γ,
                                                 "core::option::Option::Some",
                                                 0
+                                              |) in
+                                            let _ :=
+                                              M.is_struct_tuple (|
+                                                γ0_0,
+                                                "core::cmp::Ordering::Equal"
                                               |) in
                                             M.match_operator (|
                                               M.alloc (|
@@ -4559,6 +4570,11 @@ Module opcode.
                                                         "core::option::Option::Some",
                                                         0
                                                       |) in
+                                                    let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ0_0,
+                                                        "core::cmp::Ordering::Equal"
+                                                      |) in
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -4591,6 +4607,11 @@ Module opcode.
                                                                 γ,
                                                                 "core::option::Option::Some",
                                                                 0
+                                                              |) in
+                                                            let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ0_0,
+                                                                "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.alloc (|
                                                               M.call_closure (|
@@ -4701,7 +4722,8 @@ Module opcode.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
@@ -4722,7 +4744,8 @@ Module opcode.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (M.match_operator (|
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                            M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -4749,7 +4772,9 @@ Module opcode.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.match_operator (|
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                                    M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -4776,7 +4801,12 @@ Module opcode.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.match_operator (|
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::cmp::Ordering::Equal"
+                                              |) in
+                                            M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -4803,7 +4833,12 @@ Module opcode.
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (M.match_operator (|
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::cmp::Ordering::Equal"
+                                                      |) in
+                                                    M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -4830,7 +4865,12 @@ Module opcode.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (|
+                                                            (let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ,
+                                                                "core::cmp::Ordering::Equal"
+                                                              |) in
+                                                            M.alloc (|
                                                               M.call_closure (|
                                                                 M.get_trait_method (|
                                                                   "core::cmp::Ord",

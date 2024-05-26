@@ -515,7 +515,8 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -1183,30 +1184,65 @@ Module net.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "InterfaceLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "LinkLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "RealmLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "AdminLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "SiteLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal"
+                            |) in
                           M.alloc (| M.read (| Value.String "OrganizationLocal" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::net::ip_addr::Ipv6MulticastScope::Global"
+                            |) in
                           M.alloc (| M.read (| Value.String "Global" |) |)))
                     ]
                   |)
@@ -5907,7 +5943,12 @@ Module net.
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (|
+                                                                (let _ :=
+                                                                  M.is_struct_tuple (|
+                                                                    γ,
+                                                                    "core::option::Option::None"
+                                                                  |) in
+                                                                M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (| M.break (||) |)
                                                                   |)
@@ -7148,7 +7189,9 @@ Module net.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -7290,7 +7333,9 @@ Module net.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -7460,7 +7505,9 @@ Module net.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -7833,7 +7880,9 @@ Module net.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -8206,7 +8255,9 @@ Module net.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -8579,7 +8630,9 @@ Module net.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>

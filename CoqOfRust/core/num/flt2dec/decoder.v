@@ -398,6 +398,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Nan"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -411,6 +416,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -424,6 +434,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Zero"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -750,28 +765,36 @@ Module num.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Nan"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Infinite"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Zero"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Finite"
                                       [
@@ -788,7 +811,9 @@ Module num.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let~ minnorm :=
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
+                                  let~ minnorm :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|

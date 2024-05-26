@@ -490,6 +490,7 @@ Module time.
                         "core::option::Option::Some",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -563,7 +564,8 @@ Module time.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::Ord",
@@ -848,7 +850,8 @@ Module time.
                         secs));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
                               M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -1624,7 +1627,10 @@ Module time.
                       |) in
                     let res := M.copy (| γ0_0 |) in
                     res));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::time::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::time::MAX" |)))
               ]
             |)
           |)))
@@ -1949,7 +1955,10 @@ Module time.
                       |) in
                     let res := M.copy (| γ0_0 |) in
                     res));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::time::ZERO" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::time::ZERO" |)))
               ]
             |)
           |)))
@@ -2197,7 +2206,10 @@ Module time.
                       |) in
                     let res := M.copy (| γ0_0 |) in
                     res));
-                fun γ => ltac:(M.monadic (M.get_constant (| "core::time::MAX" |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.get_constant (| "core::time::MAX" |)))
               ]
             |)
           |)))
@@ -4398,7 +4410,9 @@ Module time.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -4487,7 +4501,12 @@ Module time.
                                                     n));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ _ :=
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    let~ _ :=
                                                       M.write (|
                                                         total_secs,
                                                         M.call_closure (|
@@ -4666,7 +4685,9 @@ Module time.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -4755,7 +4776,12 @@ Module time.
                                                     n));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let~ _ :=
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    let~ _ :=
                                                       M.write (|
                                                         total_secs,
                                                         M.call_closure (|
@@ -5569,10 +5595,20 @@ Module time.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (Value.String "can not convert float seconds to Duration: value is negative"));
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "core::time::TryFromFloatSecsErrorKind::Negative"
+                      |) in
+                    Value.String "can not convert float seconds to Duration: value is negative"));
                 fun γ =>
                   ltac:(M.monadic
-                    (Value.String
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                      |) in
+                    Value.String
                       "can not convert float seconds to Duration: value is either too big or NaN"))
               ]
             |)
@@ -5663,10 +5699,20 @@ Module time.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::time::TryFromFloatSecsErrorKind::Negative"
+                          |) in
                         M.alloc (| M.read (| Value.String "Negative" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                          |) in
                         M.alloc (| M.read (| Value.String "OverflowOrNan" |) |)))
                   ]
                 |)
@@ -5700,12 +5746,22 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "core::time::TryFromFloatSecsErrorKind::Negative"
+                      |) in
                     M.alloc (|
                       Value.StructTuple "core::time::TryFromFloatSecsErrorKind::Negative" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
+                      |) in
                     M.alloc (|
                       Value.StructTuple "core::time::TryFromFloatSecsErrorKind::OverflowOrNan" []
                     |)))

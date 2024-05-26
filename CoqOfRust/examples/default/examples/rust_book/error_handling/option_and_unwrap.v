@@ -100,7 +100,8 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

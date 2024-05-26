@@ -57,22 +57,47 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or::Fruit::Apple"
+                        |) in
                       M.alloc (| M.read (| Value.String "Apple" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or::Fruit::Orange"
+                        |) in
                       M.alloc (| M.read (| Value.String "Orange" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or::Fruit::Banana"
+                        |) in
                       M.alloc (| M.read (| Value.String "Banana" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or::Fruit::Kiwi"
+                        |) in
                       M.alloc (| M.read (| Value.String "Kiwi" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "unpacking_options_and_defaults_via_or::Fruit::Lemon"
+                        |) in
                       M.alloc (| M.read (| Value.String "Lemon" |) |)))
                 ]
               |)

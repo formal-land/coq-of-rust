@@ -213,6 +213,8 @@ Module Impl_call_builder_CallBuilderTest.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let e := M.copy (| γ0_0 |) in
+                  let _ :=
+                    M.is_struct_tuple (| γ0_0, "call_builder::LangError::CouldNotReadInput" |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ] |)));
               fun γ =>
                 ltac:(M.monadic

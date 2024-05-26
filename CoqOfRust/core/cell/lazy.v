@@ -142,7 +142,8 @@ Module cell.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
+                      M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -259,6 +260,7 @@ Module cell.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -678,7 +680,8 @@ Module cell.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",

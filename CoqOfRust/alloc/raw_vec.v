@@ -652,7 +652,12 @@ Module raw_vec.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ :=
+                                  M.is_struct_tuple (|
+                                    γ,
+                                    "alloc::raw_vec::AllocInit::Uninitialized"
+                                  |) in
+                                M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::alloc::Allocator",
@@ -666,7 +671,9 @@ Module raw_vec.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "alloc::raw_vec::AllocInit::Zeroed" |) in
+                                M.alloc (|
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::alloc::Allocator",
@@ -3369,6 +3376,11 @@ Module raw_vec.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ0_0,
+                      "alloc::collections::TryReserveErrorKind::CapacityOverflow"
+                    |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|

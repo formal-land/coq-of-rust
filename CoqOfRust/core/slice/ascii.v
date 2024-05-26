@@ -264,7 +264,9 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -353,7 +355,9 @@ Module slice.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -1764,7 +1768,12 @@ Module slice.
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (Value.Tuple []));
+                                                                            (let _ :=
+                                                                              M.is_struct_tuple (|
+                                                                                γ,
+                                                                                "core::option::Option::None"
+                                                                              |) in
+                                                                            Value.Tuple []));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ0_0 :=

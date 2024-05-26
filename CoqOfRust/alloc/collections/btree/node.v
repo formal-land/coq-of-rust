@@ -1320,7 +1320,9 @@ Module collections.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -7307,6 +7309,7 @@ Module collections.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                               let handle := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 M.never_to_any (|
@@ -7497,7 +7500,12 @@ Module collections.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (|
+                                                            (let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ,
+                                                                "core::option::Option::None"
+                                                              |) in
+                                                            M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   M.return_ (|

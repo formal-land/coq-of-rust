@@ -1357,18 +1357,38 @@ Module interpreter_action.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call"
+                            |) in
                           M.alloc (| M.read (| Value.String "Call" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode"
+                            |) in
                           M.alloc (| M.read (| Value.String "CallCode" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall"
+                            |) in
                           M.alloc (| M.read (| Value.String "DelegateCall" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
+                            |) in
                           M.alloc (| M.read (| Value.String "StaticCall" |) |)))
                     ]
                   |)

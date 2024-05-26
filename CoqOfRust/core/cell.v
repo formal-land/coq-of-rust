@@ -1761,7 +1761,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
                         [ Value.StructTuple "core::cell::BorrowError" [] ]
@@ -1925,7 +1926,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
                         [ Value.StructTuple "core::cell::BorrowMutError" [] ]
@@ -3532,7 +3534,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
                     |)))
               ]
@@ -3953,7 +3956,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
                     |)))
               ]

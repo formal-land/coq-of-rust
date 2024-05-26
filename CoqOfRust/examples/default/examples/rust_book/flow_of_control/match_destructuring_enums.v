@@ -111,7 +111,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "match_destructuring_enums::Color::Red" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -137,7 +138,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "match_destructuring_enums::Color::Blue" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -163,7 +165,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let _ := M.is_struct_tuple (| γ, "match_destructuring_enums::Color::Green" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

@@ -1634,7 +1634,8 @@ Module Impl_payment_channel_PaymentChannel.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
                           [ Value.StructTuple "payment_channel::Error::NotYetExpired" [] ]

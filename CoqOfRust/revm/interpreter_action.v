@@ -211,6 +211,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::None"
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
@@ -347,6 +352,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::None"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -708,6 +718,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::Call"
+                      |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -735,6 +750,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::Create"
+                      |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -762,6 +782,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                      |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -789,6 +814,11 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::None"
+                      |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]

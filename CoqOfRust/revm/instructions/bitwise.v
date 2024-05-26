@@ -2929,8 +2929,22 @@ Module instructions.
                                               (M.find_or_pattern (|
                                                 γ,
                                                 [
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []));
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "revm_interpreter::instructions::i256::Sign::Plus"
+                                                        |) in
+                                                      Value.Tuple []));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                                        |) in
+                                                      Value.Tuple []))
                                                 ],
                                                 M.closure
                                                   (fun γ =>
@@ -2941,7 +2955,13 @@ Module instructions.
                                                       end))
                                               |)));
                                           fun γ =>
-                                            ltac:(M.monadic (M.get_constant (| "ruint::MAX" |)))
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "revm_interpreter::instructions::i256::Sign::Minus"
+                                                |) in
+                                              M.get_constant (| "ruint::MAX" |)))
                                         ]
                                       |)));
                                   fun γ =>
@@ -2983,8 +3003,22 @@ Module instructions.
                                               (M.find_or_pattern (|
                                                 γ,
                                                 [
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []));
-                                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "revm_interpreter::instructions::i256::Sign::Plus"
+                                                        |) in
+                                                      Value.Tuple []));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ,
+                                                          "revm_interpreter::instructions::i256::Sign::Zero"
+                                                        |) in
+                                                      Value.Tuple []))
                                                 ],
                                                 M.closure
                                                   (fun γ =>
@@ -3009,7 +3043,12 @@ Module instructions.
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "revm_interpreter::instructions::i256::Sign::Minus"
+                                                |) in
+                                              M.alloc (|
                                                 M.call_closure (|
                                                   M.get_function (|
                                                     "revm_interpreter::instructions::i256::two_compl",

@@ -4993,7 +4993,8 @@ Module iter.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                         ]
                       |)));
                   fun γ =>
@@ -12293,7 +12294,8 @@ Module iter.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.alloc (|
                             Value.Tuple
                               [
                                 M.read (| M.get_constant (| "core::num::MAX" |) |);
@@ -12569,6 +12571,8 @@ Module iter.
                                         "core::option::Option::Some",
                                         0
                                       |) in
+                                    let _ :=
+                                      M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Less" |) in
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
@@ -12618,6 +12622,8 @@ Module iter.
                                         "core::option::Option::Some",
                                         0
                                       |) in
+                                    let _ :=
+                                      M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
@@ -13064,6 +13070,11 @@ Module iter.
                                         "core::option::Option::Some",
                                         0
                                       |) in
+                                    let _ :=
+                                      M.is_struct_tuple (|
+                                        γ0_0,
+                                        "core::cmp::Ordering::Greater"
+                                      |) in
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
@@ -13113,6 +13124,8 @@ Module iter.
                                         "core::option::Option::Some",
                                         0
                                       |) in
+                                    let _ :=
+                                      M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|

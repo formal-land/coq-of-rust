@@ -623,10 +623,20 @@ Module char.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::char::convert::CharErrorKind::EmptyString"
+                            |) in
                           M.alloc (| M.read (| Value.String "EmptyString" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::char::convert::CharErrorKind::TooManyChars"
+                            |) in
                           M.alloc (| M.read (| Value.String "TooManyChars" |) |)))
                     ]
                   |)
@@ -758,12 +768,22 @@ Module char.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::char::convert::CharErrorKind::EmptyString"
+                        |) in
+                      M.alloc (|
                         M.read (| Value.String "cannot parse char from empty string" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "too many characters in string" |) |)))
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::char::convert::CharErrorKind::TooManyChars"
+                        |) in
+                      M.alloc (| M.read (| Value.String "too many characters in string" |) |)))
                 ]
               |)
             |)))
@@ -880,6 +900,7 @@ Module char.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -905,6 +926,7 @@ Module char.
                           0
                         |) in
                       let c := M.copy (| γ1_0 |) in
+                      let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ M.read (| c |) ]
                       |)));

@@ -384,7 +384,8 @@ Module result.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.match_operator (|
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -2590,6 +2591,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic

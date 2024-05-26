@@ -455,7 +455,9 @@ Module interpreter.
                           caller));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.get_constant (| "alloy_primitives::bits::address::ZERO" |)))
+                          (let _ :=
+                            M.is_struct_tuple (| γ, "revm_primitives::env::TransactTo::Create" |) in
+                          M.get_constant (| "alloy_primitives::bits::address::ZERO" |)))
                     ]
                   |)
                 |) in

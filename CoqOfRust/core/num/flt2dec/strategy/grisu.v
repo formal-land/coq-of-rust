@@ -3307,7 +3307,8 @@ Module num.
                         ret));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::dragon::format_shortest",
@@ -5559,7 +5560,8 @@ Module num.
                         ret));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_function (|
                               "core::num::flt2dec::strategy::dragon::format_exact",

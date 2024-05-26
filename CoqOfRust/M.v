@@ -822,6 +822,16 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   else
     break_match.
 
+Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  match value with
+  | Value.StructTuple current_constructor _ =>
+    if String.eqb current_constructor constructor then
+      pure (Value.Tuple [])
+    else
+      break_match
+  | _ => break_match
+  end.
+
 Parameter pointer_coercion : Value.t -> Value.t.
 
 (** This function is explicitely called in the Rust AST, and should take two
