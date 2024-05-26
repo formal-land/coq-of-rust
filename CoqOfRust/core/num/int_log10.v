@@ -29,22 +29,19 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let val := M.alloc (| M.rust_cast (M.read (| val |)) |) in
+            let~ val := M.alloc (| M.rust_cast (M.read (| val |)) |) in
             M.alloc (|
-              BinOp.Panic.shr (|
-                BinOp.Pure.bit_and
-                  (BinOp.Panic.add (|
-                    Integer.U32,
-                    M.read (| val |),
-                    M.read (| M.get_constant (| "core::num::int_log10::u8::C1" |) |)
-                  |))
-                  (BinOp.Panic.add (|
-                    Integer.U32,
-                    M.read (| val |),
-                    M.read (| M.get_constant (| "core::num::int_log10::u8::C2" |) |)
-                  |)),
-                Value.Integer 8
-              |)
+              BinOp.Wrap.shr
+                (BinOp.Pure.bit_and
+                  (BinOp.Wrap.add
+                    Integer.U32
+                    (M.read (| val |))
+                    (M.read (| M.get_constant (| "core::num::int_log10::u8::C1" |) |)))
+                  (BinOp.Wrap.add
+                    Integer.U32
+                    (M.read (| val |))
+                    (M.read (| M.get_constant (| "core::num::int_log10::u8::C2" |) |))))
+                (Value.Integer 8)
             |)
           |)))
       | _, _ => M.impossible
@@ -56,14 +53,12 @@ Module num.
       Definition value_C1 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Panic.sub (| Integer.U32, Value.Integer 768, Value.Integer 10 |) |))).
+            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 768) (Value.Integer 10) |))).
       
       Definition value_C2 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Panic.sub (| Integer.U32, Value.Integer 512, Value.Integer 100 |)
-            |))).
+            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 512) (Value.Integer 100) |))).
     End u8.
     
     (*
@@ -91,32 +86,27 @@ Module num.
       | [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
-          BinOp.Panic.shr (|
-            BinOp.Pure.bit_xor
+          BinOp.Wrap.shr
+            (BinOp.Pure.bit_xor
               (BinOp.Pure.bit_and
-                (BinOp.Panic.add (|
-                  Integer.U32,
-                  M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C1" |) |)
-                |))
-                (BinOp.Panic.add (|
-                  Integer.U32,
-                  M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C2" |) |)
-                |)))
+                (BinOp.Wrap.add
+                  Integer.U32
+                  (M.read (| val |))
+                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C1" |) |)))
+                (BinOp.Wrap.add
+                  Integer.U32
+                  (M.read (| val |))
+                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C2" |) |))))
               (BinOp.Pure.bit_and
-                (BinOp.Panic.add (|
-                  Integer.U32,
-                  M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C3" |) |)
-                |))
-                (BinOp.Panic.add (|
-                  Integer.U32,
-                  M.read (| val |),
-                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)
-                |))),
-            Value.Integer 17
-          |)))
+                (BinOp.Wrap.add
+                  Integer.U32
+                  (M.read (| val |))
+                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C3" |) |)))
+                (BinOp.Wrap.add
+                  Integer.U32
+                  (M.read (| val |))
+                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)))))
+            (Value.Integer 17)))
       | _, _ => M.impossible
       end.
     
@@ -126,29 +116,23 @@ Module num.
       Definition value_C1 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Panic.sub (| Integer.U32, Value.Integer 393216, Value.Integer 10 |)
-            |))).
+            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 393216) (Value.Integer 10) |))).
       
       Definition value_C2 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Panic.sub (| Integer.U32, Value.Integer 524288, Value.Integer 100 |)
-            |))).
+            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 524288) (Value.Integer 100) |))).
       
       Definition value_C3 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (|
-              BinOp.Panic.sub (| Integer.U32, Value.Integer 917504, Value.Integer 1000 |)
-            |))).
+            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 917504) (Value.Integer 1000) |))).
       
       Definition value_C4 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Panic.sub (| Integer.U32, Value.Integer 524288, Value.Integer 10000 |)
+              BinOp.Wrap.sub Integer.U32 (Value.Integer 524288) (Value.Integer 10000)
             |))).
     End less_than_5.
     
@@ -187,8 +171,8 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let log := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ log := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -198,31 +182,30 @@ Module num.
                         M.use
                           (M.alloc (| BinOp.Pure.ge (M.read (| val |)) (Value.Integer 100000) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Panic.div (| Integer.U32, M.read (| β |), Value.Integer 100000 |)
+                          BinOp.Wrap.div Integer.U32 (M.read (| β |)) (Value.Integer 100000)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 5 |)
+                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 5)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
             M.alloc (|
-              BinOp.Panic.add (|
-                Integer.U32,
-                M.read (| log |),
-                M.call_closure (|
+              BinOp.Wrap.add
+                Integer.U32
+                (M.read (| log |))
+                (M.call_closure (|
                   M.get_function (| "core::num::int_log10::less_than_5", [] |),
                   [ M.read (| val |) ]
-                |)
-              |)
+                |))
             |)
           |)))
       | _, _ => M.impossible
@@ -250,8 +233,8 @@ Module num.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let log := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ log := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -263,27 +246,23 @@ Module num.
                             BinOp.Pure.ge (M.read (| val |)) (Value.Integer 10000000000)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Panic.div (|
-                            Integer.U64,
-                            M.read (| β |),
-                            Value.Integer 10000000000
-                          |)
+                          BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 10000000000)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 10 |)
+                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 10)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -293,31 +272,30 @@ Module num.
                         M.use
                           (M.alloc (| BinOp.Pure.ge (M.read (| val |)) (Value.Integer 100000) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Panic.div (| Integer.U64, M.read (| β |), Value.Integer 100000 |)
+                          BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 100000)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 5 |)
+                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 5)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
             M.alloc (|
-              BinOp.Panic.add (|
-                Integer.U32,
-                M.read (| log |),
-                M.call_closure (|
+              BinOp.Wrap.add
+                Integer.U32
+                (M.read (| log |))
+                (M.call_closure (|
                   M.get_function (| "core::num::int_log10::less_than_5", [] |),
                   [ M.rust_cast (M.read (| val |)) ]
-                |)
-              |)
+                |))
             |)
           |)))
       | _, _ => M.impossible
@@ -348,8 +326,8 @@ Module num.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let log := M.alloc (| Value.Integer 0 |) in
-                let _ :=
+                let~ log := M.alloc (| Value.Integer 0 |) in
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -367,35 +345,29 @@ Module num.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   let β := val in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.div (|
-                                      Integer.U128,
-                                      M.read (| β |),
-                                      Value.Integer 100000000000000000000000000000000
-                                    |)
+                                    BinOp.Wrap.div
+                                      Integer.U128
+                                      (M.read (| β |))
+                                      (Value.Integer 100000000000000000000000000000000)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := log in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.U32,
-                                      M.read (| β |),
-                                      Value.Integer 32
-                                    |)
+                                    BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 32)
                                   |) in
                                 M.return_ (|
-                                  BinOp.Panic.add (|
-                                    Integer.U32,
-                                    M.read (| log |),
-                                    M.call_closure (|
+                                  BinOp.Wrap.add
+                                    Integer.U32
+                                    (M.read (| log |))
+                                    (M.call_closure (|
                                       M.get_function (| "core::num::int_log10::u32", [] |),
                                       [ M.rust_cast (M.read (| val |)) ]
-                                    |)
-                                  |)
+                                    |))
                                 |)
                               |)
                             |)
@@ -403,7 +375,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -416,35 +388,33 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             let β := val in
                             M.write (|
                               β,
-                              BinOp.Panic.div (|
-                                Integer.U128,
-                                M.read (| β |),
-                                Value.Integer 10000000000000000
-                              |)
+                              BinOp.Wrap.div
+                                Integer.U128
+                                (M.read (| β |))
+                                (Value.Integer 10000000000000000)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := log in
                             M.write (|
                               β,
-                              BinOp.Panic.add (| Integer.U32, M.read (| β |), Value.Integer 16 |)
+                              BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 16)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.U32,
-                    M.read (| log |),
-                    M.call_closure (|
+                  BinOp.Wrap.add
+                    Integer.U32
+                    (M.read (| log |))
+                    (M.call_closure (|
                       M.get_function (| "core::num::int_log10::u64", [] |),
                       [ M.rust_cast (M.read (| val |)) ]
-                    |)
-                  |)
+                    |))
                 |)
               |)))
           |)))

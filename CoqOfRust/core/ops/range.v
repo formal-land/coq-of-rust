@@ -399,7 +399,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
@@ -460,7 +460,7 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -537,7 +537,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -625,7 +625,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -985,7 +985,7 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1062,7 +1062,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1405,7 +1405,7 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1493,7 +1493,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1841,7 +1841,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
@@ -1855,7 +1855,7 @@ Module ops.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Idx, [], "hash", [ __H ] |),
@@ -2103,21 +2103,20 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let exclusive_end :=
+              let~ exclusive_end :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.read (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::RangeInclusive",
                         "end"
                       |)
-                    |),
-                    Value.Integer 1
-                  |)
+                    |))
+                    (Value.Integer 1)
                 |) in
-              let start :=
+              let~ start :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2182,7 +2181,7 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -2259,7 +2258,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -2349,7 +2348,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -2426,7 +2425,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2441,7 +2440,7 @@ Module ops.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -2762,7 +2761,7 @@ Module ops.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -2852,7 +2851,7 @@ Module ops.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -3064,6 +3063,7 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
@@ -3158,6 +3158,7 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3195,7 +3196,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3205,7 +3206,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -3293,7 +3294,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3303,7 +3304,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3493,7 +3494,8 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
             |)))
@@ -3549,7 +3551,8 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
             |)))
@@ -3582,7 +3585,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3669,7 +3673,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                      M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -3785,7 +3790,10 @@ Module ops.
                             [ start; M.alloc (| M.read (| item |) |) ]
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                        M.alloc (| Value.Bool true |)))
                   ]
                 |)
               |),
@@ -3847,7 +3855,11 @@ Module ops.
                               [ item; M.alloc (| M.read (| end_ |) |) ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                          M.alloc (| Value.Bool true |)))
                     ]
                   |)
                 |)))
@@ -4291,6 +4303,7 @@ Module ops.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)
@@ -4349,6 +4362,7 @@ Module ops.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_1, "core::ops::range::Bound::Unbounded" |) in
                       M.alloc (| Value.StructTuple "core::ops::range::Bound::Unbounded" [] |)))
                 ]
               |)

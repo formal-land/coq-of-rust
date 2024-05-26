@@ -574,7 +574,7 @@ Module host.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -597,7 +597,7 @@ Module host.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -870,7 +870,7 @@ Module host.
                           0
                         |) in
                       let entry := M.copy (| γ0_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -984,7 +984,7 @@ Module host.
                             0
                           |) in
                         let entry := M.copy (| γ0_0 |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -1103,7 +1103,7 @@ Module host.
             let index := M.alloc (| index |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|

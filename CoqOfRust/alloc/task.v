@@ -10,7 +10,7 @@ Module task.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "alloc::task::Wake", Self, [], "wake", [] |),
@@ -203,7 +203,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -262,7 +262,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let waker :=
+            let~ waker :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -273,7 +273,7 @@ Module task.
                   [ M.rust_cast (M.read (| waker |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "alloc::task::Wake", W, [], "wake", [] |),
@@ -299,7 +299,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let waker :=
+            let~ waker :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -322,7 +322,7 @@ Module task.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "alloc::task::Wake", W, [], "wake_by_ref", [] |),
@@ -364,7 +364,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|

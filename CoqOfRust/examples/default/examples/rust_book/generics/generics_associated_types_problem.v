@@ -136,9 +136,9 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
   | [ A; B; C ], [ container ] =>
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
-      BinOp.Panic.sub (|
-        Integer.I32,
-        M.call_closure (|
+      BinOp.Wrap.sub
+        Integer.I32
+        (M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
@@ -147,8 +147,8 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |),
           [ M.read (| container |) ]
-        |),
-        M.call_closure (|
+        |))
+        (M.call_closure (|
           M.get_trait_method (|
             "generics_associated_types_problem::Contains",
             C,
@@ -157,8 +157,7 @@ Definition difference (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |),
           [ M.read (| container |) ]
-        |)
-      |)))
+        |))))
   | _, _ => M.impossible
   end.
 
@@ -188,16 +187,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let number_1 := M.alloc (| Value.Integer 3 |) in
-        let number_2 := M.alloc (| Value.Integer 10 |) in
-        let container :=
+        let~ number_1 := M.alloc (| Value.Integer 3 |) in
+        let~ number_2 := M.alloc (| Value.Integer 10 |) in
+        let~ container :=
           M.alloc (|
             Value.StructTuple
               "generics_associated_types_problem::Container"
               [ M.read (| number_1 |); M.read (| number_2 |) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -267,8 +266,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -320,8 +319,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -373,8 +372,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

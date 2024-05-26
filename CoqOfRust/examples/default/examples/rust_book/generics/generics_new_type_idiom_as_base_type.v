@@ -20,11 +20,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let years :=
+        let~ years :=
           M.alloc (|
             Value.StructTuple "generics_new_type_idiom_as_base_type::Years" [ Value.Integer 42 ]
           |) in
-        let years_as_primitive_1 :=
+        let~ years_as_primitive_1 :=
           M.copy (|
             M.SubPointer.get_struct_tuple_field (|
               years,

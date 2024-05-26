@@ -45,7 +45,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let increment := M.alloc (| increment |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -54,7 +54,7 @@ Module vec.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| increment |) |)
+                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| increment |))
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -101,7 +101,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|

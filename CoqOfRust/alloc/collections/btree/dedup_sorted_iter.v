@@ -92,7 +92,7 @@ Module collections.
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let next :=
+                          (let~ next :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -128,7 +128,9 @@ Module collections.
                                       next));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -140,7 +142,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let peeked :=
+                          let~ peeked :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -174,7 +176,9 @@ Module collections.
                                       peeked));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|

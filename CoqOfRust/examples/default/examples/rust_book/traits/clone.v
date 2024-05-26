@@ -201,10 +201,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let unit_ := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
-        let copied_unit := M.copy (| unit_ |) in
-        let _ :=
-          let _ :=
+        let~ unit_ := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
+        let~ copied_unit := M.copy (| unit_ |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -241,8 +241,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -278,7 +278,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let pair_ :=
+        let~ pair_ :=
           M.alloc (|
             Value.StructTuple
               "clone::Pair"
@@ -305,8 +305,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -343,9 +343,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let moved_pair := M.copy (| pair_ |) in
-        let _ :=
-          let _ :=
+        let~ moved_pair := M.copy (| pair_ |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -381,22 +381,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let cloned_pair :=
+        let~ cloned_pair :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::clone::Clone", Ty.path "clone::Pair", [], "clone", [] |),
               [ moved_pair ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::mem::drop", [ Ty.path "clone::Pair" ] |),
               [ M.read (| moved_pair |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

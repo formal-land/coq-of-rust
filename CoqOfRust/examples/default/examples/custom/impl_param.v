@@ -22,8 +22,8 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
       let func2 := M.alloc (| func2 |) in
       let foo := M.alloc (| foo |) in
       M.read (|
-        let x := M.copy (| func |) in
-        let _ :=
+        let~ x := M.copy (| func |) in
+        let~ _ :=
           M.write (|
             x,
             M.call_closure (|
@@ -31,8 +31,8 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let y := M.copy (| func2 |) in
-        let _ :=
+        let~ y := M.copy (| func2 |) in
+        let~ _ :=
           M.write (|
             y,
             M.call_closure (|
@@ -40,8 +40,8 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let z := M.copy (| foo |) in
-        let b :=
+        let~ z := M.copy (| foo |) in
+        let~ b :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|

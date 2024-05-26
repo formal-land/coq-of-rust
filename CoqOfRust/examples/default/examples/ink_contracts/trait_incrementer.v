@@ -45,17 +45,14 @@ Module Impl_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         let delta := M.alloc (| delta |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "trait_incrementer::Incrementer",
                 "value"
               |) in
-            M.write (|
-              β,
-              BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| delta |) |)
-            |) in
+            M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| delta |)) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -126,7 +123,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),

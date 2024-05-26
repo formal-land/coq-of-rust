@@ -15,19 +15,17 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.rust_cast
-                (BinOp.Panic.add (|
-                  Integer.I32,
-                  BinOp.Panic.sub (|
-                    Integer.I32,
-                    M.read (|
+                (BinOp.Wrap.add
+                  Integer.I32
+                  (BinOp.Wrap.sub
+                    Integer.I32
+                    (M.read (|
                       M.get_constant (| "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE" |)
-                    |),
-                    M.read (|
+                    |))
+                    (M.read (|
                       M.get_constant (| "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
-                    |)
-                  |),
-                  Value.Integer 1
-                |))
+                    |)))
+                  (Value.Integer 1))
             |))).
       
       Definition value_POWER_OF_FIVE_128 : Value.t :=

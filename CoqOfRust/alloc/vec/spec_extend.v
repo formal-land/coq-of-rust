@@ -95,8 +95,8 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -125,7 +125,7 @@ Module vec.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -225,7 +225,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let slice :=
+              let~ slice :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -236,7 +236,7 @@ Module vec.
                     [ iterator ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|

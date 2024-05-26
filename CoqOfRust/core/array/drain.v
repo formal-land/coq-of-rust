@@ -21,7 +21,7 @@ Module array.
           (let array := M.alloc (| array |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let array :=
+            let~ array :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -34,7 +34,7 @@ Module array.
                   [ M.read (| array |) ]
                 |)
               |) in
-            let drain :=
+            let~ drain :=
               M.alloc (|
                 Value.StructTuple
                   "core::array::drain::Drain"
@@ -158,7 +158,7 @@ Module array.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let p :=
+                  let~ p :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -269,7 +269,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let n :=
+              let~ n :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -380,7 +380,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let p :=
+              let~ p :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|

@@ -22,14 +22,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a :=
+        let~ a :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "diverging_functions_no_info_in_return_type::some_fn", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "std::io::stdio::_print", [] |),

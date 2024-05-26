@@ -26,7 +26,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _ :=
                   M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.String "lemonade" |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -55,7 +55,7 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let inner := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -100,7 +100,8 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -149,7 +150,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let drink := M.alloc (| drink |) in
       M.read (|
-        let inside :=
+        let~ inside :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -162,7 +163,7 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| drink |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -197,8 +198,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -266,49 +267,49 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let water :=
+        let~ water :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "water" |) ]
           |) in
-        let lemonade :=
+        let~ lemonade :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "lemonade" |) ]
           |) in
-        let void := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let _ :=
+        let~ void := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option_and_unwrap::give_adult", [] |),
               [ M.read (| water |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option_and_unwrap::give_adult", [] |),
               [ M.read (| lemonade |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option_and_unwrap::give_adult", [] |),
               [ M.read (| void |) ]
             |)
           |) in
-        let coffee :=
+        let~ coffee :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| Value.String "coffee" |) ]
           |) in
-        let nothing := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let _ :=
+        let~ nothing := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option_and_unwrap::drink", [] |),
               [ M.read (| coffee |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option_and_unwrap::drink", [] |),

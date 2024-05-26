@@ -500,7 +500,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.read (|
-              let pinned_field :=
+              let~ pinned_field :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|

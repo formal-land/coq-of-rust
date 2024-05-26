@@ -454,7 +454,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let array :=
+                let~ array :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -465,7 +465,7 @@ Module iter.
                       []
                     |)
                   |) in
-                let guard :=
+                let~ guard :=
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::filter::next_chunk::Guard"
@@ -474,7 +474,7 @@ Module iter.
                         ("initialized", Value.Integer 0)
                       ]
                   |) in
-                let result :=
+                let~ result :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -511,7 +511,7 @@ Module iter.
                                       ltac:(M.monadic
                                         (let element := M.copy (| γ |) in
                                         M.read (|
-                                          let idx :=
+                                          let~ idx :=
                                             M.copy (|
                                               M.SubPointer.get_struct_record_field (|
                                                 guard,
@@ -519,17 +519,17 @@ Module iter.
                                                 "initialized"
                                               |)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_struct_record_field (|
                                                 guard,
                                                 "core::iter::adapters::filter::next_chunk::Guard",
                                                 "initialized"
                                               |),
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| idx |),
-                                                M.rust_cast
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| idx |))
+                                                (M.rust_cast
                                                   (M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::ops::function::FnMut",
@@ -550,10 +550,9 @@ Module iter.
                                                       |);
                                                       Value.Tuple [ element ]
                                                     ]
-                                                  |))
-                                              |)
+                                                  |)))
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -641,7 +640,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let guard :=
+                let~ guard :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -693,7 +692,7 @@ Module iter.
                             "core::ops::control_flow::ControlFlow::Continue",
                             0
                           |) in
-                        let initialized :=
+                        let~ initialized :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.call_closure (|

@@ -53,11 +53,10 @@ Definition multiply (τ : list Ty.t) (α : list Value.t) : M :=
                           Value.StructTuple
                             "core::result::Result::Ok"
                             [
-                              BinOp.Panic.mul (|
-                                Integer.I32,
-                                M.read (| first_number |),
-                                M.read (| second_number |)
-                              |)
+                              BinOp.Wrap.mul
+                                Integer.I32
+                                (M.read (| first_number |))
+                                (M.read (| second_number |))
                             ]
                         |)));
                     fun γ =>
@@ -110,7 +109,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -156,7 +155,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -223,28 +222,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let twenty :=
+        let~ twenty :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::multiply", [] |),
               [ M.read (| Value.String "10" |); M.read (| Value.String "2" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::print", [] |),
               [ M.read (| twenty |) ]
             |)
           |) in
-        let tt_ :=
+        let~ tt_ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::multiply", [] |),
               [ M.read (| Value.String "t" |); M.read (| Value.String "2" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "map_in_result_via_match::print", [] |),

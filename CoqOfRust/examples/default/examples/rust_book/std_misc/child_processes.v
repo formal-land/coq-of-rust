@@ -24,7 +24,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let output :=
+        let~ output :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -147,7 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let s :=
+                let~ s :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -177,8 +177,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -225,7 +225,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let s :=
+                (let~ s :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -255,8 +255,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

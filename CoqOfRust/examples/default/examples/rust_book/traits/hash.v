@@ -21,7 +21,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
@@ -35,7 +35,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -93,14 +93,14 @@ Definition calculate_hash (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let s :=
+        let~ s :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::hash::random::DefaultHasher", "new", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -152,7 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let person1 :=
+        let~ person1 :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
@@ -172,7 +172,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phone", Value.Integer 5556667777)
               ]
           |) in
-        let person2 :=
+        let~ person2 :=
           M.alloc (|
             Value.StructRecord
               "hash::Person"
@@ -192,7 +192,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phone", Value.Integer 5556667777)
               ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [

@@ -53,7 +53,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let data :=
+              let~ data :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -151,7 +151,7 @@ Module array.
             (let buffer := M.alloc (| buffer |) in
             let initialized := M.alloc (| initialized |) in
             M.read (|
-              let alive :=
+              let~ alive :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -206,7 +206,7 @@ Module array.
         | [], [] =>
           ltac:(M.monadic
             (M.read (|
-              let buffer :=
+              let~ buffer :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -217,7 +217,7 @@ Module array.
                     []
                   |)
                 |) in
-              let initialized :=
+              let~ initialized :=
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::range::Range"
@@ -257,7 +257,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let slice :=
+              let~ slice :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -328,7 +328,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let slice :=
+              let~ slice :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -502,7 +502,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -549,7 +549,7 @@ Module array.
             let init := M.alloc (| init |) in
             let fold := M.alloc (| fold |) in
             M.read (|
-              let data :=
+              let~ data :=
                 M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     self,
@@ -728,7 +728,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let range_to_drop :=
+              let~ range_to_drop :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -746,23 +746,22 @@ Module array.
                     ]
                   |)
                 |) in
-              let remaining :=
+              let~ remaining :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| n |),
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| n |))
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |)
-                  |)
+                    |))
                 |) in
-              let _ :=
-                let slice :=
+              let~ _ :=
+                let~ slice :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -784,7 +783,7 @@ Module array.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1072,7 +1071,7 @@ Module array.
             let init := M.alloc (| init |) in
             let rfold := M.alloc (| rfold |) in
             M.read (|
-              let data :=
+              let~ data :=
                 M.alloc (|
                   M.SubPointer.get_struct_record_field (|
                     self,
@@ -1203,7 +1202,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let range_to_drop :=
+              let~ range_to_drop :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1221,23 +1220,22 @@ Module array.
                     ]
                   |)
                 |) in
-              let remaining :=
+              let~ remaining :=
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.Usize,
-                    M.read (| n |),
-                    M.call_closure (|
+                  BinOp.Wrap.sub
+                    Integer.Usize
+                    (M.read (| n |))
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |)
-                  |)
+                    |))
                 |) in
-              let _ :=
-                let slice :=
+              let~ _ :=
+                let~ slice :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1259,7 +1257,7 @@ Module array.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1529,7 +1527,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let new :=
+              let~ new :=
                 M.alloc (|
                   Value.StructRecord
                     "core::array::iter::IntoIter"
@@ -1554,7 +1552,7 @@ Module array.
                         |))
                     ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -1617,7 +1615,7 @@ Module array.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -1645,7 +1643,9 @@ Module array.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -1660,7 +1660,7 @@ Module array.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let src := M.copy (| γ1_0 |) in
                                         let dst := M.copy (| γ1_1 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1685,7 +1685,7 @@ Module array.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
                                               new,
@@ -1699,9 +1699,9 @@ Module array.
                                                 []
                                               |),
                                               [
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.call_closure (|
+                                                BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
@@ -1714,9 +1714,8 @@ Module array.
                                                         "alive"
                                                       |)
                                                     ]
-                                                  |),
-                                                  Value.Integer 1
-                                                |)
+                                                  |))
+                                                  (Value.Integer 1)
                                               ]
                                             |)
                                           |) in

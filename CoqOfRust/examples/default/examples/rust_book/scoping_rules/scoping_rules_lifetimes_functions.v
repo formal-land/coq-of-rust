@@ -12,8 +12,8 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -70,9 +70,9 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           let β := M.read (| x |) in
-          M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
+          M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible
@@ -92,8 +92,8 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
       (let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -187,45 +187,45 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 7 |) in
-        let y := M.alloc (| Value.Integer 9 |) in
-        let _ :=
+        let~ x := M.alloc (| Value.Integer 7 |) in
+        let~ y := M.alloc (| Value.Integer 9 |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
               [ x ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [] |),
               [ x; y ]
             |)
           |) in
-        let z :=
+        let~ z :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [] |),
               [ x; y ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),
               [ M.read (| z |) ]
             |)
           |) in
-        let t := M.alloc (| Value.Integer 3 |) in
-        let _ :=
+        let~ t := M.alloc (| Value.Integer 3 |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::add_one", [] |),
               [ t ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [] |),

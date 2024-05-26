@@ -272,7 +272,8 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -339,7 +340,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let remaining :=
+                    let~ remaining :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -388,7 +389,7 @@ Module collections.
                                 0
                               |) in
                             let n := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -455,7 +456,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let len :=
+                let~ len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -497,7 +498,7 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum :=
+                let~ accum :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -567,7 +568,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -713,7 +714,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.read (|
-                let i1_len :=
+                let~ i1_len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -780,11 +781,7 @@ Module collections.
                                 "alloc::collections::vec_deque::iter::Iter",
                                 "i2"
                               |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| idx |),
-                                M.read (| i1_len |)
-                              |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| idx |)) (M.read (| i1_len |))
                             ]
                           |)
                         |)))
@@ -874,7 +871,8 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -987,7 +985,7 @@ Module collections.
                                 0
                               |) in
                             let n := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -1059,7 +1057,7 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum :=
+                let~ accum :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1129,7 +1127,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -1259,9 +1257,9 @@ Module collections.
           | [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Panic.add (|
-                Integer.Usize,
-                M.call_closure (|
+              BinOp.Wrap.add
+                Integer.Usize
+                (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
@@ -1276,8 +1274,8 @@ Module collections.
                       "i1"
                     |)
                   ]
-                |),
-                M.call_closure (|
+                |))
+                (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
@@ -1292,8 +1290,7 @@ Module collections.
                       "i2"
                     |)
                   ]
-                |)
-              |)))
+                |))))
           | _, _ => M.impossible
           end.
         

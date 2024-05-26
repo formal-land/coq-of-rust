@@ -26,7 +26,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let immutable_box :=
+        let~ immutable_box :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -39,8 +39,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 5 ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -83,9 +83,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let mutable_box := M.copy (| immutable_box |) in
-        let _ :=
-          let _ :=
+        let~ mutable_box := M.copy (| immutable_box |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -128,9 +128,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ := M.write (| M.read (| mutable_box |), Value.Integer 4 |) in
-        let _ :=
-          let _ :=
+        let~ _ := M.write (| M.read (| mutable_box |), Value.Integer 4 |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

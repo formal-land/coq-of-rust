@@ -24,7 +24,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let abs :=
+              let~ abs :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
@@ -76,7 +76,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let abs :=
+              let~ abs :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "f64", "abs_private", [] |),
@@ -143,7 +143,7 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let precision := M.alloc (| precision |) in
           M.read (|
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -154,7 +154,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let parts :=
+            let~ parts :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -167,7 +167,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let formatted :=
+            let~ formatted :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -258,7 +258,7 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let precision := M.alloc (| precision |) in
           M.read (|
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -269,7 +269,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let parts :=
+            let~ parts :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -282,7 +282,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let formatted :=
+            let~ formatted :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -366,14 +366,14 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let force_sign :=
+            let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
-            let sign :=
+            let~ sign :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -425,7 +425,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let min_precision := M.alloc (| Value.Integer 0 |) in
+                    (let~ min_precision := M.alloc (| Value.Integer 0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -485,7 +485,7 @@ Module fmt.
           let precision := M.alloc (| precision |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -496,7 +496,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let parts :=
+            let~ parts :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -509,7 +509,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let formatted :=
+            let~ formatted :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -604,7 +604,7 @@ Module fmt.
           let sign := M.alloc (| sign |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let buf :=
+            let~ buf :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -615,7 +615,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let parts :=
+            let~ parts :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -628,7 +628,7 @@ Module fmt.
                   []
                 |)
               |) in
-            let formatted :=
+            let~ formatted :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -714,14 +714,14 @@ Module fmt.
           let num := M.alloc (| num |) in
           let upper := M.alloc (| upper |) in
           M.read (|
-            let force_sign :=
+            let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
-            let sign :=
+            let~ sign :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -767,11 +767,7 @@ Module fmt.
                           M.read (| fmt |);
                           M.read (| num |);
                           M.read (| sign |);
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| precision |),
-                            Value.Integer 1
-                          |);
+                          BinOp.Wrap.add Integer.Usize (M.read (| precision |)) (Value.Integer 1);
                           M.read (| upper |)
                         ]
                       |)
@@ -830,14 +826,14 @@ Module fmt.
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
           M.read (|
-            let force_sign :=
+            let~ force_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "sign_plus", [] |),
                   [ M.read (| fmt |) ]
                 |)
               |) in
-            let sign :=
+            let~ sign :=
               M.copy (|
                 M.match_operator (|
                   force_sign,
@@ -910,7 +906,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let upper := M.alloc (| Value.Bool false |) in
+                            let~ upper := M.alloc (| Value.Bool false |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -927,7 +923,7 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let min_precision := M.alloc (| Value.Integer 1 |) in
+                            (let~ min_precision := M.alloc (| Value.Integer 1 |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|

@@ -60,8 +60,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -81,14 +81,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let secret_number :=
+        let~ secret_number :=
           M.alloc (|
             M.call_closure (| M.get_function (| "guessing_game::gen_range", [] |), [] |)
           |) in
         M.loop (|
           ltac:(M.monadic
-            (let _ :=
-              let _ :=
+            (let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -112,14 +112,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let guess :=
+            let~ guess :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
                   []
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -147,7 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let guess :=
+            let~ guess :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -195,8 +195,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -249,7 +249,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -275,7 +276,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -301,11 +303,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let _ :=
-                            let _ :=
+                          let~ _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),

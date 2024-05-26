@@ -138,14 +138,14 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let t :=
+            let~ t :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ T ] |),
                   []
                 |)
               |) in
-            let concrete :=
+            let~ concrete :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -530,13 +530,13 @@ Module error.
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.read (|
-          let tagged :=
+          let~ tagged :=
             M.alloc (|
               Value.StructTuple
                 "core::error::TaggedOption"
                 [ Value.StructTuple "core::option::Option::None" [] ]
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -733,7 +733,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -770,7 +770,8 @@ Module error.
                           "core::error::TaggedOption",
                           0
                         |) in
-                      let _ :=
+                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.read (| res |),
@@ -808,7 +809,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -845,7 +846,8 @@ Module error.
                           "core::error::TaggedOption",
                           0
                         |) in
-                      let _ :=
+                      let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.read (| res |),
@@ -983,6 +985,7 @@ Module error.
                         "core::error::TaggedOption",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ2_0, "core::option::Option::None" |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1643,7 +1646,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let current :=
+            let~ current :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1651,7 +1654,7 @@ Module error.
                   "current"
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -1775,7 +1778,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::error::Error", T, [], "provide", [] |),

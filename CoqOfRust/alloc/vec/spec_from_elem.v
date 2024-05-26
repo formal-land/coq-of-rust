@@ -25,7 +25,7 @@ Module vec.
             let n := M.alloc (| n |) in
             let alloc := M.alloc (| alloc |) in
             M.read (|
-              let v :=
+              let~ v :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -36,7 +36,7 @@ Module vec.
                     [ M.read (| n |); M.read (| alloc |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -85,7 +85,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -132,7 +132,7 @@ Module vec.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let v :=
+                  let~ v :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -143,7 +143,7 @@ Module vec.
                         [ M.read (| n |); M.read (| alloc |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -195,7 +195,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -235,7 +235,7 @@ Module vec.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let v :=
+                  let~ v :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -246,8 +246,8 @@ Module vec.
                         [ M.read (| n |); M.read (| alloc |) ]
                       |)
                     |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "core::intrinsics::write_bytes", [ Ty.path "i8" ] |),
@@ -265,7 +265,7 @@ Module vec.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -317,7 +317,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -357,7 +357,7 @@ Module vec.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let v :=
+                  let~ v :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -368,8 +368,8 @@ Module vec.
                         [ M.read (| n |); M.read (| alloc |) ]
                       |)
                     |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "core::intrinsics::write_bytes", [ Ty.path "u8" ] |),
@@ -387,7 +387,7 @@ Module vec.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -435,7 +435,7 @@ Module vec.
             let n := M.alloc (| n |) in
             let alloc := M.alloc (| alloc |) in
             M.read (|
-              let v :=
+              let~ v :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -446,8 +446,8 @@ Module vec.
                     [ M.read (| n |); M.read (| alloc |) ]
                   |)
                 |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|

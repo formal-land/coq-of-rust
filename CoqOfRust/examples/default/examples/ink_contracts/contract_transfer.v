@@ -205,8 +205,8 @@ Module Impl_contract_transfer_GiveMe.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -245,8 +245,8 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -307,7 +307,7 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -451,8 +451,8 @@ Module Impl_contract_transfer_GiveMe.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -513,7 +513,7 @@ Module Impl_contract_transfer_GiveMe.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [

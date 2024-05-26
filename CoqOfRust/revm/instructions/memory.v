@@ -21,7 +21,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -56,7 +56,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -74,7 +74,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -105,7 +105,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -123,7 +123,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let top :=
+                let~ top :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -140,16 +140,16 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let offset :=
+                let~ offset :=
                   M.copy (|
-                    let x :=
+                    let~ x :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs", [] |),
                           [ M.read (| top |) ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -197,7 +197,7 @@ Module instructions.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| interpreter |),
@@ -249,14 +249,14 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let new_size :=
+                let~ new_size :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
                       [ M.read (| offset |); Value.Integer 32 ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -322,7 +322,7 @@ Module instructions.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| interpreter |),
@@ -343,7 +343,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.read (| top |),
                     M.call_closure (|
@@ -368,6 +368,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mload : M.IsFunction "revm_interpreter::instructions::memory::mload" mload.
+    
     (*
     pub fn mstore<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -386,7 +388,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -421,7 +423,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -439,7 +441,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -470,7 +472,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -512,9 +514,9 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let offset := M.copy (| γ0_0 |) in
                         let value := M.copy (| γ0_1 |) in
-                        let offset :=
+                        let~ offset :=
                           M.copy (|
-                            let x :=
+                            let~ x :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -525,7 +527,7 @@ Module instructions.
                                   [ offset ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -573,7 +575,7 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| interpreter |),
@@ -625,14 +627,14 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let new_size :=
+                        let~ new_size :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
                               [ M.read (| offset |); Value.Integer 32 ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -701,7 +703,7 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| interpreter |),
@@ -722,7 +724,7 @@ Module instructions.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -750,6 +752,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mstore : M.IsFunction "revm_interpreter::instructions::memory::mstore" mstore.
+    
     (*
     pub fn mstore8<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::VERYLOW);
@@ -768,7 +772,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -803,7 +807,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -821,7 +825,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -852,7 +856,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -894,9 +898,9 @@ Module instructions.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let offset := M.copy (| γ0_0 |) in
                         let value := M.copy (| γ0_1 |) in
-                        let offset :=
+                        let~ offset :=
                           M.copy (|
-                            let x :=
+                            let~ x :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -907,7 +911,7 @@ Module instructions.
                                   [ offset ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -955,7 +959,7 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| interpreter |),
@@ -1007,14 +1011,14 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let new_size :=
+                        let~ new_size :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
                               [ M.read (| offset |); Value.Integer 1 ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1083,7 +1087,7 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| interpreter |),
@@ -1132,6 +1136,8 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_mstore8 : M.IsFunction "revm_interpreter::instructions::memory::mstore8" mstore8.
+    
     (*
     pub fn msize<H: Host + ?Sized>(interpreter: &mut Interpreter, _host: &mut H) {
         gas!(interpreter, gas::BASE);
@@ -1147,7 +1153,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1182,7 +1188,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1200,7 +1206,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -1264,7 +1270,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1284,6 +1290,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_msize : M.IsFunction "revm_interpreter::instructions::memory::msize" msize.
     
     (*
     pub fn mcopy<H: Host + ?Sized, SPEC: Spec>(interpreter: &mut Interpreter, _host: &mut H) {
@@ -1315,7 +1323,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1345,7 +1353,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1363,7 +1371,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1394,7 +1402,7 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| interpreter |),
@@ -1438,9 +1446,9 @@ Module instructions.
                         let dst := M.copy (| γ0_0 |) in
                         let src := M.copy (| γ0_1 |) in
                         let len := M.copy (| γ0_2 |) in
-                        let len :=
+                        let~ len :=
                           M.copy (|
-                            let x :=
+                            let~ x :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1451,7 +1459,7 @@ Module instructions.
                                   [ len ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1499,7 +1507,7 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| interpreter |),
@@ -1551,7 +1559,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1605,7 +1613,7 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| interpreter |),
@@ -1625,10 +1633,12 @@ Module instructions.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| interpreter |),
@@ -1645,7 +1655,7 @@ Module instructions.
                                   |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1667,9 +1677,9 @@ Module instructions.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let dst :=
+                        let~ dst :=
                           M.copy (|
-                            let x :=
+                            let~ x :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1680,7 +1690,7 @@ Module instructions.
                                   [ dst ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1728,7 +1738,7 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| interpreter |),
@@ -1780,9 +1790,9 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let src :=
+                        let~ src :=
                           M.copy (|
-                            let x :=
+                            let~ x :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1793,7 +1803,7 @@ Module instructions.
                                   [ src ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1841,7 +1851,7 @@ Module instructions.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| interpreter |),
@@ -1893,7 +1903,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let new_size :=
+                        let~ new_size :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
@@ -1906,7 +1916,7 @@ Module instructions.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1975,7 +1985,7 @@ Module instructions.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.read (| interpreter |),
@@ -1996,7 +2006,7 @@ Module instructions.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2024,5 +2034,7 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_mcopy : M.IsFunction "revm_interpreter::instructions::memory::mcopy" mcopy.
   End memory.
 End instructions.

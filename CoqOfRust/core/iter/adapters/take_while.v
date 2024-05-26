@@ -237,7 +237,7 @@ Module iter.
                             M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let x :=
+                            (let~ x :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -357,7 +357,7 @@ Module iter.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -520,7 +520,7 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let flag :=
+                        (let~ flag :=
                           M.alloc (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -528,7 +528,7 @@ Module iter.
                               "flag"
                             |)
                           |) in
-                        let p :=
+                        let~ p :=
                           M.alloc (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),

@@ -512,7 +512,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let val := M.alloc (| val |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -560,7 +560,7 @@ Module cell.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -585,7 +585,7 @@ Module cell.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -637,7 +637,7 @@ Module cell.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::mem::swap", [ T ] |),
@@ -806,7 +806,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let old :=
+            let~ old :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -817,7 +817,7 @@ Module cell.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let new :=
+            let~ new :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -830,7 +830,7 @@ Module cell.
                   [ M.read (| f |); Value.Tuple [ M.read (| old |) ] ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1080,7 +1080,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1169,7 +1169,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1496,7 +1496,7 @@ Module cell.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let mut_borrow :=
+            let~ mut_borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1520,7 +1520,7 @@ Module cell.
                   ]
                 |)
               |) in
-            let replacement :=
+            let~ replacement :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -1724,7 +1724,7 @@ Module cell.
                         0
                       |) in
                     let b := M.copy (| γ0_0 |) in
-                    let value :=
+                    let~ value :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1761,7 +1761,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
                         [ Value.StructTuple "core::cell::BorrowError" [] ]
@@ -1884,7 +1885,7 @@ Module cell.
                         0
                       |) in
                     let b := M.copy (| γ0_0 |) in
-                    let value :=
+                    let~ value :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1925,7 +1926,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Err"
                         [ Value.StructTuple "core::cell::BorrowMutError" [] ]
@@ -2017,7 +2019,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2930,7 +2932,7 @@ Module cell.
         ltac:(M.monadic
           (let borrow := M.alloc (| borrow |) in
           M.read (|
-            let b :=
+            let~ b :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "isize", "wrapping_add", [] |),
@@ -2965,7 +2967,7 @@ Module cell.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
+                    (let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3010,7 +3012,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let borrow :=
+            let~ borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3029,7 +3031,7 @@ Module cell.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3037,7 +3039,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -3076,7 +3078,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3092,7 +3094,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -3131,7 +3133,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let borrow :=
+            let~ borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3150,7 +3152,7 @@ Module cell.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3158,7 +3160,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -3197,7 +3199,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3227,7 +3229,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3243,7 +3245,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -3532,7 +3534,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
                     |)))
               ]
@@ -3601,7 +3604,7 @@ Module cell.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    let borrow :=
+                    let~ borrow :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -3692,7 +3695,7 @@ Module cell.
         ltac:(M.monadic
           (let orig := M.alloc (| orig |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRef" ] |),
@@ -3797,7 +3800,7 @@ Module cell.
           (let orig := M.alloc (| orig |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let value :=
+            let~ value :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -3953,7 +3956,8 @@ Module cell.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (|
                       Value.StructTuple "core::result::Result::Err" [ M.read (| orig |) ]
                     |)))
               ]
@@ -3990,7 +3994,7 @@ Module cell.
           (let orig := M.alloc (| orig |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let borrow :=
+            let~ borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::cell::BorrowRefMut", "clone", [] |),
@@ -4108,7 +4112,7 @@ Module cell.
         ltac:(M.monadic
           (let orig := M.alloc (| orig |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::mem::forget", [ Ty.path "core::cell::BorrowRefMut" ] |),
@@ -4169,7 +4173,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let borrow :=
+            let~ borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4188,7 +4192,7 @@ Module cell.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4196,7 +4200,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4235,7 +4239,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4251,7 +4255,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.add (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.add Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in
@@ -4307,7 +4311,7 @@ Module cell.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4317,11 +4321,10 @@ Module cell.
                           |),
                           [
                             M.read (| borrow |);
-                            BinOp.Panic.sub (|
-                              Integer.Isize,
-                              M.read (| M.get_constant (| "core::cell::UNUSED" |) |),
-                              Value.Integer 1
-                            |)
+                            BinOp.Wrap.sub
+                              Integer.Isize
+                              (M.read (| M.get_constant (| "core::cell::UNUSED" |) |))
+                              (Value.Integer 1)
                           ]
                         |)
                       |) in
@@ -4360,7 +4363,7 @@ Module cell.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let borrow :=
+            let~ borrow :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4379,7 +4382,7 @@ Module cell.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4387,7 +4390,7 @@ Module cell.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4426,7 +4429,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4456,7 +4459,7 @@ Module cell.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4472,7 +4475,7 @@ Module cell.
                         "borrow"
                       |)
                     |);
-                    BinOp.Panic.sub (| Integer.Isize, M.read (| borrow |), Value.Integer 1 |)
+                    BinOp.Wrap.sub Integer.Isize (M.read (| borrow |)) (Value.Integer 1)
                   ]
                 |)
               |) in

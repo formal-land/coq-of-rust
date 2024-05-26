@@ -1051,7 +1051,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let raw_array :=
+                    let~ raw_array :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1062,7 +1062,7 @@ Module iter.
                           []
                         |)
                       |) in
-                    let len :=
+                    let~ len :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1077,7 +1077,7 @@ Module iter.
                           [ self ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -1094,7 +1094,7 @@ Module iter.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -1217,7 +1217,7 @@ Module iter.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -1240,7 +1240,7 @@ Module iter.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (|
@@ -1341,7 +1341,7 @@ Module iter.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),

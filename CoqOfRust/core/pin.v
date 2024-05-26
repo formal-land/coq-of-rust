@@ -488,7 +488,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),
@@ -697,7 +697,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.call_closure (|
                   M.get_trait_method (| "core::ops::deref::DerefMut", P, [], "deref_mut", [] |),
@@ -747,13 +747,13 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let pointer :=
+            let~ pointer :=
               M.alloc (|
                 M.read (|
                   M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
                 |)
               |) in
-            let new_pointer :=
+            let~ new_pointer :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -931,7 +931,7 @@ Module pin.
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let pointer :=
+            let~ pointer :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -942,7 +942,7 @@ Module pin.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let new_pointer :=
+            let~ new_pointer :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|

@@ -675,7 +675,7 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let wake :=
+              let~ wake :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (|
@@ -693,7 +693,7 @@ Module task.
                     "wake"
                   |)
                 |) in
-              let data :=
+              let~ data :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -705,14 +705,14 @@ Module task.
                     "data"
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::mem::forget", [ Ty.path "core::task::wake::Waker" ] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (| M.call_closure (| M.read (| wake |), [ M.read (| data |) ] |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -966,7 +966,7 @@ Module task.
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| self |),
                           M.call_closure (|
@@ -1076,7 +1076,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let vtable_ptr :=
+              let~ vtable_ptr :=
                 M.copy (|
                   M.use
                     (M.alloc (|

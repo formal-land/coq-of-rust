@@ -204,7 +204,7 @@ Module mem.
         | [], [] =>
           ltac:(M.monadic
             (M.read (|
-              let u :=
+              let~ u :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -215,7 +215,7 @@ Module mem.
                     []
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -261,7 +261,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -348,7 +348,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
@@ -398,7 +398,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
@@ -479,7 +479,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
@@ -521,7 +521,7 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assert_inhabited", [ T ] |),
@@ -566,7 +566,7 @@ Module mem.
           ltac:(M.monadic
             (let array := M.alloc (| array |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -722,7 +722,7 @@ Module mem.
             (let this := M.alloc (| this |) in
             let src := M.alloc (| src |) in
             M.read (|
-              let uninit_src :=
+              let~ uninit_src :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -741,7 +741,7 @@ Module mem.
                     [ M.read (| src |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -825,7 +825,7 @@ Module mem.
             (let this := M.alloc (| this |) in
             let src := M.alloc (| src |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     Value.Tuple
@@ -882,7 +882,7 @@ Module mem.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let kind :=
+                                      let~ kind :=
                                         M.alloc (|
                                           Value.StructTuple "core::panicking::AssertKind::Eq" []
                                         |) in
@@ -931,7 +931,7 @@ Module mem.
                         |)))
                   ]
                 |) in
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -944,7 +944,7 @@ Module mem.
                     [ M.read (| this |) ]
                   |)
                 |) in
-              let src :=
+              let~ src :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -960,13 +960,13 @@ Module mem.
                     ]
                   |)
                 |) in
-              let guard :=
+              let~ guard :=
                 M.alloc (|
                   Value.StructRecord
                     "core::mem::maybe_uninit::write_slice_cloned::Guard"
                     [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -991,7 +991,7 @@ Module mem.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -1010,7 +1010,9 @@ Module mem.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -1022,7 +1024,7 @@ Module mem.
                                             0
                                           |) in
                                         let i := M.copy (| γ0_0 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1061,7 +1063,7 @@ Module mem.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           let β :=
                                             M.SubPointer.get_struct_record_field (|
                                               guard,
@@ -1070,11 +1072,10 @@ Module mem.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Panic.add (|
-                                              Integer.Usize,
-                                              M.read (| β |),
-                                              Value.Integer 1
-                                            |)
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
                                   ]
@@ -1083,7 +1084,7 @@ Module mem.
                           |)))
                     ]
                   |)) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1210,7 +1211,7 @@ Module mem.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1268,7 +1269,7 @@ Module mem.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|

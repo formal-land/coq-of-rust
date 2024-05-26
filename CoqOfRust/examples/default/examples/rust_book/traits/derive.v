@@ -153,11 +153,10 @@ Module Impl_derive_Inches.
                     Value.StructTuple
                       "derive::Centimeters"
                       [
-                        BinOp.Panic.mul (|
-                          Integer.Usize,
-                          M.rust_cast (M.read (| inches |)),
-                          M.read (| UnsupportedLiteral |)
-                        |)
+                        BinOp.Wrap.mul
+                          Integer.Usize
+                          (M.rust_cast (M.read (| inches |)))
+                          (M.read (| UnsupportedLiteral |))
                       ]
                   |)))
             ]
@@ -209,10 +208,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
-        let foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
-        let _ :=
-          let _ :=
+        let~ _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
+        let~ foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -251,11 +250,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let meter :=
+        let~ meter :=
           M.alloc (|
             Value.StructTuple "derive::Centimeters" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let cmp :=
+        let~ cmp :=
           M.copy (|
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -294,8 +293,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

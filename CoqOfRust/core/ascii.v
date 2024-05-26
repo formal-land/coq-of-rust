@@ -62,11 +62,11 @@ Module ascii.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.read (|
-          let data :=
+          let~ data :=
             M.alloc (|
               repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 4
             |) in
-          let range :=
+          let~ range :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::escape::escape_ascii_into", [] |),
@@ -134,7 +134,7 @@ Module ascii.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|

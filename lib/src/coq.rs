@@ -80,7 +80,7 @@ pub(crate) enum Expression {
     },
     Let {
         name: Option<String>,
-        is_monadic: bool,
+        is_user: bool,
         ty: Option<Rc<Expression>>,
         init: Rc<Expression>,
         body: Rc<Expression>,
@@ -495,7 +495,7 @@ impl<'a> Expression {
             }
             Self::Let {
                 name,
-                is_monadic,
+                is_user,
                 ty,
                 init,
                 body,
@@ -514,7 +514,7 @@ impl<'a> Expression {
                             nest([
                                 nest([
                                     text("let"),
-                                    optional_insert(!*is_monadic, text("*")),
+                                    optional_insert(!*is_user, text("~")),
                                     line(),
                                     text(name),
                                 ]),

@@ -43,18 +43,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _s :=
+        let~ _s :=
           M.alloc (|
             Value.StructTuple "generics::Single" [ Value.StructTuple "generics::A" [] ]
           |) in
-        let _char :=
+        let~ _char :=
           M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ] |) in
-        let _t :=
+        let~ _t :=
           M.alloc (|
             Value.StructTuple "generics::SingleGen" [ Value.StructTuple "generics::A" [] ]
           |) in
-        let _i32 := M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.Integer 6 ] |) in
-        let _char :=
+        let~ _i32 := M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.Integer 6 ] |) in
+        let~ _char :=
           M.alloc (| Value.StructTuple "generics::SingleGen" [ Value.UnicodeChar 97 ] |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -66,8 +66,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -103,8 +103,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -140,8 +140,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -175,13 +175,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.Isize,
-                                        M.get_constant (|
+                                      (BinOp.Wrap.add
+                                        Integer.Isize
+                                        (M.get_constant (|
                                           "enums_c_like::Color::Red_discriminant"
-                                        |),
-                                        Value.Integer 0
-                                      |))
+                                        |))
+                                        (Value.Integer 0))
                                   |)
                                 ]
                               |)
@@ -223,8 +222,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -260,13 +259,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.alloc (|
                                     M.rust_cast
-                                      (BinOp.Panic.add (|
-                                        Integer.Isize,
-                                        M.get_constant (|
+                                      (BinOp.Wrap.add
+                                        Integer.Isize
+                                        (M.get_constant (|
                                           "enums_c_like::Color::Blue_discriminant"
-                                        |),
-                                        Value.Integer 0
-                                      |))
+                                        |))
+                                        (Value.Integer 0))
                                   |)
                                 ]
                               |)

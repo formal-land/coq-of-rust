@@ -12,8 +12,8 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -70,8 +70,8 @@ Definition bar (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -137,16 +137,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "macro_rules_designators::foo", [] |), [] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "macro_rules_designators::bar", [] |), [] |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -186,11 +186,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.add (|
-                                      Integer.U32,
-                                      Value.Integer 1,
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.U32 (Value.Integer 1) (Value.Integer 1)
                                   |)
                                 ]
                               |)
@@ -202,8 +198,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -242,25 +238,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [ Ty.path "u32" ]
                                 |),
                                 [
-                                  let x := M.alloc (| Value.Integer 1 |) in
+                                  let~ x := M.alloc (| Value.Integer 1 |) in
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.U32,
-                                      BinOp.Panic.add (|
-                                        Integer.U32,
-                                        BinOp.Panic.mul (|
-                                          Integer.U32,
-                                          M.read (| x |),
-                                          M.read (| x |)
-                                        |),
-                                        BinOp.Panic.mul (|
-                                          Integer.U32,
-                                          Value.Integer 2,
-                                          M.read (| x |)
-                                        |)
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub
+                                      Integer.U32
+                                      (BinOp.Wrap.add
+                                        Integer.U32
+                                        (BinOp.Wrap.mul
+                                          Integer.U32
+                                          (M.read (| x |))
+                                          (M.read (| x |)))
+                                        (BinOp.Wrap.mul
+                                          Integer.U32
+                                          (Value.Integer 2)
+                                          (M.read (| x |))))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |)

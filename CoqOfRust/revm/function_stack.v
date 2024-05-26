@@ -255,7 +255,7 @@ Module function_stack.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "usize", [], "hash", [ __H ] |),
@@ -490,7 +490,7 @@ Module function_stack.
           let program_counter := M.alloc (| program_counter |) in
           let new_idx := M.alloc (| new_idx |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -525,7 +525,7 @@ Module function_stack.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -634,7 +634,7 @@ Module function_stack.
                             ltac:(M.monadic
                               (let frame := M.copy (| γ |) in
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -674,7 +674,7 @@ Module function_stack.
           (let self := M.alloc (| self |) in
           let idx := M.alloc (| idx |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),

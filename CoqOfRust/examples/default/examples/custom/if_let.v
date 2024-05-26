@@ -99,7 +99,10 @@ Definition extract_value (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         match γ with | [ value ] => value | _ => M.impossible (||) end))
                 |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "if_let::Container::Empty" |) in
+                M.alloc (| Value.Integer 0 |)))
           ]
         |)
       |)))
@@ -145,8 +148,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |) in
-        let _ :=
+        let~ x :=
+          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 5 ] |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -156,8 +160,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -204,7 +208,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             x,
             [
@@ -216,7 +220,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let y := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -259,10 +263,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -278,8 +285,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let z := M.copy (| γ0_0 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -352,7 +359,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let z := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -404,7 +411,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                M.alloc (| Value.Tuple [] |)))
           ]
         |)
       |)))
