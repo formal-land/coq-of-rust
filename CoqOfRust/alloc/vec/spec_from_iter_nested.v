@@ -47,7 +47,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let vector :=
+                  let~ vector :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -111,7 +111,7 @@ Module vec.
                                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let lower := M.copy (| γ0_0 |) in
-                                      let initial_capacity :=
+                                      let~ initial_capacity :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_function (|
@@ -135,7 +135,7 @@ Module vec.
                                             ]
                                           |)
                                         |) in
-                                      let vector :=
+                                      let~ vector :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -148,8 +148,8 @@ Module vec.
                                             [ M.read (| initial_capacity |) ]
                                           |)
                                         |) in
-                                      let _ :=
-                                        let _ :=
+                                      let~ _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_function (| "core::ptr::write", [ T ] |),
@@ -168,7 +168,7 @@ Module vec.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -188,7 +188,7 @@ Module vec.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -244,7 +244,7 @@ Module vec.
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.read (|
-              let vector :=
+              let~ vector :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -312,7 +312,7 @@ Module vec.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|

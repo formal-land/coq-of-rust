@@ -35,8 +35,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let outer_var := M.alloc (| Value.Integer 42 |) in
-        let closure_annotated :=
+        let~ outer_var := M.alloc (| Value.Integer 42 |) in
+        let~ closure_annotated :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -55,7 +55,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let closure_inferred :=
+        let~ closure_inferred :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -74,8 +74,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -127,8 +127,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -180,7 +180,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let one :=
+        let~ one :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -194,8 +194,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

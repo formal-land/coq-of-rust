@@ -191,7 +191,7 @@ Module Impl_call_builder_CallBuilderTest.
         let address := M.alloc (| address |) in
         let selector := M.alloc (| selector |) in
         M.read (|
-          let result :=
+          let~ result :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|

@@ -54,7 +54,7 @@ Module collections.
               let drain_start := M.alloc (| drain_start |) in
               let drain_len := M.alloc (| drain_len |) in
               M.read (|
-                let orig_len :=
+                let~ orig_len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::mem::replace", [ Ty.path "usize" ] |),
@@ -68,7 +68,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let tail_len :=
+                let~ tail_len :=
                   M.alloc (|
                     BinOp.Wrap.sub
                       Integer.Usize
@@ -148,7 +148,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let deque :=
+                let~ deque :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -167,7 +167,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let logical_remaining_range :=
+                let~ logical_remaining_range :=
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
@@ -508,7 +508,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let guard :=
+                let~ guard :=
                   M.alloc (|
                     Value.StructTuple
                       "alloc::collections::vec_deque::drain::drop::DropGuard"
@@ -568,7 +568,7 @@ Module collections.
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let front := M.copy (| γ0_0 |) in
                                 let back := M.copy (| γ0_1 |) in
-                                let _ :=
+                                let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
@@ -597,7 +597,7 @@ Module collections.
                                         [ M.read (| front |) ]
                                       |))
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
@@ -626,7 +626,7 @@ Module collections.
                                         [ M.read (| front |) ]
                                       |))
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (|
@@ -636,7 +636,7 @@ Module collections.
                                       [ M.read (| front |) ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
@@ -651,7 +651,7 @@ Module collections.
                                     |),
                                     Value.Integer 0
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (|
@@ -707,7 +707,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -743,7 +743,7 @@ Module collections.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let wrapped_idx :=
+                    let~ wrapped_idx :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -782,7 +782,7 @@ Module collections.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -793,7 +793,7 @@ Module collections.
                         β,
                         BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -858,7 +858,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let len :=
+                let~ len :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -914,7 +914,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -950,7 +950,7 @@ Module collections.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -961,7 +961,7 @@ Module collections.
                         β,
                         BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
-                    let wrapped_idx :=
+                    let~ wrapped_idx :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|

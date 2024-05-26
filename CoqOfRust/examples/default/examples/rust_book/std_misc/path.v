@@ -32,21 +32,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let path :=
+        let~ path :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
               [ M.read (| Value.String "." |) ]
             |)
           |) in
-        let _display :=
+        let~ _display :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
               [ M.read (| path |) ]
             |)
           |) in
-        let new_path :=
+        let~ new_path :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -80,7 +80,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -91,7 +91,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ new_path; M.read (| Value.String "c" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -102,7 +102,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ new_path; M.read (| Value.String "myfile.tar.gz" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -150,7 +150,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

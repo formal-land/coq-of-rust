@@ -19,8 +19,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       (M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let number_str := M.copy (| Value.String "10" |) in
-            let number :=
+            let~ number_str := M.copy (| Value.String "10" |) in
+            let~ number :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -61,8 +61,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),

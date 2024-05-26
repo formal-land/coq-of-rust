@@ -42,8 +42,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
-        let _ :=
+        let~ foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "example05::Foo", "plus1", [] |),

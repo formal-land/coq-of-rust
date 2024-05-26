@@ -15,11 +15,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let val :=
+        let~ _ :=
+          let~ val :=
             M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2) |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -57,11 +57,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let val :=
+        let~ _ :=
+          let~ val :=
             M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 3) (Value.Integer 4) |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -99,15 +99,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let val :=
+        let~ val :=
           M.alloc (|
             BinOp.Wrap.add
               Integer.Usize
               (BinOp.Wrap.mul Integer.Usize (Value.Integer 2) (Value.Integer 3))
               (Value.Integer 1)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

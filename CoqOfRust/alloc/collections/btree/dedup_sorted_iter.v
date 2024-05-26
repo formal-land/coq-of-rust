@@ -92,7 +92,7 @@ Module collections.
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let next :=
+                          (let~ next :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -140,7 +140,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let peeked :=
+                          let~ peeked :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|

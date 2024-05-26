@@ -193,7 +193,7 @@ Module iter.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -358,7 +358,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         acc,
                         M.read (|
@@ -436,7 +436,7 @@ Module iter.
                           |)
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -454,8 +454,8 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let is_empty := M.alloc (| Value.Bool true |) in
-                    let _ :=
+                    let~ is_empty := M.alloc (| Value.Bool true |) in
+                    let~ _ :=
                       M.write (|
                         acc,
                         M.read (|
@@ -503,7 +503,7 @@ Module iter.
                                                             ltac:(M.monadic
                                                               (let x := M.copy (| γ |) in
                                                               M.read (|
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     is_empty,
                                                                     Value.Bool false
@@ -584,7 +584,7 @@ Module iter.
                           |)
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -622,7 +622,7 @@ Module iter.
                         M.read (|
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -646,7 +646,7 @@ Module iter.
                                     ]
                                   |)
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   acc,
                                   M.read (|
@@ -763,7 +763,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let n :=
+                    let~ n :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -827,7 +827,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -845,7 +845,7 @@ Module iter.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -869,7 +869,7 @@ Module iter.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       n,
                                       M.read (|
@@ -976,7 +976,7 @@ Module iter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in

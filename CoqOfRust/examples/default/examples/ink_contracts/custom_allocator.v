@@ -97,7 +97,7 @@ Module Impl_custom_allocator_CustomAllocator.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.call_closure (|
                 M.get_trait_method (|

@@ -335,7 +335,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -389,7 +389,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -472,7 +472,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let cordon_bleu := M.copy (| γ0_0 |) in
                 let steak := M.copy (| γ0_1 |) in
                 let sushi := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "combinators_and_then::eat", [] |),
@@ -482,7 +482,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "combinators_and_then::eat", [] |),
@@ -492,7 +492,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "combinators_and_then::eat", [] |),

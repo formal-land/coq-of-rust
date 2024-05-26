@@ -666,7 +666,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -676,7 +676,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -842,7 +842,7 @@ Module char.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
-              let chars :=
+              let~ chars :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "chars", [] |),
@@ -1283,7 +1283,7 @@ Module char.
           (let num := M.alloc (| num |) in
           let radix := M.alloc (| radix |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1333,7 +1333,7 @@ Module char.
                     (let γ :=
                       M.use (M.alloc (| BinOp.Pure.lt (M.read (| num |)) (M.read (| radix |)) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
+                    let~ num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [

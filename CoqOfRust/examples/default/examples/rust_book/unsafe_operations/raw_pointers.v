@@ -15,8 +15,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let raw_p := M.alloc (| M.alloc (| Value.Integer 10 |) |) in
-        let _ :=
+        let~ raw_p := M.alloc (| M.alloc (| Value.Integer 10 |) |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [

@@ -127,7 +127,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -137,7 +137,7 @@ Module fmt.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -765,15 +765,15 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let width :=
+                let~ width :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "len", [] |),
                       [ M.read (| buf |) ]
                     |)
                   |) in
-                let sign := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-                let _ :=
+                let~ sign := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -783,14 +783,14 @@ Module fmt.
                             M.use (M.alloc (| UnOp.Pure.not (M.read (| is_nonnegative |)) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               sign,
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [ Value.UnicodeChar 45 ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := width in
                             M.write (|
                               β,
@@ -821,14 +821,14 @@ Module fmt.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       sign,
                                       Value.StructTuple
                                         "core::option::Option::Some"
                                         [ Value.UnicodeChar 43 ]
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := width in
                                     M.write (|
                                       β,
@@ -843,7 +843,7 @@ Module fmt.
                           |)))
                     ]
                   |) in
-                let prefix :=
+                let~ prefix :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -864,7 +864,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               let β := width in
                               M.write (|
                                 β,
@@ -905,7 +905,7 @@ Module fmt.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1013,7 +1013,7 @@ Module fmt.
                           M.alloc (| BinOp.Pure.ge (M.read (| width |)) (M.read (| min |)) |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1130,7 +1130,7 @@ Module fmt.
                           |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let old_fill :=
+                        let~ old_fill :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (| "core::mem::replace", [ Ty.path "char" ] |),
@@ -1144,7 +1144,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let old_align :=
+                        let~ old_align :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -1161,7 +1161,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1235,7 +1235,7 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let post_padding :=
+                        let~ post_padding :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -1319,7 +1319,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1404,7 +1404,7 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1478,7 +1478,7 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -1487,7 +1487,7 @@ Module fmt.
                             |),
                             M.read (| old_fill |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -1508,7 +1508,7 @@ Module fmt.
                             0
                           |) in
                         let min := M.copy (| γ0_0 |) in
-                        let post_padding :=
+                        let~ post_padding :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -1592,7 +1592,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1666,7 +1666,7 @@ Module fmt.
                                   val))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -1827,7 +1827,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1902,7 +1902,7 @@ Module fmt.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let s :=
+                let~ s :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2038,7 +2038,7 @@ Module fmt.
                             0
                           |) in
                         let width := M.copy (| γ0_0 |) in
-                        let chars_count :=
+                        let~ chars_count :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -2094,9 +2094,9 @@ Module fmt.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let align :=
+                                (let~ align :=
                                   M.alloc (| Value.StructTuple "core::fmt::Alignment::Left" [] |) in
-                                let post_padding :=
+                                let~ post_padding :=
                                   M.copy (|
                                     M.match_operator (|
                                       M.alloc (|
@@ -2183,7 +2183,7 @@ Module fmt.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2325,7 +2325,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let align :=
+                let~ align :=
                   M.copy (|
                     M.match_operator (|
                       M.SubPointer.get_struct_record_field (|
@@ -2384,7 +2384,7 @@ Module fmt.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let pre_pad := M.copy (| γ0_0 |) in
                         let post_pad := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
@@ -2411,7 +2411,7 @@ Module fmt.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let _ :=
+                                        (let~ _ :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
@@ -2441,7 +2441,7 @@ Module fmt.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -2656,7 +2656,7 @@ Module fmt.
                             0
                           |) in
                         let width := M.copy (| γ0_0 |) in
-                        let formatted :=
+                        let~ formatted :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -2669,7 +2669,7 @@ Module fmt.
                               [ M.read (| formatted |) ]
                             |)
                           |) in
-                        let old_fill :=
+                        let~ old_fill :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -2677,7 +2677,7 @@ Module fmt.
                               "fill"
                             |)
                           |) in
-                        let old_align :=
+                        let~ old_align :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -2685,7 +2685,7 @@ Module fmt.
                               "align"
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2708,7 +2708,7 @@ Module fmt.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let sign :=
+                                  let~ sign :=
                                     M.copy (|
                                       M.SubPointer.get_struct_record_field (|
                                         formatted,
@@ -2716,7 +2716,7 @@ Module fmt.
                                         "sign"
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -2802,7 +2802,7 @@ Module fmt.
                                             val))
                                       ]
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         formatted,
@@ -2811,7 +2811,7 @@ Module fmt.
                                       |),
                                       M.read (| Value.String "" |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       width,
                                       M.call_closure (|
@@ -2833,7 +2833,7 @@ Module fmt.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -2842,7 +2842,7 @@ Module fmt.
                                       |),
                                       Value.UnicodeChar 48
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -2855,7 +2855,7 @@ Module fmt.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let len :=
+                        let~ len :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2866,7 +2866,7 @@ Module fmt.
                               [ formatted ]
                             |)
                           |) in
-                        let ret :=
+                        let~ ret :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -2895,7 +2895,7 @@ Module fmt.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let post_padding :=
+                                    (let~ post_padding :=
                                       M.copy (|
                                         M.match_operator (|
                                           M.alloc (|
@@ -2987,8 +2987,8 @@ Module fmt.
                                           ]
                                         |)
                                       |) in
-                                    let _ :=
-                                      let _ :=
+                                    let~ _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
@@ -3080,7 +3080,7 @@ Module fmt.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -3089,7 +3089,7 @@ Module fmt.
                             |),
                             M.read (| old_fill |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -3177,7 +3177,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3202,7 +3202,7 @@ Module fmt.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -3297,7 +3297,7 @@ Module fmt.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
@@ -3328,7 +3328,7 @@ Module fmt.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -3371,7 +3371,7 @@ Module fmt.
                                                       0
                                                     |) in
                                                   let nzeroes := M.copy (| γ0_0 |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.loop (|
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
@@ -3404,7 +3404,7 @@ Module fmt.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
@@ -3517,7 +3517,7 @@ Module fmt.
                                                                           val))
                                                                     ]
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   let β := nzeroes in
                                                                   M.write (|
                                                                     β,
@@ -3545,7 +3545,7 @@ Module fmt.
                                                                 (M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.read (|
-                                                                      let _ :=
+                                                                      let~ _ :=
                                                                         M.alloc (|
                                                                           M.never_to_any (|
                                                                             M.read (|
@@ -3577,7 +3577,7 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -3726,9 +3726,9 @@ Module fmt.
                                                       0
                                                     |) in
                                                   let v := M.copy (| γ0_0 |) in
-                                                  let s :=
+                                                  let~ s :=
                                                     M.alloc (| repeat (Value.Integer 0) 5 |) in
-                                                  let len :=
+                                                  let~ len :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -3739,7 +3739,7 @@ Module fmt.
                                                         [ M.read (| part |) ]
                                                       |)
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.use
                                                       (M.match_operator (|
                                                         M.alloc (|
@@ -3819,7 +3819,7 @@ Module fmt.
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
                                                                 ltac:(M.monadic
-                                                                  (let _ :=
+                                                                  (let~ _ :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
@@ -3861,7 +3861,7 @@ Module fmt.
                                                                               |) in
                                                                             let c :=
                                                                               M.copy (| γ0_0 |) in
-                                                                            let _ :=
+                                                                            let~ _ :=
                                                                               M.write (|
                                                                                 M.read (| c |),
                                                                                 BinOp.Wrap.add
@@ -3878,7 +3878,7 @@ Module fmt.
                                                                                       (Value.Integer
                                                                                         10)))
                                                                               |) in
-                                                                            let _ :=
+                                                                            let~ _ :=
                                                                               let β := v in
                                                                               M.write (|
                                                                                 β,
@@ -3896,7 +3896,7 @@ Module fmt.
                                                               |)))
                                                         ]
                                                       |)) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -4023,7 +4023,7 @@ Module fmt.
                                                       0
                                                     |) in
                                                   let buf := M.copy (| γ0_0 |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -4545,14 +4545,14 @@ Module fmt.
           let name1 := M.alloc (| name1 |) in
           let value1 := M.alloc (| value1 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4610,14 +4610,14 @@ Module fmt.
           let name2 := M.alloc (| name2 |) in
           let value2 := M.alloc (| value2 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4632,7 +4632,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4695,14 +4695,14 @@ Module fmt.
           let name3 := M.alloc (| name3 |) in
           let value3 := M.alloc (| value3 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4717,7 +4717,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4732,7 +4732,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4800,14 +4800,14 @@ Module fmt.
           let name4 := M.alloc (| name4 |) in
           let value4 := M.alloc (| value4 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4822,7 +4822,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4837,7 +4837,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4852,7 +4852,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4927,14 +4927,14 @@ Module fmt.
           let name5 := M.alloc (| name5 |) in
           let value5 := M.alloc (| value5 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4949,7 +4949,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4964,7 +4964,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4979,7 +4979,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4994,7 +4994,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5050,7 +5050,7 @@ Module fmt.
           let names := M.alloc (| names |) in
           let values := M.alloc (| values |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (|
                   Value.Tuple
@@ -5111,7 +5111,7 @@ Module fmt.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let kind :=
+                                    let~ kind :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Eq" []
                                       |) in
@@ -5137,14 +5137,14 @@ Module fmt.
                       |)))
                 ]
               |) in
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -5205,7 +5205,7 @@ Module fmt.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -5250,7 +5250,7 @@ Module fmt.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let name := M.copy (| γ1_0 |) in
                                       let value := M.copy (| γ1_1 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -5324,14 +5324,14 @@ Module fmt.
           let name := M.alloc (| name |) in
           let value1 := M.alloc (| value1 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5381,14 +5381,14 @@ Module fmt.
           let value1 := M.alloc (| value1 |) in
           let value2 := M.alloc (| value2 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5399,7 +5399,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5452,14 +5452,14 @@ Module fmt.
           let value2 := M.alloc (| value2 |) in
           let value3 := M.alloc (| value3 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5470,7 +5470,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5481,7 +5481,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5537,14 +5537,14 @@ Module fmt.
           let value3 := M.alloc (| value3 |) in
           let value4 := M.alloc (| value4 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5555,7 +5555,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5566,7 +5566,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5577,7 +5577,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value3 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5636,14 +5636,14 @@ Module fmt.
           let value4 := M.alloc (| value4 |) in
           let value5 := M.alloc (| value5 |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5654,7 +5654,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5665,7 +5665,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5676,7 +5676,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value3 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5687,7 +5687,7 @@ Module fmt.
                   [ builder; (* Unsize *) M.pointer_coercion (M.read (| value4 |)) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -5736,14 +5736,14 @@ Module fmt.
           let name := M.alloc (| name |) in
           let values := M.alloc (| values |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
                   [ M.read (| self |); M.read (| name |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -5774,7 +5774,7 @@ Module fmt.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -5809,7 +5809,7 @@ Module fmt.
                                           0
                                         |) in
                                       let value := M.copy (| γ0_0 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -5998,7 +5998,7 @@ Module fmt.
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6077,7 +6077,7 @@ Module fmt.
           (let pieces := M.alloc (| pieces |) in
           let args := M.alloc (| args |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -6233,7 +6233,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let pieces_length :=
+            let~ pieces_length :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -6668,15 +6668,15 @@ Module fmt.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let formatter :=
+              let~ formatter :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
                     [ (* Unsize *) M.pointer_coercion (M.read (| output |)) ]
                   |)
                 |) in
-              let idx := M.alloc (| Value.Integer 0 |) in
-              let _ :=
+              let~ idx := M.alloc (| Value.Integer 0 |) in
+              let~ _ :=
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (| args, "core::fmt::Arguments", "fmt" |),
                   [
@@ -6740,7 +6740,7 @@ Module fmt.
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let _ :=
+                                      (let~ _ :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
@@ -6781,7 +6781,7 @@ Module fmt.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                                 let i := M.copy (| γ1_0 |) in
                                                 let arg := M.copy (| γ1_1 |) in
-                                                let piece :=
+                                                let~ piece :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -6804,7 +6804,7 @@ Module fmt.
                                                       ]
                                                     |)
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -6832,7 +6832,7 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -6946,7 +6946,7 @@ Module fmt.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -7030,7 +7030,7 @@ Module fmt.
                                                           val))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   let β := idx in
                                                   M.write (|
                                                     β,
@@ -7105,7 +7105,7 @@ Module fmt.
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let _ :=
+                                      (let~ _ :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
@@ -7146,7 +7146,7 @@ Module fmt.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                                 let i := M.copy (| γ1_0 |) in
                                                 let arg := M.copy (| γ1_1 |) in
-                                                let piece :=
+                                                let~ piece :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -7169,7 +7169,7 @@ Module fmt.
                                                       ]
                                                     |)
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -7197,7 +7197,7 @@ Module fmt.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -7311,7 +7311,7 @@ Module fmt.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -7404,7 +7404,7 @@ Module fmt.
                                                           val))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   let β := idx in
                                                   M.write (|
                                                     β,
@@ -7422,7 +7422,7 @@ Module fmt.
                           |))))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -7457,7 +7457,7 @@ Module fmt.
                             0
                           |) in
                         let piece := M.copy (| γ0_0 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -7584,7 +7584,7 @@ Module fmt.
         let arg := M.alloc (| arg |) in
         let args := M.alloc (| args |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| fmt |),
@@ -7599,7 +7599,7 @@ Module fmt.
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| fmt |),
@@ -7614,7 +7614,7 @@ Module fmt.
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| fmt |),
@@ -7629,8 +7629,8 @@ Module fmt.
                 |)
               |)
             |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| fmt |),
@@ -7649,7 +7649,7 @@ Module fmt.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| fmt |),
@@ -7669,7 +7669,7 @@ Module fmt.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -7677,7 +7677,7 @@ Module fmt.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -7730,7 +7730,7 @@ Module fmt.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let value :=
+          let~ value :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -7799,7 +7799,7 @@ Module fmt.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::fmt::rt::Count::Param", 0 |) in
                   let i := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -7808,7 +7808,7 @@ Module fmt.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -7928,7 +7928,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
@@ -7963,7 +7963,7 @@ Module fmt.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -7993,7 +7993,7 @@ Module fmt.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -8847,7 +8847,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -8923,8 +8923,8 @@ Module fmt.
                           val))
                     ]
                   |) in
-                let from := M.alloc (| Value.Integer 0 |) in
-                let _ :=
+                let~ from := M.alloc (| Value.Integer 0 |) in
+                let~ _ :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
@@ -8950,7 +8950,7 @@ Module fmt.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -8982,7 +8982,7 @@ Module fmt.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let i := M.copy (| γ1_0 |) in
                                           let c := M.copy (| γ1_1 |) in
-                                          let esc :=
+                                          let~ esc :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -9028,7 +9028,7 @@ Module fmt.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -9139,7 +9139,7 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.use
                                                       (M.match_operator (|
                                                         M.alloc (|
@@ -9160,7 +9160,7 @@ Module fmt.
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
                                                                 ltac:(M.monadic
-                                                                  (let _ :=
+                                                                  (let~ _ :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
@@ -9195,7 +9195,7 @@ Module fmt.
                                                                               |) in
                                                                             let c :=
                                                                               M.copy (| γ0_0 |) in
-                                                                            let _ :=
+                                                                            let~ _ :=
                                                                               M.match_operator (|
                                                                                 M.alloc (|
                                                                                   M.call_closure (|
@@ -9314,7 +9314,7 @@ Module fmt.
                                                               |)))
                                                         ]
                                                       |)) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.write (|
                                                       from,
                                                       BinOp.Wrap.add
@@ -9340,7 +9340,7 @@ Module fmt.
                             |)))
                       ]
                     |)) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -9514,7 +9514,7 @@ Module fmt.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -9590,7 +9590,7 @@ Module fmt.
                           val))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
@@ -9629,7 +9629,7 @@ Module fmt.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -9947,7 +9947,7 @@ Module fmt.
         (let ptr_addr := M.alloc (| ptr_addr |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let old_width :=
+          let~ old_width :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| f |),
@@ -9955,7 +9955,7 @@ Module fmt.
                 "width"
               |)
             |) in
-          let old_flags :=
+          let~ old_flags :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| f |),
@@ -9963,7 +9963,7 @@ Module fmt.
                 "flags"
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -9982,7 +9982,7 @@ Module fmt.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| f |),
@@ -10020,7 +10020,7 @@ Module fmt.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| f |),
@@ -10047,7 +10047,7 @@ Module fmt.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.read (| f |),
@@ -10060,14 +10060,14 @@ Module fmt.
                 (M.read (| β |))
                 (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 2)))
             |) in
-          let ret :=
+          let~ ret :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::fmt::LowerHex", Ty.path "usize", [], "fmt", [] |),
                 [ ptr_addr; M.read (| f |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| f |),
@@ -10076,7 +10076,7 @@ Module fmt.
               |),
               M.read (| old_width |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| f |),
@@ -10306,7 +10306,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -10342,7 +10342,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_9 |) in
                     let value_U := M.alloc (| γ0_10 |) in
                     let value_T := M.alloc (| γ0_11 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10353,7 +10353,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_E ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10364,7 +10364,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_D ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10375,7 +10375,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_C ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10386,7 +10386,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_B ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10397,7 +10397,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_A ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10408,7 +10408,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10419,7 +10419,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10430,7 +10430,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10441,7 +10441,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10452,7 +10452,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10463,7 +10463,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10522,7 +10522,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -10556,7 +10556,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_8 |) in
                     let value_U := M.alloc (| γ0_9 |) in
                     let value_T := M.alloc (| γ0_10 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10567,7 +10567,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_D ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10578,7 +10578,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_C ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10589,7 +10589,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_B ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10600,7 +10600,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_A ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10611,7 +10611,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10622,7 +10622,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10633,7 +10633,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10644,7 +10644,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10655,7 +10655,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10666,7 +10666,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10725,7 +10725,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -10757,7 +10757,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_7 |) in
                     let value_U := M.alloc (| γ0_8 |) in
                     let value_T := M.alloc (| γ0_9 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10768,7 +10768,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_C ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10779,7 +10779,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_B ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10790,7 +10790,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_A ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10801,7 +10801,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10812,7 +10812,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10823,7 +10823,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10834,7 +10834,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10845,7 +10845,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10856,7 +10856,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10914,7 +10914,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -10944,7 +10944,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_6 |) in
                     let value_U := M.alloc (| γ0_7 |) in
                     let value_T := M.alloc (| γ0_8 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10955,7 +10955,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_B ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10966,7 +10966,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_A ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10977,7 +10977,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10988,7 +10988,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -10999,7 +10999,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11010,7 +11010,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11021,7 +11021,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11032,7 +11032,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11090,7 +11090,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11118,7 +11118,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_5 |) in
                     let value_U := M.alloc (| γ0_6 |) in
                     let value_T := M.alloc (| γ0_7 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11129,7 +11129,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_A ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11140,7 +11140,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11151,7 +11151,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11162,7 +11162,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11173,7 +11173,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11184,7 +11184,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11195,7 +11195,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11253,7 +11253,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11279,7 +11279,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_4 |) in
                     let value_U := M.alloc (| γ0_5 |) in
                     let value_T := M.alloc (| γ0_6 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11290,7 +11290,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Z ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11301,7 +11301,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11312,7 +11312,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11323,7 +11323,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11334,7 +11334,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11345,7 +11345,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11403,7 +11403,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11427,7 +11427,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_3 |) in
                     let value_U := M.alloc (| γ0_4 |) in
                     let value_T := M.alloc (| γ0_5 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11438,7 +11438,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_Y ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11449,7 +11449,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11460,7 +11460,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11471,7 +11471,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11482,7 +11482,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11540,7 +11540,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11562,7 +11562,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_2 |) in
                     let value_U := M.alloc (| γ0_3 |) in
                     let value_T := M.alloc (| γ0_4 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11573,7 +11573,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_X ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11584,7 +11584,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11595,7 +11595,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11606,7 +11606,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11664,7 +11664,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11684,7 +11684,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_1 |) in
                     let value_U := M.alloc (| γ0_2 |) in
                     let value_T := M.alloc (| γ0_3 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11695,7 +11695,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_W ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11706,7 +11706,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11717,7 +11717,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11775,7 +11775,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11793,7 +11793,7 @@ Module fmt.
                     let value_V := M.alloc (| γ0_0 |) in
                     let value_U := M.alloc (| γ0_1 |) in
                     let value_T := M.alloc (| γ0_2 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11804,7 +11804,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_V ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11815,7 +11815,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11873,7 +11873,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11889,7 +11889,7 @@ Module fmt.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value_U := M.alloc (| γ0_0 |) in
                     let value_T := M.alloc (| γ0_1 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11900,7 +11900,7 @@ Module fmt.
                           [ builder; (* Unsize *) M.pointer_coercion value_U ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -11958,7 +11958,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let builder :=
+            let~ builder :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "debug_tuple", [] |),
@@ -11972,7 +11972,7 @@ Module fmt.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let value_T := M.alloc (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -12248,7 +12248,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let d :=
+            let~ d :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -12259,7 +12259,7 @@ Module fmt.
                   [ M.read (| f |); M.read (| Value.String "RefCell" |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|

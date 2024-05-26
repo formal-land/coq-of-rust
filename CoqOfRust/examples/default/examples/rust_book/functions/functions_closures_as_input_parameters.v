@@ -18,7 +18,7 @@ Definition apply (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -108,15 +108,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let greeting := M.copy (| Value.String "hello" |) in
-        let farewell :=
+        let~ greeting := M.copy (| Value.String "hello" |) in
+        let~ farewell :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
               [ M.read (| Value.String "goodbye" |) ]
             |)
           |) in
-        let diary :=
+        let~ diary :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -129,8 +129,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -173,7 +173,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |) in
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -184,8 +184,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     [ farewell; M.read (| Value.String "!!!" |) ]
                                   |)
                                 |) in
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -228,8 +228,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |) in
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -258,7 +258,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |) in
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (|
@@ -275,7 +275,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|
@@ -285,7 +285,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| diary |) ]
             |)
           |) in
-        let double :=
+        let~ double :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -304,8 +304,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

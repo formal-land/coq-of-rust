@@ -1196,7 +1196,7 @@ Module intrinsics.
       ltac:(M.monadic
         (let len := M.alloc (| len |) in
         M.read (|
-          let max_len :=
+          let~ max_len :=
             M.copy (|
               M.get_constant (| "core::intrinsics::is_valid_allocation_size_discriminant" |)
             |) in
@@ -1229,21 +1229,21 @@ Module intrinsics.
         let dst := M.alloc (| dst |) in
         let count := M.alloc (| count |) in
         M.read (|
-          let src_usize :=
+          let~ src_usize :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
                 [ M.read (| src |) ]
               |)
             |) in
-          let dst_usize :=
+          let~ dst_usize :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
                 [ M.read (| dst |) ]
               |)
             |) in
-          let size :=
+          let~ size :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1265,7 +1265,7 @@ Module intrinsics.
                 ]
               |)
             |) in
-          let diff :=
+          let~ diff :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "abs_diff", [] |),
@@ -1311,7 +1311,7 @@ Module intrinsics.
         let dst := M.alloc (| dst |) in
         let count := M.alloc (| count |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1319,7 +1319,7 @@ Module intrinsics.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -1524,7 +1524,7 @@ Module intrinsics.
         let dst := M.alloc (| dst |) in
         let count := M.alloc (| count |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1532,7 +1532,7 @@ Module intrinsics.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -1694,7 +1694,7 @@ Module intrinsics.
         let val := M.alloc (| val |) in
         let count := M.alloc (| count |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1702,7 +1702,7 @@ Module intrinsics.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|

@@ -183,7 +183,7 @@ Module str.
                         let head := M.copy (| γ0_0 |) in
                         let body := M.copy (| γ0_1 |) in
                         let tail := M.copy (| γ0_2 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -272,7 +272,7 @@ Module str.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let total :=
+                        let~ total :=
                           M.alloc (|
                             BinOp.Wrap.add
                               Integer.Usize
@@ -291,7 +291,7 @@ Module str.
                                 [ M.read (| tail |) ]
                               |))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
@@ -330,7 +330,7 @@ Module str.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let _ :=
+                                        (let~ _ :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
@@ -361,7 +361,7 @@ Module str.
                                                       0
                                                     |) in
                                                   let chunk := M.copy (| γ0_0 |) in
-                                                  let counts := M.alloc (| Value.Integer 0 |) in
+                                                  let~ counts := M.alloc (| Value.Integer 0 |) in
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -391,7 +391,7 @@ Module str.
                                                           let unrolled_chunks :=
                                                             M.copy (| γ0_0 |) in
                                                           let remainder := M.copy (| γ0_1 |) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             M.use
                                                               (M.match_operator (|
                                                                 M.alloc (|
@@ -422,7 +422,7 @@ Module str.
                                                                       (let iter := M.copy (| γ |) in
                                                                       M.loop (|
                                                                         ltac:(M.monadic
-                                                                          (let _ :=
+                                                                          (let~ _ :=
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
@@ -508,7 +508,7 @@ Module str.
                                                                                                 |) in
                                                                                               M.loop (|
                                                                                                 ltac:(M.monadic
-                                                                                                  (let
+                                                                                                  (let~
                                                                                                         _ :=
                                                                                                     M.match_operator (|
                                                                                                       M.alloc (|
@@ -562,7 +562,7 @@ Module str.
                                                                                                               M.copy (|
                                                                                                                 γ0_0
                                                                                                               |) in
-                                                                                                            let
+                                                                                                            let~
                                                                                                                   _ :=
                                                                                                               let
                                                                                                                     β :=
@@ -607,7 +607,7 @@ Module str.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             let β := total in
                                                             M.write (|
                                                               β,
@@ -651,11 +651,11 @@ Module str.
                                                                   M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (|
-                                                                        let counts :=
+                                                                        let~ counts :=
                                                                           M.alloc (|
                                                                             Value.Integer 0
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.use
                                                                             (M.match_operator (|
                                                                               M.alloc (|
@@ -693,7 +693,7 @@ Module str.
                                                                                       |) in
                                                                                     M.loop (|
                                                                                       ltac:(M.monadic
-                                                                                        (let _ :=
+                                                                                        (let~ _ :=
                                                                                           M.match_operator (|
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
@@ -746,7 +746,7 @@ Module str.
                                                                                                     M.copy (|
                                                                                                       γ0_0
                                                                                                     |) in
-                                                                                                  let
+                                                                                                  let~
                                                                                                         _ :=
                                                                                                     let
                                                                                                           β :=
@@ -783,7 +783,7 @@ Module str.
                                                                                     |)))
                                                                               ]
                                                                             |)) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           let β := total in
                                                                           M.write (|
                                                                             β,
@@ -887,7 +887,7 @@ Module str.
         ltac:(M.monadic
           (let values := M.alloc (| values |) in
           M.read (|
-            let pair_sum :=
+            let~ pair_sum :=
               M.alloc (|
                 BinOp.Wrap.add
                   Integer.Usize

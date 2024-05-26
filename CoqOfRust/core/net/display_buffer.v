@@ -64,7 +64,7 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s :=
+              let~ s :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -146,7 +146,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
@@ -220,7 +220,7 @@ Module net.
                           0
                         |) in
                       let buf := M.copy (| γ0_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -233,7 +233,7 @@ Module net.
                             [ M.read (| buf |); M.read (| bytes |) ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),

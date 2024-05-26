@@ -293,7 +293,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -303,7 +303,7 @@ Module sync.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -337,7 +337,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -608,7 +608,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
@@ -867,7 +867,7 @@ Module sync.
                       (let γ :=
                         M.use (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let order :=
+                      let~ order :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -999,7 +999,7 @@ Module sync.
                             ]
                           |)
                         |) in
-                      let old :=
+                      let~ old :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1170,7 +1170,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1552,7 +1552,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1563,7 +1563,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1640,7 +1640,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -1933,7 +1933,7 @@ Module sync.
             let ptr := M.alloc (| ptr |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2230,7 +2230,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2241,7 +2241,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2318,7 +2318,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -3162,7 +3162,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i8" ] |),
@@ -3667,7 +3667,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3678,7 +3678,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -3755,7 +3755,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -4260,7 +4260,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
@@ -4765,7 +4765,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4776,7 +4776,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -4853,7 +4853,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5358,7 +5358,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i16" ] |),
@@ -5863,7 +5863,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -5874,7 +5874,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5951,7 +5951,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -6456,7 +6456,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u16" ] |),
@@ -6961,7 +6961,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -6972,7 +6972,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -7049,7 +7049,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -7554,7 +7554,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i32" ] |),
@@ -8059,7 +8059,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -8070,7 +8070,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -8147,7 +8147,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -8652,7 +8652,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u32" ] |),
@@ -9157,7 +9157,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -9168,7 +9168,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -9245,7 +9245,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -9750,7 +9750,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i64" ] |),
@@ -10255,7 +10255,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -10266,7 +10266,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -10343,7 +10343,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -10848,7 +10848,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u64" ] |),
@@ -11353,7 +11353,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -11364,7 +11364,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -11441,7 +11441,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -11946,7 +11946,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "isize" ] |),
@@ -12454,7 +12454,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -12465,7 +12465,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -12542,7 +12542,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -13047,7 +13047,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "usize" ] |),
@@ -13555,7 +13555,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -13566,7 +13566,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -13643,7 +13643,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in

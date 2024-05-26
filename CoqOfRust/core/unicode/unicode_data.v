@@ -64,12 +64,12 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let bucket_idx :=
+                let~ bucket_idx :=
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Wrap.div Integer.U32 (M.read (| needle |)) (Value.Integer 64))
                   |) in
-                let chunk_map_idx :=
+                let~ chunk_map_idx :=
                   M.alloc (|
                     BinOp.Wrap.div
                       Integer.Usize
@@ -80,7 +80,7 @@ Module unicode.
                         |)
                       |))
                   |) in
-                let chunk_piece :=
+                let~ chunk_piece :=
                   M.alloc (|
                     BinOp.Wrap.rem
                       Integer.Usize
@@ -91,7 +91,7 @@ Module unicode.
                         |)
                       |))
                   |) in
-                let chunk_idx :=
+                let~ chunk_idx :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -127,7 +127,7 @@ Module unicode.
                       ]
                     |)
                   |) in
-                let idx :=
+                let~ idx :=
                   M.alloc (|
                     M.rust_cast
                       (M.read (|
@@ -140,7 +140,7 @@ Module unicode.
                         |)
                       |))
                   |) in
-                let word :=
+                let~ word :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -196,14 +196,14 @@ Module unicode.
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let real_idx := M.copy (| γ0_0 |) in
                                     let mapping := M.copy (| γ0_1 |) in
-                                    let word :=
+                                    let~ word :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.read (| bitset_canonical |),
                                           M.alloc (| M.rust_cast (M.read (| real_idx |)) |)
                                         |)
                                       |) in
-                                    let should_invert :=
+                                    let~ should_invert :=
                                       M.alloc (|
                                         BinOp.Pure.ne
                                           (BinOp.Pure.bit_and
@@ -211,7 +211,7 @@ Module unicode.
                                             (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 6)))
                                           (Value.Integer 0)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -223,7 +223,7 @@ Module unicode.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.write (|
                                                   word,
                                                   UnOp.Pure.not (M.read (| word |))
@@ -232,7 +232,7 @@ Module unicode.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let quantity :=
+                                    let~ quantity :=
                                       M.alloc (|
                                         BinOp.Pure.bit_and
                                           (M.read (| mapping |))
@@ -241,7 +241,7 @@ Module unicode.
                                             (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 6))
                                             (Value.Integer 1))
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -263,7 +263,7 @@ Module unicode.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 let β := word in
                                                 M.write (|
                                                   β,
@@ -274,7 +274,7 @@ Module unicode.
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.write (|
                                                   word,
                                                   M.call_closure (|
@@ -404,7 +404,7 @@ Module unicode.
           let short_offset_runs := M.alloc (| short_offset_runs |) in
           let offsets := M.alloc (| offsets |) in
           M.read (|
-            let last_idx :=
+            let~ last_idx :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -476,7 +476,7 @@ Module unicode.
                   ]
                 |)
               |) in
-            let offset_idx :=
+            let~ offset_idx :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::unicode::unicode_data::decode_length", [] |),
@@ -487,7 +487,7 @@ Module unicode.
                   ]
                 |)
               |) in
-            let length :=
+            let~ length :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -545,7 +545,7 @@ Module unicode.
                   ]
                 |)
               |) in
-            let prev :=
+            let~ prev :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -603,10 +603,10 @@ Module unicode.
                   ]
                 |)
               |) in
-            let total :=
+            let~ total :=
               M.alloc (| BinOp.Wrap.sub Integer.U32 (M.read (| needle |)) (M.read (| prev |)) |) in
-            let prefix_sum := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ prefix_sum := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -635,7 +635,7 @@ Module unicode.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -665,14 +665,14 @@ Module unicode.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let offset :=
+                                      let~ offset :=
                                         M.copy (|
                                           M.SubPointer.get_array_field (|
                                             M.read (| offsets |),
                                             offset_idx
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := prefix_sum in
                                         M.write (|
                                           β,
@@ -681,7 +681,7 @@ Module unicode.
                                             (M.read (| β |))
                                             (M.rust_cast (M.read (| offset |)))
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -705,7 +705,7 @@ Module unicode.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := offset_idx in
                                         M.write (|
                                           β,
@@ -6683,7 +6683,7 @@ Module unicode.
                                               ltac:(M.monadic
                                                 (let i := M.copy (| γ |) in
                                                 M.read (|
-                                                  let u :=
+                                                  let~ u :=
                                                     M.copy (|
                                                       M.SubPointer.get_tuple_field (|
                                                         M.SubPointer.get_array_field (|
@@ -6995,7 +6995,7 @@ Module unicode.
                                               ltac:(M.monadic
                                                 (let i := M.copy (| γ |) in
                                                 M.read (|
-                                                  let u :=
+                                                  let~ u :=
                                                     M.copy (|
                                                       M.SubPointer.get_tuple_field (|
                                                         M.SubPointer.get_array_field (|

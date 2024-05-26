@@ -270,7 +270,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -292,7 +292,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -598,7 +598,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let new_checkpoint :=
+              let~ new_checkpoint :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -617,7 +617,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -637,7 +637,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -699,7 +699,7 @@ Module interpreter.
                           0
                         |) in
                       let old_checkpoint := M.copy (| γ0_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -754,7 +754,7 @@ Module interpreter.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -891,7 +891,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1158,7 +1158,7 @@ Module interpreter.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.never_to_any (|
                                                   M.call_closure (|
@@ -1203,7 +1203,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let size := M.alloc (| size |) in
             M.read (|
-              let end_ :=
+              let~ end_ :=
                 M.alloc (|
                   BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| size |))
                 |) in
@@ -1314,7 +1314,7 @@ Module interpreter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
@@ -1468,7 +1468,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let byte := M.alloc (| byte |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1504,7 +1504,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1548,7 +1548,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1615,7 +1615,7 @@ Module interpreter.
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1690,7 +1690,7 @@ Module interpreter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1715,7 +1715,7 @@ Module interpreter.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1748,7 +1748,7 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let data_end :=
+                  let~ data_end :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -1768,14 +1768,14 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let data_len :=
+                  let~ data_len :=
                     M.alloc (|
                       BinOp.Wrap.sub
                         Integer.Usize
                         (M.read (| data_end |))
                         (M.read (| data_offset |))
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1784,7 +1784,7 @@ Module interpreter.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1843,7 +1843,7 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let data :=
+                  let~ data :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1859,7 +1859,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1880,7 +1880,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1933,7 +1933,7 @@ Module interpreter.
             let src := M.alloc (| src |) in
             let len := M.alloc (| len |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2057,7 +2057,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let buf_len :=
+              let~ buf_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|

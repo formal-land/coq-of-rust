@@ -35,8 +35,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let n := M.alloc (| Value.Integer 5 |) in
-        let _ :=
+        let~ n := M.alloc (| Value.Integer 5 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -45,8 +45,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.use (M.alloc (| BinOp.Pure.lt (M.read (| n |)) (Value.Integer 0) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -101,8 +101,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               (M.alloc (| BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
-                            let _ :=
+                          let~ _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -147,8 +147,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
-                            let _ :=
+                          (let~ _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -195,7 +195,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let big_n :=
+        let~ big_n :=
           M.copy (|
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -211,8 +211,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
-                      let _ :=
+                    let~ _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "std::io::stdio::_print", [] |),
@@ -245,8 +245,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| BinOp.Wrap.mul Integer.I32 (Value.Integer 10) (M.read (| n |)) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      let _ :=
+                    (let~ _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "std::io::stdio::_print", [] |),
@@ -279,8 +279,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

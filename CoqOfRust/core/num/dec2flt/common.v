@@ -23,8 +23,8 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
-                let _ :=
+                let~ tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -166,8 +166,8 @@ Module num.
               (let self := M.alloc (| self |) in
               let func := M.alloc (| func |) in
               M.read (|
-                let s := M.copy (| self |) in
-                let _ :=
+                let~ s := M.copy (| self |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -181,7 +181,7 @@ Module num.
                               let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                               let c := M.alloc (| γ1_0 |) in
                               let s_next := M.alloc (| γ1_rest |) in
-                              let c :=
+                              let~ c :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -207,7 +207,7 @@ Module num.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -220,7 +220,7 @@ Module num.
                                             [ func; Value.Tuple [ M.read (| c |) ] ]
                                           |)
                                         |) in
-                                      let _ := M.write (| s, M.read (| s_next |) |) in
+                                      let~ _ := M.write (| s, M.read (| s_next |) |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
@@ -234,7 +234,7 @@ Module num.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -277,14 +277,14 @@ Module num.
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
-              let a :=
+              let~ a :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
                     [ M.read (| v |); Value.Integer 5063812098665367110 ]
                   |)
                 |) in
-              let b :=
+              let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),

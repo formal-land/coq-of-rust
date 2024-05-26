@@ -387,7 +387,7 @@ Module ffi.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let ap :=
+            let~ ap :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -400,7 +400,7 @@ Module ffi.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let ret :=
+            let~ ret :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -426,8 +426,8 @@ Module ffi.
                   ]
                 |)
               |) in
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (| M.get_function (| "core::ffi::va_end", [] |), [ ap ] |)
                 |) in
@@ -676,7 +676,7 @@ Module ffi.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let dest :=
+            let~ dest :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -689,7 +689,7 @@ Module ffi.
                   []
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::ffi::va_copy", [] |),

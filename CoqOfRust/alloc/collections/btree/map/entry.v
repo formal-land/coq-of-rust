@@ -894,7 +894,7 @@ Module collections.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let value :=
+                          let~ value :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -1049,7 +1049,7 @@ Module collections.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -1288,7 +1288,7 @@ Module collections.
                 (let self := M.alloc (| self |) in
                 let value := M.alloc (| value |) in
                 M.read (|
-                  let out_ptr :=
+                  let~ out_ptr :=
                     M.copy (|
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
@@ -1299,7 +1299,7 @@ Module collections.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let map :=
+                              (let~ map :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1324,7 +1324,7 @@ Module collections.
                                     ]
                                   |)
                                 |) in
-                              let root :=
+                              let~ root :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1359,7 +1359,7 @@ Module collections.
                                     ]
                                   |)
                                 |) in
-                              let val_ptr :=
+                              let~ val_ptr :=
                                 M.copy (|
                                   M.use
                                     (M.alloc (|
@@ -1411,7 +1411,7 @@ Module collections.
                                       |)
                                     |))
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| map |),
@@ -1440,7 +1440,7 @@ Module collections.
                                       |)
                                     ]
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| map |),
@@ -1461,7 +1461,7 @@ Module collections.
                               let handle := M.copy (| γ0_0 |) in
                               M.alloc (|
                                 M.read (|
-                                  let new_handle :=
+                                  let~ new_handle :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1540,7 +1540,7 @@ Module collections.
                                                         ltac:(M.monadic
                                                           (let ins := M.copy (| γ |) in
                                                           M.read (|
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_function (|
@@ -1570,7 +1570,7 @@ Module collections.
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            let map :=
+                                                            let~ map :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -1595,7 +1595,7 @@ Module collections.
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            let root :=
+                                                            let~ root :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -1740,7 +1740,7 @@ Module collections.
                                         ]
                                       |)
                                     |) in
-                                  let val_ptr :=
+                                  let~ val_ptr :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1765,7 +1765,7 @@ Module collections.
                                         [ M.read (| new_handle |) ]
                                       |)
                                     |) in
-                                  let map :=
+                                  let~ map :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1791,7 +1791,7 @@ Module collections.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| map |),
@@ -2188,7 +2188,7 @@ Module collections.
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.read (|
-                  let emptied_internal_root := M.alloc (| Value.Bool false |) in
+                  let~ emptied_internal_root := M.alloc (| Value.Bool false |) in
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -2253,7 +2253,7 @@ Module collections.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let old_kv := M.copy (| γ0_0 |) in
-                          let map :=
+                          let~ map :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -2278,7 +2278,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β :=
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| map |),
@@ -2289,7 +2289,7 @@ Module collections.
                               β,
                               BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -2301,7 +2301,7 @@ Module collections.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let root :=
+                                    let~ root :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -2359,7 +2359,7 @@ Module collections.
                                           ]
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|

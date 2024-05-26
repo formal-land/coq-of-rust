@@ -502,7 +502,7 @@ Module num.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _cw :=
+                    let~ _cw :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -531,7 +531,7 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let value :=
+                            let~ value :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -560,7 +560,7 @@ Module num.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let value :=
+                                        let~ value :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
@@ -679,7 +679,7 @@ Module num.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let shift :=
+                                        (let~ shift :=
                                           M.alloc (|
                                             BinOp.Wrap.sub
                                               Integer.I64
@@ -696,7 +696,7 @@ Module num.
                                                 |)
                                               |))
                                           |) in
-                                        let mantissa :=
+                                        let~ mantissa :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
@@ -790,7 +790,7 @@ Module num.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -870,7 +870,7 @@ Module num.
                                   ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -888,7 +888,7 @@ Module num.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           value,
                                           M.call_closure (|

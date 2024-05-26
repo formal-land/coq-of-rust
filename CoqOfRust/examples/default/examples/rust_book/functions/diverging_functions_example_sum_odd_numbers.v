@@ -31,8 +31,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -114,8 +114,8 @@ Module main.
       ltac:(M.monadic
         (let up_to := M.alloc (| up_to |) in
         M.read (|
-          let acc := M.alloc (| Value.Integer 0 |) in
-          let _ :=
+          let~ acc := M.alloc (| Value.Integer 0 |) in
+          let~ _ :=
             M.use
               (M.match_operator (|
                 M.alloc (|
@@ -140,7 +140,7 @@ Module main.
                       (let iter := M.copy (| γ |) in
                       M.loop (|
                         ltac:(M.monadic
-                          (let _ :=
+                          (let~ _ :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -167,7 +167,7 @@ Module main.
                                         0
                                       |) in
                                     let i := M.copy (| γ0_0 |) in
-                                    let addition :=
+                                    let~ addition :=
                                       M.copy (|
                                         M.match_operator (|
                                           M.alloc (|
@@ -200,7 +200,7 @@ Module main.
                                           ]
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       let β := acc in
                                       M.write (|
                                         β,

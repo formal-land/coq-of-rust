@@ -76,7 +76,7 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -126,7 +126,7 @@ Module iter.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -144,7 +144,7 @@ Module iter.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -310,7 +310,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let iter :=
+                    let~ iter :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -393,7 +393,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -445,7 +445,7 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let _ :=
+                                      (let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -462,7 +462,7 @@ Module iter.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -791,7 +791,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let first_half :=
+                    let~ first_half :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -882,7 +882,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let buffer :=
+                    let~ buffer :=
                       M.alloc (|
                         Value.Array
                           [
@@ -1060,7 +1060,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1069,7 +1069,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1190,7 +1190,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1199,7 +1199,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1374,7 +1374,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let next := M.alloc (| next |) in
               M.read (|
-                let buffer_mut_ptr :=
+                let~ buffer_mut_ptr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1385,7 +1385,7 @@ Module iter.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1394,7 +1394,7 @@ Module iter.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1453,7 +1453,7 @@ Module iter.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let to_drop :=
+                let~ to_drop :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1477,9 +1477,9 @@ Module iter.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let to_drop :=
+                            let~ to_drop :=
                               M.copy (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (|
@@ -1531,7 +1531,7 @@ Module iter.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1596,7 +1596,7 @@ Module iter.
                                   |)
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1608,9 +1608,9 @@ Module iter.
                             to_drop));
                         fun γ =>
                           ltac:(M.monadic
-                            (let to_drop :=
+                            (let~ to_drop :=
                               M.copy (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1681,7 +1681,7 @@ Module iter.
                                   |)
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1696,7 +1696,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::drop_in_place", [ T ] |),
@@ -1745,7 +1745,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let buffer :=
+                let~ buffer :=
                   M.alloc (|
                     Value.StructRecord
                       "core::iter::adapters::map_windows::Buffer"
@@ -1780,7 +1780,7 @@ Module iter.
                           |))
                       ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1932,7 +1932,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let initialized_part :=
+                let~ initialized_part :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
@@ -1981,7 +1981,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -2028,7 +2028,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let window :=
+                    let~ window :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -2111,7 +2111,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let out :=
+                    let~ out :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|

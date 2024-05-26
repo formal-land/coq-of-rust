@@ -48,8 +48,8 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -119,8 +119,8 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let result := M.copy (| Value.DeclaredButUndefined |) in
-          let _ := InlineAssembly in
+          let~ result := M.copy (| Value.DeclaredButUndefined |) in
+          let~ _ := InlineAssembly in
           result
         |)))
     | _, _ => M.impossible

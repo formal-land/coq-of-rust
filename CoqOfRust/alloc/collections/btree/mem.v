@@ -83,11 +83,11 @@ Module collections.
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
             M.read (|
-              let guard :=
+              let~ guard :=
                 M.alloc (|
                   Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
                 |) in
-              let value :=
+              let~ value :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::read", [ T ] |),
@@ -114,8 +114,8 @@ Module collections.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let new_value := M.copy (| γ0_0 |) in
                       let ret := M.copy (| γ0_1 |) in
-                      let _ :=
-                        let _ :=
+                      let~ _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (| "core::ptr::write", [ T ] |),
@@ -123,7 +123,7 @@ Module collections.
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|

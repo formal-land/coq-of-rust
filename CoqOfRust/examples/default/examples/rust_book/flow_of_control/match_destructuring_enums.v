@@ -79,14 +79,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let color :=
+        let~ color :=
           M.alloc (|
             Value.StructTuple
               "match_destructuring_enums::Color::RGB"
               [ Value.Integer 122; Value.Integer 17; Value.Integer 40 ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -111,7 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -137,7 +137,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -163,7 +163,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -210,7 +210,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let r := M.copy (| γ0_0 |) in
                 let g := M.copy (| γ0_1 |) in
                 let b := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -294,7 +294,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let h := M.copy (| γ0_0 |) in
                 let s := M.copy (| γ0_1 |) in
                 let v := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -378,7 +378,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let h := M.copy (| γ0_0 |) in
                 let s := M.copy (| γ0_1 |) in
                 let l := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -462,7 +462,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let c := M.copy (| γ0_0 |) in
                 let m := M.copy (| γ0_1 |) in
                 let y := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -553,7 +553,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let m := M.copy (| γ0_1 |) in
                 let y := M.copy (| γ0_2 |) in
                 let k := M.copy (| γ0_3 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

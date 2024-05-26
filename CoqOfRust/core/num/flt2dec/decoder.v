@@ -494,7 +494,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let __self_tag :=
+                let~ __self_tag :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -504,7 +504,7 @@ Module num.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let __arg1_tag :=
+                let~ __arg1_tag :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -726,13 +726,13 @@ Module num.
                       let mant := M.copy (| γ0_0 |) in
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
-                      let even :=
+                      let~ even :=
                         M.alloc (|
                           BinOp.Pure.eq
                             (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer 1))
                             (Value.Integer 0)
                         |) in
-                      let decoded :=
+                      let~ decoded :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -788,7 +788,7 @@ Module num.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let minnorm :=
+                                  (let~ minnorm :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|

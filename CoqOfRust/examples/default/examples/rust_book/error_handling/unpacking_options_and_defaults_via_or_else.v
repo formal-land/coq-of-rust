@@ -116,14 +116,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let apple :=
+        let~ apple :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "unpacking_options_and_defaults_via_or_else::Fruit::Apple" [] ]
           |) in
-        let no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let get_kiwi_as_fallback :=
+        let~ no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ get_kiwi_as_fallback :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -136,8 +136,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -181,7 +181,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let get_lemon_as_fallback :=
+        let~ get_lemon_as_fallback :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -194,8 +194,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -239,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let first_available_fruit :=
+        let~ first_available_fruit :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -276,8 +276,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

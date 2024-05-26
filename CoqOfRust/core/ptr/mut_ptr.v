@@ -258,7 +258,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let addr := M.alloc (| addr |) in
             M.read (|
-              let self_addr :=
+              let~ self_addr :=
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
@@ -266,8 +266,8 @@ Module ptr.
                       [ M.read (| self |) ]
                     |))
                 |) in
-              let dest_addr := M.alloc (| M.rust_cast (M.read (| addr |)) |) in
-              let offset :=
+              let~ dest_addr := M.alloc (| M.rust_cast (M.read (| addr |)) |) in
+              let~ offset :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
@@ -1722,7 +1722,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1775,7 +1775,7 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ret :=
+              let~ ret :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::align_offset", [ T ] |),
@@ -1854,7 +1854,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2022,7 +2022,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2097,7 +2097,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2108,7 +2108,7 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2119,7 +2119,7 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let tail :=
+              let~ tail :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),

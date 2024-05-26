@@ -272,7 +272,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -284,7 +284,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "x"
               |) in
             M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| x |)) |) in
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -296,7 +296,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "x"
               |) in
             M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| x |)) |) in
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -308,7 +308,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
                 "y"
               |) in
             M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| y |)) |) in
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -377,8 +377,8 @@ Module Impl_associated_functions_and_methods_Pair.
                     |) in
                   let first := M.copy (| γ0_0 |) in
                   let second := M.copy (| γ0_1 |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -489,7 +489,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let rectangle :=
+        let~ rectangle :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
@@ -514,8 +514,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -565,8 +565,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -616,7 +616,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let square :=
+        let~ square :=
           M.alloc (|
             Value.StructRecord
               "associated_functions_and_methods::Rectangle"
@@ -641,7 +641,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -652,7 +652,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ square; M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
             |)
           |) in
-        let pair_ :=
+        let~ pair_ :=
           M.alloc (|
             Value.StructTuple
               "associated_functions_and_methods::Pair"
@@ -679,7 +679,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|

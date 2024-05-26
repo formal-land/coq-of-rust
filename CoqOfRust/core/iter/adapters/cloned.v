@@ -727,7 +727,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let item :=
+                let~ item :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|

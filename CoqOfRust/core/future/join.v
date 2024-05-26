@@ -150,7 +150,7 @@ Module future.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -191,7 +191,7 @@ Module future.
                                 0
                               |) in
                             let f := M.alloc (| γ0_0 |) in
-                            let val :=
+                            let~ val :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -245,7 +245,7 @@ Module future.
                                   ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|

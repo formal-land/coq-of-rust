@@ -343,7 +343,7 @@ Module collections.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -353,7 +353,7 @@ Module collections.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -656,7 +656,7 @@ Module collections.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -731,7 +731,7 @@ Module collections.
                           val))
                     ]
                   |) in
-                let reason :=
+                let~ reason :=
                   M.copy (|
                     M.match_operator (|
                       M.SubPointer.get_struct_record_field (|

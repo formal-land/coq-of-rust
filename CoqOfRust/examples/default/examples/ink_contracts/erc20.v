@@ -393,7 +393,7 @@ Module Impl_erc20_Erc20.
       ltac:(M.monadic
         (let total_supply := M.alloc (| total_supply |) in
         M.read (|
-          let balances :=
+          let~ balances :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -408,7 +408,7 @@ Module Impl_erc20_Erc20.
                 []
               |)
             |) in
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc20::Env", "caller", [] |),
@@ -422,7 +422,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -435,7 +435,7 @@ Module Impl_erc20_Erc20.
                 [ balances; M.read (| caller |); M.read (| total_supply |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc20::Env", "emit_event", [] |),
@@ -673,14 +673,14 @@ Module Impl_erc20_Erc20.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let from_balance :=
+              let~ from_balance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc20::Erc20", "balance_of_impl", [] |),
                     [ M.read (| self |); M.read (| from |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -707,7 +707,7 @@ Module Impl_erc20_Erc20.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -728,14 +728,14 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let to_balance :=
+              let~ to_balance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc20::Erc20", "balance_of_impl", [] |),
                     [ M.read (| self |); M.read (| to |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -756,7 +756,7 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc20::Env", "emit_event", [] |),
@@ -810,7 +810,7 @@ Module Impl_erc20_Erc20.
         let to := M.alloc (| to |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let from :=
+          let~ from :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc20::Env", "caller", [] |),
@@ -856,7 +856,7 @@ Module Impl_erc20_Erc20.
         let spender := M.alloc (| spender |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let owner :=
+          let~ owner :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc20::Env", "caller", [] |),
@@ -870,7 +870,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -894,7 +894,7 @@ Module Impl_erc20_Erc20.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc20::Env", "emit_event", [] |),
@@ -949,7 +949,7 @@ Module Impl_erc20_Erc20.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc20::Env", "caller", [] |),
@@ -963,14 +963,14 @@ Module Impl_erc20_Erc20.
                     ]
                   |)
                 |) in
-              let allowance :=
+              let~ allowance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc20::Erc20", "allowance_impl", [] |),
                     [ M.read (| self |); from; caller ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -997,7 +997,7 @@ Module Impl_erc20_Erc20.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -1071,7 +1071,7 @@ Module Impl_erc20_Erc20.
                         val))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|

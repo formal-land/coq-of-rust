@@ -225,7 +225,7 @@ Module mem.
     | [ T ], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::intrinsics::assert_zero_valid", [ T ] |),
@@ -279,14 +279,14 @@ Module mem.
     | [ T ], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::intrinsics::assert_mem_uninitialized_valid", [ T ] |),
                 []
               |)
             |) in
-          let val :=
+          let~ val :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -297,7 +297,7 @@ Module mem.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -305,7 +305,7 @@ Module mem.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -385,7 +385,7 @@ Module mem.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -424,7 +424,7 @@ Module mem.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::mem::swap_simple", [ T ] |),
@@ -474,22 +474,22 @@ Module mem.
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
         M.read (|
-          let a :=
+          let~ a :=
             M.alloc (|
               M.call_closure (| M.get_function (| "core::ptr::read", [ T ] |), [ M.read (| x |) ] |)
             |) in
-          let b :=
+          let~ b :=
             M.alloc (|
               M.call_closure (| M.get_function (| "core::ptr::read", [ T ] |), [ M.read (| y |) ] |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::write", [ T ] |),
                 [ M.read (| x |); M.read (| b |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::write", [ T ] |),
@@ -551,14 +551,14 @@ Module mem.
         (let dest := M.alloc (| dest |) in
         let src := M.alloc (| src |) in
         M.read (|
-          let result :=
+          let~ result :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::read", [ T ] |),
                 [ M.read (| dest |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::ptr::write", [ T ] |),
@@ -626,7 +626,7 @@ Module mem.
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -838,7 +838,7 @@ Module mem.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.associated, [], "hash", [ H ] |),

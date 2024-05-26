@@ -131,7 +131,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let a :=
+              let~ a :=
                 M.alloc (|
                   BinOp.Wrap.shr
                     (M.read (|
@@ -143,7 +143,7 @@ Module num.
                     |))
                     (Value.Integer 32)
                 |) in
-              let b :=
+              let~ b :=
                 M.alloc (|
                   BinOp.Pure.bit_and
                     (M.read (|
@@ -155,7 +155,7 @@ Module num.
                     |))
                     (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
                 |) in
-              let c :=
+              let~ c :=
                 M.alloc (|
                   BinOp.Wrap.shr
                     (M.read (|
@@ -167,7 +167,7 @@ Module num.
                     |))
                     (Value.Integer 32)
                 |) in
-              let d :=
+              let~ d :=
                 M.alloc (|
                   BinOp.Pure.bit_and
                     (M.read (|
@@ -179,15 +179,15 @@ Module num.
                     |))
                     (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))
                 |) in
-              let ac :=
+              let~ ac :=
                 M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| a |)) (M.read (| c |)) |) in
-              let bc :=
+              let~ bc :=
                 M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| b |)) (M.read (| c |)) |) in
-              let ad :=
+              let~ ad :=
                 M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| a |)) (M.read (| d |)) |) in
-              let bd :=
+              let~ bd :=
                 M.alloc (| BinOp.Wrap.mul Integer.U64 (M.read (| b |)) (M.read (| d |)) |) in
-              let tmp :=
+              let~ tmp :=
                 M.alloc (|
                   BinOp.Wrap.add
                     Integer.U64
@@ -204,7 +204,7 @@ Module num.
                         (M.read (| M.get_constant (| "core::num::diy_float::mul::MASK" |) |))))
                     (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 31))
                 |) in
-              let f :=
+              let~ f :=
                 M.alloc (|
                   BinOp.Wrap.add
                     Integer.U64
@@ -217,7 +217,7 @@ Module num.
                       (BinOp.Wrap.shr (M.read (| bc |)) (Value.Integer 32)))
                     (BinOp.Wrap.shr (M.read (| tmp |)) (Value.Integer 32))
                 |) in
-              let e :=
+              let~ e :=
                 M.alloc (|
                   BinOp.Wrap.add
                     Integer.I16
@@ -288,7 +288,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let f :=
+              let~ f :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -296,7 +296,7 @@ Module num.
                     "f"
                   |)
                 |) in
-              let e :=
+              let~ e :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -304,7 +304,7 @@ Module num.
                     "e"
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -324,10 +324,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 32) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -337,7 +337,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -357,10 +357,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 16) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -370,7 +370,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -387,10 +387,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 8) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -400,7 +400,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -417,10 +417,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 4) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -430,7 +430,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -447,10 +447,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 2) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -460,7 +460,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -477,10 +477,10 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := f in
                           M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (Value.Integer 1) |) in
-                        let _ :=
+                        let~ _ :=
                           let β := e in
                           M.write (|
                             β,
@@ -490,7 +490,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -499,7 +499,7 @@ Module num.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -564,7 +564,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let e := M.alloc (| e |) in
             M.read (|
-              let edelta :=
+              let~ edelta :=
                 M.alloc (|
                   BinOp.Wrap.sub
                     Integer.I16
@@ -577,7 +577,7 @@ Module num.
                     |))
                     (M.read (| e |))
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -601,8 +601,8 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let edelta := M.alloc (| M.rust_cast (M.read (| edelta |)) |) in
-              let _ :=
+              let~ edelta := M.alloc (| M.rust_cast (M.read (| edelta |)) |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     Value.Tuple
@@ -655,7 +655,7 @@ Module num.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let kind :=
+                                      let~ kind :=
                                         M.alloc (|
                                           Value.StructTuple "core::panicking::AssertKind::Eq" []
                                         |) in

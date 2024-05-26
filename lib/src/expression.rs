@@ -105,7 +105,7 @@ pub(crate) enum Expr {
     },
     Let {
         name: Option<String>,
-        is_monadic: bool,
+        is_user: bool,
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
@@ -251,7 +251,7 @@ impl Expr {
             } => elements.iter().any(|element| element.has_return()),
             Expr::Tuple { elements } => elements.iter().any(|element| element.has_return()),
             Expr::Let {
-                is_monadic: _,
+                is_user: _,
                 name: _,
                 init,
                 body,
@@ -537,12 +537,12 @@ impl Expr {
             }
             Expr::Let {
                 name,
-                is_monadic,
+                is_user,
                 init,
                 body,
             } => coq::Expression::Let {
                 name: name.to_owned(),
-                is_monadic: *is_monadic,
+                is_user: *is_user,
                 ty: None,
                 init: Rc::new(init.to_coq()),
                 body: Rc::new(body.to_coq()),

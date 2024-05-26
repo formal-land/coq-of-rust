@@ -440,9 +440,9 @@ Module collections.
               (let self := M.alloc (| self |) in
               let cmp := M.alloc (| cmp |) in
               M.read (|
-                let a_next := M.copy (| Value.DeclaredButUndefined |) in
-                let b_next := M.copy (| Value.DeclaredButUndefined |) in
-                let _ :=
+                let~ a_next := M.copy (| Value.DeclaredButUndefined |) in
+                let~ b_next := M.copy (| Value.DeclaredButUndefined |) in
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -482,12 +482,12 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               a_next,
                               Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               M.call_closure (|
@@ -523,12 +523,12 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               a_next,
                               M.call_closure (|
@@ -551,7 +551,7 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
+                          (let~ _ :=
                             M.write (|
                               a_next,
                               M.call_closure (|
@@ -571,7 +571,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               M.call_closure (|
@@ -594,7 +594,7 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [

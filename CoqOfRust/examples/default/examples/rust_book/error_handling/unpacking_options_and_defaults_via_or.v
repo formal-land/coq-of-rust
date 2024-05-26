@@ -112,20 +112,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let apple :=
+        let~ apple :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] ]
           |) in
-        let orange :=
+        let~ orange :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] ]
           |) in
-        let no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let first_available_fruit :=
+        let~ no_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ first_available_fruit :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -150,8 +150,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

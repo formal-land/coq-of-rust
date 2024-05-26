@@ -511,7 +511,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -521,7 +521,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -673,7 +673,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -683,7 +683,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1524,7 +1524,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1534,7 +1534,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1926,7 +1926,7 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "mother::Env", "emit_event", [] |),
@@ -2054,8 +2054,8 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),

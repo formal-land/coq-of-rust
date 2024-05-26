@@ -1033,7 +1033,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
       (let owners := M.alloc (| owners |) in
       let requirement := M.alloc (| requirement |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -1135,7 +1135,7 @@ Module Impl_multisig_Multisig.
         (let requirement := M.alloc (| requirement |) in
         let owners := M.alloc (| owners |) in
         M.read (|
-          let contract :=
+          let~ contract :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1148,7 +1148,7 @@ Module Impl_multisig_Multisig.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1172,7 +1172,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1185,7 +1185,7 @@ Module Impl_multisig_Multisig.
                 [ owners ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
@@ -1205,7 +1205,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.use
               (M.match_operator (|
                 M.alloc (|
@@ -1232,7 +1232,7 @@ Module Impl_multisig_Multisig.
                       (let iter := M.copy (| γ |) in
                       M.loop (|
                         ltac:(M.monadic
-                          (let _ :=
+                          (let~ _ :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -1261,7 +1261,7 @@ Module Impl_multisig_Multisig.
                                         0
                                       |) in
                                     let owner := M.copy (| γ0_0 |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -1289,12 +1289,12 @@ Module Impl_multisig_Multisig.
                       |)))
                 ]
               |)) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (| contract, "multisig::Multisig", "owners" |),
               M.read (| owners |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 contract,
@@ -1312,7 +1312,7 @@ Module Impl_multisig_Multisig.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 contract,
@@ -1345,7 +1345,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1431,7 +1431,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1481,7 +1481,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1543,7 +1543,7 @@ Module Impl_multisig_Multisig.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "ensure_owner", [] |),
@@ -1584,7 +1584,7 @@ Module Impl_multisig_Multisig.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -1657,7 +1657,7 @@ Module Impl_multisig_Multisig.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -1706,7 +1706,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -1777,7 +1777,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let new_owner := M.alloc (| new_owner |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1788,14 +1788,14 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "ensure_no_owner", [] |),
                 [ M.read (| self |); new_owner ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
@@ -1830,7 +1830,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1851,7 +1851,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1871,7 +1871,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2058,7 +2058,7 @@ Module Impl_multisig_Multisig.
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -2085,7 +2085,7 @@ Module Impl_multisig_Multisig.
                                       0
                                     |) in
                                   let trans_id := M.copy (| γ0_0 |) in
-                                  let key :=
+                                  let~ key :=
                                     M.alloc (|
                                       Value.Tuple
                                         [
@@ -2131,7 +2131,7 @@ Module Impl_multisig_Multisig.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2158,7 +2158,7 @@ Module Impl_multisig_Multisig.
                                                 ]
                                               |)
                                             |) in
-                                          let count :=
+                                          let~ count :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2190,7 +2190,7 @@ Module Impl_multisig_Multisig.
                                                 ]
                                               |)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := count in
                                             M.write (|
                                               β,
@@ -2199,7 +2199,7 @@ Module Impl_multisig_Multisig.
                                                 (M.read (| β |))
                                                 (Value.Integer 1)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -2260,7 +2260,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2271,14 +2271,14 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "ensure_owner", [] |),
                 [ M.read (| self |); owner ]
               |)
             |) in
-          let len :=
+          let~ len :=
             M.alloc (|
               BinOp.Wrap.sub
                 Integer.U32
@@ -2301,7 +2301,7 @@ Module Impl_multisig_Multisig.
                   |)))
                 (Value.Integer 1)
             |) in
-          let requirement :=
+          let~ requirement :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], "min", [] |),
@@ -2317,14 +2317,14 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
                 [ M.read (| len |); M.read (| requirement |) ]
               |)
             |) in
-          let owner_index :=
+          let~ owner_index :=
             M.alloc (|
               M.rust_cast
                 (M.call_closure (|
@@ -2332,7 +2332,7 @@ Module Impl_multisig_Multisig.
                   [ M.read (| self |); owner ]
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2352,7 +2352,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2372,7 +2372,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -2381,7 +2381,7 @@ Module Impl_multisig_Multisig.
               |),
               M.read (| requirement |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2392,7 +2392,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |); owner ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2441,7 +2441,7 @@ Module Impl_multisig_Multisig.
         let old_owner := M.alloc (| old_owner |) in
         let new_owner := M.alloc (| new_owner |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2452,28 +2452,28 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "ensure_owner", [] |),
                 [ M.read (| self |); old_owner ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "ensure_no_owner", [] |),
                 [ M.read (| self |); new_owner ]
               |)
             |) in
-          let owner_index :=
+          let~ owner_index :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Multisig", "owner_index", [] |),
                 [ M.read (| self |); old_owner ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -2496,7 +2496,7 @@ Module Impl_multisig_Multisig.
               |),
               M.read (| new_owner |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2516,7 +2516,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2537,7 +2537,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2548,7 +2548,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |); old_owner ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2569,7 +2569,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2616,7 +2616,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let new_requirement := M.alloc (| new_requirement |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2627,7 +2627,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "multisig::ensure_requirement_is_valid", [] |),
@@ -2653,7 +2653,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -2662,7 +2662,7 @@ Module Impl_multisig_Multisig.
               |),
               M.read (| new_requirement |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2733,7 +2733,7 @@ Module Impl_multisig_Multisig.
         let confirmer := M.alloc (| confirmer |) in
         let transaction := M.alloc (| transaction |) in
         M.read (|
-          let count :=
+          let~ count :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2761,9 +2761,9 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let key :=
+          let~ key :=
             M.alloc (| Value.Tuple [ M.read (| transaction |); M.read (| confirmer |) ] |) in
-          let new_confirmation :=
+          let~ new_confirmation :=
             M.alloc (|
               UnOp.Pure.not
                 (M.call_closure (|
@@ -2784,7 +2784,7 @@ Module Impl_multisig_Multisig.
                   ]
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -2792,13 +2792,13 @@ Module Impl_multisig_Multisig.
                   ltac:(M.monadic
                     (let γ := M.use new_confirmation in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       let β := count in
                       M.write (|
                         β,
                         BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2822,7 +2822,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -2845,7 +2845,7 @@ Module Impl_multisig_Multisig.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let status :=
+          let~ status :=
             M.copy (|
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -2890,7 +2890,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -2898,7 +2898,7 @@ Module Impl_multisig_Multisig.
                   ltac:(M.monadic
                     (let γ := M.use new_confirmation in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -2967,7 +2967,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let transaction := M.alloc (| transaction |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2978,7 +2978,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let trans_id :=
+          let~ trans_id :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -2990,7 +2990,7 @@ Module Impl_multisig_Multisig.
                 "next_id"
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -3016,7 +3016,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3037,7 +3037,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3061,7 +3061,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -3144,7 +3144,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let transaction :=
+          let~ transaction :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3164,7 +3164,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -3185,7 +3185,7 @@ Module Impl_multisig_Multisig.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3205,7 +3205,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    let pos :=
+                    let~ pos :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3294,7 +3294,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3318,7 +3318,7 @@ Module Impl_multisig_Multisig.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.use
                         (M.match_operator (|
                           M.alloc (|
@@ -3372,7 +3372,7 @@ Module Impl_multisig_Multisig.
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -3403,7 +3403,7 @@ Module Impl_multisig_Multisig.
                                                   0
                                                 |) in
                                               let owner := M.copy (| γ0_0 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3441,7 +3441,7 @@ Module Impl_multisig_Multisig.
                                 |)))
                           ]
                         |)) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -3488,7 +3488,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3530,7 +3530,7 @@ Module Impl_multisig_Multisig.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -3580,7 +3580,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3591,7 +3591,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3656,7 +3656,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3667,7 +3667,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |) ]
               |)
             |) in
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "caller", [] |),
@@ -3711,7 +3711,7 @@ Module Impl_multisig_Multisig.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3732,7 +3732,7 @@ Module Impl_multisig_Multisig.
                         ]
                       |)
                     |) in
-                  let confirmation_count :=
+                  let~ confirmation_count :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3765,13 +3765,13 @@ Module Impl_multisig_Multisig.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     let β := confirmation_count in
                     M.write (|
                       β,
                       BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (Value.Integer 1)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3790,7 +3790,7 @@ Module Impl_multisig_Multisig.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),
@@ -3863,7 +3863,7 @@ Module Impl_multisig_Multisig.
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3874,7 +3874,7 @@ Module Impl_multisig_Multisig.
                 [ M.read (| self |); M.read (| trans_id |) ]
               |)
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3895,7 +3895,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -3950,7 +3950,7 @@ Module Impl_multisig_Multisig.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let result :=
+          let~ result :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
@@ -3959,7 +3959,7 @@ Module Impl_multisig_Multisig.
                 |)
               |)
             |) in
-          let result :=
+          let~ result :=
             M.copy (|
               M.match_operator (|
                 result,
@@ -3991,7 +3991,7 @@ Module Impl_multisig_Multisig.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "multisig::Env", "emit_event", [] |),

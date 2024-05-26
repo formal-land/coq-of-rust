@@ -54,7 +54,7 @@ Module slice.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let last := M.copy (| γ1_0 |) in
                       let elems := M.copy (| γ1_1 |) in
-                      let _ :=
+                      let~ _ :=
                         M.use
                           (M.match_operator (|
                             M.alloc (|
@@ -75,7 +75,7 @@ Module slice.
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let _ :=
+                                      (let~ _ :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
@@ -106,7 +106,7 @@ Module slice.
                                                     0
                                                   |) in
                                                 let el := M.copy (| γ0_0 |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_trait_method (|
@@ -190,7 +190,7 @@ Module slice.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -219,7 +219,7 @@ Module slice.
                                           0
                                         |) in
                                       let item := M.copy (| γ0_0 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (| M.read (| item |), M.read (| value |) |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]

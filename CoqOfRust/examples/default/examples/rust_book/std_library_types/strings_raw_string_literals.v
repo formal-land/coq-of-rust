@@ -22,9 +22,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let raw_str := M.copy (| Value.String "Escapes don't work here: \x3F \u{211D}" |) in
-        let _ :=
-          let _ :=
+        let~ raw_str := M.copy (| Value.String "Escapes don't work here: \x3F \u{211D}" |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -60,9 +60,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let quotes := M.copy (| Value.String "And then I said: ""There is no escape!""" |) in
-        let _ :=
-          let _ :=
+        let~ quotes := M.copy (| Value.String "And then I said: ""There is no escape!""" |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -98,10 +98,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let longer_delimiter :=
+        let~ longer_delimiter :=
           M.copy (| Value.String "A string with ""# in it. And even ""##!" |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

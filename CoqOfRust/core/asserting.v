@@ -101,7 +101,7 @@ Module asserting.
           (let self := M.alloc (| self |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| to |),

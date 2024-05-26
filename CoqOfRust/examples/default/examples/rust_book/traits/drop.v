@@ -22,8 +22,8 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -117,26 +117,26 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _a :=
+        let~ _a :=
           M.alloc (|
             Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "a" |)) ]
           |) in
-        let _ :=
-          let _b :=
+        let~ _ :=
+          let~ _b :=
             M.alloc (|
               Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "b" |)) ]
             |) in
-          let _ :=
-            let _c :=
+          let~ _ :=
+            let~ _c :=
               M.alloc (|
                 Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "c" |)) ]
               |) in
-            let _d :=
+            let~ _d :=
               M.alloc (|
                 Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "d" |)) ]
               |) in
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -161,8 +161,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |) in
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -186,8 +186,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -212,8 +212,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -233,15 +233,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::mem::drop", [ Ty.path "drop::Droppable" ] |),
               [ M.read (| _a |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

@@ -89,7 +89,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -99,7 +99,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -264,7 +264,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -274,7 +274,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -359,7 +359,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -369,7 +369,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -485,7 +485,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -495,7 +495,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -948,7 +948,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1529,7 +1529,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1549,7 +1549,7 @@ Module net.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Ty.path "u16", [], "hash", [ __H ] |),
@@ -1563,7 +1563,7 @@ Module net.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::Hash", Ty.path "u32", [], "hash", [ __H ] |),
@@ -2112,7 +2112,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2162,7 +2162,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2240,7 +2240,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2290,7 +2290,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2340,7 +2340,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_flowinfo := M.alloc (| new_flowinfo |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2391,7 +2391,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let new_scope_id := M.alloc (| new_scope_id |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2774,7 +2774,7 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let buf :=
+                      (let~ buf :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -2785,7 +2785,7 @@ Module net.
                             []
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3228,7 +3228,7 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let buf :=
+                      (let~ buf :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3239,7 +3239,7 @@ Module net.
                             []
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|

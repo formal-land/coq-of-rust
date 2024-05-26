@@ -272,7 +272,7 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -339,7 +339,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let remaining :=
+                    let~ remaining :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -388,7 +388,7 @@ Module collections.
                                 0
                               |) in
                             let n := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -455,7 +455,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let len :=
+                let~ len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -497,7 +497,7 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum :=
+                let~ accum :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -567,7 +567,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -713,7 +713,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.read (|
-                let i1_len :=
+                let~ i1_len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -870,7 +870,7 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -983,7 +983,7 @@ Module collections.
                                 0
                               |) in
                             let n := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (|
@@ -1055,7 +1055,7 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum :=
+                let~ accum :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1125,7 +1125,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|

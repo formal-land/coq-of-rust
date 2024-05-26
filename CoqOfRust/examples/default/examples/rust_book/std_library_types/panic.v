@@ -68,7 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _x :=
+        let~ _x :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -81,15 +81,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::division", [] |),
               [ Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

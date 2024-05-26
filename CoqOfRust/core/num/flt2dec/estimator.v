@@ -20,7 +20,7 @@ Module num.
             (let mant := M.alloc (| mant |) in
             let exp := M.alloc (| exp |) in
             M.read (|
-              let nbits :=
+              let~ nbits :=
                 M.alloc (|
                   BinOp.Wrap.sub
                     Integer.I64

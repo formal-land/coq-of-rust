@@ -134,7 +134,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.use
                         (M.match_operator (|
                           M.alloc (|
@@ -159,7 +159,7 @@ Module iter.
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -280,7 +280,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
@@ -531,7 +531,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -952,7 +952,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let collection := M.alloc (| collection |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -979,21 +979,21 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let left :=
+                let~ left :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
                       []
                     |)
                   |) in
-                let right :=
+                let~ right :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
                       []
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1033,8 +1033,8 @@ Module iter.
                     ltac:(M.monadic
                       (let predicate := M.alloc (| γ |) in
                       M.read (|
-                        let true_count := M.alloc (| Value.Integer 0 |) in
-                        let _ :=
+                        let~ true_count := M.alloc (| Value.Integer 0 |) in
+                        let~ _ :=
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
@@ -1107,14 +1107,14 @@ Module iter.
                                                   0
                                                 |) in
                                               let tail := M.copy (| γ0_0 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_function (| "core::mem::swap", [ T ] |),
                                                     [ M.read (| head |); M.read (| tail |) ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 let β := true_count in
                                                 M.write (|
                                                   β,
@@ -1136,7 +1136,7 @@ Module iter.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
@@ -1207,8 +1207,8 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let accum := M.copy (| init |) in
-                    let _ :=
+                    let~ accum := M.copy (| init |) in
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -1236,7 +1236,7 @@ Module iter.
                                       0
                                     |) in
                                   let x := M.copy (| γ0_0 |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       accum,
                                       M.read (|
@@ -1316,7 +1316,7 @@ Module iter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1382,8 +1382,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum := M.copy (| init |) in
-                let _ :=
+                let~ accum := M.copy (| init |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -1411,7 +1411,7 @@ Module iter.
                                   0
                                 |) in
                               let x := M.copy (| γ0_0 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   accum,
                                   M.call_closure (|
@@ -1431,7 +1431,7 @@ Module iter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -1458,7 +1458,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let first :=
+                    let~ first :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -1563,7 +1563,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let first :=
+                    let~ first :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -2009,7 +2009,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.read (|
-                let n :=
+                let~ n :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -2456,7 +2456,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let unzipped :=
+                let~ unzipped :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -2469,7 +2469,7 @@ Module iter.
                       []
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -3242,7 +3242,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let last :=
+                    let~ last :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -3851,8 +3851,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let accum := M.copy (| init |) in
-                let _ :=
+                let~ accum := M.copy (| init |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -3880,7 +3880,7 @@ Module iter.
                                   0
                                 |) in
                               let x := M.copy (| γ0_0 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   accum,
                                   M.call_closure (|
@@ -3900,7 +3900,7 @@ Module iter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -3940,8 +3940,8 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let accum := M.copy (| init |) in
-                    let _ :=
+                    let~ accum := M.copy (| init |) in
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -3969,7 +3969,7 @@ Module iter.
                                       0
                                     |) in
                                   let x := M.copy (| γ0_0 |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       accum,
                                       M.read (|
@@ -4049,7 +4049,7 @@ Module iter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in

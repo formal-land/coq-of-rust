@@ -371,7 +371,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -381,7 +381,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -572,7 +572,7 @@ Module num.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.read (|
-            let word :=
+            let~ word :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   x,
@@ -580,7 +580,7 @@ Module num.
                   "f"
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               let β := word in
               M.write (|
                 β,
@@ -675,14 +675,14 @@ Module num.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let s :=
+                let~ s :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
                       [ M.read (| s |) ]
                     |)
                   |) in
-                let c :=
+                let~ c :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -730,9 +730,9 @@ Module num.
                       ]
                     |)
                   |) in
-                let negative :=
+                let~ negative :=
                   M.alloc (| BinOp.Pure.eq (M.read (| c |)) (M.read (| UnsupportedLiteral |)) |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -751,7 +751,7 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               s,
                               M.call_closure (|
@@ -778,7 +778,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -817,7 +817,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let num :=
+                let~ num :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -891,7 +891,7 @@ Module num.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       num,
@@ -900,7 +900,7 @@ Module num.
                     |),
                     M.read (| negative |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -938,7 +938,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let fp :=
+                let~ fp :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::num::dec2flt::lemire::compute_float", [ F ] |),
@@ -960,7 +960,7 @@ Module num.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1033,7 +1033,7 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_struct_record_field (|
                                 fp,
@@ -1046,7 +1046,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1067,7 +1067,7 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               fp,
                               M.call_closure (|
@@ -1082,14 +1082,14 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let float :=
+                let~ float :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::num::dec2flt::biased_fp_to_float", [ F ] |),
                       [ M.read (| fp |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1104,7 +1104,7 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               float,
                               M.call_closure (|

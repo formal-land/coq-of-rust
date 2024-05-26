@@ -481,7 +481,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let b :=
+            let~ b :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -697,14 +697,14 @@ Module f32.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let bits :=
+                let~ bits :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -739,13 +739,13 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let abs :=
+                let~ abs :=
                   M.alloc (|
                     BinOp.Pure.bit_and
                       (M.read (| bits |))
                       (M.read (| M.get_constant (| "core::f32::next_up::CLEAR_SIGN_MASK" |) |))
                   |) in
-                let next_bits :=
+                let~ next_bits :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -840,14 +840,14 @@ Module f32.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let bits :=
+                let~ bits :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -886,13 +886,13 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let abs :=
+                let~ abs :=
                   M.alloc (|
                     BinOp.Pure.bit_and
                       (M.read (| bits |))
                       (M.read (| M.get_constant (| "core::f32::next_down::CLEAR_SIGN_MASK" |) |))
                   |) in
-                let next_bits :=
+                let~ next_bits :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1005,7 +1005,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let value := M.copy (| M.get_constant (| "core::f32::consts::PI" |) |) in
+            let~ value := M.copy (| M.get_constant (| "core::f32::consts::PI" |) |) in
             M.alloc (|
               BinOp.Wrap.mul
                 Integer.Usize
@@ -1340,14 +1340,14 @@ Module f32.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
-                    let abs_a :=
+                    let~ abs_a :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
                           [ M.read (| a |) ]
                         |)
                       |) in
-                    let abs_b :=
+                    let~ abs_b :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
@@ -1844,7 +1844,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let left :=
+            let~ left :=
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
@@ -1852,7 +1852,7 @@ Module f32.
                     [ M.read (| M.read (| self |) |) ]
                   |))
               |) in
-            let right :=
+            let~ right :=
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
@@ -1860,7 +1860,7 @@ Module f32.
                     [ M.read (| M.read (| other |) |) ]
                   |))
               |) in
-            let _ :=
+            let~ _ :=
               let β := left in
               M.write (|
                 β,
@@ -1871,7 +1871,7 @@ Module f32.
                       (M.rust_cast (BinOp.Wrap.shr (M.read (| left |)) (Value.Integer 31)))
                       (Value.Integer 1)))
               |) in
-            let _ :=
+            let~ _ :=
               let β := right in
               M.write (|
                 β,
@@ -1914,7 +1914,7 @@ Module f32.
           let min := M.alloc (| min |) in
           let max := M.alloc (| max |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1981,7 +1981,7 @@ Module f32.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1991,12 +1991,12 @@ Module f32.
                         M.use
                           (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| min |)) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ := M.write (| self, M.read (| min |) |) in
+                      let~ _ := M.write (| self, M.read (| min |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2006,7 +2006,7 @@ Module f32.
                         M.use
                           (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| max |)) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ := M.write (| self, M.read (| max |) |) in
+                      let~ _ := M.write (| self, M.read (| max |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]

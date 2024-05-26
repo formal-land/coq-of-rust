@@ -166,7 +166,7 @@ Module opcode.
           let opcode := M.alloc (| opcode |) in
           let instruction := M.alloc (| instruction |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -240,7 +240,7 @@ Module opcode.
                         0
                       |) in
                     let table := M.alloc (| γ1_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| table |),
@@ -316,7 +316,7 @@ Module opcode.
                         0
                       |) in
                     let table := M.alloc (| γ1_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| table |),
@@ -335,7 +335,7 @@ Module opcode.
                         0
                       |) in
                     let table := M.alloc (| γ1_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.read (| table |),
@@ -395,7 +395,7 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 self,
                 [
@@ -409,7 +409,7 @@ Module opcode.
                           0
                         |) in
                       let table := M.alloc (| γ1_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| self |),
                           Value.StructTuple
@@ -458,7 +458,7 @@ Module opcode.
                                                   (* Unsize *)
                                                   M.pointer_coercion
                                                     (M.read (|
-                                                      let instruction :=
+                                                      let~ instruction :=
                                                         M.alloc (|
                                                           (* Unsize *)
                                                           M.pointer_coercion
@@ -605,7 +605,7 @@ Module opcode.
         let Self : Ty.t := Self H SPEC in
         M.run
           ltac:(M.monadic
-            (let tables :=
+            (let~ tables :=
               M.alloc (|
                 repeat
                   (* ReifyFnPointer *)
@@ -616,8 +616,8 @@ Module opcode.
                     |)))
                   256
               |) in
-            let i := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ i := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -630,7 +630,7 @@ Module opcode.
                               (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (Value.Integer 256) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_array_field (| tables, i |),
                               M.call_closure (|
@@ -641,7 +641,7 @@ Module opcode.
                                 [ M.rust_cast (M.read (| i |)) ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := i in
                             M.write (|
                               β,
@@ -653,7 +653,7 @@ Module opcode.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -1270,7 +1270,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2164,7 +2164,7 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let info :=
+            let~ info :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -4912,7 +4912,7 @@ Module opcode.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4932,7 +4932,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
@@ -4946,7 +4946,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
@@ -4960,7 +4960,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
@@ -4974,7 +4974,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
@@ -4988,7 +4988,7 @@ Module opcode.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "bool", [], "hash", [ __H ] |),
@@ -5233,7 +5233,7 @@ Module opcode.
         ltac:(M.monadic
           (let name := M.alloc (| name |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -5340,7 +5340,7 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let slice :=
+            let~ slice :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u8" ] |),
@@ -5545,7 +5545,7 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 op,
@@ -5574,7 +5574,7 @@ Module opcode.
         (let op := M.alloc (| op |) in
         let n := M.alloc (| n |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 op,
@@ -5603,7 +5603,7 @@ Module opcode.
       ltac:(M.monadic
         (let op := M.alloc (| op |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 op,
@@ -5634,7 +5634,7 @@ Module opcode.
         let inputs := M.alloc (| inputs |) in
         let outputs := M.alloc (| outputs |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 op,
@@ -5643,7 +5643,7 @@ Module opcode.
               |),
               M.read (| inputs |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 op,
@@ -6013,10 +6013,10 @@ Module opcode.
   Definition value_OPCODE_INFO_JUMPTABLE : Value.t :=
     M.run
       ltac:(M.monadic
-        (let map := M.alloc (| repeat (Value.StructTuple "core::option::Option::None" []) 256 |) in
-        let prev := M.alloc (| Value.Integer 0 |) in
-        let val := M.alloc (| Value.Integer 0 |) in
-        let _ :=
+        (let~ map := M.alloc (| repeat (Value.StructTuple "core::option::Option::None" []) 256 |) in
+        let~ prev := M.alloc (| Value.Integer 0 |) in
+        let~ val := M.alloc (| Value.Integer 0 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6063,8 +6063,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6075,27 +6075,27 @@ Module opcode.
               [ M.read (| Value.String "STOP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 0 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 1 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 1 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6142,8 +6142,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6154,20 +6154,20 @@ Module opcode.
               [ M.read (| Value.String "ADD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 1 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 2 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 2 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6214,8 +6214,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6226,20 +6226,20 @@ Module opcode.
               [ M.read (| Value.String "MUL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 2 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 3 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 3 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6286,8 +6286,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6298,20 +6298,20 @@ Module opcode.
               [ M.read (| Value.String "SUB" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 3 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 4 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 4 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6358,8 +6358,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6370,20 +6370,20 @@ Module opcode.
               [ M.read (| Value.String "DIV" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 4 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 5 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 5 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6430,8 +6430,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6442,20 +6442,20 @@ Module opcode.
               [ M.read (| Value.String "SDIV" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 5 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 6 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 6 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6502,8 +6502,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6514,20 +6514,20 @@ Module opcode.
               [ M.read (| Value.String "MOD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 6 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 7 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 7 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6574,8 +6574,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6586,20 +6586,20 @@ Module opcode.
               [ M.read (| Value.String "SMOD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 7 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 8 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 8 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6646,8 +6646,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6658,20 +6658,20 @@ Module opcode.
               [ M.read (| Value.String "ADDMOD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 8 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 9 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 9 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6718,8 +6718,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6730,20 +6730,20 @@ Module opcode.
               [ M.read (| Value.String "MULMOD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 9 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 10 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 10 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6790,8 +6790,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6802,20 +6802,20 @@ Module opcode.
               [ M.read (| Value.String "EXP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 10 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 11 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 11 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6862,8 +6862,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6874,20 +6874,20 @@ Module opcode.
               [ M.read (| Value.String "SIGNEXTEND" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 11 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 16 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 16 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -6934,8 +6934,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -6946,20 +6946,20 @@ Module opcode.
               [ M.read (| Value.String "LT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 16 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 17 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 17 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7006,8 +7006,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7018,20 +7018,20 @@ Module opcode.
               [ M.read (| Value.String "GT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 17 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 18 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 18 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7078,8 +7078,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7090,20 +7090,20 @@ Module opcode.
               [ M.read (| Value.String "SLT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 18 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 19 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 19 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7150,8 +7150,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7162,20 +7162,20 @@ Module opcode.
               [ M.read (| Value.String "SGT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 19 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 20 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 20 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7222,8 +7222,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7234,20 +7234,20 @@ Module opcode.
               [ M.read (| Value.String "EQ" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 20 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 21 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 21 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7294,8 +7294,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7306,20 +7306,20 @@ Module opcode.
               [ M.read (| Value.String "ISZERO" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 21 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 22 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 22 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7366,8 +7366,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7378,20 +7378,20 @@ Module opcode.
               [ M.read (| Value.String "AND" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 22 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 23 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 23 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7438,8 +7438,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7450,20 +7450,20 @@ Module opcode.
               [ M.read (| Value.String "OR" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 23 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 24 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 24 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7510,8 +7510,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7522,20 +7522,20 @@ Module opcode.
               [ M.read (| Value.String "XOR" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 24 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 25 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 25 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7582,8 +7582,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7594,20 +7594,20 @@ Module opcode.
               [ M.read (| Value.String "NOT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 25 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 26 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 26 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7654,8 +7654,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7666,20 +7666,20 @@ Module opcode.
               [ M.read (| Value.String "BYTE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 26 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 27 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 27 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7726,8 +7726,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7738,20 +7738,20 @@ Module opcode.
               [ M.read (| Value.String "SHL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 27 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 28 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 28 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7798,8 +7798,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7810,20 +7810,20 @@ Module opcode.
               [ M.read (| Value.String "SHR" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 28 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 29 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 29 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7870,8 +7870,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7882,20 +7882,20 @@ Module opcode.
               [ M.read (| Value.String "SAR" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 29 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 32 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 32 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -7942,8 +7942,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -7954,20 +7954,20 @@ Module opcode.
               [ M.read (| Value.String "KECCAK256" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 32 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 48 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 48 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8014,8 +8014,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8026,20 +8026,20 @@ Module opcode.
               [ M.read (| Value.String "ADDRESS" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 48 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 49 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 49 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8086,8 +8086,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8098,20 +8098,20 @@ Module opcode.
               [ M.read (| Value.String "BALANCE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 49 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 50 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 50 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8158,8 +8158,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8170,20 +8170,20 @@ Module opcode.
               [ M.read (| Value.String "ORIGIN" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 50 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 51 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 51 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8230,8 +8230,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8242,20 +8242,20 @@ Module opcode.
               [ M.read (| Value.String "CALLER" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 51 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 52 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 52 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8302,8 +8302,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8314,20 +8314,20 @@ Module opcode.
               [ M.read (| Value.String "CALLVALUE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 52 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 53 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 53 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8374,8 +8374,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8386,20 +8386,20 @@ Module opcode.
               [ M.read (| Value.String "CALLDATALOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 53 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 54 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 54 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8446,8 +8446,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8458,20 +8458,20 @@ Module opcode.
               [ M.read (| Value.String "CALLDATASIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 54 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 55 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 55 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8518,8 +8518,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8530,20 +8530,20 @@ Module opcode.
               [ M.read (| Value.String "CALLDATACOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 55 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 56 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 56 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8590,8 +8590,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8602,27 +8602,27 @@ Module opcode.
               [ M.read (| Value.String "CODESIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 56 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 57 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 57 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8669,8 +8669,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8681,27 +8681,27 @@ Module opcode.
               [ M.read (| Value.String "CODECOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 57 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 58 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 58 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8748,8 +8748,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8760,20 +8760,20 @@ Module opcode.
               [ M.read (| Value.String "GASPRICE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 58 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 59 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 59 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8820,8 +8820,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8832,27 +8832,27 @@ Module opcode.
               [ M.read (| Value.String "EXTCODESIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 59 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 60 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 60 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8899,8 +8899,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8911,27 +8911,27 @@ Module opcode.
               [ M.read (| Value.String "EXTCODECOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 60 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 61 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 61 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -8978,8 +8978,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -8990,20 +8990,20 @@ Module opcode.
               [ M.read (| Value.String "RETURNDATASIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 61 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 62 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 62 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9050,8 +9050,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9062,20 +9062,20 @@ Module opcode.
               [ M.read (| Value.String "RETURNDATACOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 62 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 63 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 63 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9122,8 +9122,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9134,27 +9134,27 @@ Module opcode.
               [ M.read (| Value.String "EXTCODEHASH" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 63 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 64 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 64 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9201,8 +9201,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9213,20 +9213,20 @@ Module opcode.
               [ M.read (| Value.String "BLOCKHASH" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 64 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 65 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 65 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9273,8 +9273,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9285,20 +9285,20 @@ Module opcode.
               [ M.read (| Value.String "COINBASE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 65 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 66 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 66 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9345,8 +9345,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9357,20 +9357,20 @@ Module opcode.
               [ M.read (| Value.String "TIMESTAMP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 66 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 67 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 67 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9417,8 +9417,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9429,20 +9429,20 @@ Module opcode.
               [ M.read (| Value.String "NUMBER" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 67 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 68 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 68 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9489,8 +9489,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9501,20 +9501,20 @@ Module opcode.
               [ M.read (| Value.String "DIFFICULTY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 68 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 69 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 69 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9561,8 +9561,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9573,20 +9573,20 @@ Module opcode.
               [ M.read (| Value.String "GASLIMIT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 69 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 70 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 70 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9633,8 +9633,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9645,20 +9645,20 @@ Module opcode.
               [ M.read (| Value.String "CHAINID" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 70 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 71 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 71 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9705,8 +9705,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9717,20 +9717,20 @@ Module opcode.
               [ M.read (| Value.String "SELFBALANCE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 71 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 72 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 72 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9777,8 +9777,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9789,20 +9789,20 @@ Module opcode.
               [ M.read (| Value.String "BASEFEE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 72 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 73 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 73 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9849,8 +9849,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9861,20 +9861,20 @@ Module opcode.
               [ M.read (| Value.String "BLOBHASH" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 73 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 74 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 74 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9921,8 +9921,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -9933,20 +9933,20 @@ Module opcode.
               [ M.read (| Value.String "BLOBBASEFEE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 74 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 80 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 80 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -9993,8 +9993,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10005,20 +10005,20 @@ Module opcode.
               [ M.read (| Value.String "POP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 80 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 81 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 81 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10065,8 +10065,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10077,20 +10077,20 @@ Module opcode.
               [ M.read (| Value.String "MLOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 81 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 82 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 82 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10137,8 +10137,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10149,20 +10149,20 @@ Module opcode.
               [ M.read (| Value.String "MSTORE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 82 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 83 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 83 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10209,8 +10209,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10221,20 +10221,20 @@ Module opcode.
               [ M.read (| Value.String "MSTORE8" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 83 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 84 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 84 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10281,8 +10281,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10293,20 +10293,20 @@ Module opcode.
               [ M.read (| Value.String "SLOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 84 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 85 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 85 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10353,8 +10353,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10365,20 +10365,20 @@ Module opcode.
               [ M.read (| Value.String "SSTORE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 85 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 86 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 86 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10425,8 +10425,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10437,27 +10437,27 @@ Module opcode.
               [ M.read (| Value.String "JUMP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 86 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 87 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 87 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10504,8 +10504,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10516,27 +10516,27 @@ Module opcode.
               [ M.read (| Value.String "JUMPI" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 87 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 88 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 88 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10583,8 +10583,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10595,27 +10595,27 @@ Module opcode.
               [ M.read (| Value.String "PC" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 88 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 89 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 89 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10662,8 +10662,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10674,20 +10674,20 @@ Module opcode.
               [ M.read (| Value.String "MSIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 89 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 90 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 90 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10734,8 +10734,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10746,27 +10746,27 @@ Module opcode.
               [ M.read (| Value.String "GAS" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 90 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 91 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 91 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10813,8 +10813,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10825,20 +10825,20 @@ Module opcode.
               [ M.read (| Value.String "JUMPDEST" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 91 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 92 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 92 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10885,8 +10885,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10897,20 +10897,20 @@ Module opcode.
               [ M.read (| Value.String "TLOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 92 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 93 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 93 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -10957,8 +10957,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -10969,20 +10969,20 @@ Module opcode.
               [ M.read (| Value.String "TSTORE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 93 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 94 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 94 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11029,8 +11029,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11041,20 +11041,20 @@ Module opcode.
               [ M.read (| Value.String "MCOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 94 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 95 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 95 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11101,8 +11101,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11113,20 +11113,20 @@ Module opcode.
               [ M.read (| Value.String "PUSH0" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 95 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 96 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 96 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11173,8 +11173,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11185,27 +11185,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH1" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 96 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 97 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 97 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11252,8 +11252,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11264,27 +11264,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH2" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 97 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 98 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 98 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11331,8 +11331,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11343,27 +11343,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH3" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 3 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 98 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 99 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 99 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11410,8 +11410,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11422,27 +11422,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH4" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 4 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 99 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 100 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 100 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11489,8 +11489,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11501,27 +11501,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH5" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 5 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 100 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 101 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 101 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11568,8 +11568,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11580,27 +11580,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH6" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 6 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 101 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 102 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 102 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11647,8 +11647,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11659,27 +11659,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH7" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 7 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 102 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 103 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 103 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11726,8 +11726,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11738,27 +11738,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH8" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 8 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 103 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 104 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 104 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11805,8 +11805,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11817,27 +11817,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH9" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 9 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 104 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 105 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 105 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11884,8 +11884,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11896,27 +11896,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH10" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 10 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 105 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 106 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 106 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -11963,8 +11963,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -11975,27 +11975,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH11" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 11 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 106 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 107 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 107 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12042,8 +12042,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12054,27 +12054,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH12" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 12 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 107 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 108 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 108 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12121,8 +12121,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12133,27 +12133,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH13" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 13 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 108 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 109 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 109 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12200,8 +12200,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12212,27 +12212,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH14" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 14 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 109 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 110 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 110 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12279,8 +12279,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12291,27 +12291,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH15" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 15 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 110 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 111 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 111 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12358,8 +12358,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12370,27 +12370,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH16" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 16 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 111 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 112 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 112 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12437,8 +12437,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12449,27 +12449,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH17" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 17 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 112 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 113 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 113 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12516,8 +12516,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12528,27 +12528,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH18" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 18 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 113 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 114 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 114 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12595,8 +12595,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12607,27 +12607,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH19" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 19 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 114 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 115 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 115 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12674,8 +12674,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12686,27 +12686,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH20" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 20 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 115 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 116 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 116 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12753,8 +12753,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12765,27 +12765,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH21" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 21 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 116 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 117 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 117 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12832,8 +12832,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12844,27 +12844,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH22" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 22 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 117 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 118 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 118 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12911,8 +12911,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -12923,27 +12923,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH23" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 23 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 118 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 119 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 119 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -12990,8 +12990,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13002,27 +13002,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH24" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 24 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 119 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 120 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 120 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13069,8 +13069,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13081,27 +13081,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH25" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 25 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 120 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 121 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 121 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13148,8 +13148,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13160,27 +13160,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH26" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 26 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 121 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 122 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 122 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13227,8 +13227,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13239,27 +13239,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH27" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 27 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 122 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 123 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 123 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13306,8 +13306,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13318,27 +13318,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH28" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 28 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 123 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 124 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 124 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13385,8 +13385,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13397,27 +13397,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH29" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 29 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 124 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 125 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 125 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13464,8 +13464,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13476,27 +13476,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH30" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 30 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 125 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 126 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 126 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13543,8 +13543,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13555,27 +13555,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH31" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 31 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 126 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 127 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 127 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13622,8 +13622,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13634,27 +13634,27 @@ Module opcode.
               [ M.read (| Value.String "PUSH32" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 32 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 127 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 128 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 128 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13701,8 +13701,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13713,20 +13713,20 @@ Module opcode.
               [ M.read (| Value.String "DUP1" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 128 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 129 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 129 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13773,8 +13773,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13785,20 +13785,20 @@ Module opcode.
               [ M.read (| Value.String "DUP2" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 3 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 129 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 130 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 130 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13845,8 +13845,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13857,20 +13857,20 @@ Module opcode.
               [ M.read (| Value.String "DUP3" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 4 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 130 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 131 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 131 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13917,8 +13917,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -13929,20 +13929,20 @@ Module opcode.
               [ M.read (| Value.String "DUP4" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 5 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 131 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 132 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 132 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -13989,8 +13989,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14001,20 +14001,20 @@ Module opcode.
               [ M.read (| Value.String "DUP5" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 5; Value.Integer 6 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 132 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 133 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 133 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14061,8 +14061,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14073,20 +14073,20 @@ Module opcode.
               [ M.read (| Value.String "DUP6" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 6; Value.Integer 7 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 133 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 134 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 134 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14133,8 +14133,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14145,20 +14145,20 @@ Module opcode.
               [ M.read (| Value.String "DUP7" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 7; Value.Integer 8 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 134 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 135 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 135 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14205,8 +14205,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14217,20 +14217,20 @@ Module opcode.
               [ M.read (| Value.String "DUP8" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 8; Value.Integer 9 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 135 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 136 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 136 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14277,8 +14277,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14289,20 +14289,20 @@ Module opcode.
               [ M.read (| Value.String "DUP9" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 9; Value.Integer 10 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 136 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 137 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 137 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14349,8 +14349,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14361,20 +14361,20 @@ Module opcode.
               [ M.read (| Value.String "DUP10" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 10; Value.Integer 11 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 137 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 138 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 138 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14421,8 +14421,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14433,20 +14433,20 @@ Module opcode.
               [ M.read (| Value.String "DUP11" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 11; Value.Integer 12 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 138 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 139 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 139 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14493,8 +14493,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14505,20 +14505,20 @@ Module opcode.
               [ M.read (| Value.String "DUP12" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 12; Value.Integer 13 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 139 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 140 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 140 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14565,8 +14565,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14577,20 +14577,20 @@ Module opcode.
               [ M.read (| Value.String "DUP13" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 13; Value.Integer 14 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 140 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 141 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 141 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14637,8 +14637,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14649,20 +14649,20 @@ Module opcode.
               [ M.read (| Value.String "DUP14" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 14; Value.Integer 15 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 141 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 142 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 142 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14709,8 +14709,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14721,20 +14721,20 @@ Module opcode.
               [ M.read (| Value.String "DUP15" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 15; Value.Integer 16 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 142 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 143 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 143 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14781,8 +14781,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14793,20 +14793,20 @@ Module opcode.
               [ M.read (| Value.String "DUP16" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 16; Value.Integer 17 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 143 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 144 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 144 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14853,8 +14853,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14865,20 +14865,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP1" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 144 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 145 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 145 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14925,8 +14925,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -14937,20 +14937,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP2" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 3 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 145 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 146 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 146 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -14997,8 +14997,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15009,20 +15009,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP3" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 4 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 146 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 147 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 147 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15069,8 +15069,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15081,20 +15081,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP4" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 5; Value.Integer 5 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 147 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 148 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 148 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15141,8 +15141,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15153,20 +15153,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP5" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 6; Value.Integer 6 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 148 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 149 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 149 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15213,8 +15213,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15225,20 +15225,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP6" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 7; Value.Integer 7 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 149 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 150 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 150 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15285,8 +15285,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15297,20 +15297,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP7" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 8; Value.Integer 8 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 150 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 151 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 151 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15357,8 +15357,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15369,20 +15369,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP8" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 9; Value.Integer 9 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 151 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 152 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 152 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15429,8 +15429,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15441,20 +15441,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP9" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 10; Value.Integer 10 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 152 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 153 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 153 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15501,8 +15501,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15513,20 +15513,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP10" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 11; Value.Integer 11 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 153 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 154 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 154 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15573,8 +15573,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15585,20 +15585,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP11" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 12; Value.Integer 12 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 154 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 155 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 155 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15645,8 +15645,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15657,20 +15657,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP12" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 13; Value.Integer 13 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 155 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 156 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 156 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15717,8 +15717,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15729,20 +15729,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP13" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 14; Value.Integer 14 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 156 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 157 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 157 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15789,8 +15789,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15801,20 +15801,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP14" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 15; Value.Integer 15 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 157 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 158 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 158 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15861,8 +15861,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15873,20 +15873,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP15" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 16; Value.Integer 16 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 158 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 159 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 159 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -15933,8 +15933,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -15945,20 +15945,20 @@ Module opcode.
               [ M.read (| Value.String "SWAP16" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 17; Value.Integer 17 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 159 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 160 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 160 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16005,8 +16005,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16017,20 +16017,20 @@ Module opcode.
               [ M.read (| Value.String "LOG0" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 160 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 161 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 161 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16077,8 +16077,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16089,20 +16089,20 @@ Module opcode.
               [ M.read (| Value.String "LOG1" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 161 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 162 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 162 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16149,8 +16149,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16161,20 +16161,20 @@ Module opcode.
               [ M.read (| Value.String "LOG2" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 162 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 163 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 163 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16221,8 +16221,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16233,20 +16233,20 @@ Module opcode.
               [ M.read (| Value.String "LOG3" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 5; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 163 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 164 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 164 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16293,8 +16293,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16305,20 +16305,20 @@ Module opcode.
               [ M.read (| Value.String "LOG4" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 6; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 164 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 208 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 208 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16365,8 +16365,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16377,20 +16377,20 @@ Module opcode.
               [ M.read (| Value.String "DATALOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 208 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 209 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 209 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16437,8 +16437,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16449,27 +16449,27 @@ Module opcode.
               [ M.read (| Value.String "DATALOADN" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 209 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 210 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 210 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16516,8 +16516,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16528,20 +16528,20 @@ Module opcode.
               [ M.read (| Value.String "DATASIZE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 210 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 211 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 211 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16588,8 +16588,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16600,20 +16600,20 @@ Module opcode.
               [ M.read (| Value.String "DATACOPY" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 0 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 211 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 224 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 224 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16660,8 +16660,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16672,34 +16672,34 @@ Module opcode.
               [ M.read (| Value.String "RJUMP" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 224 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 225 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 225 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16746,8 +16746,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16758,27 +16758,27 @@ Module opcode.
               [ M.read (| Value.String "RJUMPI" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 225 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 226 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 226 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16825,8 +16825,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16837,27 +16837,27 @@ Module opcode.
               [ M.read (| Value.String "RJUMPV" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 226 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 227 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 227 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16904,8 +16904,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16916,27 +16916,27 @@ Module opcode.
               [ M.read (| Value.String "CALLF" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 227 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 228 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 228 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -16983,8 +16983,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -16995,27 +16995,27 @@ Module opcode.
               [ M.read (| Value.String "RETF" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 228 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 229 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 229 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17062,8 +17062,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17074,34 +17074,34 @@ Module opcode.
               [ M.read (| Value.String "JUMPF" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 2 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 229 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 230 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 230 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17148,8 +17148,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17160,27 +17160,27 @@ Module opcode.
               [ M.read (| Value.String "DUPN" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 230 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 231 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 231 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17227,8 +17227,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17239,27 +17239,27 @@ Module opcode.
               [ M.read (| Value.String "SWAPN" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 231 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 232 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 232 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17306,8 +17306,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17318,27 +17318,27 @@ Module opcode.
               [ M.read (| Value.String "EXCHANGE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 232 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 236 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 236 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17385,8 +17385,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17397,27 +17397,27 @@ Module opcode.
               [ M.read (| Value.String "EOFCREATE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 236 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 237 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 237 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17464,8 +17464,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17476,20 +17476,20 @@ Module opcode.
               [ M.read (| Value.String "TXCREATE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 5; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 237 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 238 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 238 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17536,8 +17536,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17548,34 +17548,34 @@ Module opcode.
               [ M.read (| Value.String "RETURNCONTRACT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::immediate_size", [] |),
               [ M.read (| info |); Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 238 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 240 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 240 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17622,8 +17622,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17634,27 +17634,27 @@ Module opcode.
               [ M.read (| Value.String "CREATE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 240 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 241 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 241 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17701,8 +17701,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17713,27 +17713,27 @@ Module opcode.
               [ M.read (| Value.String "CALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 7; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 241 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 242 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 242 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17780,8 +17780,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17792,27 +17792,27 @@ Module opcode.
               [ M.read (| Value.String "CALLCODE" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 7; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 242 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 243 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 243 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17859,8 +17859,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17871,27 +17871,27 @@ Module opcode.
               [ M.read (| Value.String "RETURN" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 243 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 244 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 244 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -17938,8 +17938,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -17950,27 +17950,27 @@ Module opcode.
               [ M.read (| Value.String "DELEGATECALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 6; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 244 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 245 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 245 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18017,8 +18017,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18029,27 +18029,27 @@ Module opcode.
               [ M.read (| Value.String "CREATE2" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 245 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 247 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 247 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18096,8 +18096,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18108,20 +18108,20 @@ Module opcode.
               [ M.read (| Value.String "RETURNDATALOAD" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 247 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 248 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 248 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18168,8 +18168,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18180,20 +18180,20 @@ Module opcode.
               [ M.read (| Value.String "EXTCALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 4; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 248 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 249 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 249 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18240,8 +18240,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18252,20 +18252,20 @@ Module opcode.
               [ M.read (| Value.String "EXFCALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 249 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 250 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 250 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18312,8 +18312,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18324,27 +18324,27 @@ Module opcode.
               [ M.read (| Value.String "STATICCALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 6; Value.Integer 1 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 250 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 251 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 251 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18391,8 +18391,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18403,20 +18403,20 @@ Module opcode.
               [ M.read (| Value.String "EXTSCALL" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 3; Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 251 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 253 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 253 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18463,8 +18463,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18475,27 +18475,27 @@ Module opcode.
               [ M.read (| Value.String "REVERT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 2; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 253 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 254 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 254 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18542,8 +18542,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18554,27 +18554,27 @@ Module opcode.
               [ M.read (| Value.String "INVALID" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 0; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 254 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
           |) in
-        let val := M.alloc (| Value.Integer 255 |) in
-        let _ :=
+        let~ val := M.alloc (| Value.Integer 255 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -18621,8 +18621,8 @@ Module opcode.
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ := M.write (| prev, M.read (| val |) |) in
-        let info :=
+        let~ _ := M.write (| prev, M.read (| val |) |) in
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -18633,28 +18633,28 @@ Module opcode.
               [ M.read (| Value.String "SELFDESTRUCT" |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::stack_io", [] |),
               [ M.read (| info |); Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::not_eof", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let info :=
+        let~ info :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "revm_interpreter::opcode::terminating", [] |),
               [ M.read (| info |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_array_field (| map, M.alloc (| Value.Integer 255 |) |),
             Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]

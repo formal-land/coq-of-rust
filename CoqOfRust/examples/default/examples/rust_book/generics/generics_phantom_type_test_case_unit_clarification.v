@@ -324,19 +324,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let one_foot :=
+        let~ one_foot :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
               [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let one_meter :=
+        let~ one_meter :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type_test_case_unit_clarification::Length"
               [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let two_feet :=
+        let~ two_feet :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -355,7 +355,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| one_foot |); M.read (| one_foot |) ]
             |)
           |) in
-        let two_meters :=
+        let~ two_meters :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -374,8 +374,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| one_meter |); M.read (| one_meter |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -420,8 +420,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

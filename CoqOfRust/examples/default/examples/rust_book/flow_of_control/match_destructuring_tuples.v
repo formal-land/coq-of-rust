@@ -25,10 +25,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let triple :=
+        let~ triple :=
           M.alloc (| Value.Tuple [ Value.Integer 0; Value.Integer (-2); Value.Integer 3 ] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -78,7 +78,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
                 let y := M.copy (| γ0_1 |) in
                 let z := M.copy (| γ0_2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -136,7 +136,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 1 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -171,7 +171,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 2 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -207,7 +207,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 3 |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ0_2 |), Value.Integer 4 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -239,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

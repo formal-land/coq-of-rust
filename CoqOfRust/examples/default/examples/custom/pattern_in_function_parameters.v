@@ -65,8 +65,8 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
-                        let end_ := M.alloc (| M.rust_cast (M.read (| end_ |)) |) in
+                        let~ start := M.alloc (| M.rust_cast (M.read (| start |)) |) in
+                        let~ end_ := M.alloc (| M.rust_cast (M.read (| end_ |)) |) in
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -82,7 +82,7 @@ Definition steps_between (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let count :=
+                                let~ count :=
                                   M.alloc (|
                                     BinOp.Wrap.sub
                                       Integer.U32

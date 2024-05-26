@@ -180,7 +180,7 @@ Module Impl_enums_testcase_linked_list_List.
                     |) in
                   let head := M.copy (| γ0_0 |) in
                   let tail := M.alloc (| γ0_1 |) in
-                  let res :=
+                  let~ res :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::fmt::format", [] |),
@@ -240,7 +240,7 @@ Module Impl_enums_testcase_linked_list_List.
                   res));
               fun γ =>
                 ltac:(M.monadic
-                  (let res :=
+                  (let~ res :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::fmt::format", [] |),
@@ -290,14 +290,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let list :=
+        let~ list :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "enums_testcase_linked_list::List", "new", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             list,
             M.call_closure (|
@@ -309,7 +309,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| list |); Value.Integer 1 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             list,
             M.call_closure (|
@@ -321,7 +321,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| list |); Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.write (|
             list,
             M.call_closure (|
@@ -333,8 +333,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| list |); Value.Integer 3 ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -384,8 +384,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

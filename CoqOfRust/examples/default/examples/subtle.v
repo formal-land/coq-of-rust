@@ -115,7 +115,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       ltac:(M.monadic
         (let source := M.alloc (| source |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -123,7 +123,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -253,7 +253,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.read (| self |),
               M.call_closure (|
@@ -338,7 +338,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.read (| self |),
               M.call_closure (|
@@ -423,7 +423,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.read (| self |),
               M.call_closure (|
@@ -515,7 +515,7 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let input := M.alloc (| input |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -523,7 +523,7 @@ Definition black_box (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -662,14 +662,14 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -712,8 +712,8 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let x := M.alloc (| Value.Integer 1 |) in
-              let _ :=
+              let~ x := M.alloc (| Value.Integer 1 |) in
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -767,7 +767,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -804,7 +804,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let ai := M.copy (| γ1_0 |) in
                                         let bi := M.copy (| γ1_1 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           let β := x in
                                           M.write (|
                                             β,
@@ -928,7 +928,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let x :=
+          let~ x :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -941,7 +941,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let y :=
+          let~ y :=
             M.alloc (|
               BinOp.Wrap.shr
                 (BinOp.Pure.bit_or
@@ -1041,7 +1041,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let x :=
+          let~ x :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1054,7 +1054,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let y :=
+          let~ y :=
             M.alloc (|
               BinOp.Wrap.shr
                 (BinOp.Pure.bit_or
@@ -1150,7 +1150,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let x :=
+          let~ x :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1163,7 +1163,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let y :=
+          let~ y :=
             M.alloc (|
               BinOp.Wrap.shr
                 (BinOp.Pure.bit_or
@@ -1259,7 +1259,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let x :=
+          let~ x :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1272,7 +1272,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let y :=
+          let~ y :=
             M.alloc (|
               BinOp.Wrap.shr
                 (BinOp.Pure.bit_or
@@ -1368,7 +1368,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let x :=
+          let~ x :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1381,7 +1381,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                 [ M.read (| self |); M.read (| other |) ]
               |)
             |) in
-          let y :=
+          let~ y :=
             M.alloc (|
               BinOp.Wrap.shr
                 (BinOp.Pure.bit_or
@@ -1473,7 +1473,7 @@ Module ConditionallySelectable.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.read (| self |),
               M.call_closure (|
@@ -1502,8 +1502,8 @@ Module ConditionallySelectable.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let t := M.copy (| M.read (| a |) |) in
-          let _ :=
+          let~ t := M.copy (| M.read (| a |) |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1516,7 +1516,7 @@ Module ConditionallySelectable.
                 [ M.read (| a |); M.read (| b |); M.read (| choice |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -1557,7 +1557,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -1615,7 +1615,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -1627,7 +1627,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                     |))
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -1662,7 +1662,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -1674,16 +1674,16 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                     |))
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -1723,7 +1723,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -1783,7 +1783,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -1797,7 +1797,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   |)
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -1832,7 +1832,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -1846,16 +1846,16 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                   |)
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -1895,7 +1895,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -1953,7 +1953,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -1965,7 +1965,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                     |))
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2000,7 +2000,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2012,16 +2012,16 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                     |))
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2061,7 +2061,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2121,7 +2121,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2135,7 +2135,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   |)
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2170,7 +2170,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2184,16 +2184,16 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                   |)
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2233,7 +2233,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2291,7 +2291,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2303,7 +2303,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                     |))
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2338,7 +2338,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2350,16 +2350,16 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                     |))
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2399,7 +2399,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2459,7 +2459,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2473,7 +2473,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   |)
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2508,7 +2508,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2522,16 +2522,16 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                   |)
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2571,7 +2571,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2629,7 +2629,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2641,7 +2641,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                     |))
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2676,7 +2676,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.alloc (|
               M.rust_cast
                 (UnOp.Panic.neg (|
@@ -2688,16 +2688,16 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                     |))
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2737,7 +2737,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2797,7 +2797,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let other := M.alloc (| other |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2811,7 +2811,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   |)
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| self |) in
             M.write (|
               β,
@@ -2846,7 +2846,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
         let b := M.alloc (| b |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let mask :=
+          let~ mask :=
             M.copy (|
               M.use
                 (M.alloc (|
@@ -2860,16 +2860,16 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                   |)
                 |))
             |) in
-          let t :=
+          let~ t :=
             M.alloc (|
               BinOp.Pure.bit_and
                 (M.read (| mask |))
                 (BinOp.Pure.bit_xor (M.read (| M.read (| a |) |)) (M.read (| M.read (| b |) |)))
             |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| a |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
-          let _ :=
+          let~ _ :=
             let β := M.read (| b |) in
             M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| t |)) |) in
           M.alloc (| Value.Tuple [] |)
@@ -2955,7 +2955,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
         (let self := M.alloc (| self |) in
         let choice := M.alloc (| choice |) in
         M.read (|
-          let self_neg :=
+          let~ self_neg :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -2968,7 +2968,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                 [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -3241,7 +3241,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let msg := M.alloc (| msg |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -3286,7 +3286,7 @@ Module Impl_subtle_CtOption_T.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -3371,7 +3371,7 @@ Module Impl_subtle_CtOption_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -3416,7 +3416,7 @@ Module Impl_subtle_CtOption_T.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -3698,7 +3698,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let tmp :=
+          let~ tmp :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -3751,7 +3751,7 @@ Module Impl_subtle_CtOption_T.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -3798,7 +3798,7 @@ Module Impl_subtle_CtOption_T.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let is_none :=
+          let~ is_none :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3809,7 +3809,7 @@ Module Impl_subtle_CtOption_T.
                 [ self ]
               |)
             |) in
-          let f :=
+          let~ f :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -3942,7 +3942,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
         (let self := M.alloc (| self |) in
         let rhs := M.alloc (| rhs |) in
         M.read (|
-          let a :=
+          let~ a :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -3953,7 +3953,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
                 [ M.read (| self |) ]
               |)
             |) in
-          let b :=
+          let~ b :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -4093,7 +4093,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let gtb :=
+          let~ gtb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4118,7 +4118,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let ltb :=
+          let~ ltb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4143,8 +4143,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4157,7 +4157,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
@@ -4165,7 +4165,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4177,7 +4177,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4186,12 +4186,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                   ]
                 |)))
             |) in
-          let bit :=
+          let~ bit :=
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4204,7 +4204,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 8) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
@@ -4212,7 +4212,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4224,7 +4224,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4294,7 +4294,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let gtb :=
+          let~ gtb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4319,7 +4319,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let ltb :=
+          let~ ltb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4344,8 +4344,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4358,7 +4358,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
@@ -4366,7 +4366,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4378,7 +4378,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4387,12 +4387,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                   ]
                 |)))
             |) in
-          let bit :=
+          let~ bit :=
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4405,7 +4405,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 16) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
@@ -4413,7 +4413,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4425,7 +4425,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4491,7 +4491,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let gtb :=
+          let~ gtb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4516,7 +4516,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let ltb :=
+          let~ ltb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4541,8 +4541,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4555,7 +4555,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
@@ -4563,7 +4563,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4575,7 +4575,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4584,12 +4584,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                   ]
                 |)))
             |) in
-          let bit :=
+          let~ bit :=
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4602,7 +4602,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 32) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
@@ -4610,7 +4610,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4622,7 +4622,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4688,7 +4688,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let gtb :=
+          let~ gtb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4713,7 +4713,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let ltb :=
+          let~ ltb :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -4738,8 +4738,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ]
               |)
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4752,7 +4752,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := ltb in
                           M.write (|
                             β,
@@ -4760,7 +4760,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| ltb |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4772,7 +4772,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -4781,12 +4781,12 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                   ]
                 |)))
             |) in
-          let bit :=
+          let~ bit :=
             M.alloc (|
               BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.Pure.not (M.read (| ltb |)))
             |) in
-          let pow := M.alloc (| Value.Integer 1 |) in
-          let _ :=
+          let~ pow := M.alloc (| Value.Integer 1 |) in
+          let~ _ :=
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -4799,7 +4799,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                             (M.alloc (| BinOp.Pure.lt (M.read (| pow |)) (Value.Integer 64) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           let β := bit in
                           M.write (|
                             β,
@@ -4807,7 +4807,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                               (M.read (| β |))
                               (BinOp.Wrap.shr (M.read (| bit |)) (M.read (| pow |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β := pow in
                           M.write (|
                             β,
@@ -4819,7 +4819,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)

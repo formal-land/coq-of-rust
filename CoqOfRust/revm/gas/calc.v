@@ -85,7 +85,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let sstore_clears_schedule :=
+                    let~ sstore_clears_schedule :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -208,8 +208,8 @@ Module gas.
                                     sstore_clears_schedule));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let refund := M.alloc (| Value.Integer 0 |) in
-                                    let _ :=
+                                    (let~ refund := M.alloc (| Value.Integer 0 |) in
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -262,7 +262,7 @@ Module gas.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         let β := refund in
                                                         M.write (|
                                                           β,
@@ -303,7 +303,7 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let _ :=
+                                                              let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
@@ -325,7 +325,7 @@ Module gas.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -463,7 +463,7 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let _ :=
+                                                              let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
@@ -483,7 +483,7 @@ Module gas.
                                                               M.alloc (| Value.Tuple [] |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (let _ :=
+                                                              (let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
@@ -654,12 +654,12 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let l := M.alloc (| Value.Integer 256 |) in
-                let i := M.alloc (| Value.Integer 3 |) in
-                let _ :=
+                let~ l := M.alloc (| Value.Integer 256 |) in
+                let~ i := M.alloc (| Value.Integer 3 |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -689,7 +689,7 @@ Module gas.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := l in
                                   M.write (|
                                     β,
@@ -698,7 +698,7 @@ Module gas.
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   let β := l in
                                   M.write (|
                                     β,
@@ -767,7 +767,7 @@ Module gas.
                                 |)))
                           ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -787,7 +787,7 @@ Module gas.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := i in
                         M.write (|
                           β,
@@ -862,7 +862,7 @@ Module gas.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let gas_byte :=
+                        (let~ gas_byte :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -908,7 +908,7 @@ Module gas.
                               ]
                             |)
                           |) in
-                        let gas :=
+                        let~ gas :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -1213,7 +1213,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let base_gas :=
+                let~ base_gas :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1764,7 +1764,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1833,7 +1833,7 @@ Module gas.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let gas_cost :=
+                        let~ gas_cost :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -1843,7 +1843,7 @@ Module gas.
                               [ M.read (| original |); M.read (| current |); M.read (| new |) ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1855,7 +1855,7 @@ Module gas.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := gas_cost in
                                     M.write (|
                                       β,
@@ -2180,7 +2180,7 @@ Module gas.
           (let spec_id := M.alloc (| spec_id |) in
           let res := M.alloc (| res |) in
           M.read (|
-            let should_charge_topup :=
+            let~ should_charge_topup :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2241,7 +2241,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let selfdestruct_gas_topup :=
+            let~ selfdestruct_gas_topup :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2275,7 +2275,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let selfdestruct_gas :=
+            let~ selfdestruct_gas :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2306,14 +2306,14 @@ Module gas.
                   ]
                 |)
               |) in
-            let gas :=
+            let~ gas :=
               M.alloc (|
                 BinOp.Wrap.add
                   Integer.U64
                   (M.read (| selfdestruct_gas |))
                   (M.read (| selfdestruct_gas_topup |))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2417,7 +2417,7 @@ Module gas.
           let is_cold := M.alloc (| is_cold |) in
           let new_account_accounting := M.alloc (| new_account_accounting |) in
           M.read (|
-            let gas :=
+            let~ gas :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2485,7 +2485,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2493,7 +2493,7 @@ Module gas.
                     ltac:(M.monadic
                       (let γ := M.use transfers_value in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := gas in
                         M.write (|
                           β,
@@ -2508,7 +2508,7 @@ Module gas.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2554,7 +2554,7 @@ Module gas.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := gas in
                                         M.write (|
                                           β,
@@ -2573,7 +2573,7 @@ Module gas.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 let β := gas in
                                 M.write (|
                                   β,
@@ -2768,8 +2768,8 @@ Module gas.
           let access_list := M.alloc (| access_list |) in
           let initcodes := M.alloc (| initcodes |) in
           M.read (|
-            let initial_gas := M.alloc (| Value.Integer 0 |) in
-            let zero_data_len :=
+            let~ initial_gas := M.alloc (| Value.Integer 0 |) in
+            let~ zero_data_len :=
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
@@ -2843,7 +2843,7 @@ Module gas.
                     ]
                   |))
               |) in
-            let non_zero_data_len :=
+            let~ non_zero_data_len :=
               M.alloc (|
                 BinOp.Wrap.sub
                   Integer.U64
@@ -2858,7 +2858,7 @@ Module gas.
                     |)))
                   (M.read (| zero_data_len |))
               |) in
-            let _ :=
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -2882,7 +2882,7 @@ Module gas.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -2913,7 +2913,7 @@ Module gas.
                                           0
                                         |) in
                                       let initcode := M.copy (| γ0_0 |) in
-                                      let zeros :=
+                                      let~ zeros :=
                                         M.alloc (|
                                           M.rust_cast
                                             (M.call_closure (|
@@ -3027,7 +3027,7 @@ Module gas.
                                               ]
                                             |))
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := zero_data_len in
                                         M.write (|
                                           β,
@@ -3036,7 +3036,7 @@ Module gas.
                                             (M.read (| β |))
                                             (M.read (| zeros |))
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := non_zero_data_len in
                                         M.write (|
                                           β,
@@ -3074,7 +3074,7 @@ Module gas.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
@@ -3088,7 +3088,7 @@ Module gas.
                       M.get_constant (| "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA" |)
                     |)))
               |) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
@@ -3132,7 +3132,7 @@ Module gas.
                       |)
                     |)))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3156,7 +3156,7 @@ Module gas.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let accessed_slots :=
+                      let~ accessed_slots :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -3269,7 +3269,7 @@ Module gas.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := initial_gas in
                         M.write (|
                           β,
@@ -3306,7 +3306,7 @@ Module gas.
                                 |)
                               |)))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := initial_gas in
                         M.write (|
                           β,
@@ -3326,7 +3326,7 @@ Module gas.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
@@ -3378,7 +3378,7 @@ Module gas.
                     |)
                   |))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [

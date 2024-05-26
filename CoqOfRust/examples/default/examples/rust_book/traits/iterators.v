@@ -32,7 +32,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let current :=
+          let~ current :=
             M.copy (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -40,7 +40,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 "curr"
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -55,7 +55,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -147,14 +147,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let sequence :=
+        let~ sequence :=
           M.alloc (|
             Value.StructRecord
               "core::ops::range::Range"
               [ ("start", Value.Integer 0); ("end_", Value.Integer 3) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -175,8 +175,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -227,8 +227,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -279,8 +279,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -331,8 +331,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -383,8 +383,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -405,7 +405,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -430,7 +430,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -457,8 +457,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let _ :=
-                                    let _ :=
+                                  let~ _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -508,8 +508,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -534,7 +534,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -571,7 +571,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -600,8 +600,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let _ :=
-                                    let _ :=
+                                  let~ _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -651,8 +651,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -677,7 +677,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -735,7 +735,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -768,8 +768,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let i := M.copy (| γ0_0 |) in
-                                  let _ :=
-                                    let _ :=
+                                  let~ _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -819,12 +819,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let array :=
+        let~ array :=
           M.alloc (|
             Value.Array [ Value.Integer 1; Value.Integer 3; Value.Integer 3; Value.Integer 7 ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -896,7 +896,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -923,8 +923,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     0
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
-                                let _ :=
-                                  let _ :=
+                                let~ _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "std::io::stdio::_print", [] |),

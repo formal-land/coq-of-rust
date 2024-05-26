@@ -332,7 +332,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -342,7 +342,7 @@ Module ffi.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -958,7 +958,7 @@ Module ffi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -1044,7 +1044,7 @@ Module ffi.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1063,7 +1063,7 @@ Module ffi.
                                 0
                               |) in
                             let pos := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -1211,7 +1211,7 @@ Module ffi.
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ffi::c_str::const_strlen", [] |),
@@ -1271,7 +1271,7 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let nul_pos :=
+              let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
@@ -1290,7 +1290,7 @@ Module ffi.
                           0
                         |) in
                       let nul_pos := M.copy (| γ0_0 |) in
-                      let subslice :=
+                      let~ subslice :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
@@ -1364,7 +1364,7 @@ Module ffi.
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
-              let nul_pos :=
+              let~ nul_pos :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
@@ -1644,7 +1644,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1915,7 +1915,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2176,8 +2176,8 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
-              let len := M.alloc (| Value.Integer 0 |) in
-              let _ :=
+              let~ len := M.alloc (| Value.Integer 0 |) in
+              let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2203,7 +2203,7 @@ Module ffi.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               let β := len in
                               M.write (|
                                 β,
@@ -2215,7 +2215,7 @@ Module ffi.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)

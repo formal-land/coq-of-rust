@@ -28,12 +28,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 5 |) in
-        let y :=
+        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ y :=
           M.copy (|
-            let x_squared :=
+            let~ x_squared :=
               M.alloc (| BinOp.Wrap.mul Integer.U32 (M.read (| x |)) (M.read (| x |)) |) in
-            let x_cube :=
+            let~ x_cube :=
               M.alloc (| BinOp.Wrap.mul Integer.U32 (M.read (| x_squared |)) (M.read (| x |)) |) in
             M.alloc (|
               BinOp.Wrap.add
@@ -42,13 +42,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.read (| x |))
             |)
           |) in
-        let z :=
+        let~ z :=
           M.copy (|
-            let _ := M.alloc (| BinOp.Wrap.mul Integer.U32 (Value.Integer 2) (M.read (| x |)) |) in
+            let~ _ := M.alloc (| BinOp.Wrap.mul Integer.U32 (Value.Integer 2) (M.read (| x |)) |) in
             M.alloc (| Value.Tuple [] |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -84,8 +84,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -121,8 +121,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

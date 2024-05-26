@@ -173,7 +173,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let x :=
+                    let~ x :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|

@@ -33,7 +33,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let optional :=
+        let~ optional :=
           M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ] |) in
         M.loop (|
           ltac:(M.monadic
@@ -59,8 +59,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 (M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 9) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
-                              let _ :=
+                            let~ _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -86,7 +86,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 optional,
                                 Value.StructTuple "core::option::Option::None" []
@@ -94,8 +94,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let _ :=
-                              let _ :=
+                            (let~ _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -138,7 +138,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 optional,
                                 Value.StructTuple

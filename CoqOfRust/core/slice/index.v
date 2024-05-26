@@ -873,7 +873,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -948,7 +948,7 @@ Module slice.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
@@ -1004,7 +1004,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1318,7 +1318,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1458,7 +1458,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1983,7 +1983,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2082,7 +2082,7 @@ Module slice.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let new_len :=
+              let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
@@ -2157,7 +2157,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2256,7 +2256,7 @@ Module slice.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let new_len :=
+              let~ new_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
@@ -2329,7 +2329,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2478,7 +2478,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3103,7 +3103,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3194,7 +3194,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3641,7 +3641,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3723,7 +3723,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -4140,7 +4140,7 @@ Module slice.
           (let range := M.alloc (| range |) in
           let bounds := M.alloc (| bounds |) in
           M.read (|
-            let len :=
+            let~ len :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   bounds,
@@ -4148,7 +4148,7 @@ Module slice.
                   "end"
                 |)
               |) in
-            let start :=
+            let~ start :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4161,7 +4161,7 @@ Module slice.
                   [ range ]
                 |)
               |) in
-            let start :=
+            let~ start :=
               M.copy (|
                 M.match_operator (|
                   start,
@@ -4228,7 +4228,7 @@ Module slice.
                   ]
                 |)
               |) in
-            let end_ :=
+            let~ end_ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4241,7 +4241,7 @@ Module slice.
                   [ range ]
                 |)
               |) in
-            let end_ :=
+            let~ end_ :=
               M.copy (|
                 M.match_operator (|
                   end_,
@@ -4308,7 +4308,7 @@ Module slice.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4329,7 +4329,7 @@ Module slice.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4396,7 +4396,7 @@ Module slice.
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
                   M.read (|
-                    let start :=
+                    let~ start :=
                       M.copy (|
                         M.match_operator (|
                           start,
@@ -4427,7 +4427,7 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let end_ :=
+                    let~ end_ :=
                       M.copy (|
                         M.match_operator (|
                           end_,
@@ -4514,7 +4514,7 @@ Module slice.
                   M.catch_return (|
                     ltac:(M.monadic
                       (M.read (|
-                        let start :=
+                        let~ start :=
                           M.copy (|
                             M.match_operator (|
                               start,
@@ -4616,7 +4616,7 @@ Module slice.
                               ]
                             |)
                           |) in
-                        let end_ :=
+                        let~ end_ :=
                           M.copy (|
                             M.match_operator (|
                               end_,
@@ -4780,7 +4780,7 @@ Module slice.
                   let start := M.copy (| γ0_0 |) in
                   let end_ := M.copy (| γ0_1 |) in
                   M.read (|
-                    let start :=
+                    let~ start :=
                       M.copy (|
                         M.match_operator (|
                           start,
@@ -4850,7 +4850,7 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let end_ :=
+                    let~ end_ :=
                       M.copy (|
                         M.match_operator (|
                           end_,

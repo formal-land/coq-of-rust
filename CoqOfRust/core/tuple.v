@@ -324,7 +324,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -622,7 +622,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
@@ -683,7 +683,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
@@ -744,7 +744,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
@@ -805,7 +805,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", U, [ U ], "partial_cmp", [] |),
@@ -942,7 +942,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -952,7 +952,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -1305,7 +1305,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
@@ -1338,7 +1338,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1417,7 +1417,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
@@ -1450,7 +1450,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1529,7 +1529,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
@@ -1562,7 +1562,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1644,7 +1644,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", V, [ V ], "partial_cmp", [] |),
@@ -1677,7 +1677,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1854,7 +1854,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -1864,7 +1864,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -1874,7 +1874,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -2288,7 +2288,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
@@ -2321,7 +2321,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2364,7 +2364,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -2454,7 +2454,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
@@ -2487,7 +2487,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2530,7 +2530,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -2620,7 +2620,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
@@ -2653,7 +2653,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2699,7 +2699,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -2789,7 +2789,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", W, [ W ], "partial_cmp", [] |),
@@ -2822,7 +2822,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -2868,7 +2868,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -3072,7 +3072,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -3082,7 +3082,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -3092,7 +3092,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -3102,7 +3102,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -3588,7 +3588,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
@@ -3621,7 +3621,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -3664,7 +3664,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -3716,7 +3716,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -3819,7 +3819,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
@@ -3852,7 +3852,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -3895,7 +3895,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -3947,7 +3947,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -4050,7 +4050,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
@@ -4083,7 +4083,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -4129,7 +4129,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -4181,7 +4181,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -4286,7 +4286,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", X, [ X ], "partial_cmp", [] |),
@@ -4319,7 +4319,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -4365,7 +4365,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -4417,7 +4417,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -4673,7 +4673,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -4683,7 +4683,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -4693,7 +4693,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -4703,7 +4703,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -4713,7 +4713,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -5264,7 +5264,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
@@ -5297,7 +5297,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -5340,7 +5340,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -5392,7 +5392,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -5449,7 +5449,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -5562,7 +5562,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
@@ -5595,7 +5595,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -5638,7 +5638,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -5690,7 +5690,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -5747,7 +5747,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -5860,7 +5860,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
@@ -5893,7 +5893,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -5939,7 +5939,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -5991,7 +5991,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -6050,7 +6050,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -6163,7 +6163,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Y, [ Y ], "partial_cmp", [] |),
@@ -6196,7 +6196,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -6242,7 +6242,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -6294,7 +6294,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -6353,7 +6353,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -6648,7 +6648,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -6658,7 +6658,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -6668,7 +6668,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -6678,7 +6678,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -6688,7 +6688,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -6698,7 +6698,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -7312,7 +7312,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
@@ -7345,7 +7345,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -7388,7 +7388,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -7440,7 +7440,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -7497,7 +7497,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -7562,7 +7562,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -7677,7 +7677,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
@@ -7710,7 +7710,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -7753,7 +7753,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -7805,7 +7805,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -7862,7 +7862,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -7927,7 +7927,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -8042,7 +8042,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
@@ -8075,7 +8075,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -8121,7 +8121,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -8173,7 +8173,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -8232,7 +8232,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -8297,7 +8297,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -8412,7 +8412,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", Z, [ Z ], "partial_cmp", [] |),
@@ -8445,7 +8445,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -8491,7 +8491,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -8543,7 +8543,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -8602,7 +8602,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -8667,7 +8667,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -8995,7 +8995,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -9005,7 +9005,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -9015,7 +9015,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -9025,7 +9025,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -9035,7 +9035,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -9045,7 +9045,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -9055,7 +9055,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -9733,7 +9733,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
@@ -9766,7 +9766,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -9809,7 +9809,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -9861,7 +9861,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -9918,7 +9918,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -9983,7 +9983,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -10048,7 +10048,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -10165,7 +10165,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
@@ -10198,7 +10198,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -10241,7 +10241,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -10293,7 +10293,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -10350,7 +10350,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -10415,7 +10415,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -10480,7 +10480,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -10597,7 +10597,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
@@ -10630,7 +10630,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -10676,7 +10676,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -10728,7 +10728,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -10787,7 +10787,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -10852,7 +10852,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -10917,7 +10917,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -11034,7 +11034,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", A, [ A ], "partial_cmp", [] |),
@@ -11067,7 +11067,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -11113,7 +11113,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -11165,7 +11165,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -11224,7 +11224,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -11289,7 +11289,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -11354,7 +11354,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -11716,7 +11716,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -11726,7 +11726,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -11736,7 +11736,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -11746,7 +11746,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -11756,7 +11756,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -11766,7 +11766,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -11776,7 +11776,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -11786,7 +11786,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -12532,7 +12532,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
@@ -12565,7 +12565,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -12608,7 +12608,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -12660,7 +12660,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -12717,7 +12717,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -12782,7 +12782,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -12847,7 +12847,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -12912,7 +12912,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -13037,7 +13037,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
@@ -13070,7 +13070,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -13113,7 +13113,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -13165,7 +13165,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -13222,7 +13222,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -13287,7 +13287,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -13352,7 +13352,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -13417,7 +13417,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -13542,7 +13542,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
@@ -13575,7 +13575,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -13621,7 +13621,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -13673,7 +13673,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -13732,7 +13732,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -13797,7 +13797,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -13862,7 +13862,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -13927,7 +13927,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -14052,7 +14052,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", B, [ B ], "partial_cmp", [] |),
@@ -14085,7 +14085,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -14131,7 +14131,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -14183,7 +14183,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -14242,7 +14242,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -14307,7 +14307,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -14372,7 +14372,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -14437,7 +14437,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -14843,7 +14843,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
@@ -14853,7 +14853,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -14863,7 +14863,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -14873,7 +14873,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -14883,7 +14883,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -14893,7 +14893,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -14903,7 +14903,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -14913,7 +14913,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -14923,7 +14923,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -15745,7 +15745,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
@@ -15778,7 +15778,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -15821,7 +15821,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -15873,7 +15873,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -15930,7 +15930,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -15995,7 +15995,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -16060,7 +16060,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -16125,7 +16125,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -16192,7 +16192,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -16330,7 +16330,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
@@ -16363,7 +16363,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -16406,7 +16406,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -16458,7 +16458,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -16515,7 +16515,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -16580,7 +16580,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -16645,7 +16645,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -16710,7 +16710,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -16777,7 +16777,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -16915,7 +16915,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
@@ -16948,7 +16948,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -16994,7 +16994,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -17046,7 +17046,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -17105,7 +17105,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -17170,7 +17170,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -17235,7 +17235,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -17300,7 +17300,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -17367,7 +17367,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -17505,7 +17505,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", C, [ C ], "partial_cmp", [] |),
@@ -17538,7 +17538,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -17584,7 +17584,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -17636,7 +17636,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -17695,7 +17695,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -17760,7 +17760,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -17825,7 +17825,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -17890,7 +17890,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -17957,7 +17957,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -18416,7 +18416,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
@@ -18426,7 +18426,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
@@ -18436,7 +18436,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -18446,7 +18446,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -18456,7 +18456,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -18466,7 +18466,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -18476,7 +18476,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -18486,7 +18486,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -18496,7 +18496,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -18506,7 +18506,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -19414,7 +19414,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
@@ -19447,7 +19447,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -19490,7 +19490,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -19542,7 +19542,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -19599,7 +19599,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -19664,7 +19664,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -19729,7 +19729,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -19794,7 +19794,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -19861,7 +19861,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -19939,7 +19939,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -20083,7 +20083,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
@@ -20116,7 +20116,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -20159,7 +20159,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -20211,7 +20211,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -20268,7 +20268,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -20333,7 +20333,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -20398,7 +20398,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -20463,7 +20463,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -20530,7 +20530,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -20608,7 +20608,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -20752,7 +20752,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
@@ -20785,7 +20785,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -20831,7 +20831,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -20883,7 +20883,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -20942,7 +20942,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -21007,7 +21007,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -21072,7 +21072,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -21137,7 +21137,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -21204,7 +21204,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -21282,7 +21282,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -21426,7 +21426,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", D, [ D ], "partial_cmp", [] |),
@@ -21459,7 +21459,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -21505,7 +21505,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -21557,7 +21557,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -21616,7 +21616,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -21681,7 +21681,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -21746,7 +21746,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -21811,7 +21811,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -21878,7 +21878,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -21956,7 +21956,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -22460,7 +22460,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", D, [], "default", [] |),
@@ -22470,7 +22470,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
@@ -22480,7 +22480,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
@@ -22490,7 +22490,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -22500,7 +22500,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -22510,7 +22510,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -22520,7 +22520,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -22530,7 +22530,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -22540,7 +22540,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -22550,7 +22550,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -22560,7 +22560,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),
@@ -23572,7 +23572,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
@@ -23605,7 +23605,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -23648,7 +23648,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -23700,7 +23700,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -23757,7 +23757,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -23822,7 +23822,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -23887,7 +23887,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -23952,7 +23952,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -24019,7 +24019,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -24097,7 +24097,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -24177,7 +24177,7 @@ Module tuple.
                                                                                             |)));
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
-                                                                                            (let
+                                                                                            (let~
                                                                                                   c :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -24329,7 +24329,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
@@ -24362,7 +24362,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -24405,7 +24405,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -24457,7 +24457,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -24514,7 +24514,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -24579,7 +24579,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -24644,7 +24644,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -24709,7 +24709,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -24776,7 +24776,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -24854,7 +24854,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -24934,7 +24934,7 @@ Module tuple.
                                                                                             |)));
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
-                                                                                            (let
+                                                                                            (let~
                                                                                                   c :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -25086,7 +25086,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
@@ -25119,7 +25119,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -25165,7 +25165,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -25217,7 +25217,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -25276,7 +25276,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -25341,7 +25341,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -25406,7 +25406,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -25471,7 +25471,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -25538,7 +25538,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -25616,7 +25616,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -25696,7 +25696,7 @@ Module tuple.
                                                                                             |)));
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
-                                                                                            (let
+                                                                                            (let~
                                                                                                   c :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -25848,7 +25848,7 @@ Module tuple.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let c :=
+            let~ c :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::PartialOrd", E, [ E ], "partial_cmp", [] |),
@@ -25881,7 +25881,7 @@ Module tuple.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let c :=
+                    (let~ c :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -25927,7 +25927,7 @@ Module tuple.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let c :=
+                            (let~ c :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
@@ -25979,7 +25979,7 @@ Module tuple.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let c :=
+                                    (let~ c :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -26038,7 +26038,7 @@ Module tuple.
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let c :=
+                                            (let~ c :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_trait_method (|
@@ -26103,7 +26103,7 @@ Module tuple.
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let c :=
+                                                    (let~ c :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_trait_method (|
@@ -26168,7 +26168,7 @@ Module tuple.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let c :=
+                                                            (let~ c :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -26233,7 +26233,7 @@ Module tuple.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let c :=
+                                                                    (let~ c :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
@@ -26300,7 +26300,7 @@ Module tuple.
                                                                             |)));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
-                                                                            (let c :=
+                                                                            (let~ c :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
                                                                                   M.get_trait_method (|
@@ -26378,7 +26378,7 @@ Module tuple.
                                                                                     |)));
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
-                                                                                    (let c :=
+                                                                                    (let~ c :=
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
                                                                                           M.get_trait_method (|
@@ -26458,7 +26458,7 @@ Module tuple.
                                                                                             |)));
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
-                                                                                            (let
+                                                                                            (let~
                                                                                                   c :=
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
@@ -27011,7 +27011,7 @@ Module tuple.
           (Value.Tuple
             [
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", E, [], "default", [] |),
@@ -27021,7 +27021,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", D, [], "default", [] |),
@@ -27031,7 +27031,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", C, [], "default", [] |),
@@ -27041,7 +27041,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", B, [], "default", [] |),
@@ -27051,7 +27051,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", A, [], "default", [] |),
@@ -27061,7 +27061,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Z, [], "default", [] |),
@@ -27071,7 +27071,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", Y, [], "default", [] |),
@@ -27081,7 +27081,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", X, [], "default", [] |),
@@ -27091,7 +27091,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", W, [], "default", [] |),
@@ -27101,7 +27101,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", V, [], "default", [] |),
@@ -27111,7 +27111,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", U, [], "default", [] |),
@@ -27121,7 +27121,7 @@ Module tuple.
                 x
               |);
               M.read (|
-                let x :=
+                let~ x :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (| "core::default::Default", T, [], "default", [] |),

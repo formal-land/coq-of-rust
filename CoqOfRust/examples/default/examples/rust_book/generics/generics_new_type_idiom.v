@@ -119,9 +119,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let age :=
+        let~ age :=
           M.alloc (| Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer 5 ] |) in
-        let age_days :=
+        let~ age_days :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -132,8 +132,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ age ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -180,8 +180,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

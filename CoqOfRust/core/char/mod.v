@@ -210,11 +210,11 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 10
               |) in
-            let range :=
+            let~ range :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::escape::escape_unicode_into", [] |),
@@ -299,7 +299,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -617,7 +617,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data := M.alloc (| Value.Array [ M.read (| chr |) ] |) in
+            let~ data := M.alloc (| Value.Array [ M.read (| chr |) ] |) in
             M.alloc (|
               Value.StructTuple
                 "core::char::EscapeDefault"
@@ -650,7 +650,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 Value.Array
                   [
@@ -758,7 +758,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1270,7 +1270,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 Value.Array
                   [
@@ -1278,7 +1278,7 @@ Module char.
                     M.read (| chr |)
                   ]
               |) in
-            let iter :=
+            let~ iter :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1338,7 +1338,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let bytes :=
+            let~ bytes :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1349,7 +1349,7 @@ Module char.
                   [ Value.Array [] ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
@@ -1440,7 +1440,7 @@ Module char.
                         0
                       |) in
                     let chr := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1472,7 +1472,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -2662,7 +2662,7 @@ Module char.
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     let c := M.copy (| γ0_2 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple
@@ -2688,7 +2688,7 @@ Module char.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     let c := M.copy (| γ0_1 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| c |) ]
@@ -2705,7 +2705,7 @@ Module char.
                         0
                       |) in
                     let c := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::Zero" []
@@ -2738,7 +2738,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let size :=
+            let~ size :=
               M.copy (|
                 M.match_operator (|
                   self,
@@ -2846,7 +2846,7 @@ Module char.
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     let c := M.copy (| γ0_2 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple
@@ -2872,7 +2872,7 @@ Module char.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     let c := M.copy (| γ0_1 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| b |) ]
@@ -2889,7 +2889,7 @@ Module char.
                         0
                       |) in
                     let c := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::Zero" []
@@ -2968,7 +2968,7 @@ Module char.
                         let a := M.copy (| γ0_0 |) in
                         let b := M.copy (| γ0_1 |) in
                         let c := M.copy (| γ0_2 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -3044,7 +3044,7 @@ Module char.
                                   val))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -3148,7 +3148,7 @@ Module char.
                           |) in
                         let b := M.copy (| γ0_0 |) in
                         let c := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|

@@ -119,8 +119,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let my_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let get_lemon_as_fallback :=
+        let~ my_fruit := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ get_lemon_as_fallback :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -133,8 +133,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -174,7 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let first_available_fruit :=
+        let~ first_available_fruit :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -191,8 +191,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ my_fruit; M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -238,8 +238,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -285,7 +285,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let my_apple :=
+        let~ my_apple :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
@@ -295,7 +295,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   []
               ]
           |) in
-        let should_be_apple :=
+        let~ should_be_apple :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -312,8 +312,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ my_apple; M.read (| get_lemon_as_fallback |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -359,8 +359,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

@@ -23,7 +23,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _a := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -47,7 +47,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -99,7 +99,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let file :=
+          let~ file :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -178,7 +178,7 @@ Module tests.
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -204,7 +204,7 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -274,7 +274,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let file :=
+          let~ file :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -353,7 +353,7 @@ Module tests.
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -379,7 +379,7 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|

@@ -171,14 +171,14 @@ Module char.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let digit :=
+                  let~ digit :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
                         [ M.rust_cast (M.read (| self |)); M.rust_cast (Value.UnicodeChar 48) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -191,7 +191,7 @@ Module char.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -242,7 +242,7 @@ Module char.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -272,7 +272,7 @@ Module char.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 digit,
                                 M.call_closure (|
@@ -818,7 +818,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let ch := M.alloc (| M.rust_cast (M.read (| self |)) |) in
+              let~ ch := M.alloc (| M.rust_cast (M.read (| self |)) |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1477,7 +1477,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -1504,7 +1504,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -2123,14 +2123,14 @@ Module char.
           (let code := M.alloc (| code |) in
           let dst := M.alloc (| dst |) in
           M.read (|
-            let len :=
+            let~ len :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::char::methods::len_utf8", [] |),
                   [ M.read (| code |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (|
                   Value.Tuple
@@ -2159,7 +2159,7 @@ Module char.
                       let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                       let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
-                      let _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
+                      let~ _ := M.write (| M.read (| a |), M.rust_cast (M.read (| code |)) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2173,7 +2173,7 @@ Module char.
                       let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
                       let a := M.alloc (| γ2_0 |) in
                       let b := M.alloc (| γ2_1 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| a |),
                           BinOp.Pure.bit_or
@@ -2183,7 +2183,7 @@ Module char.
                                 (Value.Integer 31)))
                             (M.read (| M.get_constant (| "core::char::TAG_TWO_B" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| b |),
                           BinOp.Pure.bit_or
@@ -2206,7 +2206,7 @@ Module char.
                       let a := M.alloc (| γ2_0 |) in
                       let b := M.alloc (| γ2_1 |) in
                       let c := M.alloc (| γ2_2 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| a |),
                           BinOp.Pure.bit_or
@@ -2216,7 +2216,7 @@ Module char.
                                 (Value.Integer 15)))
                             (M.read (| M.get_constant (| "core::char::TAG_THREE_B" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| b |),
                           BinOp.Pure.bit_or
@@ -2226,7 +2226,7 @@ Module char.
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| c |),
                           BinOp.Pure.bit_or
@@ -2251,7 +2251,7 @@ Module char.
                       let b := M.alloc (| γ2_1 |) in
                       let c := M.alloc (| γ2_2 |) in
                       let d := M.alloc (| γ2_3 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| a |),
                           BinOp.Pure.bit_or
@@ -2261,7 +2261,7 @@ Module char.
                                 (Value.Integer 7)))
                             (M.read (| M.get_constant (| "core::char::TAG_FOUR_B" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| b |),
                           BinOp.Pure.bit_or
@@ -2271,7 +2271,7 @@ Module char.
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| c |),
                           BinOp.Pure.bit_or
@@ -2281,7 +2281,7 @@ Module char.
                                 (Value.Integer 63)))
                             (M.read (| M.get_constant (| "core::char::TAG_CONT" |) |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| d |),
                           BinOp.Pure.bit_or
@@ -2445,7 +2445,7 @@ Module char.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.read (|
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2503,7 +2503,7 @@ Module char.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   let β := code in
                                   M.write (|
                                     β,
@@ -2512,7 +2512,7 @@ Module char.
                                       (M.read (| β |))
                                       (Value.Integer 65536)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -2527,7 +2527,7 @@ Module char.
                                       (M.rust_cast
                                         (BinOp.Wrap.shr (M.read (| code |)) (Value.Integer 10)))
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.call_closure (|
                                       M.get_associated_function (|

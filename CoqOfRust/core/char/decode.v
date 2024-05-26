@@ -371,7 +371,7 @@ Module char.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let u :=
+                  let~ u :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -560,7 +560,7 @@ Module char.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let u2 :=
+                                  (let~ u2 :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -616,7 +616,7 @@ Module char.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -643,7 +643,7 @@ Module char.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.write (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
@@ -673,7 +673,7 @@ Module char.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let c :=
+                                  let~ c :=
                                     M.alloc (|
                                       BinOp.Wrap.add
                                         Integer.U32
@@ -881,7 +881,7 @@ Module char.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let low_buf := M.copy (| γ0_0 |) in
                               let high_buf := M.copy (| γ0_1 |) in
-                              let low :=
+                              let~ low :=
                                 M.alloc (|
                                   BinOp.Wrap.add
                                     Integer.Usize
@@ -895,7 +895,7 @@ Module char.
                                     |))
                                     (M.read (| low_buf |))
                                 |) in
-                              let high :=
+                              let~ high :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|

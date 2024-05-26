@@ -66,15 +66,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let status := M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
-        let work := M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
-        let _ :=
+        let~ status := M.alloc (| Value.StructTuple "enums_use::Status::Poor" [] |) in
+        let~ work := M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
+        let~ _ :=
           M.match_operator (|
             status,
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
+                  (let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -101,7 +101,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
+                  (let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -133,7 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -159,7 +159,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

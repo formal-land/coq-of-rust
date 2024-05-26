@@ -179,7 +179,7 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -187,8 +187,8 @@ Module Impl_updated_incrementer_Incrementer.
                 "count"
               |) in
             M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 4) |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -280,7 +280,7 @@ Module Impl_updated_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -344,8 +344,8 @@ Module Impl_updated_incrementer_Incrementer.
                 ]
               |)
             |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),

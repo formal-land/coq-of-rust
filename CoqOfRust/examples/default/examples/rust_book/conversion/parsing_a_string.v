@@ -13,21 +13,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "i32" ] |),
               [ M.read (| Value.String "12" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "bool" ] |),
               [ M.read (| Value.String "true" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "parse", [ Ty.path "u32" ] |),

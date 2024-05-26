@@ -325,7 +325,7 @@ Module Impl_mapping_integration_tests_Mappings.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let balances :=
+          let~ balances :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -363,7 +363,7 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -423,7 +423,7 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -484,7 +484,7 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -543,7 +543,7 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -603,7 +603,7 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -625,7 +625,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -665,7 +665,7 @@ Module Impl_mapping_integration_tests_Mappings.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|

@@ -74,8 +74,8 @@ Definition borrow_book (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -155,7 +155,7 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let book := M.alloc (| book |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.write (|
             M.SubPointer.get_struct_record_field (|
               M.read (| book |),
@@ -164,8 +164,8 @@ Definition new_edition (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             Value.Integer 2014
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -265,7 +265,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let immutabook :=
+        let~ immutabook :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
@@ -276,22 +276,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("year", Value.Integer 1979)
               ]
           |) in
-        let mutabook := M.copy (| immutabook |) in
-        let _ :=
+        let~ mutabook := M.copy (| immutabook |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |),
               [ immutabook ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [] |),
               [ mutabook ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [] |),

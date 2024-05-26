@@ -4,6 +4,7 @@ Require Import CoqOfRust.simulations.M.
 Require core.num.mod.
 Require core.num.simulations.mod.
 Require core.simulations.clone.
+Require core.simulations.cmp.
 Require core.simulations.default.
 
 Require Import revm.gas.
@@ -85,11 +86,8 @@ Module Impl_Clone.
   Proof.
     constructor.
     { eexists; split.
-      { unfold IsTraitMethod.
-        eexists; split.
-        { cbn.
-          apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements.
-        }
+      { eapply IsTraitMethod.Explicit.
+        { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
         { reflexivity. }
       }
       { intros state pointer [value H_pointer] **.
@@ -108,11 +106,8 @@ Module Impl_Default.
   Proof.
     constructor.
     { eexists; split.
-      { unfold IsTraitMethod.
-        eexists; split.
-        { cbn.
-          apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements.
-        }
+      { eapply IsTraitMethod.Explicit.
+        { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements. }
         { reflexivity. }
       }
       { intros.
@@ -165,9 +160,9 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_new (limit : Z) :
-    {{ _, _, _ |
+    {{ _, _ |
       gas.Impl_revm_interpreter_gas_Gas.new [] [φ limit] ⇓
-      (fun (v : Gas.t) => inl (φ v))
+      fun (v : Gas.t) => inl (φ v)
     | _ }}.
   Proof.
     intros.
@@ -185,9 +180,9 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_new_spent (limit : Z) :
-    {{ _, _, _ |
+    {{ _, _ |
       gas.Impl_revm_interpreter_gas_Gas.new_spent [] [φ limit] ⇓
-      (fun (v : Gas.t) => inl (φ v))
+      fun (v : Gas.t) => inl (φ v)
     | _ }}.
   Proof.
     intros.
@@ -201,11 +196,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_limit (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.limit [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -220,11 +215,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_memory (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.memory [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -237,11 +232,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_refunded (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.refunded [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -256,11 +251,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_spent (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.spent [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -277,11 +272,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_spend (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.spend [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -302,11 +297,11 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_remaining (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.remaining [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : Z) => inl (φ v))
+      fun (v : Z) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
@@ -321,18 +316,22 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_erase_cost (state : State.t) (returned : Z) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ);
         φ returned
       ] ⇓
-      (fun (v : unit) => inl (φ v))
+      fun (v : unit) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
     run_symbolic.
     apply (SubPointer.run Gas.SubPointer.get_remaining_is_valid); [reflexivity|].
     run_symbolic.
+    eapply Run.Let with (P_state_inter := fun _ => True). {
+      run_symbolic.
+    }
+    intros; run_symbolic.
     now instantiate (1 := tt).
   Defined.
 
@@ -342,17 +341,21 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_spend_all (state : State.t) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.spend_all [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ)
       ] ⇓
-      (fun (v : unit) => inl (φ v))
+      fun (v : unit) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
     run_symbolic.
-    apply (SubPointer.run Gas.SubPointer.get_remaining_is_valid); [reflexivity|].
-    run_symbolic.
+    eapply Run.Let with (P_state_inter := fun _ => True). {
+      run_symbolic.
+      apply (SubPointer.run Gas.SubPointer.get_remaining_is_valid); [reflexivity|].
+      run_symbolic.
+    }
+    intros; run_symbolic.
     now instantiate (1 := tt).
   Defined.
 
@@ -362,18 +365,22 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_record_refund (state : State.t) (refund : Z) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.record_refund [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ);
         φ refund
       ] ⇓
-      (fun (v : unit) => inl (φ v))
+      fun (v : unit) => inl (φ v)
     | fun _ => True }}.
   Proof.
     intros.
     run_symbolic.
     apply (SubPointer.run Gas.SubPointer.get_refunded_is_valid); [reflexivity|].
     run_symbolic.
+    eapply Run.Let with (P_state_inter := fun _ => True). {
+      run_symbolic.
+    }
+    intros; run_symbolic.
     now instantiate (1 := tt).
   Defined.
 
@@ -384,21 +391,27 @@ Module Impl_revm_interpreter_gas_Gas.
       }
   *)
   Definition run_set_final_refund (state : State.t) (is_london : bool) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ);
         φ is_london
       ] ⇓
-      (fun (v : unit) => inl (φ v))
+      fun (v : unit) => inl (φ v)
     | fun _ => True }}.
   Proof.
-    intros.
-    run_symbolic.
-    destruct is_london; run_symbolic.
+    intros; run_symbolic.
+    eapply Run.Let with (P_state_inter := fun _ => True). {
+      run_symbolic.
+      destruct is_london; run_symbolic.
+    }
+    intros; run_symbolic.
+    eapply Run.Let with (P_state_inter := fun _ => True). {
+      run_symbolic.
+      apply (SubPointer.run Gas.SubPointer.get_refunded_is_valid); [reflexivity|].
   Admitted.
 
   (* Definition run_record_cost (state : State.t) (cost : Z) :
-    {{ _, _, state |
+    {{ _, state |
       gas.Impl_revm_interpreter_gas_Gas.record_cost [] [
         Value.Pointer (Pointer.mutable (A := Gas.t) tt φ);
         φ cost
@@ -439,7 +452,7 @@ Module Test.
 
   Goal
     fst (evaluate (
-      Impl_revm_interpreter_gas_Gas.run_spent dummy_gas unit tt (fun _ => Value.Tuple [])
+      Impl_revm_interpreter_gas_Gas.run_spent dummy_gas (Value.Tuple [])
     )) =
     88.
     reflexivity.

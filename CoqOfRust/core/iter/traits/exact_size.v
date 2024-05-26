@@ -32,7 +32,7 @@ Module iter.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let lower := M.copy (| γ0_0 |) in
                         let upper := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               Value.Tuple
@@ -87,7 +87,7 @@ Module iter.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let kind :=
+                                                let~ kind :=
                                                   M.alloc (|
                                                     Value.StructTuple
                                                       "core::panicking::AssertKind::Eq"

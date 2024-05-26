@@ -84,7 +84,7 @@ Module vec.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let has_advanced :=
+                  let~ has_advanced :=
                     M.alloc (|
                       BinOp.Pure.ne
                         (M.rust_cast
@@ -114,7 +114,7 @@ Module vec.
                           |)
                         |))
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -156,7 +156,7 @@ Module vec.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let it :=
+                                  let~ it :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -173,7 +173,7 @@ Module vec.
                                         [ M.read (| iterator |) ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -185,7 +185,7 @@ Module vec.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_function (|
@@ -404,7 +404,7 @@ Module vec.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let vec :=
+                  let~ vec :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -417,7 +417,7 @@ Module vec.
                         []
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|

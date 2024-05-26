@@ -34,7 +34,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [

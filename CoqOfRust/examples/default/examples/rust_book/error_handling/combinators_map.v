@@ -486,7 +486,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let food := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -531,7 +531,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -585,20 +585,20 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let apple :=
+        let~ apple :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "combinators_map::Food::Apple" [] ]
           |) in
-        let carrot :=
+        let~ carrot :=
           M.alloc (|
             Value.StructTuple
               "core::option::Option::Some"
               [ Value.StructTuple "combinators_map::Food::Carrot" [] ]
           |) in
-        let potato := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let cooked_apple :=
+        let~ potato := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ cooked_apple :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::cook", [] |),
@@ -615,7 +615,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let cooked_carrot :=
+        let~ cooked_carrot :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::cook", [] |),
@@ -632,28 +632,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let cooked_potato :=
+        let~ cooked_potato :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::process", [] |),
               [ M.read (| potato |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::eat", [] |),
               [ M.read (| cooked_apple |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::eat", [] |),
               [ M.read (| cooked_carrot |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "combinators_map::eat", [] |),

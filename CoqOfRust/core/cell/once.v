@@ -225,7 +225,7 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -263,7 +263,7 @@ Module cell.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let slot :=
+                  let~ slot :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -425,7 +425,7 @@ Module cell.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -463,7 +463,7 @@ Module cell.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let val :=
+                  let~ val :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -723,7 +723,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let d :=
+              let~ d :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -734,7 +734,7 @@ Module cell.
                     [ M.read (| f |); M.read (| Value.String "OnceCell" |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -845,7 +845,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let res :=
+              let~ res :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -856,7 +856,7 @@ Module cell.
                     []
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

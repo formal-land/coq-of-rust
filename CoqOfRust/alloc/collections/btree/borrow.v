@@ -62,7 +62,7 @@ Module collections.
             ltac:(M.monadic
               (let t := M.alloc (| t |) in
               M.read (|
-                let ptr :=
+                let~ ptr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -75,7 +75,7 @@ Module collections.
                       [ M.read (| t |) ]
                     |)
                   |) in
-                let new_ref :=
+                let~ new_ref :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|

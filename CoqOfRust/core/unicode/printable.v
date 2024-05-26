@@ -50,10 +50,10 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let xupper :=
+                let~ xupper :=
                   M.alloc (| M.rust_cast (BinOp.Wrap.shr (M.read (| x |)) (Value.Integer 8)) |) in
-                let lowerstart := M.alloc (| Value.Integer 0 |) in
-                let _ :=
+                let~ lowerstart := M.alloc (| Value.Integer 0 |) in
+                let~ _ :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
@@ -80,7 +80,7 @@ Module unicode.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -115,14 +115,14 @@ Module unicode.
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let upper := M.copy (| γ2_0 |) in
                                           let lowercount := M.copy (| γ2_1 |) in
-                                          let lowerend :=
+                                          let~ lowerend :=
                                             M.alloc (|
                                               BinOp.Wrap.add
                                                 Integer.Usize
                                                 (M.read (| lowerstart |))
                                                 (M.rust_cast (M.read (| lowercount |)))
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -194,7 +194,7 @@ Module unicode.
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
                                                                 ltac:(M.monadic
-                                                                  (let _ :=
+                                                                  (let~ _ :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
@@ -314,7 +314,7 @@ Module unicode.
                                                     |)))
                                               ]
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (| lowerstart, M.read (| lowerend |) |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -323,8 +323,8 @@ Module unicode.
                             |)))
                       ]
                     |)) in
-                let x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
-                let normal :=
+                let~ x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+                let~ normal :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -346,8 +346,8 @@ Module unicode.
                       ]
                     |)
                   |) in
-                let current := M.alloc (| Value.Bool true |) in
-                let _ :=
+                let~ current := M.alloc (| Value.Bool true |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -381,7 +381,7 @@ Module unicode.
                                   0
                                 |) in
                               let v := M.copy (| γ0_0 |) in
-                              let len :=
+                              let~ len :=
                                 M.copy (|
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -446,13 +446,13 @@ Module unicode.
                                     ]
                                   |)
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 let β := x in
                                 M.write (|
                                   β,
                                   BinOp.Wrap.sub Integer.I32 (M.read (| β |)) (M.read (| len |))
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -474,7 +474,7 @@ Module unicode.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (| current, UnOp.Pure.not (M.read (| current |)) |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
@@ -482,7 +482,7 @@ Module unicode.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -556,8 +556,8 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
-                let lower := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+                let~ x := M.alloc (| M.rust_cast (M.read (| x |)) |) in
+                let~ lower := M.alloc (| M.rust_cast (M.read (| x |)) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -676,7 +676,7 @@ Module unicode.
                                                 |)));
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let _ :=
+                                                (let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -712,7 +712,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -748,7 +748,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -784,7 +784,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -820,7 +820,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -856,7 +856,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -892,7 +892,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -928,7 +928,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -964,7 +964,7 @@ Module unicode.
                                                           (M.alloc (| Value.Tuple [] |)))
                                                     ]
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [

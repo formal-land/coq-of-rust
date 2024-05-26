@@ -17,11 +17,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 3 |) in
-        let _ :=
-          let _ := InlineAssembly in
+        let~ x := M.alloc (| Value.Integer 3 |) in
+        let~ _ :=
+          let~ _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [ x; M.alloc (| Value.Integer 8 |) ] |),
             [
@@ -49,7 +49,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

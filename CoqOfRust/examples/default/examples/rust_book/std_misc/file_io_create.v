@@ -38,21 +38,21 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let path :=
+        let~ path :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "new", [ Ty.path "str" ] |),
               [ M.read (| Value.String "lorem_ipsum.txt" |) ]
             |)
           |) in
-        let display :=
+        let~ display :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "std::path::Path", "display", [] |),
               [ M.read (| path |) ]
             |)
           |) in
-        let file :=
+        let~ file :=
           M.copy (|
             M.match_operator (|
               M.alloc (|
@@ -213,7 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

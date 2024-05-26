@@ -179,7 +179,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let digit := M.alloc (| digit |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -202,7 +202,7 @@ Module num.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 M.SubPointer.get_struct_record_field (|
@@ -222,7 +222,7 @@ Module num.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -262,7 +262,7 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -271,7 +271,7 @@ Module num.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -368,7 +368,7 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -385,7 +385,7 @@ Module num.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -436,7 +436,7 @@ Module num.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -512,7 +512,7 @@ Module num.
                               |)))
                         ]
                       |) in
-                    let dp :=
+                    let~ dp :=
                       M.alloc (|
                         M.rust_cast
                           (M.read (|
@@ -523,8 +523,8 @@ Module num.
                             |)
                           |))
                       |) in
-                    let n := M.alloc (| Value.Integer 0 |) in
-                    let _ :=
+                    let~ n := M.alloc (| Value.Integer 0 |) in
+                    let~ _ :=
                       M.use
                         (M.match_operator (|
                           M.alloc (|
@@ -549,7 +549,7 @@ Module num.
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -580,7 +580,7 @@ Module num.
                                                   0
                                                 |) in
                                               let i := M.copy (| γ0_0 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 let β := n in
                                                 M.write (|
                                                   β,
@@ -612,7 +612,7 @@ Module num.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         let β := n in
                                                         M.write (|
                                                           β,
@@ -642,8 +642,8 @@ Module num.
                                 |)))
                           ]
                         |)) in
-                    let round_up := M.alloc (| Value.Bool false |) in
-                    let _ :=
+                    let~ round_up := M.alloc (| Value.Bool false |) in
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -667,7 +667,7 @@ Module num.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   round_up,
                                   BinOp.Pure.ge
@@ -766,7 +766,7 @@ Module num.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -778,7 +778,7 @@ Module num.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 let β := n in
                                 M.write (|
                                   β,
@@ -846,7 +846,7 @@ Module num.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -876,7 +876,7 @@ Module num.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let num_new_digits :=
+                    let~ num_new_digits :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -886,7 +886,7 @@ Module num.
                           [ M.read (| self |); M.read (| shift |) ]
                         |)
                       |) in
-                    let read_index :=
+                    let~ read_index :=
                       M.copy (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -894,7 +894,7 @@ Module num.
                           "num_digits"
                         |)
                       |) in
-                    let write_index :=
+                    let~ write_index :=
                       M.alloc (|
                         BinOp.Wrap.add
                           Integer.Usize
@@ -907,8 +907,8 @@ Module num.
                           |))
                           (M.read (| num_new_digits |))
                       |) in
-                    let n := M.alloc (| Value.Integer 0 |) in
-                    let _ :=
+                    let~ n := M.alloc (| Value.Integer 0 |) in
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -926,7 +926,7 @@ Module num.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := read_index in
                                     M.write (|
                                       β,
@@ -935,7 +935,7 @@ Module num.
                                         (M.read (| β |))
                                         (Value.Integer 1)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := write_index in
                                     M.write (|
                                       β,
@@ -944,7 +944,7 @@ Module num.
                                         (M.read (| β |))
                                         (Value.Integer 1)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := n in
                                     M.write (|
                                       β,
@@ -965,11 +965,11 @@ Module num.
                                             |)))
                                           (M.read (| shift |)))
                                     |) in
-                                  let quotient :=
+                                  let~ quotient :=
                                     M.alloc (|
                                       BinOp.Wrap.div Integer.U64 (M.read (| n |)) (Value.Integer 10)
                                     |) in
-                                  let remainder :=
+                                  let~ remainder :=
                                     M.alloc (|
                                       BinOp.Wrap.sub
                                         Integer.U64
@@ -979,7 +979,7 @@ Module num.
                                           (Value.Integer 10)
                                           (M.read (| quotient |)))
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1001,7 +1001,7 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_array_field (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1033,7 +1033,7 @@ Module num.
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.write (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.read (| self |),
@@ -1049,14 +1049,14 @@ Module num.
                                             |)))
                                       ]
                                     |) in
-                                  let _ := M.write (| n, M.read (| quotient |) |) in
+                                  let~ _ := M.write (| n, M.read (| quotient |) |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1067,7 +1067,7 @@ Module num.
                             ]
                           |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -1085,7 +1085,7 @@ Module num.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := write_index in
                                     M.write (|
                                       β,
@@ -1094,11 +1094,11 @@ Module num.
                                         (M.read (| β |))
                                         (Value.Integer 1)
                                     |) in
-                                  let quotient :=
+                                  let~ quotient :=
                                     M.alloc (|
                                       BinOp.Wrap.div Integer.U64 (M.read (| n |)) (Value.Integer 10)
                                     |) in
-                                  let remainder :=
+                                  let~ remainder :=
                                     M.alloc (|
                                       BinOp.Wrap.sub
                                         Integer.U64
@@ -1108,7 +1108,7 @@ Module num.
                                           (Value.Integer 10)
                                           (M.read (| quotient |)))
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1130,7 +1130,7 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.write (|
                                                 M.SubPointer.get_array_field (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -1162,7 +1162,7 @@ Module num.
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.write (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.read (| self |),
@@ -1178,14 +1178,14 @@ Module num.
                                             |)))
                                       ]
                                     |) in
-                                  let _ := M.write (| n, M.read (| quotient |) |) in
+                                  let~ _ := M.write (| n, M.read (| quotient |) |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1196,7 +1196,7 @@ Module num.
                             ]
                           |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1207,7 +1207,7 @@ Module num.
                         β,
                         BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| num_new_digits |))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -1235,7 +1235,7 @@ Module num.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -1250,7 +1250,7 @@ Module num.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1264,7 +1264,7 @@ Module num.
                           (M.read (| β |))
                           (M.rust_cast (M.read (| num_new_digits |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1341,10 +1341,10 @@ Module num.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let read_index := M.alloc (| Value.Integer 0 |) in
-                    let write_index := M.alloc (| Value.Integer 0 |) in
-                    let n := M.alloc (| Value.Integer 0 |) in
-                    let _ :=
+                    let~ read_index := M.alloc (| Value.Integer 0 |) in
+                    let~ write_index := M.alloc (| Value.Integer 0 |) in
+                    let~ n := M.alloc (| Value.Integer 0 |) in
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -1387,7 +1387,7 @@ Module num.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               n,
                                               BinOp.Wrap.add
@@ -1408,7 +1408,7 @@ Module num.
                                                     |)
                                                   |)))
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := read_index in
                                             M.write (|
                                               β,
@@ -1447,7 +1447,7 @@ Module num.
                                                   (M.alloc (|
                                                     M.never_to_any (|
                                                       M.read (|
-                                                        let _ :=
+                                                        let~ _ :=
                                                           M.loop (|
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
@@ -1471,7 +1471,7 @@ Module num.
                                                                           M.read (| γ |),
                                                                           Value.Bool true
                                                                         |) in
-                                                                      let _ :=
+                                                                      let~ _ :=
                                                                         let β := n in
                                                                         M.write (|
                                                                           β,
@@ -1480,7 +1480,7 @@ Module num.
                                                                             (M.read (| β |))
                                                                             (Value.Integer 10)
                                                                         |) in
-                                                                      let _ :=
+                                                                      let~ _ :=
                                                                         let β := read_index in
                                                                         M.write (|
                                                                           β,
@@ -1497,7 +1497,7 @@ Module num.
                                                                       (M.alloc (|
                                                                         M.never_to_any (|
                                                                           M.read (|
-                                                                            let _ :=
+                                                                            let~ _ :=
                                                                               M.alloc (|
                                                                                 M.never_to_any (|
                                                                                   M.read (|
@@ -1527,7 +1527,7 @@ Module num.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1538,7 +1538,7 @@ Module num.
                             ]
                           |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1555,7 +1555,7 @@ Module num.
                             (M.rust_cast (M.read (| read_index |)))
                             (Value.Integer 1))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -1589,7 +1589,7 @@ Module num.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1598,7 +1598,7 @@ Module num.
                                         |),
                                         Value.Integer 0
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1607,7 +1607,7 @@ Module num.
                                         |),
                                         Value.Integer 0
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1623,14 +1623,14 @@ Module num.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let mask :=
+                    let~ mask :=
                       M.alloc (|
                         BinOp.Wrap.sub
                           Integer.U64
                           (BinOp.Wrap.shl (Value.Integer 1) (M.read (| shift |)))
                           (Value.Integer 1)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -1656,12 +1656,12 @@ Module num.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let new_digit :=
+                                  let~ new_digit :=
                                     M.alloc (|
                                       M.rust_cast
                                         (BinOp.Wrap.shr (M.read (| n |)) (M.read (| shift |)))
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       n,
                                       BinOp.Wrap.add
@@ -1682,7 +1682,7 @@ Module num.
                                             |)
                                           |)))
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := read_index in
                                     M.write (|
                                       β,
@@ -1691,7 +1691,7 @@ Module num.
                                         (M.read (| β |))
                                         (Value.Integer 1)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_array_field (|
                                         M.SubPointer.get_struct_record_field (|
@@ -1703,7 +1703,7 @@ Module num.
                                       |),
                                       M.read (| new_digit |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := write_index in
                                     M.write (|
                                       β,
@@ -1718,7 +1718,7 @@ Module num.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1729,7 +1729,7 @@ Module num.
                             ]
                           |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -1747,12 +1747,12 @@ Module num.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let new_digit :=
+                                  let~ new_digit :=
                                     M.alloc (|
                                       M.rust_cast
                                         (BinOp.Wrap.shr (M.read (| n |)) (M.read (| shift |)))
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       n,
                                       BinOp.Wrap.mul
@@ -1781,7 +1781,7 @@ Module num.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               M.SubPointer.get_array_field (|
                                                 M.SubPointer.get_struct_record_field (|
@@ -1793,7 +1793,7 @@ Module num.
                                               |),
                                               M.read (| new_digit |)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := write_index in
                                             M.write (|
                                               β,
@@ -1822,7 +1822,7 @@ Module num.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.write (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
@@ -1843,7 +1843,7 @@ Module num.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -1854,7 +1854,7 @@ Module num.
                             ]
                           |)))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -1863,7 +1863,7 @@ Module num.
                         |),
                         M.read (| write_index |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1967,7 +1967,7 @@ Module num.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
-              let d :=
+              let~ d :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1980,8 +1980,8 @@ Module num.
                     []
                   |)
                 |) in
-              let start := M.copy (| s |) in
-              let _ :=
+              let~ start := M.copy (| s |) in
+              let~ _ :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2015,14 +2015,14 @@ Module num.
                                 Value.Integer 48
                               |) in
                             let s_next := M.copy (| γ1_1 |) in
-                            let _ := M.write (| s, M.read (| s_next |) |) in
+                            let~ _ := M.write (| s, M.read (| s_next |) |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -2031,7 +2031,7 @@ Module num.
                       ]
                     |)))
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   s,
                   M.call_closure (|
@@ -2070,7 +2070,7 @@ Module num.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2099,9 +2099,9 @@ Module num.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 46 |) in
                         let s_next := M.copy (| γ1_1 |) in
-                        let _ := M.write (| s, M.read (| s_next |) |) in
-                        let first := M.copy (| s |) in
-                        let _ :=
+                        let~ _ := M.write (| s, M.read (| s_next |) |) in
+                        let~ first := M.copy (| s |) in
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2160,14 +2160,14 @@ Module num.
                                                   Value.Integer 48
                                                 |) in
                                               let s_next := M.copy (| γ1_1 |) in
-                                              let _ := M.write (| s, M.read (| s_next |) |) in
+                                              let~ _ := M.write (| s, M.read (| s_next |) |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.alloc (|
                                                         M.never_to_any (|
                                                           M.read (| M.break (||) |)
@@ -2183,7 +2183,7 @@ Module num.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
@@ -2229,7 +2229,7 @@ Module num.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let v :=
+                                      let~ v :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -2242,7 +2242,7 @@ Module num.
                                             [ M.read (| s |) ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -2271,7 +2271,7 @@ Module num.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -2321,7 +2321,7 @@ Module num.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β :=
                                           M.SubPointer.get_struct_record_field (|
                                             d,
@@ -2335,7 +2335,7 @@ Module num.
                                             (M.read (| β |))
                                             (Value.Integer 8)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           s,
                                           M.call_closure (|
@@ -2364,7 +2364,7 @@ Module num.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
@@ -2375,7 +2375,7 @@ Module num.
                                 ]
                               |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             s,
                             M.call_closure (|
@@ -2414,7 +2414,7 @@ Module num.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               d,
@@ -2446,7 +2446,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2467,8 +2467,8 @@ Module num.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let n_trailing_zeros := M.alloc (| Value.Integer 0 |) in
-                        let _ :=
+                        let~ n_trailing_zeros := M.alloc (| Value.Integer 0 |) in
+                        let~ _ :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
@@ -2561,7 +2561,7 @@ Module num.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let _ :=
+                                        (let~ _ :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
@@ -2614,7 +2614,7 @@ Module num.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let _ :=
+                                                          let~ _ :=
                                                             let β := n_trailing_zeros in
                                                             M.write (|
                                                               β,
@@ -2663,7 +2663,7 @@ Module num.
                                     |)))
                               ]
                             |)) in
-                        let _ :=
+                        let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
                               d,
@@ -2677,7 +2677,7 @@ Module num.
                               (M.read (| β |))
                               (M.rust_cast (M.read (| n_trailing_zeros |)))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
                               d,
@@ -2691,7 +2691,7 @@ Module num.
                               (M.read (| β |))
                               (M.read (| n_trailing_zeros |))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           let β :=
                             M.SubPointer.get_struct_record_field (|
                               d,
@@ -2739,7 +2739,7 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       d,
@@ -2748,7 +2748,7 @@ Module num.
                                     |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       d,
@@ -2766,7 +2766,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2817,9 +2817,9 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ := M.write (| s, M.read (| s_next |) |) in
-                                let neg_exp := M.alloc (| Value.Bool false |) in
-                                let _ :=
+                                let~ _ := M.write (| s, M.read (| s_next |) |) in
+                                let~ neg_exp := M.alloc (| Value.Bool false |) in
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -2847,7 +2847,7 @@ Module num.
                                           let γ1_0 := M.read (| γ1_0 |) in
                                           let ch := M.copy (| γ1_0 |) in
                                           let s_next := M.copy (| γ1_1 |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               neg_exp,
                                               BinOp.Pure.eq
@@ -2877,7 +2877,7 @@ Module num.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ := M.write (| s, M.read (| s_next |) |) in
+                                                  let~ _ := M.write (| s, M.read (| s_next |) |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
                                                 ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -2886,8 +2886,8 @@ Module num.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let exp_num := M.alloc (| Value.Integer 0 |) in
-                                let _ :=
+                                let~ exp_num := M.alloc (| Value.Integer 0 |) in
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -2928,7 +2928,7 @@ Module num.
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
-                                                                  let _ :=
+                                                                  let~ _ :=
                                                                     M.write (|
                                                                       exp_num,
                                                                       BinOp.Wrap.add
@@ -2954,7 +2954,7 @@ Module num.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       d,
@@ -2996,7 +2996,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -3036,7 +3036,7 @@ Module num.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -3067,7 +3067,7 @@ Module num.
                                             0
                                           |) in
                                         let i := M.copy (| γ0_0 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.write (|
                                             M.SubPointer.get_array_field (|
                                               M.SubPointer.get_struct_record_field (|
@@ -3183,10 +3183,10 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     let β := shift in
                     M.write (| β, BinOp.Pure.bit_and (M.read (| β |)) (Value.Integer 63) |) in
-                  let x_a :=
+                  let~ x_a :=
                     M.copy (|
                       M.SubPointer.get_array_field (|
                         M.get_constant (|
@@ -3195,7 +3195,7 @@ Module num.
                         shift
                       |)
                     |) in
-                  let x_b :=
+                  let~ x_b :=
                     M.copy (|
                       M.SubPointer.get_array_field (|
                         M.get_constant (|
@@ -3206,19 +3206,19 @@ Module num.
                         |)
                       |)
                     |) in
-                  let num_new_digits :=
+                  let~ num_new_digits :=
                     M.alloc (|
                       M.rust_cast (BinOp.Wrap.shr (M.read (| x_a |)) (Value.Integer 11))
                     |) in
-                  let pow5_a :=
+                  let~ pow5_a :=
                     M.alloc (|
                       M.rust_cast (BinOp.Pure.bit_and (Value.Integer 2047) (M.read (| x_a |)))
                     |) in
-                  let pow5_b :=
+                  let~ pow5_b :=
                     M.alloc (|
                       M.rust_cast (BinOp.Pure.bit_and (Value.Integer 2047) (M.read (| x_b |)))
                     |) in
-                  let pow5 :=
+                  let~ pow5 :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
@@ -3238,7 +3238,7 @@ Module num.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
@@ -3304,7 +3304,7 @@ Module num.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let _ :=
+                                  (let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|

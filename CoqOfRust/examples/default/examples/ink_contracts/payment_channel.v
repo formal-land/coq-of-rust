@@ -258,7 +258,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -268,7 +268,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -678,7 +678,7 @@ Module Impl_payment_channel_PaymentChannel.
         let amount := M.alloc (| amount |) in
         let signature := M.alloc (| signature |) in
         M.read (|
-          let encodable :=
+          let~ encodable :=
             M.alloc (|
               Value.Tuple
                 [
@@ -704,7 +704,7 @@ Module Impl_payment_channel_PaymentChannel.
                   M.read (| amount |)
                 ]
             |) in
-          let message :=
+          let~ message :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -717,7 +717,7 @@ Module Impl_payment_channel_PaymentChannel.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -730,8 +730,8 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let pub_key := M.alloc (| repeat (Value.Integer 0) 33 |) in
-          let _ :=
+          let~ pub_key := M.alloc (| repeat (Value.Integer 0) 33 |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -773,8 +773,8 @@ Module Impl_payment_channel_PaymentChannel.
                 ]
               |)
             |) in
-          let signature_account_id := M.alloc (| repeat (Value.Integer 0) 32 |) in
-          let _ :=
+          let~ signature_account_id := M.alloc (| repeat (Value.Integer 0) 32 |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (|
@@ -902,7 +902,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -969,7 +969,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1008,7 +1008,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1044,7 +1044,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -1205,7 +1205,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -1279,7 +1279,7 @@ Module Impl_payment_channel_PaymentChannel.
                         val))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1344,7 +1344,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1408,7 +1408,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let now :=
+              let~ now :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1430,7 +1430,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let expiration :=
+              let~ expiration :=
                 M.alloc (|
                   BinOp.Wrap.add
                     Integer.U64
@@ -1443,7 +1443,7 @@ Module Impl_payment_channel_PaymentChannel.
                       |)
                     |))
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1482,7 +1482,7 @@ Module Impl_payment_channel_PaymentChannel.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1544,7 +1544,7 @@ Module Impl_payment_channel_PaymentChannel.
                           0
                         |) in
                       let expiration := M.copy (| γ0_0 |) in
-                      let now :=
+                      let~ now :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1566,7 +1566,7 @@ Module Impl_payment_channel_PaymentChannel.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1600,7 +1600,7 @@ Module Impl_payment_channel_PaymentChannel.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1685,7 +1685,7 @@ Module Impl_payment_channel_PaymentChannel.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1752,7 +1752,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1788,7 +1788,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1827,7 +1827,7 @@ Module Impl_payment_channel_PaymentChannel.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let amount_to_withdraw :=
+              let~ amount_to_withdraw :=
                 M.alloc (|
                   BinOp.Wrap.sub
                     Integer.U128
@@ -1840,7 +1840,7 @@ Module Impl_payment_channel_PaymentChannel.
                       |)
                     |))
                 |) in
-              let _ :=
+              let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1851,7 +1851,7 @@ Module Impl_payment_channel_PaymentChannel.
                   β,
                   BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| amount_to_withdraw |))
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|

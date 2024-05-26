@@ -260,7 +260,7 @@ Module checked.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let ratio :=
+              let~ ratio :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -343,7 +343,7 @@ Module checked.
                     ]
                   |)
                 |) in
-              let ln :=
+              let~ ln :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -506,7 +506,7 @@ Module checked.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let value := M.copy (| γ0_0 |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -565,7 +565,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "result_chaining_with_question_mark::checked::op", [] |),

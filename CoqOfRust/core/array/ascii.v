@@ -79,8 +79,8 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let byte_ptr := M.alloc (| M.read (| self |) |) in
-              let ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
+              let~ byte_ptr := M.alloc (| M.read (| self |) |) in
+              let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
         | _, _ => M.impossible

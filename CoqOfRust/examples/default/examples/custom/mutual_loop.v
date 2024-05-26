@@ -100,14 +100,14 @@ Definition start_loop (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let la :=
+        let~ la :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "mutual_loop::LoopA", "new", [] |),
               []
             |)
           |) in
-        let lb :=
+        let~ lb :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [] |),

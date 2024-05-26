@@ -615,8 +615,8 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
-              let _ :=
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -715,7 +715,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -744,7 +744,7 @@ Module str.
                     ]
                   |)
                 |) in
-              let len :=
+              let~ len :=
                 M.alloc (|
                   BinOp.Wrap.sub
                     Integer.Usize
@@ -796,8 +796,8 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
-              let _ :=
+              let~ slice := M.alloc (| M.rust_cast (M.read (| slice |)) |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -896,7 +896,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -923,7 +923,7 @@ Module str.
                     ]
                   |)
                 |) in
-              let len :=
+              let~ len :=
                 M.alloc (|
                   BinOp.Wrap.sub
                     Integer.Usize
@@ -1420,7 +1420,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1467,7 +1467,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1823,7 +1823,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let end_ :=
+              let~ end_ :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     self,
@@ -2124,7 +2124,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2180,7 +2180,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2633,7 +2633,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2711,7 +2711,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

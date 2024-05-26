@@ -41,14 +41,14 @@ Module iter.
           (let iter := M.alloc (| iter |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let residual := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-            let shunt :=
+            let~ residual := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+            let~ shunt :=
               M.alloc (|
                 Value.StructRecord
                   "core::iter::adapters::GenericShunt"
                   [ ("iter", M.read (| iter |)); ("residual", residual) ]
               |) in
-            let value :=
+            let~ value :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -380,7 +380,7 @@ Module iter.
                                                           0
                                                         |) in
                                                       let r := M.copy (| γ0_0 |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         M.write (|
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|

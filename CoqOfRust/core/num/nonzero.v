@@ -263,7 +263,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1406,7 +1406,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -1448,7 +1448,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -1981,7 +1981,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -3128,7 +3128,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -3170,7 +3170,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -3703,7 +3703,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -4858,7 +4858,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -4900,7 +4900,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -5433,7 +5433,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -6580,7 +6580,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -6622,7 +6622,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -7155,7 +7155,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -8306,7 +8306,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -8348,7 +8348,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -8881,7 +8881,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -10033,7 +10033,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -10075,7 +10075,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -10608,7 +10608,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -11157,7 +11157,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -11292,7 +11292,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -11344,7 +11344,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "i8", "wrapping_neg", [] |),
@@ -11953,7 +11953,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -11995,7 +11995,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -12528,7 +12528,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -13077,7 +13077,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -13212,7 +13212,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -13264,7 +13264,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "i16", "wrapping_neg", [] |),
@@ -13873,7 +13873,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -13915,7 +13915,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -14448,7 +14448,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -15005,7 +15005,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -15140,7 +15140,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -15192,7 +15192,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "i32", "wrapping_neg", [] |),
@@ -15801,7 +15801,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -15843,7 +15843,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -16376,7 +16376,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -16925,7 +16925,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -17060,7 +17060,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -17112,7 +17112,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "i64", "wrapping_neg", [] |),
@@ -17721,7 +17721,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -17763,7 +17763,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -18296,7 +18296,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -18845,7 +18845,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -18980,7 +18980,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -19032,7 +19032,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "i128", "wrapping_neg", [] |),
@@ -19645,7 +19645,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -19687,7 +19687,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -20220,7 +20220,7 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -20770,7 +20770,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -20909,7 +20909,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -20961,7 +20961,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "isize", "wrapping_neg", [] |),
@@ -21574,7 +21574,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|
@@ -21616,7 +21616,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.read (| self |),
                   M.call_closure (|

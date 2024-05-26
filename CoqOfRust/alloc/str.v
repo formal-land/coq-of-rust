@@ -163,21 +163,21 @@ Module str.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let sep_len :=
+              let~ sep_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
                     [ M.read (| sep |) ]
                   |)
                 |) in
-              let iter :=
+              let~ iter :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [ S ], "iter", [] |),
                     [ M.read (| slice |) ]
                   |)
                 |) in
-              let first :=
+              let~ first :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -226,7 +226,7 @@ Module str.
                     ]
                   |)
                 |) in
-              let reserved_len :=
+              let~ reserved_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -402,7 +402,7 @@ Module str.
                     ]
                   |)
                 |) in
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -413,7 +413,7 @@ Module str.
                     [ M.read (| reserved_len |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -422,7 +422,7 @@ Module str.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -470,7 +470,7 @@ Module str.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -498,8 +498,8 @@ Module str.
                     ]
                   |)
                 |) in
-              let _ :=
-                let pos :=
+              let~ _ :=
+                let~ pos :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -510,7 +510,7 @@ Module str.
                       [ result ]
                     |)
                   |) in
-                let target :=
+                let~ target :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -543,7 +543,7 @@ Module str.
                       ]
                     |)
                   |) in
-                let sep_uninit :=
+                let~ sep_uninit :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -579,7 +579,7 @@ Module str.
                       ]
                     |)
                   |) in
-                let iter_uninit :=
+                let~ iter_uninit :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -621,7 +621,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let it := M.copy (| γ |) in
                                         M.read (|
-                                          let it :=
+                                          let~ it :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -697,13 +697,13 @@ Module str.
                       ]
                     |)
                   |) in
-                let remain :=
+                let~ remain :=
                   M.alloc (|
                     M.read (|
-                      let target := M.copy (| target |) in
-                      let iter := M.copy (| iter_uninit |) in
-                      let sep_bytes := M.copy (| sep_uninit |) in
-                      let _ :=
+                      let~ target := M.copy (| target |) in
+                      let~ iter := M.copy (| iter_uninit |) in
+                      let~ sep_bytes := M.copy (| sep_uninit |) in
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -764,7 +764,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -818,7 +818,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -872,7 +872,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -893,12 +893,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -954,7 +954,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1010,7 +1010,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -1033,7 +1033,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -1096,7 +1096,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -1150,7 +1150,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -1204,7 +1204,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1225,12 +1225,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -1286,7 +1286,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1342,7 +1342,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -1365,7 +1365,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -1428,7 +1428,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -1482,7 +1482,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -1536,7 +1536,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1557,12 +1557,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -1618,7 +1618,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1674,7 +1674,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -1697,7 +1697,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -1760,7 +1760,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -1814,7 +1814,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -1868,7 +1868,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -1889,12 +1889,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -1950,7 +1950,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -2006,7 +2006,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -2029,7 +2029,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -2092,7 +2092,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -2146,7 +2146,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -2200,7 +2200,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -2221,12 +2221,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -2282,7 +2282,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -2338,7 +2338,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -2361,7 +2361,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -2419,7 +2419,7 @@ Module str.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let _ :=
+                                              (let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
@@ -2473,7 +2473,7 @@ Module str.
                                                             0
                                                           |) in
                                                         let s := M.copy (| γ0_0 |) in
-                                                        let len :=
+                                                        let~ len :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -2527,7 +2527,7 @@ Module str.
                                                                   |) in
                                                                 let head := M.copy (| γ0_0 |) in
                                                                 let tail := M.copy (| γ0_1 |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -2548,12 +2548,12 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.write (|
                                                                     target,
                                                                     M.read (| tail |)
                                                                   |) in
-                                                                let content_bytes :=
+                                                                let~ content_bytes :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -2609,7 +2609,7 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let len :=
+                                                                let~ len :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_associated_function (|
@@ -2665,7 +2665,7 @@ Module str.
                                                                           M.copy (| γ0_0 |) in
                                                                         let tail :=
                                                                           M.copy (| γ0_1 |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
                                                                               M.get_associated_function (|
@@ -2688,7 +2688,7 @@ Module str.
                                                                               ]
                                                                             |)
                                                                           |) in
-                                                                        let _ :=
+                                                                        let~ _ :=
                                                                           M.write (|
                                                                             target,
                                                                             M.read (| tail |)
@@ -2711,7 +2711,7 @@ Module str.
                       target
                     |)
                   |) in
-                let result_len :=
+                let~ result_len :=
                   M.alloc (|
                     BinOp.Wrap.sub
                       Integer.Usize
@@ -2727,7 +2727,7 @@ Module str.
                         [ M.read (| remain |) ]
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -2872,7 +2872,7 @@ Module str.
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
           M.read (|
-            let b :=
+            let~ b :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [] |),
@@ -2884,7 +2884,7 @@ Module str.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -2987,15 +2987,15 @@ Module str.
           let from := M.alloc (| from |) in
           let to := M.alloc (| to |) in
           M.read (|
-            let result :=
+            let~ result :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
                   []
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ last_end := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -3021,7 +3021,7 @@ Module str.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -3053,7 +3053,7 @@ Module str.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let start := M.copy (| γ1_0 |) in
                                       let part := M.copy (| γ1_1 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3086,7 +3086,7 @@ Module str.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3097,7 +3097,7 @@ Module str.
                                             [ result; M.read (| to |) ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           last_end,
                                           BinOp.Wrap.add
@@ -3119,7 +3119,7 @@ Module str.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
@@ -3178,7 +3178,7 @@ Module str.
           let to := M.alloc (| to |) in
           let count := M.alloc (| count |) in
           M.read (|
-            let result :=
+            let~ result :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3189,8 +3189,8 @@ Module str.
                   [ Value.Integer 32 ]
                 |)
               |) in
-            let last_end := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ last_end := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -3230,7 +3230,7 @@ Module str.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -3265,7 +3265,7 @@ Module str.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let start := M.copy (| γ1_0 |) in
                                       let part := M.copy (| γ1_1 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3298,7 +3298,7 @@ Module str.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -3309,7 +3309,7 @@ Module str.
                                             [ result; M.read (| to |) ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           last_end,
                                           BinOp.Wrap.add
@@ -3331,7 +3331,7 @@ Module str.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
@@ -3430,7 +3430,7 @@ Module str.
             ltac:(M.monadic
               (M.never_to_any (|
                 M.read (|
-                  let out :=
+                  let~ out :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "alloc::str::convert_while_ascii", [] |),
@@ -3445,7 +3445,7 @@ Module str.
                         ]
                       |)
                     |) in
-                  let rest :=
+                  let~ rest :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3473,7 +3473,7 @@ Module str.
                         ]
                       |)
                     |) in
-                  let s :=
+                  let~ s :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3484,7 +3484,7 @@ Module str.
                         [ M.read (| out |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.use
                       (M.match_operator (|
                         M.alloc (|
@@ -3524,7 +3524,7 @@ Module str.
                               (let iter := M.copy (| γ |) in
                               M.loop (|
                                 ltac:(M.monadic
-                                  (let _ :=
+                                  (let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -3655,7 +3655,7 @@ Module str.
                                                                 M.read (| γ0_2 |),
                                                                 Value.UnicodeChar 0
                                                               |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -3666,7 +3666,7 @@ Module str.
                                                                   [ s; M.read (| a |) ]
                                                                 |)
                                                               |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -3698,7 +3698,7 @@ Module str.
                                                             let a := M.copy (| γ0_0 |) in
                                                             let b := M.copy (| γ0_1 |) in
                                                             let c := M.copy (| γ0_2 |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -3709,7 +3709,7 @@ Module str.
                                                                   [ s; M.read (| a |) ]
                                                                 |)
                                                               |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -3720,7 +3720,7 @@ Module str.
                                                                   [ s; M.read (| b |) ]
                                                                 |)
                                                               |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -3785,7 +3785,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let out :=
+            let~ out :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "alloc::str::convert_while_ascii", [] |),
@@ -3800,7 +3800,7 @@ Module str.
                   ]
                 |)
               |) in
-            let rest :=
+            let~ rest :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3828,7 +3828,7 @@ Module str.
                   ]
                 |)
               |) in
-            let s :=
+            let~ s :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -3839,7 +3839,7 @@ Module str.
                   [ M.read (| out |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -3865,7 +3865,7 @@ Module str.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -3940,7 +3940,7 @@ Module str.
                                                   M.read (| γ0_2 |),
                                                   Value.UnicodeChar 0
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3951,7 +3951,7 @@ Module str.
                                                     [ s; M.read (| a |) ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3972,7 +3972,7 @@ Module str.
                                               let a := M.copy (| γ0_0 |) in
                                               let b := M.copy (| γ0_1 |) in
                                               let c := M.copy (| γ0_2 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3983,7 +3983,7 @@ Module str.
                                                     [ s; M.read (| a |) ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3994,7 +3994,7 @@ Module str.
                                                     [ s; M.read (| b |) ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -4033,7 +4033,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let slice :=
+            let~ slice :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4130,7 +4130,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let s :=
+            let~ s :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4143,7 +4143,7 @@ Module str.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "str", "make_ascii_uppercase", [] |),
@@ -4182,7 +4182,7 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let s :=
+            let~ s :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -4195,7 +4195,7 @@ Module str.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "str", "make_ascii_lowercase", [] |),
@@ -4310,7 +4310,7 @@ Module str.
         (let b := M.alloc (| b |) in
         let convert := M.alloc (| convert |) in
         M.read (|
-          let out :=
+          let~ out :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -4332,9 +4332,9 @@ Module str.
                 ]
               |)
             |) in
-          let i := M.alloc (| Value.Integer 0 |) in
-          let _ :=
-            let _ :=
+          let~ i := M.alloc (| Value.Integer 0 |) in
+          let~ _ :=
+            let~ _ :=
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -4363,7 +4363,7 @@ Module str.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let in_chunk :=
+                          let~ in_chunk :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4391,7 +4391,7 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let out_chunk :=
+                          let~ out_chunk :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4434,8 +4434,8 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let bits := M.alloc (| Value.Integer 0 |) in
-                          let _ :=
+                          let~ bits := M.alloc (| Value.Integer 0 |) in
+                          let~ _ :=
                             M.use
                               (M.match_operator (|
                                 M.alloc (|
@@ -4470,7 +4470,7 @@ Module str.
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
                                         ltac:(M.monadic
-                                          (let _ :=
+                                          (let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -4501,7 +4501,7 @@ Module str.
                                                         0
                                                       |) in
                                                     let j := M.copy (| γ0_0 |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       let β := bits in
                                                       M.write (|
                                                         β,
@@ -4559,7 +4559,7 @@ Module str.
                                       |)))
                                 ]
                               |)) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -4587,7 +4587,7 @@ Module str.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.use
                               (M.match_operator (|
                                 M.alloc (|
@@ -4622,7 +4622,7 @@ Module str.
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
                                         ltac:(M.monadic
-                                          (let _ :=
+                                          (let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -4653,7 +4653,7 @@ Module str.
                                                         0
                                                       |) in
                                                     let j := M.copy (| γ0_0 |) in
-                                                    let out :=
+                                                    let~ out :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -4671,7 +4671,7 @@ Module str.
                                                           [ M.read (| out_chunk |); M.read (| j |) ]
                                                         |)
                                                       |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
@@ -4712,7 +4712,7 @@ Module str.
                                       |)))
                                 ]
                               |)) in
-                          let _ :=
+                          let~ _ :=
                             let β := i in
                             M.write (|
                               β,
@@ -4729,7 +4729,7 @@ Module str.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -4738,7 +4738,7 @@ Module str.
                     ]
                   |)))
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|

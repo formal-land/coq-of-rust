@@ -46,7 +46,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -85,7 +85,7 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in
@@ -130,7 +130,7 @@ Module tests.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
+          let~ _ :=
             M.match_operator (|
               M.alloc (|
                 Value.Tuple
@@ -169,7 +169,7 @@ Module tests.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let kind :=
+                                  let~ kind :=
                                     M.alloc (|
                                       Value.StructTuple "core::panicking::AssertKind::Eq" []
                                     |) in

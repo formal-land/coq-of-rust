@@ -21,7 +21,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let names :=
+        let~ names :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -59,7 +59,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -107,7 +107,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -147,7 +147,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.read (| γ |),
                                               Value.String "Ferris"
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -179,7 +179,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.alloc (| Value.Tuple [] |)));
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let _ :=
+                                          (let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -238,8 +238,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

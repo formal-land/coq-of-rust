@@ -615,7 +615,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
@@ -819,7 +819,7 @@ Module time.
           (let secs := M.alloc (| secs |) in
           let nanos := M.alloc (| nanos |) in
           M.read (|
-            let secs :=
+            let~ secs :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -875,7 +875,7 @@ Module time.
                   ]
                 |)
               |) in
-            let nanos :=
+            let~ nanos :=
               M.alloc (|
                 BinOp.Wrap.rem
                   Integer.U32
@@ -1411,7 +1411,7 @@ Module time.
                             0
                           |) in
                         let secs := M.copy (| γ0_0 |) in
-                        let nanos :=
+                        let~ nanos :=
                           M.alloc (|
                             BinOp.Wrap.add
                               Integer.U32
@@ -1438,7 +1438,7 @@ Module time.
                                 |)
                               |))
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1458,7 +1458,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := nanos in
                                     M.write (|
                                       β,
@@ -1492,7 +1492,7 @@ Module time.
                                               0
                                             |) in
                                           let new_secs := M.copy (| γ0_0 |) in
-                                          let _ := M.write (| secs, M.read (| new_secs |) |) in
+                                          let~ _ := M.write (| secs, M.read (| new_secs |) |) in
                                           M.alloc (| Value.Tuple [] |)));
                                       fun γ =>
                                         ltac:(M.monadic
@@ -1510,7 +1510,7 @@ Module time.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1522,7 +1522,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1695,7 +1695,7 @@ Module time.
                             0
                           |) in
                         let secs := M.copy (| γ0_0 |) in
-                        let nanos :=
+                        let~ nanos :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1785,7 +1785,7 @@ Module time.
                                                 0
                                               |) in
                                             let sub_secs := M.copy (| γ0_0 |) in
-                                            let _ := M.write (| secs, M.read (| sub_secs |) |) in
+                                            let~ _ := M.write (| secs, M.read (| sub_secs |) |) in
                                             M.alloc (|
                                               BinOp.Wrap.sub
                                                 Integer.U32
@@ -1835,7 +1835,7 @@ Module time.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1847,7 +1847,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1983,7 +1983,7 @@ Module time.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let total_nanos :=
+                let~ total_nanos :=
                   M.alloc (|
                     BinOp.Wrap.mul
                       Integer.U64
@@ -2001,14 +2001,14 @@ Module time.
                         |)))
                       (M.rust_cast (M.read (| rhs |)))
                   |) in
-                let extra_secs :=
+                let~ extra_secs :=
                   M.alloc (|
                     BinOp.Wrap.div
                       Integer.U64
                       (M.read (| total_nanos |))
                       (M.rust_cast (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |)))
                   |) in
-                let nanos :=
+                let~ nanos :=
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Wrap.rem
@@ -2017,7 +2017,7 @@ Module time.
                         (M.rust_cast
                           (M.read (| M.get_constant (| "core::time::NANOS_PER_SEC" |) |))))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2072,7 +2072,7 @@ Module time.
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -2084,7 +2084,7 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -2310,7 +2310,7 @@ Module time.
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let nanos := M.copy (| γ0_0 |) in
                                     let extra_nanos := M.copy (| γ0_1 |) in
-                                    let _ :=
+                                    let~ _ :=
                                       let β := nanos in
                                       M.write (|
                                         β,
@@ -2334,7 +2334,7 @@ Module time.
                                                 (M.rust_cast (M.read (| extra_nanos |))))
                                               (M.rust_cast (M.read (| rhs |)))))
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -2346,7 +2346,7 @@ Module time.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -2825,7 +2825,7 @@ Module time.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2861,14 +2861,14 @@ Module time.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let bits :=
+                let~ bits :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
-                let mant :=
+                let~ mant :=
                   M.alloc (|
                     BinOp.Pure.bit_or
                       (BinOp.Pure.bit_and
@@ -2883,7 +2883,7 @@ Module time.
                         |))
                         (Value.Integer 1))
                   |) in
-                let exp :=
+                let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add
                       Integer.I16
@@ -2926,7 +2926,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let t :=
+                                  let~ t :=
                                     M.alloc (|
                                       BinOp.Wrap.shl
                                         (M.call_closure (|
@@ -2944,14 +2944,14 @@ Module time.
                                           (Value.Integer 41)
                                           (M.read (| exp |)))
                                     |) in
-                                  let nanos_offset :=
+                                  let~ nanos_offset :=
                                     M.alloc (|
                                       BinOp.Wrap.add
                                         Integer.I32
                                         (Value.Integer 23)
                                         (Value.Integer 41)
                                     |) in
-                                  let nanos_tmp :=
+                                  let~ nanos_tmp :=
                                     M.alloc (|
                                       BinOp.Wrap.mul
                                         Integer.U128
@@ -2980,14 +2980,14 @@ Module time.
                                           [ M.read (| t |) ]
                                         |))
                                     |) in
-                                  let nanos :=
+                                  let~ nanos :=
                                     M.alloc (|
                                       M.rust_cast
                                         (BinOp.Wrap.shr
                                           (M.read (| nanos_tmp |))
                                           (M.read (| nanos_offset |)))
                                     |) in
-                                  let rem_mask :=
+                                  let~ rem_mask :=
                                     M.alloc (|
                                       BinOp.Wrap.sub
                                         Integer.U128
@@ -2996,7 +2996,7 @@ Module time.
                                           (M.read (| nanos_offset |)))
                                         (Value.Integer 1)
                                     |) in
-                                  let rem_msb_mask :=
+                                  let~ rem_msb_mask :=
                                     M.alloc (|
                                       BinOp.Wrap.shl
                                         (Value.Integer 1)
@@ -3005,23 +3005,23 @@ Module time.
                                           (M.read (| nanos_offset |))
                                           (Value.Integer 1))
                                     |) in
-                                  let rem :=
+                                  let~ rem :=
                                     M.alloc (|
                                       BinOp.Pure.bit_and
                                         (M.read (| nanos_tmp |))
                                         (M.read (| rem_mask |))
                                     |) in
-                                  let is_tie :=
+                                  let~ is_tie :=
                                     M.alloc (|
                                       BinOp.Pure.eq (M.read (| rem |)) (M.read (| rem_msb_mask |))
                                     |) in
-                                  let is_even :=
+                                  let~ is_even :=
                                     M.alloc (|
                                       BinOp.Pure.eq
                                         (BinOp.Pure.bit_and (M.read (| nanos |)) (Value.Integer 1))
                                         (Value.Integer 0)
                                     |) in
-                                  let rem_msb :=
+                                  let~ rem_msb :=
                                     M.alloc (|
                                       BinOp.Pure.eq
                                         (BinOp.Pure.bit_and
@@ -3029,7 +3029,7 @@ Module time.
                                           (M.read (| rem_msb_mask |)))
                                         (Value.Integer 0)
                                     |) in
-                                  let add_ns :=
+                                  let~ add_ns :=
                                     M.alloc (|
                                       UnOp.Pure.not
                                         (LogicalOp.or (|
@@ -3041,7 +3041,7 @@ Module time.
                                             |)))
                                         |))
                                     |) in
-                                  let nanos :=
+                                  let~ nanos :=
                                     M.alloc (|
                                       BinOp.Wrap.add
                                         Integer.U32
@@ -3102,7 +3102,7 @@ Module time.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let secs :=
+                                          let~ secs :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -3122,7 +3122,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let t :=
+                                          let~ t :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -3145,8 +3145,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let nanos_offset := M.alloc (| Value.Integer 23 |) in
-                                          let nanos_tmp :=
+                                          let~ nanos_offset := M.alloc (| Value.Integer 23 |) in
+                                          let~ nanos_tmp :=
                                             M.alloc (|
                                               BinOp.Wrap.mul
                                                 Integer.U64
@@ -3168,14 +3168,14 @@ Module time.
                                                 |))
                                                 (M.read (| t |))
                                             |) in
-                                          let nanos :=
+                                          let~ nanos :=
                                             M.alloc (|
                                               M.rust_cast
                                                 (BinOp.Wrap.shr
                                                   (M.read (| nanos_tmp |))
                                                   (M.read (| nanos_offset |)))
                                             |) in
-                                          let rem_mask :=
+                                          let~ rem_mask :=
                                             M.alloc (|
                                               BinOp.Wrap.sub
                                                 Integer.U64
@@ -3184,7 +3184,7 @@ Module time.
                                                   (M.read (| nanos_offset |)))
                                                 (Value.Integer 1)
                                             |) in
-                                          let rem_msb_mask :=
+                                          let~ rem_msb_mask :=
                                             M.alloc (|
                                               BinOp.Wrap.shl
                                                 (Value.Integer 1)
@@ -3193,19 +3193,19 @@ Module time.
                                                   (M.read (| nanos_offset |))
                                                   (Value.Integer 1))
                                             |) in
-                                          let rem :=
+                                          let~ rem :=
                                             M.alloc (|
                                               BinOp.Pure.bit_and
                                                 (M.read (| nanos_tmp |))
                                                 (M.read (| rem_mask |))
                                             |) in
-                                          let is_tie :=
+                                          let~ is_tie :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (M.read (| rem |))
                                                 (M.read (| rem_msb_mask |))
                                             |) in
-                                          let is_even :=
+                                          let~ is_even :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Pure.bit_and
@@ -3213,7 +3213,7 @@ Module time.
                                                   (Value.Integer 1))
                                                 (Value.Integer 0)
                                             |) in
-                                          let rem_msb :=
+                                          let~ rem_msb :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Pure.bit_and
@@ -3221,7 +3221,7 @@ Module time.
                                                   (M.read (| rem_msb_mask |)))
                                                 (Value.Integer 0)
                                             |) in
-                                          let add_ns :=
+                                          let~ add_ns :=
                                             M.alloc (|
                                               UnOp.Pure.not
                                                 (LogicalOp.or (|
@@ -3233,7 +3233,7 @@ Module time.
                                                     |)))
                                                 |))
                                             |) in
-                                          let nanos :=
+                                          let~ nanos :=
                                             M.alloc (|
                                               BinOp.Wrap.add
                                                 Integer.U32
@@ -3304,7 +3304,7 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let secs :=
+                                                  let~ secs :=
                                                     M.alloc (|
                                                       BinOp.Wrap.shl
                                                         (M.call_closure (|
@@ -3407,7 +3407,7 @@ Module time.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3443,14 +3443,14 @@ Module time.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let bits :=
+                let~ bits :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
                       [ M.read (| secs |) ]
                     |)
                   |) in
-                let mant :=
+                let~ mant :=
                   M.alloc (|
                     BinOp.Pure.bit_or
                       (BinOp.Pure.bit_and
@@ -3465,7 +3465,7 @@ Module time.
                         |))
                         (Value.Integer 1))
                   |) in
-                let exp :=
+                let~ exp :=
                   M.alloc (|
                     BinOp.Wrap.add
                       Integer.I16
@@ -3508,7 +3508,7 @@ Module time.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let t :=
+                                  let~ t :=
                                     M.alloc (|
                                       BinOp.Wrap.shl
                                         (M.call_closure (|
@@ -3526,14 +3526,14 @@ Module time.
                                           (Value.Integer 44)
                                           (M.read (| exp |)))
                                     |) in
-                                  let nanos_offset :=
+                                  let~ nanos_offset :=
                                     M.alloc (|
                                       BinOp.Wrap.add
                                         Integer.I32
                                         (Value.Integer 52)
                                         (Value.Integer 44)
                                     |) in
-                                  let nanos_tmp :=
+                                  let~ nanos_tmp :=
                                     M.alloc (|
                                       BinOp.Wrap.mul
                                         Integer.U128
@@ -3562,14 +3562,14 @@ Module time.
                                           [ M.read (| t |) ]
                                         |))
                                     |) in
-                                  let nanos :=
+                                  let~ nanos :=
                                     M.alloc (|
                                       M.rust_cast
                                         (BinOp.Wrap.shr
                                           (M.read (| nanos_tmp |))
                                           (M.read (| nanos_offset |)))
                                     |) in
-                                  let rem_mask :=
+                                  let~ rem_mask :=
                                     M.alloc (|
                                       BinOp.Wrap.sub
                                         Integer.U128
@@ -3578,7 +3578,7 @@ Module time.
                                           (M.read (| nanos_offset |)))
                                         (Value.Integer 1)
                                     |) in
-                                  let rem_msb_mask :=
+                                  let~ rem_msb_mask :=
                                     M.alloc (|
                                       BinOp.Wrap.shl
                                         (Value.Integer 1)
@@ -3587,23 +3587,23 @@ Module time.
                                           (M.read (| nanos_offset |))
                                           (Value.Integer 1))
                                     |) in
-                                  let rem :=
+                                  let~ rem :=
                                     M.alloc (|
                                       BinOp.Pure.bit_and
                                         (M.read (| nanos_tmp |))
                                         (M.read (| rem_mask |))
                                     |) in
-                                  let is_tie :=
+                                  let~ is_tie :=
                                     M.alloc (|
                                       BinOp.Pure.eq (M.read (| rem |)) (M.read (| rem_msb_mask |))
                                     |) in
-                                  let is_even :=
+                                  let~ is_even :=
                                     M.alloc (|
                                       BinOp.Pure.eq
                                         (BinOp.Pure.bit_and (M.read (| nanos |)) (Value.Integer 1))
                                         (Value.Integer 0)
                                     |) in
-                                  let rem_msb :=
+                                  let~ rem_msb :=
                                     M.alloc (|
                                       BinOp.Pure.eq
                                         (BinOp.Pure.bit_and
@@ -3611,7 +3611,7 @@ Module time.
                                           (M.read (| rem_msb_mask |)))
                                         (Value.Integer 0)
                                     |) in
-                                  let add_ns :=
+                                  let~ add_ns :=
                                     M.alloc (|
                                       UnOp.Pure.not
                                         (LogicalOp.or (|
@@ -3623,7 +3623,7 @@ Module time.
                                             |)))
                                         |))
                                     |) in
-                                  let nanos :=
+                                  let~ nanos :=
                                     M.alloc (|
                                       BinOp.Wrap.add
                                         Integer.U32
@@ -3684,7 +3684,7 @@ Module time.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let secs :=
+                                          let~ secs :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -3704,7 +3704,7 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let t :=
+                                          let~ t :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -3727,8 +3727,8 @@ Module time.
                                                 ]
                                               |)
                                             |) in
-                                          let nanos_offset := M.alloc (| Value.Integer 52 |) in
-                                          let nanos_tmp :=
+                                          let~ nanos_offset := M.alloc (| Value.Integer 52 |) in
+                                          let~ nanos_tmp :=
                                             M.alloc (|
                                               BinOp.Wrap.mul
                                                 Integer.U128
@@ -3750,14 +3750,14 @@ Module time.
                                                 |))
                                                 (M.read (| t |))
                                             |) in
-                                          let nanos :=
+                                          let~ nanos :=
                                             M.alloc (|
                                               M.rust_cast
                                                 (BinOp.Wrap.shr
                                                   (M.read (| nanos_tmp |))
                                                   (M.read (| nanos_offset |)))
                                             |) in
-                                          let rem_mask :=
+                                          let~ rem_mask :=
                                             M.alloc (|
                                               BinOp.Wrap.sub
                                                 Integer.U128
@@ -3766,7 +3766,7 @@ Module time.
                                                   (M.read (| nanos_offset |)))
                                                 (Value.Integer 1)
                                             |) in
-                                          let rem_msb_mask :=
+                                          let~ rem_msb_mask :=
                                             M.alloc (|
                                               BinOp.Wrap.shl
                                                 (Value.Integer 1)
@@ -3775,19 +3775,19 @@ Module time.
                                                   (M.read (| nanos_offset |))
                                                   (Value.Integer 1))
                                             |) in
-                                          let rem :=
+                                          let~ rem :=
                                             M.alloc (|
                                               BinOp.Pure.bit_and
                                                 (M.read (| nanos_tmp |))
                                                 (M.read (| rem_mask |))
                                             |) in
-                                          let is_tie :=
+                                          let~ is_tie :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (M.read (| rem |))
                                                 (M.read (| rem_msb_mask |))
                                             |) in
-                                          let is_even :=
+                                          let~ is_even :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Pure.bit_and
@@ -3795,7 +3795,7 @@ Module time.
                                                   (Value.Integer 1))
                                                 (Value.Integer 0)
                                             |) in
-                                          let rem_msb :=
+                                          let~ rem_msb :=
                                             M.alloc (|
                                               BinOp.Pure.eq
                                                 (BinOp.Pure.bit_and
@@ -3803,7 +3803,7 @@ Module time.
                                                   (M.read (| rem_msb_mask |)))
                                                 (Value.Integer 0)
                                             |) in
-                                          let add_ns :=
+                                          let~ add_ns :=
                                             M.alloc (|
                                               UnOp.Pure.not
                                                 (LogicalOp.or (|
@@ -3815,7 +3815,7 @@ Module time.
                                                     |)))
                                                 |))
                                             |) in
-                                          let nanos :=
+                                          let~ nanos :=
                                             M.alloc (|
                                               BinOp.Wrap.add
                                                 Integer.U32
@@ -3886,7 +3886,7 @@ Module time.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  let secs :=
+                                                  let~ secs :=
                                                     M.alloc (|
                                                       BinOp.Wrap.shl
                                                         (M.call_closure (|
@@ -4027,7 +4027,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
@@ -4111,7 +4111,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
@@ -4233,7 +4233,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
@@ -4317,7 +4317,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let rhs := M.alloc (| rhs |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| self |),
                 M.call_closure (|
@@ -4358,9 +4358,9 @@ Module time.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let total_secs := M.alloc (| Value.Integer 0 |) in
-            let total_nanos := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ total_secs := M.alloc (| Value.Integer 0 |) in
+            let~ total_nanos := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -4381,7 +4381,7 @@ Module time.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -4410,7 +4410,7 @@ Module time.
                                           0
                                         |) in
                                       let entry := M.copy (| γ0_0 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           total_secs,
                                           M.call_closure (|
@@ -4445,7 +4445,7 @@ Module time.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           total_nanos,
                                           M.read (|
@@ -4487,7 +4487,7 @@ Module time.
                                                     n));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let _ :=
+                                                    (let~ _ :=
                                                       M.write (|
                                                         total_secs,
                                                         M.call_closure (|
@@ -4561,7 +4561,7 @@ Module time.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 total_secs,
                 M.call_closure (|
@@ -4586,7 +4586,7 @@ Module time.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 total_nanos,
                 BinOp.Wrap.rem
@@ -4626,9 +4626,9 @@ Module time.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let total_secs := M.alloc (| Value.Integer 0 |) in
-            let total_nanos := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ total_secs := M.alloc (| Value.Integer 0 |) in
+            let~ total_nanos := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -4649,7 +4649,7 @@ Module time.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -4678,7 +4678,7 @@ Module time.
                                           0
                                         |) in
                                       let entry := M.copy (| γ0_0 |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           total_secs,
                                           M.call_closure (|
@@ -4713,7 +4713,7 @@ Module time.
                                             ]
                                           |)
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.write (|
                                           total_nanos,
                                           M.read (|
@@ -4755,7 +4755,7 @@ Module time.
                                                     n));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let _ :=
+                                                    (let~ _ :=
                                                       M.write (|
                                                         total_secs,
                                                         M.call_closure (|
@@ -4829,7 +4829,7 @@ Module time.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 total_secs,
                 M.call_closure (|
@@ -4854,7 +4854,7 @@ Module time.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 total_nanos,
                 BinOp.Wrap.rem
@@ -5080,7 +5080,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let prefix :=
+            let~ prefix :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5745,7 +5745,7 @@ Module time.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -5755,7 +5755,7 @@ Module time.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|

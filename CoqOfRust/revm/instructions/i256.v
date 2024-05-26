@@ -128,7 +128,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -138,7 +138,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -205,7 +205,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -215,7 +215,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -260,7 +260,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -270,7 +270,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -309,7 +309,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -461,14 +461,14 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let sign :=
+            let~ sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
                   [ M.read (| val |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -496,7 +496,7 @@ Module instructions.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
@@ -532,7 +532,7 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               let β :=
                 M.SubPointer.get_array_field (|
                   M.call_closure (|
@@ -568,7 +568,7 @@ Module instructions.
         ltac:(M.monadic
           (let op := M.alloc (| op |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| op |),
                 M.call_closure (|
@@ -623,14 +623,14 @@ Module instructions.
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
           M.read (|
-            let first_sign :=
+            let~ first_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
                   [ M.read (| first |) ]
                 |)
               |) in
-            let second_sign :=
+            let~ second_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
@@ -716,7 +716,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let second_sign :=
+                let~ second_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -726,7 +726,7 @@ Module instructions.
                       [ second ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -765,7 +765,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let first_sign :=
+                let~ first_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -775,7 +775,7 @@ Module instructions.
                       [ first ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -851,7 +851,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let d :=
+                let~ d :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -864,7 +864,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1015,7 +1015,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let first_sign :=
+                let~ first_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1025,7 +1025,7 @@ Module instructions.
                       [ first ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1064,7 +1064,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let second_sign :=
+                let~ second_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1074,7 +1074,7 @@ Module instructions.
                       [ second ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1113,7 +1113,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let r :=
+                let~ r :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1126,7 +1126,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|

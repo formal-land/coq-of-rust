@@ -204,7 +204,7 @@ Module cell.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -334,7 +334,7 @@ Module cell.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -373,7 +373,7 @@ Module cell.
                           0
                         |) in
                       let f := M.copy (| γ0_0 |) in
-                      let data :=
+                      let~ data :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -386,7 +386,7 @@ Module cell.
                             [ M.read (| f |); Value.Tuple [] ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -419,7 +419,7 @@ Module cell.
                             ]
                           |)
                         |) in
-                      let state :=
+                      let~ state :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -483,7 +483,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -633,7 +633,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let d :=
+              let~ d :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -644,7 +644,7 @@ Module cell.
                     [ M.read (| f |); M.read (| Value.String "LazyCell" |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|

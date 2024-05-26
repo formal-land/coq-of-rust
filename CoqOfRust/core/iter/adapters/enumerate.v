@@ -169,7 +169,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -248,7 +248,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let i :=
+                    let~ i :=
                       M.copy (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -256,7 +256,7 @@ Module iter.
                           "count"
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -325,7 +325,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -405,7 +405,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let i :=
+                    let~ i :=
                       M.alloc (|
                         BinOp.Wrap.add
                           Integer.Usize
@@ -418,7 +418,7 @@ Module iter.
                           |))
                           (M.read (| n |))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -614,7 +614,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.read (|
-                let remaining :=
+                let~ remaining :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -634,7 +634,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let advanced :=
+                let~ advanced :=
                   M.copy (|
                     M.match_operator (|
                       remaining,
@@ -673,7 +673,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -708,7 +708,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.read (|
-                let value :=
+                let~ value :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
@@ -784,7 +784,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -863,7 +863,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let len :=
+                    let~ len :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -926,7 +926,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -1006,7 +1006,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let len :=
+                    let~ len :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1082,7 +1082,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let count :=
+                let~ count :=
                   M.alloc (|
                     BinOp.Wrap.add
                       Integer.Usize
@@ -1167,7 +1167,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let count :=
+                let~ count :=
                   M.alloc (|
                     BinOp.Wrap.add
                       Integer.Usize

@@ -115,7 +115,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let item :=
+                    let~ item :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -190,7 +190,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),

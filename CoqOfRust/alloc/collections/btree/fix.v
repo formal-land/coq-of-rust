@@ -62,7 +62,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let len :=
+                let~ len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -163,7 +163,7 @@ Module collections.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let parent :=
+                                        let~ parent :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -188,7 +188,7 @@ Module collections.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let _ :=
+                                        (let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -259,7 +259,7 @@ Module collections.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let parent :=
+                                        let~ parent :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -284,7 +284,7 @@ Module collections.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let _ :=
+                                        (let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -582,7 +582,7 @@ Module collections.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -619,7 +619,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -653,7 +653,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -706,7 +706,7 @@ Module collections.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -769,7 +769,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -817,7 +817,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -870,7 +870,7 @@ Module collections.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -933,7 +933,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -993,7 +993,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let cur_node :=
+                let~ cur_node :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1044,7 +1044,7 @@ Module collections.
                                 0
                               |) in
                             let internal := M.copy (| γ0_0 |) in
-                            let last_kv :=
+                            let~ last_kv :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1085,7 +1085,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1097,7 +1097,7 @@ Module collections.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -1156,7 +1156,7 @@ Module collections.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let right_child_len :=
+                            let~ right_child_len :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1169,7 +1169,7 @@ Module collections.
                                   [ last_kv ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1191,7 +1191,7 @@ Module collections.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
@@ -1219,7 +1219,7 @@ Module collections.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 cur_node,
                                 M.call_closure (|
@@ -1239,7 +1239,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -1334,7 +1334,7 @@ Module collections.
                                 0
                               |) in
                             let internal_kv := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 self,
                                 M.call_closure (|
@@ -1389,7 +1389,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1401,7 +1401,7 @@ Module collections.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -1524,7 +1524,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -1602,7 +1602,7 @@ Module collections.
                                 0
                               |) in
                             let internal_kv := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 self,
                                 M.call_closure (|
@@ -1657,7 +1657,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1669,7 +1669,7 @@ Module collections.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -1792,7 +1792,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -1857,7 +1857,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let internal_kv :=
+                let~ internal_kv :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1880,7 +1880,7 @@ Module collections.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let left_len :=
+                let~ left_len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1893,7 +1893,7 @@ Module collections.
                       [ internal_kv ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1902,7 +1902,7 @@ Module collections.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -1990,7 +1990,7 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let count :=
+                        (let~ count :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
@@ -2005,7 +2005,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2021,7 +2021,7 @@ Module collections.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2089,7 +2089,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let internal_kv :=
+                let~ internal_kv :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -2112,7 +2112,7 @@ Module collections.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let right_len :=
+                let~ right_len :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -2125,7 +2125,7 @@ Module collections.
                       [ internal_kv ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2134,7 +2134,7 @@ Module collections.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -2222,7 +2222,7 @@ Module collections.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let count :=
+                        (let~ count :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "usize", "saturating_sub", [] |),
@@ -2237,7 +2237,7 @@ Module collections.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2253,7 +2253,7 @@ Module collections.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|

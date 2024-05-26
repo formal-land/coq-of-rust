@@ -100,7 +100,7 @@ Module collections.
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let lower := M.copy (| γ0_0 |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -123,7 +123,7 @@ Module collections.
                                           ]
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -192,7 +192,7 @@ Module collections.
                                                             0
                                                           |) in
                                                         let element := M.copy (| γ0_0 |) in
-                                                        let _ :=
+                                                        let~ _ :=
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
@@ -214,7 +214,7 @@ Module collections.
                                                 (M.alloc (|
                                                   M.never_to_any (|
                                                     M.read (|
-                                                      let _ :=
+                                                      let~ _ :=
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
@@ -234,7 +234,7 @@ Module collections.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -332,7 +332,7 @@ Module collections.
                                     0
                                   |) in
                                 let additional := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -344,7 +344,7 @@ Module collections.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [ low; additional ] |),
                                               [
@@ -381,7 +381,7 @@ Module collections.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (|
-                                                                  let kind :=
+                                                                  let~ kind :=
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
@@ -483,7 +483,7 @@ Module collections.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -496,7 +496,7 @@ Module collections.
                                       [ M.read (| self |); M.read (| additional |) ]
                                     |)
                                   |) in
-                                let written :=
+                                let~ written :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -532,7 +532,7 @@ Module collections.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -544,7 +544,7 @@ Module collections.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [ additional; written ] |),
                                               [
@@ -581,7 +581,7 @@ Module collections.
                                                             M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (|
-                                                                  let kind :=
+                                                                  let~ kind :=
                                                                     M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::panicking::AssertKind::Eq"
@@ -710,7 +710,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
               M.read (|
-                let slice :=
+                let~ slice :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -723,7 +723,7 @@ Module collections.
                       [ iterator ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -744,8 +744,8 @@ Module collections.
                       ]
                     |)
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -776,7 +776,7 @@ Module collections.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -798,7 +798,7 @@ Module collections.
                         |))
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -905,7 +905,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
               M.read (|
-                let slice :=
+                let~ slice :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -916,7 +916,7 @@ Module collections.
                       [ iterator ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -937,7 +937,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -968,7 +968,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),

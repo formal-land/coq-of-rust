@@ -119,8 +119,8 @@ Definition print_debug (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -207,7 +207,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let rectangle :=
+        let~ rectangle :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Rectangle"
@@ -216,7 +216,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let _triangle :=
+        let~ _triangle :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Triangle"
@@ -225,7 +225,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (|
@@ -235,8 +235,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ rectangle ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
