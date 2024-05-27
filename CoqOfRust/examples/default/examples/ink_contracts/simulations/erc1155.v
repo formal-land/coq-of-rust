@@ -1,7 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
-Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.bool.
 Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib.
 Require Import CoqOfRust.simulations.M.
@@ -32,8 +31,11 @@ Module Balance.
   Inductive t : Set :=
   | Make (balance : Z).
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc1155::Balance";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ '(Make balance) :=
       Value.StructTuple "erc1155::Balance" [Value.Integer Integer.U128 balance];
   }.
@@ -50,9 +52,11 @@ Module Env.
     caller : AccountId.t;
   }.
 
-  (* TODO: fix below code *)
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc1155::Env";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ '(Make x) :=
       Value.StructTuple "erc1155::Env" φ x;
   }.
@@ -79,8 +83,11 @@ Module TokenId.
   Inductive t : Set :=
   | Make (token_id : Z).
 
-  Global Instance IsToValue : ToValue t := {
+  Global Instance IsToTy : ToTy t := {
     Φ := Ty.path "erc1155::TokenId";
+  }.
+
+  Global Instance IsToValue : ToValue t := {
     φ '(Make token_id) :=
       Value.StructTuple "erc1155::TokenId" [Value.Integer Integer.U128 token_id];
   }.
