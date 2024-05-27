@@ -1,5 +1,4 @@
 (* traits/traits.rs *)
-(* TODO: Move this file to a separate location from ink contracts *)
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.core.simulations.default.
 Require Import CoqOfRust.core.simulations.option.
