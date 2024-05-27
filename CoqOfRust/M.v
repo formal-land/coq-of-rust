@@ -96,7 +96,7 @@ Module Integer.
   | Usize : t.
 End Integer.
 
-(* Module Pointer.
+Module Pointer.
   Module Index.
     (** We are very explicit for the indexes, so that if the target is mutated
         and the index does not make any sense anymore we can detect it. This
@@ -115,7 +115,7 @@ End Integer.
     Definition t : Set := list Index.t.
   End Path.
 
-  Module Mutable.
+  (* Module Mutable.
     Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
     | Make {Address Big_A : Set}
       (address : Address)
@@ -171,8 +171,22 @@ End Integer.
       to_value
       (fun x => Some x)
       (fun _ y => Some y)
-    ).
-End Pointer. *)
+    ). *)
+
+  (* Record t : Set := {
+    id : nat;
+    path : Path.t;
+    above : {A : Set @ A};
+  }. *)
+  Inductive t (Value : Set) : Set :=
+  | Make {Address Big_A A : Set}
+    (address : Address)
+    (path : Pointer.Path.t)
+    (projection : Big_A -> option A)
+    (injection : Big_A -> A -> option Big_A)
+    (to_value : A -> Value).
+  Arguments Make {_ _ _ _}.
+End Pointer.
 
 Module Value.
   Inductive t : Set :=
@@ -186,7 +200,7 @@ Module Value.
   | Array : list t -> t
   | StructRecord : string -> list (string * t) -> t
   | StructTuple : string -> list t -> t
-  | Pointer : nat -> t
+  | Pointer : Pointer.t t -> t
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
@@ -205,7 +219,7 @@ Module Value.
   (** Read the part of the value that is at a given pointer path, starting from
       the main value. It might return [None] if the path does not have a shape
       compatible with the value. *)
-  Fixpoint read_index (value : Value.t) (path : Pointer.Path.t) :
+  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) :
       option Value.t :=
     match path with
     | [] => Some value
@@ -358,12 +372,8 @@ Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
   | StateRead (pointer : Pointer.t Value.t)
-  | StateWrite {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (value : Value.t)
-  | GetSubPointer {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (index : Pointer.Index.t)
+  | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
+  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -642,9 +652,7 @@ Definition read (r : Value.t) : M :=
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => impossible
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.StateWrite mutable update)
+  | Value.Pointer pointer => call_primitive (Primitive.StateWrite pointer update)
   | _ => impossible
   end.
 
@@ -656,13 +664,8 @@ Definition copy (r : Value.t) : M :=
     access in an array, we do a [break_match]. *)
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) =>
-    match Value.read_path v [index] with
-    | Some v => alloc v
-    | None => break_match
-    end
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.GetSubPointer mutable index)
+  | Value.Pointer pointer =>
+    call_primitive (Primitive.GetSubPointer pointer index)
   | _ => impossible
   end.
 

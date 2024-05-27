@@ -185,7 +185,7 @@ Module SubPointer.
     Arguments t _ _ {_ _}.
   End Runner.
 
-  Definition get_sub
+  (* Definition get_sub
       {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
       (mutable : Pointer.Mutable.t (A := A) Value.t φ)
       (runner : Runner.t A Sub_A) :
@@ -195,7 +195,7 @@ Module SubPointer.
       runner.(Runner.index)
       runner.(Runner.projection)
       runner.(Runner.injection)
-      φ.
+      φ. *)
 End SubPointer.
 
 (** ** Monads that are useful for the definition of simulations. *)

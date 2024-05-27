@@ -67,7 +67,7 @@ Module IsTraitMethod.
     t trait_name self_ty trait_tys method_name (method self_ty).
 End IsTraitMethod.
 
-Module IsRead.
+(* Module IsRead.
   Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Prop :=
   | Immediate (value : Value.t) :
     t state (Pointer.Immediate value) value
@@ -467,4 +467,4 @@ Module StatelessFunction.
       ToValue (t args_to_value output_to_value) := {
     φ v := Value.Closure (existS (_, _) v.(f));
   }.
-End StatelessFunction.
+End StatelessFunction. *)
