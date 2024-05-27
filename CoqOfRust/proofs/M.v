@@ -145,11 +145,23 @@ Module Stack.
   Qed.
 End Stack.
 
-Module HasReadWith.
-  Inductive t {A : Set} (stack : Stack.t) (to_value : A -> Value.t) (value : A) :
-      Pointer.t Value.t -> Prop :=
+Module HasAllocWith.
+  Inductive t {A : Set} (to_value : A -> Value.t) (stack : Stack.t) (value : A) :
+      Pointer.t Value.t -> Stack.t -> Set :=
   | Immediate :
-    t stack to_value value (Pointer.Immediate to_value value)
+    t to_value stack value (Pointer.Immediate to_value value) stack
+  | Mutable :
+    let address := List.length stack in
+    let pointer := Pointer.mutable address to_value in
+    let stack' := stack ++ [Some (existS _ value)] in
+    t to_value stack value pointer stack'.
+End HasAllocWith.
+
+Module HasReadWith.
+  Inductive t {A : Set} (to_value : A -> Value.t) (stack : Stack.t) (value : A) :
+      Pointer.t Value.t -> Set :=
+  | Immediate :
+    t to_value stack value (Pointer.Immediate to_value value)
   | Mutable {Big_A : Set} address path big_to_value projection injection (big_value : Big_A) :
     let mutable :=
       Pointer.Mutable.Make
@@ -162,22 +174,22 @@ Module HasReadWith.
         injection in
     Stack.read stack address = Some (existS _ big_value) ->
     projection big_value = Some value ->
-    t stack to_value value (Pointer.Mutable mutable).
+    t to_value stack value (Pointer.Mutable mutable).
 End HasReadWith.
 
 Module HasRead.
   Definition t {A : Set}
+      (to_value : A -> Value.t)
       (stack : Stack.t)
-      (pointer : Pointer.t Value.t)
-      (to_value : A -> Value.t) :
+      (pointer : Pointer.t Value.t) :
       Set :=
-    { value : A | HasReadWith.t stack to_value value pointer}.
+    { value : A @ HasReadWith.t to_value stack value pointer}.
 End HasRead.
 
 Module HasWriteWith.
   Inductive t {A : Set} {to_value : A -> Value.t} (stack : Stack.t) (value : A) :
-      Pointer.Mutable.t Value.t to_value -> Stack.t -> Prop :=
-  | Mutable {Big_A : Set} address path big_to_value projection injection (big_value : Big_A) :
+      Pointer.Mutable.t Value.t to_value -> Stack.t -> Set :=
+  | Mutable {Big_A : Set} address path big_to_value projection injection :
     let mutable :=
       Pointer.Mutable.Make
         (Value := Value.t) (A := A) (to_value := to_value)
@@ -188,7 +200,7 @@ Module HasWriteWith.
         projection
         injection in
     let stack' := Stack.write stack address value in
-    HasRead.t stack' (Pointer.Mutable mutable) to_value ->
+    HasRead.t to_value stack' (Pointer.Mutable mutable) ->
     t stack value mutable stack'.
 End HasWriteWith.
 
@@ -198,11 +210,74 @@ Module HasWrite.
       (value : A)
       (mutable : Pointer.Mutable.t Value.t to_value) :
       Set :=
-    { stack' : Stack.t | HasWriteWith.t stack value mutable stack' }.
+    { stack' : Stack.t @ HasWriteWith.t stack value mutable stack' }.
 End HasWrite.
 
+Module IsWritePreserved.
+  Definition t (stack stack' : Stack.t) : Set :=
+    forall (A : Set) (to_value : A -> Value.t)
+    (value : A) (mutable : Pointer.Mutable.t Value.t to_value),
+    HasWrite.t stack value mutable ->
+    HasWrite.t stack' value mutable.
+
+  Definition reflexivity (stack : Stack.t) : t stack stack.
+  Proof.
+    unfold t; intros.
+    assumption.
+  Defined.
+
+  Definition transitivity {stack1 stack2 stack3 : Stack.t} :
+    t stack1 stack2 -> t stack2 stack3 -> t stack1 stack3.
+  Proof.
+    unfold t; intros.
+    auto.
+  Defined.
+
+  Definition alloc {A : Set} {to_value : A -> Value.t}
+    (stack : Stack.t) (value : A) (pointer : Pointer.t Value.t) (stack' : Stack.t) :
+    HasAllocWith.t to_value stack value pointer stack' ->
+    t stack stack'.
+  Proof.
+    intros [].
+    { apply reflexivity. }
+    { unfold t; intros.
+      match goal with
+      | H : HasWrite.t _ _ _ |- _ => destruct H as [? H]
+      end.
+      destruct mutable.
+      eexists.
+      eapply HasWriteWith.Mutable.
+      apply H.
+    }
+End IsWritePreserved.
+
+Module HasSubPointerWith.
+  Inductive t (index : Pointer.Index.t) : Pointer.t Value.t -> Pointer.t Value.t -> Prop :=
+  | Immediate {A Sub_A : Set}
+      (to_value : A -> Value.t) (value : A)
+      (sub_to_value : Sub_A -> Value.t) (sub_value : Sub_A) :
+    Value.read_path (to_value value) index = Some (sub_to_value sub_value) ->
+    t index (Pointer.Immediate to_value value) (Pointer.Immediate sub_to_value sub_value)
+  | Mutable {A Sub_A : Set} {to_value : A -> Value.t}
+      (mutable : Pointer.Mutable.t Value.t to_value)
+      sub_projection sub_injection sub_to_value :
+    (* Communtativity of the read *)
+    (forall (a : A),
+      Option.map (sub_projection a) sub_to_value =
+      Value.read_path (to_value a) index
+    ) ->
+    (* Communtativity of the write *)
+    (forall (a : A) (sub_a : Sub_A),
+      Option.map (sub_injection a sub_a) to_value =
+      Value.write_value (to_value a) index sub_to_value sub_a
+    ) ->
+    let mutable' :=
+      Pointer.Mutable.get_sub mutable index sub_projection sub_injection sub_to_value in
+    t index (Pointer.Mutable mutable) (Pointer.Mutable mutable').
+End HasSubPointerWith.
+
 Module Run.
-  Reserved Notation "{{ stack | e ⇓ to_value }}".
+  Reserved Notation "{{ stack | e ⇓ output_to_value }}".
 
   Inductive t {Output : Set} (stack : Stack.t) (output_to_value : Output -> Value.t + Exception.t) :
       M -> Set :=
@@ -211,23 +286,15 @@ Module Run.
       (output' : Value.t + Exception.t) :
     output' = output_to_value output ->
     {{ stack | LowM.Pure output' ⇓ output_to_value }}
-  | CallPrimitiveStateAllocImmediate {A : Set}
+  | CallPrimitiveStateAlloc {A : Set}
       (value : A) (value' : Value.t)
       (to_value : A -> Value.t)
+      (pointer : Pointer.t Value.t)
+      (stack' : Stack.t)
       (k : Value.t -> M) :
     value' = to_value value ->
-    {{ stack | k (Value.Pointer (Pointer.Immediate to_value value)) ⇓ output_to_value }} ->
-    {{ stack | LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateAllocMutable {A : Set}
-      (value : A) (value' : Value.t)
-      (to_value : A -> Value.t)
-      (stack_inter : Stack.t)
-      (k : Value.t -> M) :
-    let address := List.length stack in
-    let r := Value.Pointer (Pointer.mutable address to_value) in
-    value' = to_value value ->
-    let stack_inter : Stack.t := stack ++ [Some (existS _ value)] in
-    {{ stack_inter | k r ⇓ output_to_value }} ->
+    HasAllocWith.t to_value stack value pointer stack' ->
+    {{ stack' | k (Value.Pointer pointer) ⇓ output_to_value }} ->
     {{ stack | LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
   | CallPrimitiveStateRead {A : Set}
       (pointer : Pointer.t Value.t)
@@ -235,7 +302,7 @@ Module Run.
       (to_value : A -> Value.t)
       (k : Value.t -> M) :
     value' = to_value value ->
-    HasReadWith.t stack to_value value pointer ->
+    HasReadWith.t to_value stack value pointer ->
     {{ stack | k value' ⇓ output_to_value }} ->
     {{ stack | LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
   | CallPrimitiveStateWrite
@@ -243,33 +310,19 @@ Module Run.
       (value : A) (value' : Value.t)
       (to_value : A -> Value.t)
       (mutable : Pointer.Mutable.t Value.t to_value)
-      (stack_inter : Stack.t)
+      (stack' : Stack.t)
       (k : Value.t -> M) :
     value' = to_value value ->
-    HasWriteWith.t stack value mutable stack_inter ->
-    {{ stack_inter | k (Value.Tuple []) ⇓ output_to_value }} ->
+    HasWriteWith.t stack value mutable stack' ->
+    {{ stack' | k (Value.Tuple []) ⇓ output_to_value }} ->
     {{ stack | LowM.CallPrimitive (Primitive.StateWrite mutable value') k ⇓ output_to_value }}
-  | CallPrimitiveGetSubPointer {A Sub_A : Set} {to_value : A -> Value.t}
-      (mutable : Pointer.Mutable.t Value.t to_value)
-      index sub_projection sub_injection sub_to_value
+  | CallPrimitiveGetSubPointer
+      (index : Pointer.Index.t)
+      (pointer pointer' : Pointer.t Value.t)
       (k : Value.t -> M) :
-    (* Communtativity of the read *)
-    (forall (a : A),
-      Option.map (sub_projection a) sub_to_value =
-      Value.read_path (to_value a) [index]
-    ) ->
-    (* Communtativity of the write *)
-    (forall (a : A) (sub_a : Sub_A),
-      Option.map (sub_injection a sub_a) to_value =
-      Value.write_value (to_value a) [index] (sub_to_value sub_a)
-    ) ->
-    {{ stack |
-      k (Value.Pointer (Pointer.Mutable (Pointer.Mutable.get_sub
-        mutable index sub_projection sub_injection sub_to_value
-      ))) ⇓
-      output_to_value
-    }} ->
-    {{ stack | LowM.CallPrimitive (Primitive.GetSubPointer mutable index) k ⇓ output_to_value }}
+    HasSubPointerWith.t index pointer pointer' ->
+    {{ stack | k (Value.Pointer pointer') ⇓ output_to_value }} ->
+    {{ stack | LowM.CallPrimitive (Primitive.GetSubPointer pointer index) k ⇓ output_to_value }}
   | CallPrimitiveGetFunction
       (name : string) (generic_tys : list Ty.t)
       (function : list Ty.t -> list Value.t -> M)
@@ -316,47 +369,53 @@ Module Run.
     let closure := Value.Closure (existS (_, _) f) in
     {{ stack | f args ⇓ output_to_value' }} ->
     (forall (output' : Output') (stack' : Stack.t),
-      (* We do not de-allocate what was already there on the stack *)
-      (forall {A : Set} {to_value : A -> Value.t}
-        (value : A) (mutable : Pointer.Mutable.t Value.t to_value),
-        HasWrite.t stack value mutable ->
-        HasWrite.t stack' value mutable
-      ) ->
+      (* We do not de-allocate what was already there on the stack. *)
+      IsWritePreserved.t stack stack' ->
       {{ stack' | k (output_to_value' output') ⇓ output_to_value }}
     ) ->
     {{ stack | LowM.CallClosure closure args k ⇓ output_to_value }}
+  (* Might be useful to avoid having rewritings that block the evaluation. *)
   | Rewrite (e e' : M) :
     e = e' ->
     {{ stack | e' ⇓ output_to_value }} ->
     {{ stack | e ⇓ output_to_value }}
 
-  where "{{ stack | e ⇓ to_value }}" :=
-    (t stack to_value e).
+  where "{{ stack | e ⇓ output_to_value }}" :=
+    (t stack output_to_value e).
 
-  Notation "{{ '_' | e ⇓ to_value }}" :=
-    (forall (State Address : Set) `(State.Trait State Address) (stack : Stack.t),
-      {{ stack | e ⇓ to_value }}
+  Notation "{{ '_' | e ⇓ output_to_value }}" :=
+    (forall (stack : Stack.t),
+      {{ stack | e ⇓ output_to_value }}
     ).
 End Run.
 
 Import Run.
 
-Fixpoint evaluate `{State.Trait} {A : Set}
-    {env : Value.t} {stack : State}
-    {e : M} {to_value : A -> Value.t + Exception.t}
-    (run : {{ stack | e ⇓ to_value }}) :
-  A * State.
+Fixpoint evaluate {Output : Set}
+    {stack : Stack.t} {e : M} {output_to_value : Output -> Value.t + Exception.t}
+    (run : {{ stack | e ⇓ output_to_value }}) :
+  Output * { stack' : Stack.t @ IsWritePreserved.t stack stack' }.
 Proof.
   destruct run.
   { split.
-    { exact result. }
-    { eexists.
-      match goal with
-      | H : P_state _ |- _ => exact H
-      end.
+    { exact output. }
+    { exists stack.
+      apply IsWritePreserved.reflexivity.
     }
   }
-  { eapply evaluate.
+  { destruct (evaluate _ _ _ _ run) as [output [stack'' H_stack'']].
+    split.
+    { exact output. }
+    { exists stack''.
+      apply (IsWritePreserved.transitivity (stack2 := stack')); try assumption.
+      match goal with
+      | H : HasAllocWith.t _ _ _ _ _ |- _ => destruct H
+      end.
+      { apply IsWritePreserved.reflexivity. }
+      { apply IsWritePreserved.reflexivity. 
+
+      }
+    }
     exact run.
   }
   { eapply evaluate.
@@ -389,12 +448,6 @@ Proof.
     | H : forall _ _ _, _ |- _ => apply (H value_inter stack_inter)
     end.
     exact H_state_inter.
-  }
-  { destruct (evaluate _ _ _ _ _ _ _ _ _ run) as [value_inter [stack_inter H_state_inter]].
-    eapply evaluate.
-    match goal with
-    | H : forall _ _, _ |- _ => apply (H value_inter stack_inter)
-    end.
   }
   { eapply evaluate.
     exact run.

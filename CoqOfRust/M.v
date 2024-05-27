@@ -108,7 +108,8 @@ Module Pointer.
     | Tuple (index : Z)
     | Array (index : Z)
     | StructRecord (constructor field : string)
-    | StructTuple (constructor : string) (index : Z).
+    | StructTuple (constructor : string) (index : Z)
+    | Owned.
   End Index.
 
   Module Path.
@@ -202,126 +203,100 @@ Module Value.
       yet. *)
   | DeclaredButUndefined.
 
-  (** Read the part of the value that is at a given pointer path, starting from
-      the main value. It might return [None] if the path does not have a shape
-      compatible with the value. *)
-  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) :
-      option Value.t :=
-    match path with
-    | [] => Some value
-    | Pointer.Index.Tuple index :: path =>
+  (** Read the part of the value that is at a given pointer index. It might return [None] if the
+      index does not have a shape compatible with the value. *)
+  Definition read_path (value : Value.t) (index : Pointer.Index.t) : option Value.t :=
+    match index with
+    | Pointer.Index.Tuple index =>
       match value with
-      | Tuple fields =>
-        match List.nth_error fields (Z.to_nat index) with
-        | Some value => read_path value path
-        | None => None
-        end
+      | Tuple fields => List.nth_error fields (Z.to_nat index)
       | _ => None
       end
-    | Pointer.Index.Array index :: path =>
+    | Pointer.Index.Array index =>
       match value with
-      | Array fields =>
-        match List.nth_error fields (Z.to_nat index) with
-        | Some value => read_path value path
-        | None => None
-        end
+      | Array fields => List.nth_error fields (Z.to_nat index)
       | _ => None
       end
-    | Pointer.Index.StructRecord constructor field :: path =>
+    | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c fields =>
         if String.eqb c constructor then
-          match List.assoc fields field with
-          | Some value => read_path value path
-          | None => None
-          end
+          List.assoc fields field
         else
           None
       | _ => None
       end
-    | Pointer.Index.StructTuple constructor index :: path =>
+    | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c fields =>
         if String.eqb c constructor then
-          match List.nth_error fields (Z.to_nat index) with
-          | Some value => read_path value path
-          | None => None
-          end
+          List.nth_error fields (Z.to_nat index)
         else
           None
+      | _ => None
+      end
+    | Pointer.Index.Owned =>
+      match value with
+      | Pointer (Pointer.Immediate to_value value) => Some (to_value value)
       | _ => None
       end
     end.
 
-  (** Update the part of a value at a certain [path], and return [None] if the
-      path is of invalid shape. *)
-  Fixpoint write_value
-      (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
+  (** Update the part of a value at a certain [index], and return [None] if the index is of invalid
+      shape. *)
+  Definition write_value {A : Set} 
+      (value : Value.t) (index : Pointer.Index.t)
+      (update_to_value : A -> Value.t) (update : A) :
       option Value.t :=
-    match path with
-    | [] => Some update
-    | Pointer.Index.Tuple index :: path =>
+    match index with
+    | Pointer.Index.Tuple index =>
       match value with
       | Tuple fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some value =>
-          match write_value value path update with
-          | Some value =>
-            Some (Tuple (List.replace_at fields (Z.to_nat index) value))
-          | None => None
-          end
+        | Some value => Some (Tuple (List.replace_at fields (Z.to_nat index) value))
         | None => None
         end
       | _ => None
       end
-    | Pointer.Index.Array index :: path =>
+    | Pointer.Index.Array index =>
       match value with
       | Array fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some value =>
-          match write_value value path update with
-          | Some value =>
-            Some (Array (List.replace_at fields (Z.to_nat index) value))
-          | None => None
-          end
+        | Some value => Some (Array (List.replace_at fields (Z.to_nat index) value))
         | None => None
         end
       | _ => None
       end
-    | Pointer.Index.StructRecord constructor field :: path =>
+    | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c fields =>
         if String.eqb c constructor then
           match List.assoc fields field with
-          | Some value =>
-            match write_value value path update with
-            | Some value =>
-              Some (StructRecord c (List.assoc_replace fields field value))
-            | None => None
-            end
+          | Some value => Some (StructRecord c (List.assoc_replace fields field value))
           | None => None
           end
         else
           None
       | _ => None
       end
-    | Pointer.Index.StructTuple constructor index :: path =>
+    | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c fields =>
         if String.eqb c constructor then
           match List.nth_error fields (Z.to_nat index) with
-          | Some value =>
-            match write_value value path update with
-            | Some value =>
-              Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
-            | None => None
-            end
+          | Some value => Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
           | None => None
           end
         else
           None
       | _ => None
       end
+      | Pointer.Index.Owned =>
+        match value with
+        | Pointer (Pointer.Immediate _ _) =>
+          Some (Pointer (Pointer.Immediate update_to_value update))
+        | _ => None
+        end
     end.
 
   (** Equality between values. Defined only for basic types. *)
@@ -361,9 +336,7 @@ Module Primitive.
   | StateWrite {A : Set} {to_value : A -> Value.t}
     (mutable : Pointer.Mutable.t Value.t to_value)
     (value : Value.t)
-  | GetSubPointer {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (index : Pointer.Index.t)
+  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
   | GetTraitMethod
@@ -635,7 +608,13 @@ Definition alloc (v : Value.t) : M :=
 
 Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer pointer => call_primitive (Primitive.StateRead pointer)
+  | Value.Pointer pointer =>
+    let* value := call_primitive (Primitive.StateRead pointer) in
+    match value with
+    | Value.Pointer (Pointer.Immediate _ _) =>
+      call_primitive (Primitive.GetSubPointer pointer Pointer.Index.Owned)
+    | _ => pure value
+    end
   | _ => impossible
   end.
 
@@ -653,16 +632,10 @@ Definition copy (r : Value.t) : M :=
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
     access in an array, we do a [break_match]. *)
+(* TODO: check that this is indeed the case *)
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
-  (* TODO *)
-  (* | Value.Pointer (Pointer.Immediate v) =>
-    match Value.read_path v [index] with
-    | Some v => alloc v
-    | None => break_match
-    end *)
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.GetSubPointer mutable index)
+  | Value.Pointer pointer => call_primitive (Primitive.GetSubPointer pointer index)
   | _ => impossible
   end.
 
