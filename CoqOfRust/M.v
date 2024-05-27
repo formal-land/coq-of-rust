@@ -117,13 +117,13 @@ Module Pointer.
 
   Module Mutable.
     Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
-    | Make {Address Big_A : Set}
-      (address : Address)
+    | Make {Big_A : Set}
+      (address : nat)
       (path : Path.t)
       (big_to_value : Big_A -> Value)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _ _}.
+    Arguments Make {_ _ _ _}.
 
     Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
         (mutable : t Value to_value)
@@ -156,13 +156,13 @@ Module Pointer.
   End Mutable.
 
   Inductive t (Value : Set) : Set :=
-  | Immediate (value : Value)
+  | Immediate {A : Set} (to_value : A -> Value) (value : A)
   | Mutable {A : Set} {to_value : A -> Value} (mutable : Mutable.t Value to_value).
-  Arguments Immediate {_}.
+  Arguments Immediate {_ _}.
   Arguments Mutable {_ _ _}.
 
-  Definition mutable {Value Address A : Set}
-      (address : Address)
+  Definition mutable {Value A : Set}
+      (address : nat)
       (to_value : A -> Value) :
       t Value :=
     Mutable (to_value := to_value) (Mutable.Make
@@ -364,7 +364,6 @@ Module Primitive.
   | GetSubPointer {A : Set} {to_value : A -> Value.t}
     (mutable : Pointer.Mutable.t Value.t to_value)
     (index : Pointer.Index.t)
-  | EnvRead
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
   | GetTraitMethod
@@ -642,7 +641,7 @@ Definition read (r : Value.t) : M :=
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => impossible
+  | Value.Pointer (Pointer.Immediate _ _) => impossible
   | Value.Pointer (Pointer.Mutable mutable) =>
     call_primitive (Primitive.StateWrite mutable update)
   | _ => impossible
@@ -656,18 +655,16 @@ Definition copy (r : Value.t) : M :=
     access in an array, we do a [break_match]. *)
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) =>
+  (* TODO *)
+  (* | Value.Pointer (Pointer.Immediate v) =>
     match Value.read_path v [index] with
     | Some v => alloc v
     | None => break_match
-    end
+    end *)
   | Value.Pointer (Pointer.Mutable mutable) =>
     call_primitive (Primitive.GetSubPointer mutable index)
   | _ => impossible
   end.
-
-Definition read_env : M :=
-  call_primitive Primitive.EnvRead.
 
 Parameter get_constant : string -> M.
 
