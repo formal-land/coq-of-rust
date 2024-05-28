@@ -51,7 +51,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -73,7 +73,7 @@ Module slice.
                           len));
                       fun γ =>
                         ltac:(M.monadic
-                          (let end_ :=
+                          (let~ end_ :=
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -144,7 +144,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let old :=
+              let~ old :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -152,8 +152,8 @@ Module slice.
                     "ptr"
                   |)
                 |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -163,7 +163,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -189,7 +189,7 @@ Module slice.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _end :=
+                          (let~ _end :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -277,7 +277,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -294,7 +294,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| len |),
                           M.call_closure (|
@@ -309,7 +309,7 @@ Module slice.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -326,7 +326,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| end_ |),
                           M.call_closure (|
@@ -373,7 +373,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -395,7 +395,7 @@ Module slice.
                       len));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -457,7 +457,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -479,7 +479,7 @@ Module slice.
                       M.alloc (| BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -582,7 +582,7 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let len :=
+                                  let~ len :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -606,7 +606,7 @@ Module slice.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let end_ :=
+                                  (let~ end_ :=
                                     M.copy (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -695,7 +695,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let exact :=
+              let~ exact :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -706,7 +706,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -728,7 +728,7 @@ Module slice.
                           len));
                       fun γ =>
                         ltac:(M.monadic
-                          (let end_ :=
+                          (let~ end_ :=
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -798,7 +798,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -820,7 +820,7 @@ Module slice.
                       len));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -889,7 +889,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -916,7 +916,7 @@ Module slice.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let len :=
+                                              let~ len :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -938,7 +938,7 @@ Module slice.
                                               len));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let end_ :=
+                                              (let~ end_ :=
                                                 M.copy (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -991,7 +991,7 @@ Module slice.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1007,7 +1007,7 @@ Module slice.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let len :=
+                                            let~ len :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -1029,7 +1029,7 @@ Module slice.
                                             M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let end_ :=
+                                            (let~ end_ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -1069,7 +1069,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1126,7 +1126,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let advance :=
+              let~ advance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -1147,7 +1147,7 @@ Module slice.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let len :=
+                                let~ len :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1169,7 +1169,7 @@ Module slice.
                                 len));
                             fun γ =>
                               ltac:(M.monadic
-                                (let end_ :=
+                                (let~ end_ :=
                                   M.copy (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -1214,7 +1214,7 @@ Module slice.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1250,7 +1250,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -1329,7 +1329,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1352,7 +1352,7 @@ Module slice.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let len :=
+                                        let~ len :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1376,7 +1376,7 @@ Module slice.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let end_ :=
+                                        (let~ end_ :=
                                           M.copy (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -1434,9 +1434,9 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let acc := M.copy (| init |) in
-                  let i := M.alloc (| Value.Integer 0 |) in
-                  let len :=
+                  let~ acc := M.copy (| init |) in
+                  let~ i := M.alloc (| Value.Integer 0 |) in
+                  let~ len :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1451,7 +1451,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1473,7 +1473,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1514,10 +1514,10 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.write (|
                             acc,
                             M.call_closure (|
@@ -1563,7 +1563,7 @@ Module slice.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             i,
                             M.call_closure (|
@@ -1643,7 +1643,7 @@ Module slice.
                               0
                             |) in
                           let x := M.copy (| γ0_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -1662,7 +1662,7 @@ Module slice.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -1699,7 +1699,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1765,7 +1765,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -1806,7 +1806,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1871,7 +1871,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -1912,7 +1912,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1990,7 +1990,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2031,7 +2031,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2103,7 +2103,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2149,7 +2149,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let n :=
+                  let~ n :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2164,7 +2164,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2186,7 +2186,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2227,8 +2227,8 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.alloc (| Value.Integer 0 |) in
-                  let _ :=
+                  let~ i := M.alloc (| Value.Integer 0 |) in
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2256,7 +2256,7 @@ Module slice.
                                     0
                                   |) in
                                 let x := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -2284,7 +2284,7 @@ Module slice.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_function (|
@@ -2309,15 +2309,11 @@ Module slice.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -2325,7 +2321,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2371,7 +2367,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let n :=
+                  let~ n :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2386,7 +2382,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2408,7 +2404,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -2449,8 +2445,8 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.copy (| n |) in
-                  let _ :=
+                  let~ i := M.copy (| n |) in
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2478,15 +2474,11 @@ Module slice.
                                     0
                                   |) in
                                 let x := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -2515,7 +2507,7 @@ Module slice.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_function (|
@@ -2545,7 +2537,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2767,7 +2759,7 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let len :=
+                                  let~ len :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2791,7 +2783,7 @@ Module slice.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let end_ :=
+                                  (let~ end_ :=
                                     M.copy (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2894,7 +2886,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2921,7 +2913,7 @@ Module slice.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let len :=
+                                              let~ len :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -2943,7 +2935,7 @@ Module slice.
                                               len));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let end_ :=
+                                              (let~ end_ :=
                                                 M.copy (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -2996,7 +2988,7 @@ Module slice.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -3012,7 +3004,7 @@ Module slice.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let len :=
+                                            let~ len :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -3034,7 +3026,7 @@ Module slice.
                                             M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let end_ :=
+                                            (let~ end_ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -3076,7 +3068,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3133,7 +3125,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let advance :=
+              let~ advance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -3154,7 +3146,7 @@ Module slice.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let len :=
+                                let~ len :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -3176,7 +3168,7 @@ Module slice.
                                 len));
                             fun γ =>
                               ltac:(M.monadic
-                                (let end_ :=
+                                (let~ end_ :=
                                   M.copy (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -3221,7 +3213,7 @@ Module slice.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -3257,7 +3249,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -3437,7 +3429,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3459,7 +3451,7 @@ Module slice.
                           len));
                       fun γ =>
                         ltac:(M.monadic
-                          (let end_ :=
+                          (let~ end_ :=
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3530,7 +3522,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.read (|
-              let old :=
+              let~ old :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -3538,8 +3530,8 @@ Module slice.
                     "ptr"
                   |)
                 |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3549,7 +3541,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3575,7 +3567,7 @@ Module slice.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _end :=
+                          (let~ _end :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -3663,7 +3655,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3680,7 +3672,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| len |),
                           M.call_closure (|
@@ -3695,7 +3687,7 @@ Module slice.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3712,7 +3704,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.read (| end_ |),
                           M.call_closure (|
@@ -3759,7 +3751,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3781,7 +3773,7 @@ Module slice.
                       len));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3843,7 +3835,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3865,7 +3857,7 @@ Module slice.
                       M.alloc (| BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -3968,7 +3960,7 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let len :=
+                                  let~ len :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -3992,7 +3984,7 @@ Module slice.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let end_ :=
+                                  (let~ end_ :=
                                     M.copy (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -4081,7 +4073,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let exact :=
+              let~ exact :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -4092,7 +4084,7 @@ Module slice.
                             M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let len :=
+                          let~ len :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4114,7 +4106,7 @@ Module slice.
                           len));
                       fun γ =>
                         ltac:(M.monadic
-                          (let end_ :=
+                          (let~ end_ :=
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -4184,7 +4176,7 @@ Module slice.
                       (let γ :=
                         M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let len :=
+                      let~ len :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -4206,7 +4198,7 @@ Module slice.
                       len));
                   fun γ =>
                     ltac:(M.monadic
-                      (let end_ :=
+                      (let~ end_ :=
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -4275,7 +4267,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -4302,7 +4294,7 @@ Module slice.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let len :=
+                                              let~ len :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -4324,7 +4316,7 @@ Module slice.
                                               len));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let end_ :=
+                                              (let~ end_ :=
                                                 M.copy (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -4377,7 +4369,7 @@ Module slice.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -4393,7 +4385,7 @@ Module slice.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let len :=
+                                            let~ len :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -4415,7 +4407,7 @@ Module slice.
                                             M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let end_ :=
+                                            (let~ end_ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -4455,7 +4447,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4512,7 +4504,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let advance :=
+              let~ advance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -4533,7 +4525,7 @@ Module slice.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let len :=
+                                let~ len :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -4555,7 +4547,7 @@ Module slice.
                                 len));
                             fun γ =>
                               ltac:(M.monadic
-                                (let end_ :=
+                                (let~ end_ :=
                                   M.copy (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -4600,7 +4592,7 @@ Module slice.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -4636,7 +4628,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -4715,7 +4707,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -4738,7 +4730,7 @@ Module slice.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let len :=
+                                        let~ len :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -4762,7 +4754,7 @@ Module slice.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let end_ :=
+                                        (let~ end_ :=
                                           M.copy (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -4820,9 +4812,9 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let acc := M.copy (| init |) in
-                  let i := M.alloc (| Value.Integer 0 |) in
-                  let len :=
+                  let~ acc := M.copy (| init |) in
+                  let~ i := M.alloc (| Value.Integer 0 |) in
+                  let~ len :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -4837,7 +4829,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -4859,7 +4851,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -4900,10 +4892,10 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.write (|
                             acc,
                             M.call_closure (|
@@ -4949,7 +4941,7 @@ Module slice.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             i,
                             M.call_closure (|
@@ -5029,7 +5021,7 @@ Module slice.
                               0
                             |) in
                           let x := M.copy (| γ0_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -5048,7 +5040,7 @@ Module slice.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -5085,7 +5077,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5152,7 +5144,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5193,7 +5185,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5258,7 +5250,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5299,7 +5291,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5377,7 +5369,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5418,7 +5410,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5490,7 +5482,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5536,7 +5528,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let n :=
+                  let~ n :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -5551,7 +5543,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -5573,7 +5565,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -5614,8 +5606,8 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.alloc (| Value.Integer 0 |) in
-                  let _ :=
+                  let~ i := M.alloc (| Value.Integer 0 |) in
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5643,7 +5635,7 @@ Module slice.
                                     0
                                   |) in
                                 let x := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -5672,7 +5664,7 @@ Module slice.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.read (|
-                                                let _ :=
+                                                let~ _ :=
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       M.get_function (|
@@ -5697,15 +5689,11 @@ Module slice.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -5713,7 +5701,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5759,7 +5747,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let n :=
+                  let~ n :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -5774,7 +5762,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let len :=
+                              let~ len :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -5796,7 +5784,7 @@ Module slice.
                               len));
                           fun γ =>
                             ltac:(M.monadic
-                              (let end_ :=
+                              (let~ end_ :=
                                 M.copy (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -5837,8 +5825,8 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let i := M.copy (| n |) in
-                  let _ :=
+                  let~ i := M.copy (| n |) in
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5866,15 +5854,11 @@ Module slice.
                                     0
                                   |) in
                                 let x := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 1
-                                    |)
+                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -5903,7 +5887,7 @@ Module slice.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_function (|
@@ -5933,7 +5917,7 @@ Module slice.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -6071,7 +6055,7 @@ Module slice.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let len :=
+                                  let~ len :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -6095,7 +6079,7 @@ Module slice.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let end_ :=
+                                  (let~ end_ :=
                                     M.copy (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -6198,7 +6182,7 @@ Module slice.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -6225,7 +6209,7 @@ Module slice.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let len :=
+                                              let~ len :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -6247,7 +6231,7 @@ Module slice.
                                               len));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let end_ :=
+                                              (let~ end_ :=
                                                 M.copy (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -6300,7 +6284,7 @@ Module slice.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -6316,7 +6300,7 @@ Module slice.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let len :=
+                                            let~ len :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -6338,7 +6322,7 @@ Module slice.
                                             M.write (| M.read (| len |), Value.Integer 0 |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let end_ :=
+                                            (let~ end_ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -6380,7 +6364,7 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -6437,7 +6421,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let advance :=
+              let~ advance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
@@ -6458,7 +6442,7 @@ Module slice.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let len :=
+                                let~ len :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -6480,7 +6464,7 @@ Module slice.
                                 len));
                             fun γ =>
                               ltac:(M.monadic
-                                (let end_ :=
+                                (let~ end_ :=
                                   M.copy (|
                                     M.call_closure (|
                                       M.get_associated_function (|
@@ -6525,7 +6509,7 @@ Module slice.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -6561,7 +6545,7 @@ Module slice.
                         "new",
                         []
                       |),
-                      [ BinOp.Panic.sub (| Integer.Usize, M.read (| n |), M.read (| advance |) |) ]
+                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| advance |)) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"

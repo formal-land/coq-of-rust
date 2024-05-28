@@ -740,7 +740,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -750,7 +750,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -784,7 +784,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -794,7 +794,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -833,7 +833,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -843,7 +843,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -888,7 +888,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1060,7 +1060,7 @@ Module ascii.
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1069,7 +1069,7 @@ Module ascii.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1101,7 +1101,7 @@ Module ascii.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let byte :=
+              let~ byte :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
@@ -1208,8 +1208,8 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let ascii_ptr := M.alloc (| M.read (| self |) |) in
-              let str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
+              let~ ascii_ptr := M.alloc (| M.read (| self |) |) in
+              let~ str_ptr := M.alloc (| M.rust_cast (M.read (| ascii_ptr |)) |) in
               M.alloc (| M.read (| str_ptr |) |)
             |)))
         | _, _ => M.impossible
@@ -1339,6 +1339,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::Null"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1349,6 +1354,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1359,6 +1369,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::CarriageReturn"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1369,6 +1384,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::LineFeed"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1379,6 +1399,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1392,6 +1417,11 @@ Module ascii.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
+                            let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                              |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (| Self, "backslash.fmt", [] |),
@@ -1404,7 +1434,7 @@ Module ascii.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let byte :=
+                            (let~ byte :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1459,7 +1489,7 @@ Module ascii.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let hi :=
+                                    (let~ hi :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.get_constant (|
@@ -1474,17 +1504,13 @@ Module ascii.
                                                 "from",
                                                 []
                                               |),
-                                              [
-                                                BinOp.Panic.shr (|
-                                                  M.read (| byte |),
-                                                  Value.Integer 4
-                                                |)
+                                              [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4)
                                               ]
                                             |)
                                           |)
                                         |)
                                       |) in
-                                    let lo :=
+                                    let~ lo :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.get_constant (|
@@ -1536,7 +1562,7 @@ Module ascii.
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let buf := M.copy (| γ0_0 |) in
                           let len := M.copy (| γ0_1 |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -1612,7 +1638,7 @@ Module ascii.
                                     val))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.use
                               (M.match_operator (|
                                 M.alloc (|
@@ -1661,7 +1687,7 @@ Module ascii.
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
                                         ltac:(M.monadic
-                                          (let _ :=
+                                          (let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -1681,7 +1707,12 @@ Module ascii.
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (M.alloc (|
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (|
                                                       M.never_to_any (| M.read (| M.break (||) |) |)
                                                     |)));
                                                 fun γ =>
@@ -1693,7 +1724,7 @@ Module ascii.
                                                         0
                                                       |) in
                                                     let byte := M.copy (| γ0_0 |) in
-                                                    let _ :=
+                                                    let~ _ :=
                                                       M.match_operator (|
                                                         M.alloc (|
                                                           M.call_closure (|

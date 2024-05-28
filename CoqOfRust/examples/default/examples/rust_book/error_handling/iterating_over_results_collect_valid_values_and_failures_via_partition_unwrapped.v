@@ -19,7 +19,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let strings :=
+        let~ strings :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -174,7 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let numbers := M.copy (| γ0_0 |) in
                 let errors := M.copy (| γ0_1 |) in
-                let numbers :=
+                let~ numbers :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -261,7 +261,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let errors :=
+                let~ errors :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -351,8 +351,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -399,8 +399,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),

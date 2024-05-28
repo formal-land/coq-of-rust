@@ -162,16 +162,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let random_number := M.copy (| UnsupportedLiteral |) in
-        let animal :=
+        let~ random_number := M.copy (| UnsupportedLiteral |) in
+        let~ animal :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "returning_traits_with_dyn::random_animal", [] |),
               [ M.read (| random_number |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

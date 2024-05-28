@@ -38,6 +38,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -116,7 +117,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
@@ -149,7 +151,8 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::Parse" |) in
+                  M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
@@ -218,7 +221,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             M.read (| self |),
             [
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 :=
@@ -290,7 +295,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let first :=
+            let~ first :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -400,7 +405,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let parsed :=
+            let~ parsed :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -475,7 +480,7 @@ Definition double_first (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Panic.mul (| Integer.I32, Value.Integer 2, M.read (| parsed |) |) ]
+                [ BinOp.Wrap.mul Integer.I32 (Value.Integer 2) (M.read (| parsed |)) ]
             |)
           |)))
       |)))
@@ -511,7 +516,7 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -559,8 +564,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                 let e := M.copy (| γ0_0 |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -628,8 +633,8 @@ Definition print (τ : list Ty.t) (α : list Value.t) : M :=
                             0
                           |) in
                         let source := M.copy (| γ0_0 |) in
-                        let _ :=
-                          let _ :=
+                        let~ _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -705,7 +710,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let numbers :=
+        let~ numbers :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -743,7 +748,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let empty :=
+        let~ empty :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -756,7 +761,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let strings :=
+        let~ strings :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -794,7 +799,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "wrapping_errors::print", [] |),
@@ -806,7 +811,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "wrapping_errors::print", [] |),
@@ -818,7 +823,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "wrapping_errors::print", [] |),

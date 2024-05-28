@@ -64,7 +64,7 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let s :=
+              let~ s :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -146,7 +146,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let bytes :=
+              let~ bytes :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
@@ -192,24 +192,23 @@ Module net.
                                       |)
                                     |));
                                   ("end_",
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (|
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::net::display_buffer::DisplayBuffer",
                                           "len"
                                         |)
-                                      |),
-                                      M.call_closure (|
+                                      |))
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| bytes |) ]
-                                      |)
-                                    |))
+                                      |)))
                                 ]
                             ]
                           |)
@@ -221,7 +220,7 @@ Module net.
                           0
                         |) in
                       let buf := M.copy (| γ0_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -234,7 +233,7 @@ Module net.
                             [ M.read (| buf |); M.read (| bytes |) ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -243,18 +242,17 @@ Module net.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| β |),
-                            M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| β |))
+                            (M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
                               [ M.read (| bytes |) ]
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]

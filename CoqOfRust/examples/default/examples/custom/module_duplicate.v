@@ -13,8 +13,8 @@ Module foo.
       | [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let _ :=
-              let _ :=
+            let~ _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -57,8 +57,8 @@ Module foo.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -80,7 +80,7 @@ Module foo.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "module_duplicate::foo::gre::f_foo_gre", [] |),
@@ -105,7 +105,7 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "module_duplicate::foo::f_foo", [] |), [] |)
           |) in

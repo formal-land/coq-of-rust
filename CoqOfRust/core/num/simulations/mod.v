@@ -9,14 +9,17 @@ Import Run.
 
 Module Impl_u64.
   Definition run_overflowing_sub (self rhs : Z) :
-    Run.pure (num.Impl_u64.overflowing_sub [] [φ self; φ rhs])
-      (fun (v : (Z * bool)) => inl (φ v)).
+    {{ _, _ |
+      num.Impl_u64.overflowing_sub [] [φ self; φ rhs] ⇓
+      fun (v : (Z * bool)) => inl (φ v)
+    | _ }}.
   Proof.
-    unfold Run.pure; intros.
+    intros.
     run_symbolic.
     eapply Run.CallPrimitiveGetFunction. {
       apply core.intrinsics.intrinsics.Function_sub_with_overflow.
     }
+    run_symbolic.
     eapply Run.CallClosure. {
       apply core.simulations.intrinsics.run_sub_with_overflow_u64_u64.
     }

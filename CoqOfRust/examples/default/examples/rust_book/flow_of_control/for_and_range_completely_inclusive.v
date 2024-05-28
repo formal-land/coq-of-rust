@@ -51,7 +51,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -70,7 +70,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
@@ -89,11 +90,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.use
                                             (M.alloc (|
                                               BinOp.Pure.eq
-                                                (BinOp.Panic.rem (|
-                                                  Integer.I32,
-                                                  M.read (| n |),
-                                                  Value.Integer 15
-                                                |))
+                                                (BinOp.Wrap.rem
+                                                  Integer.I32
+                                                  (M.read (| n |))
+                                                  (Value.Integer 15))
                                                 (Value.Integer 0)
                                             |)) in
                                         let _ :=
@@ -101,8 +101,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let _ :=
-                                          let _ :=
+                                        let~ _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -140,11 +140,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.use
                                                     (M.alloc (|
                                                       BinOp.Pure.eq
-                                                        (BinOp.Panic.rem (|
-                                                          Integer.I32,
-                                                          M.read (| n |),
-                                                          Value.Integer 3
-                                                        |))
+                                                        (BinOp.Wrap.rem
+                                                          Integer.I32
+                                                          (M.read (| n |))
+                                                          (Value.Integer 3))
                                                         (Value.Integer 0)
                                                     |)) in
                                                 let _ :=
@@ -152,8 +151,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                let _ :=
-                                                  let _ :=
+                                                let~ _ :=
+                                                  let~ _ :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_function (|
@@ -197,11 +196,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           M.use
                                                             (M.alloc (|
                                                               BinOp.Pure.eq
-                                                                (BinOp.Panic.rem (|
-                                                                  Integer.I32,
-                                                                  M.read (| n |),
-                                                                  Value.Integer 5
-                                                                |))
+                                                                (BinOp.Wrap.rem
+                                                                  Integer.I32
+                                                                  (M.read (| n |))
+                                                                  (Value.Integer 5))
                                                                 (Value.Integer 0)
                                                             |)) in
                                                         let _ :=
@@ -209,8 +207,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
-                                                        let _ :=
-                                                          let _ :=
+                                                        let~ _ :=
+                                                          let~ _ :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 M.get_function (|
@@ -246,8 +244,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let _ :=
-                                                          let _ :=
+                                                        (let~ _ :=
+                                                          let~ _ :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 M.get_function (|

@@ -219,7 +219,7 @@ Module iter.
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let item :=
+                          (let~ item :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -239,7 +239,7 @@ Module iter.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               init,
                               M.read (|

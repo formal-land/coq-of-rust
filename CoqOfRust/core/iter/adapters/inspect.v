@@ -102,7 +102,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let elt := M.alloc (| elt |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -116,7 +116,7 @@ Module iter.
                               0
                             |) in
                           let a := M.alloc (| γ0_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_trait_method (|
@@ -250,7 +250,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let item := M.copy (| γ |) in
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -330,7 +330,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let item := M.copy (| γ |) in
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
@@ -395,7 +395,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let next :=
+                let~ next :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -597,7 +597,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let next :=
+                let~ next :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|

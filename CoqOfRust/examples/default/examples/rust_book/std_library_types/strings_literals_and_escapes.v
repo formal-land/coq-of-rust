@@ -28,9 +28,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let byte_escape := M.copy (| Value.String "I'm writing Rust!" |) in
-        let _ :=
-          let _ :=
+        let~ byte_escape := M.copy (| Value.String "I'm writing Rust!" |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -69,10 +69,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let unicode_codepoint := M.copy (| Value.String (String.String "029" "") |) in
-        let character_name := M.copy (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
-        let _ :=
-          let _ :=
+        let~ unicode_codepoint := M.copy (| Value.String (String.String "029" "") |) in
+        let~ character_name := M.copy (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -120,15 +120,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let long_string :=
+        let~ long_string :=
           M.copy (|
             Value.String
               "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!"
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

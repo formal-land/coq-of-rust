@@ -309,7 +309,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -325,7 +325,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   |)
                 |))
             |) in
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -347,7 +347,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -412,7 +412,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -434,7 +434,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let block_number :=
+          let~ block_number :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -456,7 +456,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -472,7 +472,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   |)
                 |))
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -535,7 +535,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -593,7 +593,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -615,7 +615,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -644,7 +644,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),

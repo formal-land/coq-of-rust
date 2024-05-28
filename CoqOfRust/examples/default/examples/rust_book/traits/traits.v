@@ -16,8 +16,8 @@ Module Animal.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -151,8 +151,8 @@ Module Impl_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  let _ :=
-                    let _ :=
+                  let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -211,8 +211,8 @@ Module Impl_traits_Sheep.
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    let _ :=
+                  (let~ _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -261,7 +261,7 @@ Module Impl_traits_Sheep.
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |) in
-                  let _ :=
+                  let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -367,8 +367,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -471,28 +471,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let dolly :=
+        let~ dolly :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "new", [] |),
               [ M.read (| Value.String "Dolly" |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),
               [ dolly ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "traits::Sheep", "shear", [] |),
               [ dolly ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "traits::Animal", Ty.path "traits::Sheep", [], "talk", [] |),

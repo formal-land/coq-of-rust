@@ -183,7 +183,7 @@ Module escape.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let hi :=
+                            (let~ hi :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.get_constant (| "core::escape::HEX_DIGITS" |),
@@ -196,12 +196,12 @@ Module escape.
                                         "from",
                                         []
                                       |),
-                                      [ BinOp.Panic.shr (| M.read (| byte |), Value.Integer 4 |) ]
+                                      [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4) ]
                                     |)
                                   |)
                                 |)
                               |) in
-                            let lo :=
+                            let~ lo :=
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.get_constant (| "core::escape::HEX_DIGITS" |),
@@ -247,7 +247,7 @@ Module escape.
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                   let data := M.copy (| γ0_0 |) in
                   let len := M.copy (| γ0_1 |) in
-                  let _ := M.write (| M.read (| output |), M.read (| data |) |) in
+                  let~ _ := M.write (| M.read (| output |), M.read (| data |) |) in
                   M.alloc (|
                     Value.StructRecord
                       "core::ops::range::Range"
@@ -318,13 +318,13 @@ Module escape.
         (let output := M.alloc (| output |) in
         let ch := M.alloc (| ch |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 9 |) |),
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" []
             |) in
-          let ch := M.alloc (| M.rust_cast (M.read (| ch |)) |) in
-          let _ :=
+          let~ ch := M.alloc (| M.rust_cast (M.read (| ch |)) |) in
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 3 |) |),
               M.read (|
@@ -333,13 +333,13 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 20 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 20))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 4 |) |),
               M.read (|
@@ -348,13 +348,13 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 16 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 16))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 5 |) |),
               M.read (|
@@ -363,13 +363,13 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 12 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 12))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 6 |) |),
               M.read (|
@@ -378,13 +378,13 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 8 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 8))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 7 |) |),
               M.read (|
@@ -393,13 +393,13 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 4 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 4))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_array_field (| M.read (| output |), M.alloc (| Value.Integer 8 |) |),
               M.read (|
@@ -408,29 +408,27 @@ Module escape.
                   M.alloc (|
                     M.rust_cast
                       (BinOp.Pure.bit_and
-                        (BinOp.Panic.shr (| M.read (| ch |), Value.Integer 0 |))
+                        (BinOp.Wrap.shr (M.read (| ch |)) (Value.Integer 0))
                         (Value.Integer 15))
                   |)
                 |)
               |)
             |) in
-          let start :=
+          let~ start :=
             M.alloc (|
-              BinOp.Panic.sub (|
-                Integer.Usize,
-                BinOp.Panic.div (|
-                  Integer.Usize,
-                  M.rust_cast
+              BinOp.Wrap.sub
+                Integer.Usize
+                (BinOp.Wrap.div
+                  Integer.Usize
+                  (M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "u32", "leading_zeros", [] |),
                       [ BinOp.Pure.bit_or (M.read (| ch |)) (Value.Integer 1) ]
-                    |)),
-                  Value.Integer 4
-                |),
-                Value.Integer 2
-              |)
+                    |)))
+                  (Value.Integer 4))
+                (Value.Integer 2)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -658,8 +656,8 @@ Module escape.
           (let data := M.alloc (| data |) in
           let alive := M.alloc (| alive |) in
           M.read (|
-            let _ := M.get_constant (| "core::escape::new_discriminant" |) in
-            let _ :=
+            let~ _ := M.get_constant (| "core::escape::new_discriminant" |) in
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -667,7 +665,7 @@ Module escape.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -798,12 +796,12 @@ Module escape.
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           M.read (|
-            let _ := M.get_constant (| "core::escape::from_array_discriminant" |) in
-            let data :=
+            let~ _ := M.get_constant (| "core::escape::from_array_discriminant" |) in
+            let~ data :=
               M.alloc (|
                 repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) N
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -988,9 +986,9 @@ Module escape.
               []
             |),
             [
-              BinOp.Panic.sub (|
-                Integer.U8,
-                M.read (|
+              BinOp.Wrap.sub
+                Integer.U8
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1000,8 +998,8 @@ Module escape.
                     "core::ops::range::Range",
                     "end"
                   |)
-                |),
-                M.read (|
+                |))
+                (M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -1011,8 +1009,7 @@ Module escape.
                     "core::ops::range::Range",
                     "start"
                   |)
-                |)
-              |)
+                |))
             ]
           |)))
       | _, _ => M.impossible

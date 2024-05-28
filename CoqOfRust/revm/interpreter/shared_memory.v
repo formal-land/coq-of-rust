@@ -270,7 +270,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -292,7 +292,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -529,7 +529,7 @@ Module interpreter.
                 "with_capacity",
                 []
               |),
-              [ BinOp.Panic.mul (| Integer.Usize, Value.Integer 4, Value.Integer 1024 |) ]
+              [ BinOp.Wrap.mul Integer.Usize (Value.Integer 4) (Value.Integer 1024) ]
             |)))
         | _, _ => M.impossible
         end.
@@ -598,7 +598,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let new_checkpoint :=
+              let~ new_checkpoint :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -617,7 +617,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -637,7 +637,7 @@ Module interpreter.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -699,7 +699,7 @@ Module interpreter.
                           0
                         |) in
                       let old_checkpoint := M.copy (| γ0_0 |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
@@ -754,7 +754,7 @@ Module interpreter.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -795,9 +795,9 @@ Module interpreter.
         | [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Panic.sub (|
-              Integer.Usize,
-              M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.Usize
+              (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -812,15 +812,14 @@ Module interpreter.
                     "buffer"
                   |)
                 ]
-              |),
-              M.read (|
+              |))
+              (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::interpreter::shared_memory::SharedMemory",
                   "last_checkpoint"
                 |)
-              |)
-            |)))
+              |))))
         | _, _ => M.impossible
         end.
       
@@ -892,7 +891,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -908,17 +907,16 @@ Module interpreter.
                         "revm_interpreter::interpreter::shared_memory::SharedMemory",
                         "buffer"
                       |);
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm_interpreter::interpreter::shared_memory::SharedMemory",
                             "last_checkpoint"
                           |)
-                        |),
-                        M.read (| new_size |)
-                      |);
+                        |))
+                        (M.read (| new_size |));
                       Value.Integer 0
                     ]
                   |)
@@ -954,8 +952,7 @@ Module interpreter.
                   "core::ops::range::Range"
                   [
                     ("start", M.read (| offset |));
-                    ("end_",
-                      BinOp.Panic.add (| Integer.Usize, M.read (| offset |), M.read (| size |) |))
+                    ("end_", BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| size |)))
                   ]
               ]
             |)))
@@ -1034,7 +1031,8 @@ Module interpreter.
                               M.alloc (| M.read (| slice |) |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (M.match_operator (|
+                              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                              M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1161,7 +1159,7 @@ Module interpreter.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.never_to_any (|
                                                   M.call_closure (|
@@ -1206,9 +1204,9 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let size := M.alloc (| size |) in
             M.read (|
-              let end_ :=
+              let~ end_ :=
                 M.alloc (|
-                  BinOp.Panic.add (| Integer.Usize, M.read (| offset |), M.read (| size |) |)
+                  BinOp.Wrap.add Integer.Usize (M.read (| offset |)) (M.read (| size |))
                 |) in
               M.alloc (|
                 M.read (|
@@ -1248,7 +1246,8 @@ Module interpreter.
                           M.alloc (| M.read (| slice |) |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.match_operator (|
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1317,7 +1316,7 @@ Module interpreter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
@@ -1471,7 +1470,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let byte := M.alloc (| byte |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1507,7 +1506,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1551,7 +1550,7 @@ Module interpreter.
             let offset := M.alloc (| offset |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1618,7 +1617,7 @@ Module interpreter.
                               |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -1693,7 +1692,7 @@ Module interpreter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1718,7 +1717,7 @@ Module interpreter.
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -1751,16 +1750,15 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let data_end :=
+                  let~ data_end :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                         [
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (| data_offset |),
-                            M.read (| len |)
-                          |);
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (| data_offset |))
+                            (M.read (| len |));
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -1772,15 +1770,14 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let data_len :=
+                  let~ data_len :=
                     M.alloc (|
-                      BinOp.Panic.sub (|
-                        Integer.Usize,
-                        M.read (| data_end |),
-                        M.read (| data_offset |)
-                      |)
+                      BinOp.Wrap.sub
+                        Integer.Usize
+                        (M.read (| data_end |))
+                        (M.read (| data_offset |))
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1789,7 +1786,7 @@ Module interpreter.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1848,7 +1845,7 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let data :=
+                  let~ data :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1864,7 +1861,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1885,7 +1882,7 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1902,16 +1899,14 @@ Module interpreter.
                             |),
                             [
                               M.read (| self |);
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (| memory_offset |),
-                                M.read (| data_len |)
-                              |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| len |),
-                                M.read (| data_len |)
-                              |)
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (| memory_offset |))
+                                (M.read (| data_len |));
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| len |))
+                                (M.read (| data_len |))
                             ]
                           |);
                           Value.Integer 0
@@ -1940,7 +1935,7 @@ Module interpreter.
             let src := M.alloc (| src |) in
             let len := M.alloc (| len |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1962,7 +1957,7 @@ Module interpreter.
                         [
                           ("start", M.read (| src |));
                           ("end_",
-                            BinOp.Panic.add (| Integer.Usize, M.read (| src |), M.read (| len |) |))
+                            BinOp.Wrap.add Integer.Usize (M.read (| src |)) (M.read (| len |)))
                         ];
                       M.read (| dst |)
                     ]
@@ -2064,7 +2059,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let buf_len :=
+              let~ buf_len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2143,15 +2138,17 @@ Module interpreter.
       | [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
-          BinOp.Panic.div (|
-            Integer.U64,
-            M.call_closure (|
+          BinOp.Wrap.div
+            Integer.U64
+            (M.call_closure (|
               M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
               [ M.read (| len |); Value.Integer 31 ]
-            |),
-            Value.Integer 32
-          |)))
+            |))
+            (Value.Integer 32)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_num_words :
+      M.IsFunction "revm_interpreter::interpreter::shared_memory::num_words" num_words.
   End shared_memory.
 End interpreter.

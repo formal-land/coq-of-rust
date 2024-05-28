@@ -1328,7 +1328,7 @@ impl FunDefinition {
                             body: if !generic_tys.is_empty() && !with_extra_self_ty {
                                 coq::Expression::Let {
                                     name: Some("Self".to_string()),
-                                    is_monadic: false,
+                                    is_user: false,
                                     ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
                                     init: Rc::new(
                                         coq::Expression::just_name("Self").apply_many(
@@ -1404,7 +1404,7 @@ impl ImplItemKind {
                                 body: if !generic_tys.is_empty() {
                                     coq::Expression::Let {
                                         name: Some("Self".to_string()),
-                                        is_monadic: false,
+                                        is_user: false,
                                         ty: Some(Rc::new(coq::Expression::just_name("Ty.t"))),
                                         init: Rc::new(
                                             coq::Expression::just_name("Self").apply_many(

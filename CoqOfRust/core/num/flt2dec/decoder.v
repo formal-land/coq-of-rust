@@ -398,6 +398,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Nan"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -411,6 +416,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -424,6 +434,11 @@ Module num.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::num::flt2dec::decoder::FullDecoded::Zero"
+                          |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -494,7 +509,7 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let __self_tag :=
+                let~ __self_tag :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -504,7 +519,7 @@ Module num.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let __arg1_tag :=
+                let~ __arg1_tag :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -726,13 +741,13 @@ Module num.
                       let mant := M.copy (| γ0_0 |) in
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
-                      let even :=
+                      let~ even :=
                         M.alloc (|
                           BinOp.Pure.eq
                             (BinOp.Pure.bit_and (M.read (| mant |)) (Value.Integer 1))
                             (Value.Integer 0)
                         |) in
-                      let decoded :=
+                      let~ decoded :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -750,28 +765,36 @@ Module num.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Nan"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Infinite"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Zero"
                                       []
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
+                                  M.alloc (|
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Finite"
                                       [
@@ -788,7 +811,9 @@ Module num.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let minnorm :=
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
+                                  let~ minnorm :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -839,18 +864,16 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer 2
-                                                      |));
+                                                      BinOp.Wrap.shl
+                                                        (M.read (| mant |))
+                                                        (Value.Integer 2));
                                                     ("minus", Value.Integer 1);
                                                     ("plus", Value.Integer 2);
                                                     ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        Integer.I16,
-                                                        M.read (| exp |),
-                                                        Value.Integer 2
-                                                      |));
+                                                      BinOp.Wrap.sub
+                                                        Integer.I16
+                                                        (M.read (| exp |))
+                                                        (Value.Integer 2));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]
@@ -865,18 +888,16 @@ Module num.
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   [
                                                     ("mant",
-                                                      BinOp.Panic.shl (|
-                                                        M.read (| mant |),
-                                                        Value.Integer 1
-                                                      |));
+                                                      BinOp.Wrap.shl
+                                                        (M.read (| mant |))
+                                                        (Value.Integer 1));
                                                     ("minus", Value.Integer 1);
                                                     ("plus", Value.Integer 1);
                                                     ("exp",
-                                                      BinOp.Panic.sub (|
-                                                        Integer.I16,
-                                                        M.read (| exp |),
-                                                        Value.Integer 1
-                                                      |));
+                                                      BinOp.Wrap.sub
+                                                        Integer.I16
+                                                        (M.read (| exp |))
+                                                        (Value.Integer 1));
                                                     ("inclusive", M.read (| even |))
                                                   ]
                                               ]

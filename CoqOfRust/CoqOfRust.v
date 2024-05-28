@@ -39,69 +39,51 @@ Parameter pointer_coercion : string -> Value.t -> Value.t.
 (** We replace assembly blocks by this special axiom. *)
 Parameter InlineAssembly : Value.t.
 
-(* Require CoqOfRust.std.arch.
-Require CoqOfRust.std.ascii.
-Require CoqOfRust.std.assert_matches.
-Require CoqOfRust.std.async_iter.
-Require CoqOfRust.std.backtrace.
-Require CoqOfRust.std.char.
-Require CoqOfRust.std.collections.
-Require CoqOfRust.std.env.
-Require CoqOfRust.std.f64.
-Require CoqOfRust.std.ffi.
-Require CoqOfRust.std.fs.
-Require CoqOfRust.std.future.
-Require CoqOfRust.std.hash.
-Require CoqOfRust.std.hint.
-Require CoqOfRust.std.intrinsics.
-Require CoqOfRust.std.io.
-(* Require CoqOfRust.std.iter. *)
-(* Require CoqOfRust.std.iter_type. *)
-(* Require CoqOfRust.std.net. *)
-Require CoqOfRust.std.ops.
-Require CoqOfRust.std.os.
-Require CoqOfRust.std.panic.
-Require CoqOfRust.std.panicking.
-Require CoqOfRust.std.path.
-Require CoqOfRust.std.pin.
-Require CoqOfRust.std.prelude.
-Require CoqOfRust.std.process.
-Require CoqOfRust.std.simd.
-Require CoqOfRust.std.str.
-Require CoqOfRust.std.sync.
-Require CoqOfRust.std.task.
-Require CoqOfRust.std.thread.
-
-Module std.
-  Export CoqOfRust.std.arch.
-  Export CoqOfRust.std.ascii.
-  Export CoqOfRust.std.backtrace.
-  Export CoqOfRust.std.char.
-  Export CoqOfRust.std.collections.
-  Export CoqOfRust.std.env.
-  Export CoqOfRust.std.f64.
-  Export CoqOfRust.std.ffi.
-  Export CoqOfRust.std.fs.
-  Export CoqOfRust.std.future.
-  Export CoqOfRust.std.hash.
-  Export CoqOfRust.std.hint.
-  Export CoqOfRust.std.intrinsics.
-  Export CoqOfRust.std.io.
-  (* Export CoqOfRust.std.iter. *)
-  (* Export CoqOfRust.std.net. *)
-  Export CoqOfRust.std.ops.
-  Export CoqOfRust.std.os.
-  Export CoqOfRust.std.panic.
-  Export CoqOfRust.std.panicking.
-  Export CoqOfRust.std.path.
-  Export CoqOfRust.std.pin.
-  Export CoqOfRust.std.prelude.
-  Export CoqOfRust.std.process.
-  Export CoqOfRust.std.simd.
-  Export CoqOfRust.std.str.
-  Export CoqOfRust.std.sync.
-  Export CoqOfRust.std.task.
-  Export CoqOfRust.std.thread.
-End std. *)
-
 Parameter UnsupportedLiteral : Value.t.
+
+(** There is an automatic instanciation of the function traits for closures and functions. *)
+Module FunctionTraitAutomaticImpl.
+  Axiom FunctionImplementsFn :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::Fn"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          let* self := M.read self in
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+
+  Axiom FunctionImplementsFnMut :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::FnMut"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call_mut", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          let* self := M.read self in
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+
+  Axiom FunctionImplementsFnOnce :
+    forall (Args : list Ty.t) (Output : Ty.t),
+    M.IsTraitInstance
+      "core::ops::function::FnOnce"
+      (Ty.function Args Output)
+      (* Trait polymorphic types *) [Ty.tuple Args]
+      (* Instance *) [ ("call_once", InstanceField.Method (fun τ α =>
+        match τ, α with
+        | [], [self; Value.Tuple args] =>
+          M.call_closure self args
+        | _, _ => M.impossible
+        end
+      )) ].
+End FunctionTraitAutomaticImpl.

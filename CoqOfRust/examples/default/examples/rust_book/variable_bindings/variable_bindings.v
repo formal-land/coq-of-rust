@@ -28,12 +28,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let an_integer := M.alloc (| Value.Integer 1 |) in
-        let a_boolean := M.alloc (| Value.Bool true |) in
-        let unit_ := M.alloc (| Value.Tuple [] |) in
-        let copied_integer := M.copy (| an_integer |) in
-        let _ :=
-          let _ :=
+        let~ an_integer := M.alloc (| Value.Integer 1 |) in
+        let~ a_boolean := M.alloc (| Value.Bool true |) in
+        let~ unit_ := M.alloc (| Value.Tuple [] |) in
+        let~ copied_integer := M.copy (| an_integer |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -72,8 +72,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -110,8 +110,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -150,8 +150,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _unused_variable := M.alloc (| Value.Integer 3 |) in
-        let _noisy_unused_variable := M.alloc (| Value.Integer 2 |) in
+        let~ _unused_variable := M.alloc (| Value.Integer 3 |) in
+        let~ _noisy_unused_variable := M.alloc (| Value.Integer 2 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

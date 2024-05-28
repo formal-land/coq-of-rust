@@ -75,7 +75,7 @@ Module fmt.
         ltac:(M.monadic
           (let args := M.alloc (| args |) in
           M.read (|
-            let capacity :=
+            let~ capacity :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -86,7 +86,7 @@ Module fmt.
                   [ args ]
                 |)
               |) in
-            let output :=
+            let~ output :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -97,7 +97,7 @@ Module fmt.
                   [ M.read (| capacity |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|

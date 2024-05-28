@@ -146,7 +146,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let name :=
+        let~ name :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -159,15 +159,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "Peter" |) ]
             |)
           |) in
-        let age := M.alloc (| Value.Integer 27 |) in
-        let peter :=
+        let~ age := M.alloc (| Value.Integer 27 |) in
+        let~ peter :=
           M.alloc (|
             Value.StructRecord
               "structures::Person"
               [ ("name", M.read (| name |)); ("age", M.read (| age |)) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -203,14 +203,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let point :=
+        let~ point :=
           M.alloc (|
             Value.StructRecord
               "structures::Point"
               [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -270,12 +270,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let bottom_right :=
+        let~ bottom_right :=
           M.alloc (|
             M.struct_record_update (M.read (| point |)) [ ("x", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -346,7 +346,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.SubPointer.get_struct_record_field (| γ, "structures::Point", "y" |) in
                 let left_edge := M.copy (| γ0_0 |) in
                 let top_edge := M.copy (| γ0_1 |) in
-                let _rectangle :=
+                let~ _rectangle :=
                   M.alloc (|
                     Value.StructRecord
                       "structures::Rectangle"
@@ -358,15 +358,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         ("bottom_right", M.read (| bottom_right |))
                       ]
                   |) in
-                let _unit := M.alloc (| Value.StructTuple "structures::Unit" [] |) in
-                let pair_ :=
+                let~ _unit := M.alloc (| Value.StructTuple "structures::Unit" [] |) in
+                let~ pair_ :=
                   M.alloc (|
                     Value.StructTuple
                       "structures::Pair"
                       [ Value.Integer 1; M.read (| UnsupportedLiteral |) ]
                   |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -441,8 +441,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.SubPointer.get_struct_tuple_field (| γ, "structures::Pair", 1 |) in
                         let integer := M.copy (| γ0_0 |) in
                         let decimal := M.copy (| γ0_1 |) in
-                        let _ :=
-                          let _ :=
+                        let~ _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "std::io::stdio::_print", [] |),

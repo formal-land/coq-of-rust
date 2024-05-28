@@ -2381,7 +2381,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2422,7 +2422,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2463,7 +2463,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2504,7 +2504,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2545,7 +2545,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2586,7 +2586,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2627,7 +2627,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2668,7 +2668,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2709,7 +2709,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2750,7 +2750,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2791,7 +2791,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2832,7 +2832,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
+              let~ _ := M.get_constant (| "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -2947,7 +2947,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let raw :=
+              let~ raw :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2992,7 +2992,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let raw :=
+              let~ raw :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3046,7 +3046,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let raw :=
+              let~ raw :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|

@@ -21,17 +21,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let counter := M.alloc (| Value.Integer 0 |) in
-        let result :=
+        let~ counter := M.alloc (| Value.Integer 0 |) in
+        let~ result :=
           M.copy (|
             M.loop (|
               ltac:(M.monadic
-                (let _ :=
+                (let~ _ :=
                   let β := counter in
-                  M.write (|
-                    β,
-                    BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
-                  |) in
+                  M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -50,7 +47,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)))
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [ result; M.alloc (| Value.Integer 20 |) ] |),
             [
@@ -78,7 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

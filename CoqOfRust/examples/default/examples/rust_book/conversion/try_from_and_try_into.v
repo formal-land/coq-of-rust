@@ -126,7 +126,7 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                     M.use
                       (M.alloc (|
                         BinOp.Pure.eq
-                          (BinOp.Panic.rem (| Integer.I32, M.read (| value |), Value.Integer 2 |))
+                          (BinOp.Wrap.rem Integer.I32 (M.read (| value |)) (Value.Integer 2))
                           (Value.Integer 0)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -174,7 +174,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -238,7 +238,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -273,7 +273,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -333,7 +333,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -368,7 +368,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let result :=
+        let~ result :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -381,7 +381,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 8 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -434,7 +434,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -469,7 +469,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let result :=
+        let~ result :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -482,7 +482,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 5 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -531,7 +531,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

@@ -58,8 +58,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let reference := M.alloc (| M.alloc (| Value.Integer 4 |) |) in
-        let _ :=
+        let~ reference := M.alloc (| M.alloc (| Value.Integer 4 |) |) in
+        let~ _ :=
           M.match_operator (|
             reference,
             [
@@ -67,7 +67,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
                   let val := M.copy (| γ |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -112,14 +112,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.read (| reference |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let val := M.copy (| γ |) in
-                  let _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -164,23 +164,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let _not_a_reference := M.alloc (| Value.Integer 3 |) in
+        let~ _not_a_reference := M.alloc (| Value.Integer 3 |) in
         M.match_operator (|
           M.alloc (| Value.Integer 3 |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let _is_a_reference := M.alloc (| γ |) in
-                let value := M.alloc (| Value.Integer 5 |) in
-                let mut_value := M.alloc (| Value.Integer 6 |) in
-                let _ :=
+                let~ value := M.alloc (| Value.Integer 5 |) in
+                let~ mut_value := M.alloc (| Value.Integer 6 |) in
+                let~ _ :=
                   M.match_operator (|
                     value,
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let r := M.alloc (| γ |) in
-                          let _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -233,14 +233,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     fun γ =>
                       ltac:(M.monadic
                         (let m := M.alloc (| γ |) in
-                        let _ :=
+                        let~ _ :=
                           let β := M.read (| m |) in
                           M.write (|
                             β,
-                            BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 10 |)
+                            BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 10)
                           |) in
-                        let _ :=
-                          let _ :=
+                        let~ _ :=
+                          let~ _ :=
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "std::io::stdio::_print", [] |),

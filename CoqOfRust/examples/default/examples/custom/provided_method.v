@@ -8,10 +8,10 @@ Module ProvidedAndRequired.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Panic.add (|
-          Integer.I32,
-          Value.Integer 42,
-          M.call_closure (|
+        BinOp.Wrap.add
+          Integer.I32
+          (Value.Integer 42)
+          (M.call_closure (|
             M.get_trait_method (|
               "provided_method::ProvidedAndRequired",
               Self,
@@ -20,8 +20,7 @@ Module ProvidedAndRequired.
               []
             |),
             [ M.read (| self |) ]
-          |)
-        |)))
+          |))))
     | _, _ => M.impossible
     end.
   
@@ -107,8 +106,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 5 |) in
-        let _ :=
+        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -153,7 +152,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -179,8 +178,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let y := M.alloc (| Value.Integer 5 |) in
-        let _ :=
+        let~ y := M.alloc (| Value.Integer 5 |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -225,7 +224,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

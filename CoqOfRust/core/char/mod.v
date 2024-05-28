@@ -210,11 +210,11 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 10
               |) in
-            let range :=
+            let~ range :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::escape::escape_unicode_into", [] |),
@@ -299,7 +299,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -617,7 +617,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data := M.alloc (| Value.Array [ M.read (| chr |) ] |) in
+            let~ data := M.alloc (| Value.Array [ M.read (| chr |) ] |) in
             M.alloc (|
               Value.StructTuple
                 "core::char::EscapeDefault"
@@ -650,7 +650,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 Value.Array
                   [
@@ -758,7 +758,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1270,7 +1270,7 @@ Module char.
         ltac:(M.monadic
           (let chr := M.alloc (| chr |) in
           M.read (|
-            let data :=
+            let~ data :=
               M.alloc (|
                 Value.Array
                   [
@@ -1278,7 +1278,7 @@ Module char.
                     M.read (| chr |)
                   ]
               |) in
-            let iter :=
+            let~ iter :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1338,7 +1338,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let bytes :=
+            let~ bytes :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
@@ -1349,7 +1349,7 @@ Module char.
                   [ Value.Array [] ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
@@ -1440,7 +1440,7 @@ Module char.
                         0
                       |) in
                     let chr := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -1472,7 +1472,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let n :=
+            let~ n :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
@@ -2302,6 +2302,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2471,6 +2472,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                     M.alloc (| Value.StructTuple "core::char::CaseMappingIter::Zero" [] |)))
               ]
             |)
@@ -2662,7 +2664,7 @@ Module char.
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     let c := M.copy (| γ0_2 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple
@@ -2688,7 +2690,7 @@ Module char.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     let c := M.copy (| γ0_1 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| c |) ]
@@ -2705,7 +2707,7 @@ Module char.
                         0
                       |) in
                     let c := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::Zero" []
@@ -2714,7 +2716,9 @@ Module char.
                       Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -2738,7 +2742,7 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let size :=
+            let~ size :=
               M.copy (|
                 M.match_operator (|
                   self,
@@ -2746,10 +2750,12 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Three" |) in
                         M.alloc (| Value.Integer 3 |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Two" |) in
                         M.alloc (| Value.Integer 2 |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2764,6 +2770,7 @@ Module char.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
                         M.alloc (| Value.Integer 0 |)))
                   ]
                 |)
@@ -2846,7 +2853,7 @@ Module char.
                     let a := M.copy (| γ0_0 |) in
                     let b := M.copy (| γ0_1 |) in
                     let c := M.copy (| γ0_2 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple
@@ -2872,7 +2879,7 @@ Module char.
                       |) in
                     let b := M.copy (| γ0_0 |) in
                     let c := M.copy (| γ0_1 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| b |) ]
@@ -2889,7 +2896,7 @@ Module char.
                         0
                       |) in
                     let c := M.copy (| γ0_0 |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.read (| self |),
                         Value.StructTuple "core::char::CaseMappingIter::Zero" []
@@ -2898,7 +2905,9 @@ Module char.
                       Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
                     |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
@@ -2968,7 +2977,7 @@ Module char.
                         let a := M.copy (| γ0_0 |) in
                         let b := M.copy (| γ0_1 |) in
                         let c := M.copy (| γ0_2 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -3044,7 +3053,7 @@ Module char.
                                   val))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -3148,7 +3157,7 @@ Module char.
                           |) in
                         let b := M.copy (| γ0_0 |) in
                         let c := M.copy (| γ0_1 |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -3259,7 +3268,8 @@ Module char.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
+                        M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
                         |)))
                   ]

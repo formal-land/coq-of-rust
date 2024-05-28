@@ -124,7 +124,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -134,7 +134,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -201,7 +201,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -211,7 +211,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -256,7 +256,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -266,7 +266,7 @@ Module cmp.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -315,14 +315,17 @@ Module cmp.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
                         M.alloc (| M.read (| Value.String "Less" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                         M.alloc (| M.read (| Value.String "Equal" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                         M.alloc (| M.read (| Value.String "Greater" |) |)))
                   ]
                 |)
@@ -351,7 +354,7 @@ Module cmp.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -396,7 +399,10 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -421,7 +427,10 @@ Module cmp.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
@@ -445,7 +454,10 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -469,7 +481,10 @@ Module cmp.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -494,7 +509,10 @@ Module cmp.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                      M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
@@ -519,7 +537,10 @@ Module cmp.
               M.match_operator (|
                 self,
                 [
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                      M.alloc (| Value.Bool true |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
@@ -549,12 +570,16 @@ Module cmp.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)));
                 fun γ =>
-                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)))
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)))
               ]
             |)
           |)))
@@ -580,7 +605,13 @@ Module cmp.
           M.read (|
             M.match_operator (|
               self,
-              [ fun γ => ltac:(M.monadic other); fun γ => ltac:(M.monadic self) ]
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    other));
+                fun γ => ltac:(M.monadic self)
+              ]
             |)
           |)))
       | _, _ => M.impossible
@@ -608,7 +639,8 @@ Module cmp.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::function::FnOnce",
@@ -1125,7 +1157,7 @@ Module cmp.
           let min := M.alloc (| min |) in
           let max := M.alloc (| max |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1246,6 +1278,7 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Less" |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1289,8 +1322,14 @@ Module cmp.
                     M.find_or_pattern (|
                       γ0_0,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -1339,6 +1378,7 @@ Module cmp.
                         "core::option::Option::Some",
                         0
                       |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Greater" |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
@@ -1382,8 +1422,14 @@ Module cmp.
                     M.find_or_pattern (|
                       γ0_0,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -1460,14 +1506,23 @@ Module cmp.
                   (M.find_or_pattern (|
                     γ,
                     [
-                      fun γ => ltac:(M.monadic (Value.Tuple []));
-                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                          Value.Tuple []))
                     ],
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic match γ with | [] => v1 | _ => M.impossible (||) end))
                   |)));
-              fun γ => ltac:(M.monadic v2)
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                  v2))
             ]
           |)
         |)))
@@ -1615,14 +1670,23 @@ Module cmp.
                   (M.find_or_pattern (|
                     γ,
                     [
-                      fun γ => ltac:(M.monadic (Value.Tuple []));
-                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                          Value.Tuple []))
                     ],
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic match γ with | [] => v2 | _ => M.impossible (||) end))
                   |)));
-              fun γ => ltac:(M.monadic v1)
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                  v1))
             ]
           |)
         |)))
@@ -2989,11 +3053,10 @@ Module cmp.
             M.read (|
               M.match_operator (|
                 M.alloc (|
-                  BinOp.Panic.sub (|
-                    Integer.I8,
-                    M.rust_cast (M.read (| M.read (| self |) |)),
-                    M.rust_cast (M.read (| M.read (| other |) |))
-                  |)
+                  BinOp.Wrap.sub
+                    Integer.I8
+                    (M.rust_cast (M.read (| M.read (| self |) |)))
+                    (M.rust_cast (M.read (| M.read (| other |) |)))
                 |),
                 [
                   fun γ =>
@@ -3071,7 +3134,7 @@ Module cmp.
             let min := M.alloc (| min |) in
             let max := M.alloc (| max |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

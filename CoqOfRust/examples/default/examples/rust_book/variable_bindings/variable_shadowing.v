@@ -25,10 +25,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let shadowed_binding := M.alloc (| Value.Integer 1 |) in
-        let _ :=
-          let _ :=
-            let _ :=
+        let~ shadowed_binding := M.alloc (| Value.Integer 1 |) in
+        let~ _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -67,9 +67,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let shadowed_binding := M.copy (| Value.String "abc" |) in
-          let _ :=
-            let _ :=
+          let~ shadowed_binding := M.copy (| Value.String "abc" |) in
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -109,8 +109,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -149,9 +149,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let shadowed_binding := M.alloc (| Value.Integer 2 |) in
-        let _ :=
-          let _ :=
+        let~ shadowed_binding := M.alloc (| Value.Integer 2 |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

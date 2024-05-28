@@ -258,7 +258,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let addr := M.alloc (| addr |) in
             M.read (|
-              let self_addr :=
+              let~ self_addr :=
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
@@ -266,8 +266,8 @@ Module ptr.
                       [ M.read (| self |) ]
                     |))
                 |) in
-              let dest_addr := M.alloc (| M.rust_cast (M.read (| addr |)) |) in
-              let offset :=
+              let~ dest_addr := M.alloc (| M.rust_cast (M.read (| addr |)) |) in
+              let~ offset :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "isize", "wrapping_sub", [] |),
@@ -688,11 +688,11 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.read (|
-              let pointee_size :=
+              let~ pointee_size :=
                 M.alloc (|
                   M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -817,8 +817,8 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.read (|
-              let this := M.copy (| self |) in
-              let _ :=
+              let~ this := M.copy (| self |) in
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -827,7 +827,7 @@ Module ptr.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -864,11 +864,11 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let pointee_size :=
+              let~ pointee_size :=
                 M.alloc (|
                   M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1002,7 +1002,8 @@ Module ptr.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -1540,7 +1541,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1593,7 +1594,7 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let ret :=
+              let~ ret :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::align_offset", [ T ] |),
@@ -1673,7 +1674,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [

@@ -79,11 +79,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let circle :=
+        let~ circle :=
           M.alloc (|
             Value.StructRecord "converting_to_string::Circle" [ ("radius", Value.Integer 6) ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|

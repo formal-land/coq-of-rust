@@ -287,7 +287,8 @@ Module str.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                 ]
               |)
             |)))

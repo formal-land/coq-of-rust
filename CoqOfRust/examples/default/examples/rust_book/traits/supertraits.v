@@ -30,7 +30,7 @@ Definition comp_sci_student_greeting (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let student := M.alloc (| student |) in
       M.read (|
-        let res :=
+        let~ res :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "alloc::fmt::format", [] |),

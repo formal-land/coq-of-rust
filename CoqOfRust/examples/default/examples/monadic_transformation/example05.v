@@ -21,11 +21,10 @@ Module Impl_example05_Foo.
     | [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Panic.add (|
-          Integer.U32,
-          M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
-          Value.Integer 1
-        |)))
+        BinOp.Wrap.add
+          Integer.U32
+          (M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |))
+          (Value.Integer 1)))
     | _, _ => M.impossible
     end.
   
@@ -43,8 +42,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
-        let _ :=
+        let~ foo := M.alloc (| Value.StructTuple "example05::Foo" [ Value.Integer 0 ] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "example05::Foo", "plus1", [] |),

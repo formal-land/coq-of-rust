@@ -108,7 +108,8 @@ Module Pointer.
     | Tuple (index : Z)
     | Array (index : Z)
     | StructRecord (constructor field : string)
-    | StructTuple (constructor : string) (index : Z).
+    | StructTuple (constructor : string) (index : Z)
+    | Owned.
   End Index.
 
   Module Path.
@@ -117,13 +118,13 @@ Module Pointer.
 
   Module Mutable.
     Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
-    | Make {Address Big_A : Set}
-      (address : Address)
+    | Make {Big_A : Set}
+      (address : nat)
       (path : Path.t)
       (big_to_value : Big_A -> Value)
       (projection : Big_A -> option A)
       (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _ _}.
+    Arguments Make {_ _ _ _}.
 
     Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
         (mutable : t Value to_value)
@@ -156,13 +157,13 @@ Module Pointer.
   End Mutable.
 
   Inductive t (Value : Set) : Set :=
-  | Immediate (value : Value)
+  | Immediate {A : Set} (to_value : A -> Value) (value : A)
   | Mutable {A : Set} {to_value : A -> Value} (mutable : Mutable.t Value to_value).
-  Arguments Immediate {_}.
+  Arguments Immediate {_ _}.
   Arguments Mutable {_ _ _}.
 
-  Definition mutable {Value Address A : Set}
-      (address : Address)
+  Definition mutable {Value A : Set}
+      (address : nat)
       (to_value : A -> Value) :
       t Value :=
     Mutable (to_value := to_value) (Mutable.Make
@@ -190,7 +191,7 @@ Module Value.
   (** The two existential types of the closure must be [Value.t] and [M]. We
       cannot enforce this constraint there yet, but we will do when defining the
       semantics. *)
-  | Closure : {'(t, M) : Set * Set @ list t -> M} -> t
+  | Closure : {'(Value, M) : (Set * Set) @ list Value -> M} -> t
   (** A special value that does not appear in the translation, but that we use
       to implement primitive functions over values that are not total. We
       statically know, from the fact that the source Rust code is well-typed,
@@ -202,126 +203,100 @@ Module Value.
       yet. *)
   | DeclaredButUndefined.
 
-  (** Read the part of the value that is at a given pointer path, starting from
-      the main value. It might return [None] if the path does not have a shape
-      compatible with the value. *)
-  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) :
-      option Value.t :=
-    match path with
-    | [] => Some value
-    | Pointer.Index.Tuple index :: path =>
+  (** Read the part of the value that is at a given pointer index. It might return [None] if the
+      index does not have a shape compatible with the value. *)
+  Definition read_path (value : Value.t) (index : Pointer.Index.t) : option Value.t :=
+    match index with
+    | Pointer.Index.Tuple index =>
       match value with
-      | Tuple fields =>
-        match List.nth_error fields (Z.to_nat index) with
-        | Some value => read_path value path
-        | None => None
-        end
+      | Tuple fields => List.nth_error fields (Z.to_nat index)
       | _ => None
       end
-    | Pointer.Index.Array index :: path =>
+    | Pointer.Index.Array index =>
       match value with
-      | Array fields =>
-        match List.nth_error fields (Z.to_nat index) with
-        | Some value => read_path value path
-        | None => None
-        end
+      | Array fields => List.nth_error fields (Z.to_nat index)
       | _ => None
       end
-    | Pointer.Index.StructRecord constructor field :: path =>
+    | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c fields =>
         if String.eqb c constructor then
-          match List.assoc fields field with
-          | Some value => read_path value path
-          | None => None
-          end
+          List.assoc fields field
         else
           None
       | _ => None
       end
-    | Pointer.Index.StructTuple constructor index :: path =>
+    | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c fields =>
         if String.eqb c constructor then
-          match List.nth_error fields (Z.to_nat index) with
-          | Some value => read_path value path
-          | None => None
-          end
+          List.nth_error fields (Z.to_nat index)
         else
           None
+      | _ => None
+      end
+    | Pointer.Index.Owned =>
+      match value with
+      | Pointer (Pointer.Immediate to_value value) => Some (to_value value)
       | _ => None
       end
     end.
 
-  (** Update the part of a value at a certain [path], and return [None] if the
-      path is of invalid shape. *)
-  Fixpoint write_value
-      (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
+  (** Update the part of a value at a certain [index], and return [None] if the index is of invalid
+      shape. *)
+  Definition write_value {A : Set} 
+      (value : Value.t) (index : Pointer.Index.t)
+      (update_to_value : A -> Value.t) (update : A) :
       option Value.t :=
-    match path with
-    | [] => Some update
-    | Pointer.Index.Tuple index :: path =>
+    match index with
+    | Pointer.Index.Tuple index =>
       match value with
       | Tuple fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some value =>
-          match write_value value path update with
-          | Some value =>
-            Some (Tuple (List.replace_at fields (Z.to_nat index) value))
-          | None => None
-          end
+        | Some value => Some (Tuple (List.replace_at fields (Z.to_nat index) value))
         | None => None
         end
       | _ => None
       end
-    | Pointer.Index.Array index :: path =>
+    | Pointer.Index.Array index =>
       match value with
       | Array fields =>
         match List.nth_error fields (Z.to_nat index) with
-        | Some value =>
-          match write_value value path update with
-          | Some value =>
-            Some (Array (List.replace_at fields (Z.to_nat index) value))
-          | None => None
-          end
+        | Some value => Some (Array (List.replace_at fields (Z.to_nat index) value))
         | None => None
         end
       | _ => None
       end
-    | Pointer.Index.StructRecord constructor field :: path =>
+    | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c fields =>
         if String.eqb c constructor then
           match List.assoc fields field with
-          | Some value =>
-            match write_value value path update with
-            | Some value =>
-              Some (StructRecord c (List.assoc_replace fields field value))
-            | None => None
-            end
+          | Some value => Some (StructRecord c (List.assoc_replace fields field value))
           | None => None
           end
         else
           None
       | _ => None
       end
-    | Pointer.Index.StructTuple constructor index :: path =>
+    | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c fields =>
         if String.eqb c constructor then
           match List.nth_error fields (Z.to_nat index) with
-          | Some value =>
-            match write_value value path update with
-            | Some value =>
-              Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
-            | None => None
-            end
+          | Some value => Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
           | None => None
           end
         else
           None
       | _ => None
       end
+      | Pointer.Index.Owned =>
+        match value with
+        | Pointer (Pointer.Immediate _ _) =>
+          Some (Pointer (Pointer.Immediate update_to_value update))
+        | _ => None
+        end
     end.
 
   (** Equality between values. Defined only for basic types. *)
@@ -357,15 +332,11 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc (value : Value.t)
-  | StateRead {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
+  | StateRead (pointer : Pointer.t Value.t)
   | StateWrite {A : Set} {to_value : A -> Value.t}
     (mutable : Pointer.Mutable.t Value.t to_value)
     (value : Value.t)
-  | GetSubPointer {A : Set} {to_value : A -> Value.t}
-    (mutable : Pointer.Mutable.t Value.t to_value)
-    (index : Pointer.Index.t)
-  | EnvRead
+  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
   | GetTraitMethod
@@ -381,11 +352,13 @@ Module LowM.
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
+  | Let (e : t A) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
   | Impossible.
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments CallClosure {_}.
+  Arguments Let {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
 
@@ -396,6 +369,8 @@ Module LowM.
       CallPrimitive primitive (fun v => let_ (k v) e2)
     | CallClosure f args k =>
       CallClosure f args (fun v => let_ (k v) e2)
+    | Let e k =>
+      Let e (fun v => let_ (k v) e2)
     | Loop body k =>
       Loop body (fun v => let_ (k v) e2)
     | Impossible => Impossible
@@ -423,6 +398,16 @@ Definition pure (v : Value.t) : M :=
 
 Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   LowM.let_ e1 (fun v1 =>
+  match v1 with
+  | inl v1 => e2 v1
+  | inr error => LowM.Pure (inr error)
+  end).
+
+Definition let_user (e1 : Value.t) (e2 : Value.t -> Value.t) : Value.t :=
+  e2 e1.
+
+Definition let_user_monadic (e1 : M) (e2 : Value.t -> M) : M :=
+  LowM.Let e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
@@ -508,6 +493,14 @@ Module Notations.
     (let_ b (fun a => c))
     (at level 200, a pattern, b at level 100, c at level 200).
 
+  Notation "'let~' a := b 'in' c" :=
+    (let_user b (fun a => c))
+      (at level 200, b at level 100, a name).
+
+  Notation "'let*~' a := b 'in' c" :=
+    (let_user_monadic b (fun a => c))
+      (at level 200, b at level 100, a name).
+
   Notation "e (| e1 , .. , en |)" :=
     (run ((.. (e e1) ..) en))
     (at level 100).
@@ -523,8 +516,28 @@ Import Notations.
     explicit names for all intermediate computation results. *)
 Ltac monadic e :=
   lazymatch e with
-  | context ctxt [let v : _ := ?x in @?f v] =>
+  | context ctxt [let v := ?x in @?f v] =>
     refine (let_ _ _);
+      [ monadic x
+      | let v' := fresh v in
+        intro v';
+        let y := (eval cbn beta in (f v')) in
+        lazymatch context ctxt [let v := x in y] with
+        | let _ := x in y => monadic y
+        | _ =>
+          refine (let_ _ _);
+            [ monadic y
+            | let w := fresh "v" in
+              intro w;
+              let z := context ctxt [w] in
+              monadic z
+            ]
+        end
+      ]
+  (* We uses the `let~` notation for lets that come from the source code, in order to keep this
+     abstraction barrier. *)
+  | context ctxt [let~ v := ?x in @?f v] =>
+    refine (let_user_monadic _ _);
       [ monadic x
       | let v' := fresh v in
         intro v';
@@ -595,15 +608,19 @@ Definition alloc (v : Value.t) : M :=
 
 Definition read (r : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.StateRead mutable)
+  | Value.Pointer pointer =>
+    let* value := call_primitive (Primitive.StateRead pointer) in
+    match value with
+    | Value.Pointer (Pointer.Immediate _ _) =>
+      call_primitive (Primitive.GetSubPointer pointer Pointer.Index.Owned)
+    | _ => pure value
+    end
   | _ => impossible
   end.
 
 Definition write (r : Value.t) (update : Value.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate _) => impossible
+  | Value.Pointer (Pointer.Immediate _ _) => impossible
   | Value.Pointer (Pointer.Mutable mutable) =>
     call_primitive (Primitive.StateWrite mutable update)
   | _ => impossible
@@ -615,20 +632,12 @@ Definition copy (r : Value.t) : M :=
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
     access in an array, we do a [break_match]. *)
+(* TODO: check that this is indeed the case *)
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
-  | Value.Pointer (Pointer.Immediate v) =>
-    match Value.read_path v [index] with
-    | Some v => alloc v
-    | None => break_match
-    end
-  | Value.Pointer (Pointer.Mutable mutable) =>
-    call_primitive (Primitive.GetSubPointer mutable index)
+  | Value.Pointer pointer => call_primitive (Primitive.GetSubPointer pointer index)
   | _ => impossible
   end.
-
-Definition read_env : M :=
-  call_primitive Primitive.EnvRead.
 
 Parameter get_constant : string -> M.
 
@@ -783,6 +792,16 @@ Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   else
     break_match.
 
+Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  match value with
+  | Value.StructTuple current_constructor _ =>
+    if String.eqb current_constructor constructor then
+      pure (Value.Tuple [])
+    else
+      break_match
+  | _ => break_match
+  end.
+
 Parameter pointer_coercion : Value.t -> Value.t.
 
 (** This function is explicitely called in the Rust AST, and should take two
@@ -791,7 +810,7 @@ Parameter pointer_coercion : Value.t -> Value.t.
 Parameter rust_cast : Value.t -> Value.t.
 
 Definition closure (f : list Value.t -> M) : Value.t :=
-  Value.Closure (existS (Value.t, M) f).
+  Value.Closure (existS (_, _) f).
 
 Definition constructor_as_closure (constructor : string) : Value.t :=
   closure (fun args =>

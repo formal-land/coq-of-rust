@@ -250,7 +250,7 @@ Module Impl_contract_ref_FlipperRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -325,14 +325,14 @@ Module Impl_contract_ref_ContractRef.
         (let version := M.alloc (| version |) in
         let flipper_code_hash := M.alloc (| flipper_code_hash |) in
         M.read (|
-          let salt :=
+          let~ salt :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
                 [ M.read (| version |) ]
               |)
             |) in
-          let flipper :=
+          let~ flipper :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -378,14 +378,14 @@ Module Impl_contract_ref_ContractRef.
         let flipper_code_hash := M.alloc (| flipper_code_hash |) in
         let succeed := M.alloc (| succeed |) in
         M.read (|
-          let salt :=
+          let~ salt :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
                 [ M.read (| version |) ]
               |)
             |) in
-          let flipper :=
+          let~ flipper :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -427,7 +427,7 @@ Module Impl_contract_ref_ContractRef.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "flip", [] |),

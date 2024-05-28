@@ -364,7 +364,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -374,7 +374,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -699,7 +699,7 @@ Module Impl_erc1155_Contract.
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -713,15 +713,15 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "erc1155::Contract",
                 "token_id_nonce"
               |) in
-            M.write (| β, BinOp.Panic.add (| Integer.U128, M.read (| β |), Value.Integer 1 |) |) in
-          let _ :=
+            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (Value.Integer 1) |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -752,7 +752,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
@@ -856,7 +856,7 @@ Module Impl_erc1155_Contract.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -903,7 +903,7 @@ Module Impl_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -917,7 +917,7 @@ Module Impl_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -939,7 +939,7 @@ Module Impl_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
@@ -1019,7 +1019,7 @@ Module Impl_erc1155_Contract.
         let token_id := M.alloc (| token_id |) in
         let value := M.alloc (| value |) in
         M.read (|
-          let sender_balance :=
+          let~ sender_balance :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1052,13 +1052,10 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             let β := sender_balance in
-            M.write (|
-              β,
-              BinOp.Panic.sub (| Integer.U128, M.read (| β |), M.read (| value |) |)
-            |) in
-          let _ :=
+            M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1079,7 +1076,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let recipient_balance :=
+          let~ recipient_balance :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1110,13 +1107,10 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             let β := recipient_balance in
-            M.write (|
-              β,
-              BinOp.Panic.add (| Integer.U128, M.read (| β |), M.read (| value |) |)
-            |) in
-          let _ :=
+            M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| value |)) |) in
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -1137,7 +1131,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let caller :=
+          let~ caller :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -1151,7 +1145,7 @@ Module Impl_erc1155_Contract.
                 ]
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),
@@ -1397,7 +1391,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -1411,7 +1405,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1433,7 +1427,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1493,7 +1487,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1549,7 +1543,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let balance :=
+              let~ balance :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1562,7 +1556,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     [ M.read (| self |); M.read (| from |); M.read (| token_id |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1601,7 +1595,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1618,7 +1612,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1694,7 +1688,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -1708,7 +1702,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1730,7 +1724,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1790,7 +1784,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1846,7 +1840,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1896,7 +1890,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1956,7 +1950,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let transfers :=
+              let~ transfers :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -2012,7 +2006,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -2054,7 +2048,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -2080,7 +2074,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -2097,7 +2093,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
                                         let v := M.copy (| γ1_1 |) in
-                                        let balance :=
+                                        let~ balance :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_trait_method (|
@@ -2114,7 +2110,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               ]
                                             |)
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -2170,7 +2166,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           |)))
                     ]
                   |)) in
-              let _ :=
+              let~ _ :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -2196,7 +2192,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -2222,7 +2218,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -2239,7 +2237,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                         let id := M.copy (| γ1_0 |) in
                                         let γ1_1 := M.read (| γ1_1 |) in
                                         let v := M.copy (| γ1_1 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
@@ -2263,7 +2261,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           |)))
                     ]
                   |)) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -2334,7 +2332,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         let owners := M.alloc (| owners |) in
         let token_ids := M.alloc (| token_ids |) in
         M.read (|
-          let output :=
+          let~ output :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -2347,7 +2345,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.use
               (M.match_operator (|
                 M.alloc (|
@@ -2374,7 +2372,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                       (let iter := M.copy (| γ |) in
                       M.loop (|
                         ltac:(M.monadic
-                          (let _ :=
+                          (let~ _ :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
@@ -2393,7 +2391,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
@@ -2430,7 +2430,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
                                                 ltac:(M.monadic
-                                                  (let _ :=
+                                                  (let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -2449,7 +2449,12 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (|
+                                                            (let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ,
+                                                                "core::option::Option::None"
+                                                              |) in
+                                                            M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (| M.break (||) |)
                                                               |)
@@ -2463,7 +2468,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                 0
                                                               |) in
                                                             let t := M.copy (| γ0_0 |) in
-                                                            let amount :=
+                                                            let~ amount :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
@@ -2480,7 +2485,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_associated_function (|
@@ -2545,7 +2550,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "caller", [] |),
@@ -2559,7 +2564,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2607,7 +2612,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2616,7 +2621,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         (let γ := M.use approved in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2645,7 +2650,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.alloc (| Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -2673,7 +2678,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "erc1155::Env", "emit_event", [] |),

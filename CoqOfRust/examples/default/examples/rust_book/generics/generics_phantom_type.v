@@ -200,19 +200,19 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _tuple1 :=
+        let~ _tuple1 :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
               [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let _tuple2 :=
+        let~ _tuple2 :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
               [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let _struct1 :=
+        let~ _struct1 :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"
@@ -221,7 +221,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phantom", Value.StructTuple "core::marker::PhantomData" [])
               ]
           |) in
-        let _struct2 :=
+        let~ _struct2 :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"

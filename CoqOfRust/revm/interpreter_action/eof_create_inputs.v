@@ -31,7 +31,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let names :=
+              let~ names :=
                 M.alloc (|
                   M.alloc (|
                     Value.Array
@@ -45,7 +45,7 @@ Module interpreter_action.
                       ]
                   |)
                 |) in
-              let values :=
+              let~ values :=
                 M.alloc (|
                   (* Unsize *)
                   M.pointer_coercion

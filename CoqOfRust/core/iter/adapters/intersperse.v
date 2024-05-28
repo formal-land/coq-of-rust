@@ -265,7 +265,7 @@ Module iter.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -298,7 +298,7 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -350,7 +350,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let separator :=
+                let~ separator :=
                   M.copy (|
                     M.SubPointer.get_struct_record_field (|
                       self,
@@ -776,7 +776,7 @@ Module iter.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -810,7 +810,7 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -983,7 +983,7 @@ Module iter.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lo := M.copy (| γ0_0 |) in
                       let hi := M.copy (| γ0_1 |) in
-                      let next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
+                      let~ next_is_elem := M.alloc (| UnOp.Pure.not (M.read (| needs_sep |)) |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -1107,8 +1107,8 @@ Module iter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let accum := M.copy (| init |) in
-                  let _ :=
+                  let~ accum := M.copy (| init |) in
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1143,7 +1143,7 @@ Module iter.
                                         0
                                       |) in
                                     let x := M.copy (| γ0_0 |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         accum,
                                         M.call_closure (|
@@ -1200,7 +1200,7 @@ Module iter.
                                               ltac:(M.monadic
                                                 (let x := M.copy (| γ |) in
                                                 M.read (|
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.write (|
                                                       accum,
                                                       M.call_closure (|
@@ -1230,7 +1230,7 @@ Module iter.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.write (|
                                                       accum,
                                                       M.call_closure (|

@@ -429,7 +429,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
     | [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let name_to_address :=
+          let~ name_to_address :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -442,7 +442,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -468,7 +468,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 ]
               |)
             |) in
-          let name_to_owner :=
+          let~ name_to_owner :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -481,7 +481,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
                 []
               |)
             |) in
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -571,7 +571,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let __self_tag :=
+          let~ __self_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -581,7 +581,7 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let __arg1_tag :=
+          let~ __arg1_tag :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -720,7 +720,7 @@ Module Impl_dns_DomainNameService.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
@@ -738,7 +738,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -784,7 +784,7 @@ Module Impl_dns_DomainNameService.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -805,7 +805,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
@@ -920,7 +920,7 @@ Module Impl_dns_DomainNameService.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
@@ -938,7 +938,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let owner :=
+              let~ owner :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -949,7 +949,7 @@ Module Impl_dns_DomainNameService.
                     [ M.read (| self |); M.read (| name |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -985,7 +985,7 @@ Module Impl_dns_DomainNameService.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let old_address :=
+              let~ old_address :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1005,7 +1005,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1026,7 +1026,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),
@@ -1095,7 +1095,7 @@ Module Impl_dns_DomainNameService.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let caller :=
+              let~ caller :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "caller", [] |),
@@ -1113,7 +1113,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let owner :=
+              let~ owner :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1124,7 +1124,7 @@ Module Impl_dns_DomainNameService.
                     [ M.read (| self |); M.read (| name |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1160,7 +1160,7 @@ Module Impl_dns_DomainNameService.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let old_owner :=
+              let~ old_owner :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1180,7 +1180,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1201,7 +1201,7 @@ Module Impl_dns_DomainNameService.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "dns::Env", "emit_event", [] |),

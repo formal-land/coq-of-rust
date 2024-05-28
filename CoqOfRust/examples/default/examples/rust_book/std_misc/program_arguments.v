@@ -19,7 +19,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let args :=
+        let~ args :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -36,8 +36,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.call_closure (| M.get_function (| "std::env::args", [] |), [] |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -92,8 +92,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -125,9 +125,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 |),
                                 [
                                   M.alloc (|
-                                    BinOp.Panic.sub (|
-                                      Integer.Usize,
-                                      M.call_closure (|
+                                    BinOp.Wrap.sub
+                                      Integer.Usize
+                                      (M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -139,9 +139,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [ args ]
-                                      |),
-                                      Value.Integer 1
-                                    |)
+                                      |))
+                                      (Value.Integer 1)
                                   |)
                                 ]
                               |);

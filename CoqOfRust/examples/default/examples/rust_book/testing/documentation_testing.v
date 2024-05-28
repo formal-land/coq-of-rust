@@ -12,7 +12,7 @@ Definition add (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
-      BinOp.Panic.add (| Integer.I32, M.read (| a |), M.read (| b |) |)))
+      BinOp.Wrap.add Integer.I32 (M.read (| a |)) (M.read (| b |))))
   | _, _ => M.impossible
   end.
 
@@ -34,7 +34,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
       (let a := M.alloc (| a |) in
       let b := M.alloc (| b |) in
       M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -57,7 +57,7 @@ Definition div (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        M.alloc (| BinOp.Panic.div (| Integer.I32, M.read (| a |), M.read (| b |) |) |)
+        M.alloc (| BinOp.Wrap.div Integer.I32 (M.read (| a |)) (M.read (| b |)) |)
       |)))
   | _, _ => M.impossible
   end.

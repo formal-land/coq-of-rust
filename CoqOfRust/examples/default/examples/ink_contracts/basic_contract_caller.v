@@ -118,7 +118,7 @@ Module Impl_basic_contract_caller_OtherContract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
@@ -192,7 +192,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
         M.read (|
-          let other_contract :=
+          let~ other_contract :=
             M.alloc (|
               M.never_to_any (|
                 M.call_closure (|
@@ -224,7 +224,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|

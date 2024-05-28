@@ -59,10 +59,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
-          let static_string := M.copy (| Value.String "I'm in read-only memory" |) in
-          let _ :=
-            let _ :=
+        let~ _ :=
+          let~ static_string := M.copy (| Value.String "I'm in read-only memory" |) in
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -102,9 +102,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let lifetime_num := M.alloc (| Value.Integer 9 |) in
-          let coerced_static :=
+        let~ _ :=
+          let~ lifetime_num := M.alloc (| Value.Integer 9 |) in
+          let~ coerced_static :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -114,8 +114,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [ lifetime_num ]
               |)
             |) in
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -155,8 +155,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

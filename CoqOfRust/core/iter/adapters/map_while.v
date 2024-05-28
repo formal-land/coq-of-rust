@@ -173,7 +173,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let x :=
+                    let~ x :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -472,7 +472,12 @@ Module iter.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (M.alloc (|
+                                                                    (let _ :=
+                                                                      M.is_struct_tuple (|
+                                                                        γ,
+                                                                        "core::option::Option::None"
+                                                                      |) in
+                                                                    M.alloc (|
                                                                       Value.StructTuple
                                                                         "core::ops::control_flow::ControlFlow::Break"
                                                                         [

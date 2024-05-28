@@ -13,7 +13,7 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let text :=
+        let~ text :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
@@ -32,7 +32,7 @@ Definition create_fn (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (M.read (|
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -104,7 +104,7 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let text :=
+        let~ text :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
@@ -123,7 +123,7 @@ Definition create_fnmut (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (M.read (|
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -195,7 +195,7 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let text :=
+        let~ text :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
@@ -214,7 +214,7 @@ Definition create_fnonce (τ : list Ty.t) (α : list Value.t) : M :=
                       fun γ =>
                         ltac:(M.monadic
                           (M.read (|
-                            let _ :=
+                            let~ _ :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -290,28 +290,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let fn_plain :=
+        let~ fn_plain :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions_closures_as_output_parameters::create_fn", [] |),
               []
             |)
           |) in
-        let fn_mut :=
+        let~ fn_mut :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions_closures_as_output_parameters::create_fnmut", [] |),
               []
             |)
           |) in
-        let fn_once :=
+        let~ fn_once :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions_closures_as_output_parameters::create_fnonce", [] |),
               []
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -324,7 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ fn_plain; Value.Tuple [] ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -337,7 +337,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ fn_mut; Value.Tuple [] ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
