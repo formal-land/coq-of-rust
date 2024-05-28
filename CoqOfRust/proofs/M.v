@@ -121,18 +121,14 @@ End IsTraitMethod.
 
 Module Stack.
   Definition t : Set :=
-    list (option {A : Set @ A}).
+    list {A : Set @ A}.
 
   Definition read (stack : t) (address : nat) : option {A : Set @ A} :=
-    match List.nth_error stack address with
-    | Some (Some value) => Some value
-    | Some None | None => None
-    end.
+    List.nth_error stack address.
 
   Fixpoint write {A : Set} (stack : t) (address : nat) (value : A) : t :=
     match stack, address with
-    | None :: _, Datatypes.O => stack
-    | Some _ :: stack, Datatypes.O => Some (existS A value) :: stack
+    | _ :: stack, Datatypes.O => existS A value :: stack
     | start :: stack, Datatypes.S address => start :: write stack address value
     | [], _ => []
     end.
@@ -143,6 +139,9 @@ Module Stack.
   Proof.
     now induction stack_start.
   Qed.
+
+  Definition domain (stack : t) : list Set :=
+    List.map (fun x => match x with Some (existS A _) => A | None => Empty_set end) stack.
 End Stack.
 
 Module HasAllocWith.
