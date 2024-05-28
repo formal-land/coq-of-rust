@@ -115,7 +115,7 @@ Module Pointer.
     Definition t : Set := list Index.t.
   End Path.
 
-  (* Module Mutable.
+  Module Mutable.
     Inductive t (Value : Set) {A : Set} (to_value : A -> Value) : Set :=
     | Make {Address Big_A : Set}
       (address : Address)
@@ -171,21 +171,16 @@ Module Pointer.
       to_value
       (fun x => Some x)
       (fun _ y => Some y)
-    ). *)
+    ).
 
-  (* Record t : Set := {
-    id : nat;
-    path : Path.t;
-    above : {A : Set @ A};
-  }. *)
-  Inductive t (Value : Set) : Set :=
+  (* Inductive t (Value : Set) : Set :=
   | Make {Address Big_A A : Set}
     (address : Address)
     (path : Pointer.Path.t)
     (projection : Big_A -> option A)
     (injection : Big_A -> A -> option Big_A)
     (to_value : A -> Value).
-  Arguments Make {_ _ _ _}.
+  Arguments Make {_ _ _ _}. *)
 End Pointer.
 
 Module Value.
