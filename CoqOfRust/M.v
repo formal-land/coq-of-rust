@@ -125,7 +125,7 @@ Module Pointer.
       (injection : Big_A -> A -> option Big_A).
     Arguments Make {_ _ _ _ _}.
 
-    Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
+    (* Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
         (mutable : t Value to_value)
         (index : Index.t)
         (sub_projection : A -> option Sub_A)
@@ -152,7 +152,7 @@ Module Pointer.
             end
           | None => None
           end
-        ).
+        ). *)
   End Mutable.
 
   Inductive t (Value : Set) : Set :=

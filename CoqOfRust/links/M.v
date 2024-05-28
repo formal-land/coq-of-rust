@@ -179,31 +179,6 @@ Module TupleIsToValue.
   }.
 End TupleIsToValue.
 
-Module SubPointer.
-  Module Runner.
-    Record t (A Sub_A : Set) {H_A : ToValue A} {H_Sub_A : ToValue Sub_A} : Set := {
-      index : Pointer.Index.t;
-      projection : A -> option Sub_A;
-      injection : A -> Sub_A -> option A;
-    }.
-    Arguments index {_ _ _ _}.
-    Arguments projection {_ _ _ _}.
-    Arguments injection {_ _ _ _}.
-  End Runner.
-
-  Definition get_sub
-      {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
-      (mutable : Pointer.Mutable.t (A := A) Value.t φ)
-      (runner : Runner.t A Sub_A) :
-      Pointer.Mutable.t (A := Sub_A) Value.t φ :=
-    Pointer.Mutable.get_sub
-      mutable
-      runner.(Runner.index)
-      runner.(Runner.projection)
-      runner.(Runner.injection)
-      φ.
-End SubPointer.
-
 Module Ref.
   Inductive t (A : Set) {IsToValue : ToValue A} : Set :=
   | Immediate (value : A)
@@ -216,17 +191,83 @@ Module Ref.
   Arguments Immediate {_ _}.
   Arguments Mutable {_ _ _ _}.
 
+  Definition to_pointer {A : Set} `{ToValue A} (ref : Ref.t A) : Pointer.t Value.t :=
+    match ref with
+    | Immediate value => Pointer.Immediate (φ value)
+    | Mutable address path big_to_value projection injection =>
+      Pointer.Mutable (Pointer.Mutable.Make (to_value := φ)
+        address path big_to_value projection injection
+      )
+    end.
+
   Global Instance IsToValue {A : Set} `{ToValue A} : ToValue (t A) := {
-    φ r :=
-      Value.Pointer match r with
-      | Immediate value => Pointer.Immediate (φ value)
-      | Mutable address path big_to_value projection injection =>
-        Pointer.Mutable (Pointer.Mutable.Make (to_value := φ)
-          address path big_to_value projection injection
-        )
-      end;
+    φ r := Value.Pointer (to_pointer r);
   }.
 End Ref.
+
+Module SubPointer.
+  Module Runner.
+    Record t (A Sub_A : Set) {H_A : ToValue A} {H_Sub_A : ToValue Sub_A} : Set := {
+      index : Pointer.Index.t;
+      projection : A -> option Sub_A;
+      injection : A -> Sub_A -> option A;
+    }.
+    Arguments index {_ _ _ _}.
+    Arguments projection {_ _ _ _}.
+    Arguments injection {_ _ _ _}.
+
+    Module Valid.
+      Record t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A} (runner : Runner.t A Sub_A) : Prop := {
+        read_commutativity (a : A) :
+          Option.map (runner.(projection) a) φ =
+          Value.read_path (φ a) [runner.(index)];
+        write_commutativity (a : A) (sub_a : Sub_A) :
+          Option.map (runner.(injection) a sub_a) φ =
+          Value.write_value (φ a) [runner.(index)] (φ sub_a);
+      }.
+    End Valid.
+  End Runner.
+
+  (* Definition run {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      (runner : Runner.t A Sub_A) (ref : Ref.t A) : Ref.t Sub_A :=
+    match ref with
+    | Ref.Immediate value =>
+      match runner.(Runner.projection) value with
+      | Some sub_value => Ref.Immediate sub_value
+      | None => Ref.Immediate (Value.Error "SubPointer.run: projection failed")
+      end
+    | Ref.Mutable address path big_to_value projection injection =>
+      Ref.Mutable address (path ++ [runner.(Runner.index)]) big_to_value
+        (fun big_a =>
+          match projection big_a with
+          | Some a => runner.(Runner.projection) a
+          | None => None
+          end
+        )
+        (fun big_a new_sub_a =>
+          match projection big_a with
+          | Some a =>
+            match runner.(Runner.injection) a new_sub_a with
+            | Some new_a => injection big_a new_a
+            | None => None
+            end
+          | None => None
+          end
+        )
+    end. *)
+(* 
+  Definition get_sub
+      {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      (mutable : Pointer.Mutable.t (A := A) Value.t φ)
+      (runner : Runner.t A Sub_A) :
+      Pointer.Mutable.t (A := Sub_A) Value.t φ :=
+    Pointer.Mutable.get_sub
+      mutable
+      runner.(Runner.index)
+      runner.(Runner.projection)
+      runner.(Runner.injection)
+      φ. *)
+End SubPointer.
 
 (* Module IsAlloc.
   Inductive t {A : Set} (to_value : A -> Value.t) (value : A) : Ref.t A -> Set :=
@@ -258,6 +299,44 @@ Module IsRead.
     IsRead.t to_value value (Ref.Mutable address path big_to_value projection injection to_value') big_value.
 End IsRead. *)
 
+Module IsSubPointer.
+  Inductive t {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      (runner : SubPointer.Runner.t A Sub_A) : Ref.t A -> Ref.t Sub_A -> Set :=
+  | Immediate (value : A) (sub_value : Sub_A) :
+    runner.(SubPointer.Runner.projection) value = Some sub_value ->
+    t runner (Ref.Immediate value) (Ref.Immediate sub_value)
+  | Mutable {Address Big_A : Set}
+      (address : Address)
+      (path : Pointer.Path.t)
+      (big_to_value : Big_A -> Value.t)
+      (projection : Big_A -> option A)
+      (injection : Big_A -> A -> option Big_A) :
+    let ref :=
+      Ref.Mutable address path big_to_value projection injection in
+    let sub_ref :=
+      Ref.Mutable
+        address
+        (path ++ [runner.(SubPointer.Runner.index)])
+        big_to_value
+        (fun (big_a : Big_A) =>
+          match projection big_a with
+          | Some a => runner.(SubPointer.Runner.projection) a
+          | None => None
+          end : option Sub_A
+        )
+        (fun (big_a : Big_A) (new_sub_a : Sub_A) =>
+          match projection big_a with
+          | Some a =>
+            match runner.(SubPointer.Runner.injection) a new_sub_a with
+            | Some new_a => injection big_a new_a
+            | None => None
+            end
+          | None => None
+          end : option Big_A
+        ) in
+    t runner ref sub_ref.
+End IsSubPointer.
+
 Module Run.
   Reserved Notation "{{ e ⇓ output_to_value }}" (at level 70, no associativity).
 
@@ -275,65 +354,36 @@ Module Run.
       {{ k (φ ref) ⇓ output_to_value }}
      ) ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateRead {Address Big_A A : Set}
-      address path projection injection to_value
-      (value : A) (value' : Value.t)
+  | CallPrimitiveStateRead {A : Set} `{ToValue A}
+      (ref : Ref.t A) (pointer : Pointer.t Value.t)
       (k : Value.t -> M) :
-    let pointer :=
-      Pointer.Make (Address := Address) (Big_A := Big_A) (A := A)
-        address path projection injection to_value in
-    value' = to_value value ->
-    {{ k value' ⇓ output_to_value }} ->
+    pointer = Ref.to_pointer ref ->
+    (forall (value : A),
+      {{ k (φ value) ⇓ output_to_value }}
+    ) ->
     {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateWrite {Address Big_A A : Set}
-      address path projection injection to_value
+  | CallPrimitiveStateWrite {A : Set} `{ToValue A}
+      (ref : Ref.t A) (pointer : Pointer.t Value.t)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
-    let pointer :=
-      Pointer.Make (Address := Address) (Big_A := Big_A) (A := A)
-        address path projection injection to_value in
-    value' = to_value value ->
+    pointer = Ref.to_pointer ref ->
+    value' = φ value ->
     {{ k (Value.Tuple []) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateWrite pointer value') k ⇓ output_to_value }}
-  | CallPrimitiveGetSubPointer {Address Big_A A Sub_A : Set}
-      address path projection injection to_value
-      index sub_projection sub_injection sub_to_value
+  | CallPrimitiveGetSubPointer {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
+      (ref : Ref.t A) (pointer : Pointer.t Value.t)
+      (runner : SubPointer.Runner.t A Sub_A)
       (k : Value.t -> M) :
-    let pointer :=
-      Pointer.Make (Address := Address) (Big_A := Big_A) (A := A)
-        address path projection injection to_value in
-    let sub_pointer :=
-      Pointer.Make (Address := Address) (Big_A := Big_A) (A := Sub_A)
-        address (path ++ [index])
-        (fun big_a =>
-          match projection big_a with
-          | Some a => sub_projection a
-          | None => None
-          end
-        )
-        (fun big_a new_sub_a =>
-          match projection big_a with
-          | Some a =>
-            match sub_injection a new_sub_a with
-            | Some new_a => injection big_a new_a
-            | None => None
-            end
-          | None => None
-          end
-        )
-        sub_to_value in
-    (* Communtativity of the read *)
-    (forall (a : A),
-      Option.map (sub_projection a) sub_to_value =
-      Value.read_path (to_value a) [index]
+    pointer = Ref.to_pointer ref ->
+    SubPointer.Runner.Valid.t runner ->
+    (forall (sub_ref : Ref.t Sub_A),
+      let sub_pointer := Ref.to_pointer sub_ref in
+      {{ k (Value.Pointer sub_pointer) ⇓ output_to_value }}
     ) ->
-    (* Communtativity of the write *)
-    (forall (a : A) (sub_a : Sub_A),
-      Option.map (sub_injection a sub_a) to_value =
-      Value.write_value (to_value a) [index] (sub_to_value sub_a)
-    ) ->
-    {{ k (Value.Pointer sub_pointer) ⇓ output_to_value }} ->
-    {{ LowM.CallPrimitive (Primitive.GetSubPointer pointer index) k ⇓ output_to_value }}
+    {{
+      LowM.CallPrimitive (Primitive.GetSubPointer pointer runner.(SubPointer.Runner.index)) k ⇓
+      output_to_value
+    }}
   | CallPrimitiveGetFunction
       (name : string) (generic_tys : list Ty.t)
       (function : list Ty.t -> list Value.t -> M)
@@ -402,10 +452,10 @@ Import Run.
 
 Module Primitive.
   Inductive t : Set -> Set :=
-  | StateAlloc {A : Set} (value : A) : t (Ref.t A)
-  | StateRead {A : Set} (ref : Ref.t A) : t A
-  | StateWrite {A : Set} (ref : Ref.t A) (value : A) : t unit
-  | GetSubPointer {A Sub_A : Set}
+  | StateAlloc {A : Set} `{ToValue A} (value : A) : t (Ref.t A)
+  | StateRead {A : Set} `{ToValue A} (ref : Ref.t A) : t A
+  | StateWrite {A : Set} `{ToValue A} (ref : Ref.t A) (value : A) : t unit
+  | GetSubPointer {A Sub_A : Set} `{ToValue A} `{ToValue Sub_A}
     (ref : Ref.t A) (runner : SubPointer.Runner.t A Sub_A) :
     t (Ref.t Sub_A).
 End Primitive.
@@ -414,14 +464,14 @@ Module LowM.
   Inductive t (Output : Set) : Set :=
   | Pure (value : Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t Output)
-  | CallClosure {A B : Set} (closure : A -> t B) (args : A) (k : B -> t Output)
+  (* | CallClosure {A B : Set} (closure : A -> t B) (args : A) (k : B -> t Output) *)
   | Let {A : Set} (e : t A) (k : A -> t Output)
   | Loop {A : Set} (body : t A) (k : A -> t Output).
   Arguments Pure {_}.
-  Arguments CallPrimitive {_}.
-  Arguments CallClosure {_}.
-  Arguments Let {_}.
-  Arguments Loop {_}.
+  Arguments CallPrimitive {_ _}.
+  (* Arguments CallClosure {_ _ _}. *)
+  Arguments Let {_ _}.
+  Arguments Loop {_ _}.
 End LowM.
 
 (* We do not define an equivalent of [M] as the resulting term is generated, so we are not
@@ -432,9 +482,50 @@ Fixpoint evaluate {Output : Set}
   (run : {{ e ⇓ output_to_value }}) :
   LowM.t Output.
 Proof.
-  destruct run; try exact (evaluate _ _ _ run).
-  { exact (LowM.Pure output). }
-  { eapply LowM.Let. {
+  destruct run.
+  { (* Pure *)
+    exact (LowM.Pure output).
+  }
+  { (* Alloc *)
+    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
+    intros ref.
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H ref)
+    end.
+  }
+  { (* Read *)
+    apply (LowM.CallPrimitive (Primitive.StateRead ref)).
+    intros value.
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H value)
+    end.
+  }
+  { (* Write *)
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref value)).
+    intros _.
+    exact (evaluate _ _ _ run).
+  }
+  { (* SubPointer *)
+    apply (LowM.CallPrimitive (Primitive.GetSubPointer ref runner)).
+    intros sub_ref.
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H sub_ref)
+    end.
+  }
+  { (* CallPrimitiveGetFunction *)
+    exact (evaluate _ _ _ run).
+  }
+  { (* CallPrimitiveGetAssociatedFunction *)
+    exact (evaluate _ _ _ run).
+  }
+  { (* CallPrimitiveGetTraitMethod *)
+    exact (evaluate _ _ _ run).
+  }
+  { (* CallClosure *)
+    eapply LowM.Let. {
       exact (evaluate _ _ _ run).
     }
     intros output'; eapply evaluate.
@@ -442,12 +533,16 @@ Proof.
     | H : forall _ : Output', _ |- _ => apply (H output')
     end.
   }
-  { eapply LowM.Let. {
+  { (* Let *)
+    eapply LowM.Let. {
       exact (evaluate _ _ _ run).
     }
     intros output'; eapply evaluate.
     match goal with
     | H : forall _ : Output', _ |- _ => apply (H output')
     end.
+  }
+  { (* Rewrite *)
+    exact (evaluate _ _ _ run).
   }
 Defined.
