@@ -21,6 +21,9 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_utf8_first_byte :
+      M.IsFunction "core::str::validations::utf8_first_byte" utf8_first_byte.
+    
     (*
     const fn utf8_acc_cont_byte(ch: u32, byte: u8) -> u32 {
         (ch << 6) | (byte & CONT_MASK) as u32
@@ -41,6 +44,9 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_utf8_acc_cont_byte :
+      M.IsFunction "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
+    
     (*
     pub(super) const fn utf8_is_cont_byte(byte: u8) -> bool {
         (byte as i8) < -64
@@ -54,6 +60,9 @@ Module str.
           BinOp.Pure.lt (M.rust_cast (M.read (| byte |))) (Value.Integer (-64))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_utf8_is_cont_byte :
+      M.IsFunction "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
     
     (*
     pub unsafe fn next_code_point<'a, I: Iterator<Item = &'a u8>>(bytes: &mut I) -> Option<u32> {
@@ -367,6 +376,9 @@ Module str.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_next_code_point :
+      M.IsFunction "core::str::validations::next_code_point" next_code_point.
     
     (*
     pub(super) unsafe fn next_code_point_reverse<'a, I>(bytes: &mut I) -> Option<u32>
@@ -703,6 +715,9 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_next_code_point_reverse :
+      M.IsFunction "core::str::validations::next_code_point_reverse" next_code_point_reverse.
+    
     Definition value_NONASCII_MASK : Value.t :=
       M.run
         ltac:(M.monadic
@@ -730,6 +745,9 @@ Module str.
             (Value.Integer 0)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_contains_nonascii :
+      M.IsFunction "core::str::validations::contains_nonascii" contains_nonascii.
     
     (*
     pub(super) const fn run_utf8_validation(v: &[u8]) -> Result<(), Utf8Error> {
@@ -2136,6 +2154,9 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_run_utf8_validation :
+      M.IsFunction "core::str::validations::run_utf8_validation" run_utf8_validation.
+    
     Definition value_UTF8_CHAR_WIDTH : Value.t :=
       M.run
         ltac:(M.monadic
@@ -2422,6 +2443,9 @@ Module str.
             |))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_utf8_char_width :
+      M.IsFunction "core::str::validations::utf8_char_width" utf8_char_width.
     
     Definition value_CONT_MASK : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 63 |))).
   End validations.

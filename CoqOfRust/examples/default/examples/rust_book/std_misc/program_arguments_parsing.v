@@ -62,6 +62,8 @@ Definition increase (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
+
 (*
 fn decrease(number: i32) {
     println!("{}", number - 1);
@@ -123,6 +125,8 @@ Definition decrease (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
+
 (*
 fn help() {
     println!(
@@ -174,6 +178,8 @@ match_args {increase|decrease} <integer>
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
 
 (*
 fn main() {
@@ -624,3 +630,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.

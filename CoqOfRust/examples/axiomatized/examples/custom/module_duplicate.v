@@ -4,9 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module foo.
   Module gre.
     Parameter f_foo_gre : (list Ty.t) -> (list Value.t) -> M.
+    
+    Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
   End gre.
   
   Parameter f_foo : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
 End foo.
 
 Parameter f : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_f : M.IsFunction "module_duplicate::f" f.

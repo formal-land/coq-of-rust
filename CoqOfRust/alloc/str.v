@@ -2747,6 +2747,8 @@ Module str.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
+  
   Module Impl_core_borrow_Borrow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
     
@@ -4259,6 +4261,9 @@ Module str.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_from_boxed_utf8_unchecked :
+    M.IsFunction "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+  
   (*
   fn convert_while_ascii(b: &[u8], convert: fn(&u8) -> u8) -> Vec<u8> {
       let mut out = Vec::with_capacity(b.len());
@@ -4759,6 +4764,9 @@ Module str.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_convert_while_ascii :
+    M.IsFunction "alloc::str::convert_while_ascii" convert_while_ascii.
   
   Module convert_while_ascii.
     Definition value_USIZE_SIZE : Value.t :=

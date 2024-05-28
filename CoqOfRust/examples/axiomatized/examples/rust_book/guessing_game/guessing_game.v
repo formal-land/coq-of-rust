@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter gen_range : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "guessing_game::main" main.

@@ -21,6 +21,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_from_fn : M.IsFunction "core::iter::sources::from_fn::from_fn" from_fn.
+      
       (* StructTuple
         {
           name := "FromFn";

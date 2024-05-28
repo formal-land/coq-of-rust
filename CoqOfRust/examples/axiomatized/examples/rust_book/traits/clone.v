@@ -79,3 +79,5 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "clone::main" main.

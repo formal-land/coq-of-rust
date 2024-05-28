@@ -33,6 +33,8 @@ fn main() {
 Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
 
+Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+
 Module main.
   (*
       extern "C" fn foo(arg: i32) -> i32 {
@@ -88,6 +90,9 @@ Module main.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_foo :
+    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+  
   (*
       fn call_foo(arg: i32) -> i32 {
           unsafe {
@@ -120,4 +125,7 @@ Module main.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_call_foo :
+    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
 End main.

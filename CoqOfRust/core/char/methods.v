@@ -2082,6 +2082,8 @@ Module char.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_len_utf8 : M.IsFunction "core::char::methods::len_utf8" len_utf8.
+    
     (*
     pub fn encode_utf8_raw(code: u32, dst: &mut [u8]) -> &mut [u8] {
         let len = len_utf8(code);
@@ -2381,6 +2383,9 @@ Module char.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_encode_utf8_raw :
+      M.IsFunction "core::char::methods::encode_utf8_raw" encode_utf8_raw.
+    
     (*
     pub fn encode_utf16_raw(mut code: u32, dst: &mut [u16]) -> &mut [u16] {
         // SAFETY: each arm checks whether there are enough bits to write into
@@ -2661,5 +2666,8 @@ Module char.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_encode_utf16_raw :
+      M.IsFunction "core::char::methods::encode_utf16_raw" encode_utf16_raw.
   End methods.
 End char.

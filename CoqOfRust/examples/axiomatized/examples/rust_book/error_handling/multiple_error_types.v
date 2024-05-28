@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_double_first : M.IsFunction "multiple_error_types::double_first" double_first.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "multiple_error_types::main" main.

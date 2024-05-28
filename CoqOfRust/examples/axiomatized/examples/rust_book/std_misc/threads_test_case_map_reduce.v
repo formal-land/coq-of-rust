@@ -2,3 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "threads_test_case_map_reduce::main" main.

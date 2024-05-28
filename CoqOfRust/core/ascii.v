@@ -91,6 +91,8 @@ Module ascii.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
+  
   Module Impl_core_iter_traits_iterator_Iterator_for_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
     

@@ -6513,6 +6513,9 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_splitpoint :
+        M.IsFunction "alloc::collections::btree::node::splitpoint" splitpoint.
+      
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
@@ -17193,6 +17196,9 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_slice_insert :
+        M.IsFunction "alloc::collections::btree::node::slice_insert" slice_insert.
+      
       (*
       unsafe fn slice_remove<T>(slice: &mut [MaybeUninit<T>], idx: usize) -> T {
           unsafe {
@@ -17347,6 +17353,9 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_slice_remove :
+        M.IsFunction "alloc::collections::btree::node::slice_remove" slice_remove.
+      
       (*
       unsafe fn slice_shl<T>(slice: &mut [MaybeUninit<T>], distance: usize) {
           unsafe {
@@ -17418,6 +17427,9 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_slice_shl :
+        M.IsFunction "alloc::collections::btree::node::slice_shl" slice_shl.
+      
       (*
       unsafe fn slice_shr<T>(slice: &mut [MaybeUninit<T>], distance: usize) {
           unsafe {
@@ -17486,6 +17498,9 @@ Module collections.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_slice_shr :
+        M.IsFunction "alloc::collections::btree::node::slice_shr" slice_shr.
       
       (*
       fn move_to_slice<T>(src: &mut [MaybeUninit<T>], dst: &mut [MaybeUninit<T>]) {
@@ -17601,6 +17616,9 @@ Module collections.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_move_to_slice :
+        M.IsFunction "alloc::collections::btree::node::move_to_slice" move_to_slice.
     End node.
   End btree.
 End collections.

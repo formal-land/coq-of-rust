@@ -50,6 +50,11 @@ Module num.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_estimate_scaling_factor :
+        M.IsFunction
+          "core::num::flt2dec::estimator::estimate_scaling_factor"
+          estimate_scaling_factor.
     End estimator.
   End flt2dec.
 End num.

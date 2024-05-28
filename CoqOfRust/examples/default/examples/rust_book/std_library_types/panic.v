@@ -48,6 +48,8 @@ Definition division (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_division : M.IsFunction "panic::division" division.
+
 (*
 fn main() {
     // Heap allocated integer
@@ -111,3 +113,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "panic::main" main.

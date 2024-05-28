@@ -5,4 +5,9 @@ Parameter value_NUM : Value.t.
 
 Parameter coerce_static : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_coerce_static :
+  M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" coerce_static.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.

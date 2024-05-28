@@ -22,3 +22,5 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_raii_desctructor::main" main.

@@ -56,6 +56,12 @@ End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Parameter double_first : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_double_first : M.IsFunction "defining_an_error_type::double_first" double_first.
+
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "defining_an_error_type::print" print.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "defining_an_error_type::main" main.

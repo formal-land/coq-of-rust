@@ -24,10 +24,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reg_fn : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_reg_fn : M.IsFunction "generics_functions::reg_fn" reg_fn.
+
 Parameter gen_spec_t : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_gen_spec_t : M.IsFunction "generics_functions::gen_spec_t" gen_spec_t.
 
 Parameter gen_spec_i32 : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_gen_spec_i32 : M.IsFunction "generics_functions::gen_spec_i32" gen_spec_i32.
+
 Parameter generic : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_generic : M.IsFunction "generics_functions::generic" generic.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_functions::main" main.

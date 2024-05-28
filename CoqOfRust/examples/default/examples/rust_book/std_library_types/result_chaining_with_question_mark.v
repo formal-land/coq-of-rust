@@ -128,6 +128,8 @@ Module checked.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
+  
   (*
       fn sqrt(x: f64) -> MathResult {
           if x < 0.0 {
@@ -181,6 +183,8 @@ Module checked.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
+  
   (*
       fn ln(x: f64) -> MathResult {
           if x <= 0.0 {
@@ -233,6 +237,8 @@ Module checked.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -431,6 +437,8 @@ Module checked.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
+  
   (*
       pub fn op(x: f64, y: f64) {
           match op_(x, y) {
@@ -543,6 +551,8 @@ Module checked.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
 End checked.
 
 (*
@@ -566,3 +576,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.

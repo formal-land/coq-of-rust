@@ -3,8 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter used_function : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
+
 Parameter unused_function : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
 
 Parameter noisy_unused_function : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_noisy_unused_function :
+  M.IsFunction "dead_code::noisy_unused_function" noisy_unused_function.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "dead_code::main" main.

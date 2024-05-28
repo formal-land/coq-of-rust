@@ -72,3 +72,5 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
 End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_phantom_type::main" main.

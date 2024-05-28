@@ -3,4 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter some_number : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_some_number :
+  M.IsFunction "match_binding_destructure_enum_variants::some_number" some_number.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.

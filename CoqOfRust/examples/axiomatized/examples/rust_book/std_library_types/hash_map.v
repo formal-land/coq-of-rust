@@ -3,4 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_call : M.IsFunction "hash_map::call" call.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "hash_map::main" main.

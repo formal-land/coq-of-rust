@@ -436,12 +436,12 @@ pub(crate) fn compile_expr<'a>(
                 func: Rc::new(Expr::GetAssociatedFunction {
                     ty: Rc::new(CoqType::Application {
                         func: Rc::new(CoqType::Path {
-                            path: Rc::new(Path::new(&["alloc", "boxed", "Box"])),
+                            path: Path::new(&["alloc", "boxed", "Box"]),
                         }),
                         args: vec![
                             value_ty,
                             Rc::new(CoqType::Path {
-                                path: Rc::new(Path::new(&["alloc", "alloc", "Global"])),
+                                path: Path::new(&["alloc", "alloc", "Global"]),
                             }),
                         ],
                     }),
@@ -1054,7 +1054,7 @@ pub(crate) fn compile_expr<'a>(
                             segments.push(format!("{}.{}", last_segment, symbol.unwrap()));
 
                             Rc::new(Expr::GetFunction {
-                                func: Path { segments },
+                                func: Rc::new(Path { segments }),
                                 generic_tys: vec![],
                             })
                             .alloc()

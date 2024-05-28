@@ -77,6 +77,8 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
+    
     (*
     fn do_count_chars(s: &str) -> usize {
         // For correctness, `CHUNK_SIZE` must be:
@@ -831,6 +833,8 @@ Module str.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
+    
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
@@ -856,6 +860,11 @@ Module str.
             |))))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_contains_non_continuation_byte :
+      M.IsFunction
+        "core::str::count::contains_non_continuation_byte"
+        contains_non_continuation_byte.
     
     Module contains_non_continuation_byte.
       Definition value_LSB : Value.t :=
@@ -925,6 +934,9 @@ Module str.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sum_bytes_in_usize :
+      M.IsFunction "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
     
     Module sum_bytes_in_usize.
       Definition value_LSB_SHORTS : Value.t :=
@@ -1032,5 +1044,8 @@ Module str.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_char_count_general_case :
+      M.IsFunction "core::str::count::char_count_general_case" char_count_general_case.
   End count.
 End str.

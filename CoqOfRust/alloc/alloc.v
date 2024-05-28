@@ -2,7 +2,24 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module alloc.
-  (* Unhandled foreign module here *)
+  Parameter __rust_alloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function___rust_alloc : M.IsFunction "alloc::alloc::__rust_alloc" __rust_alloc.
+  
+  Parameter __rust_dealloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function___rust_dealloc : M.IsFunction "alloc::alloc::__rust_dealloc" __rust_dealloc.
+  
+  Parameter __rust_realloc : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function___rust_realloc : M.IsFunction "alloc::alloc::__rust_realloc" __rust_realloc.
+  
+  Parameter __rust_alloc_zeroed : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function___rust_alloc_zeroed :
+    M.IsFunction "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
+  
+  Parameter __rust_no_alloc_shim_is_unstable : Value.t.
   
   (* StructTuple
     {
@@ -134,6 +151,8 @@ Module alloc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_alloc : M.IsFunction "alloc::alloc::alloc" alloc.
+  
   (*
   pub unsafe fn dealloc(ptr: *mut u8, layout: Layout) {
       unsafe { __rust_dealloc(ptr, layout.size(), layout.align()) }
@@ -161,6 +180,8 @@ Module alloc.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_dealloc : M.IsFunction "alloc::alloc::dealloc" dealloc.
   
   (*
   pub unsafe fn realloc(ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
@@ -192,6 +213,8 @@ Module alloc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_realloc : M.IsFunction "alloc::alloc::realloc" realloc.
+  
   (*
   pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
       unsafe { __rust_alloc_zeroed(layout.size(), layout.align()) }
@@ -217,6 +240,8 @@ Module alloc.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_alloc_zeroed : M.IsFunction "alloc::alloc::alloc_zeroed" alloc_zeroed.
   
   Module Impl_alloc_alloc_Global.
     Definition Self : Ty.t := Ty.path "alloc::alloc::Global".
@@ -1777,7 +1802,12 @@ Module alloc.
     | _, _ => M.impossible
     end.
   
-  (* Unhandled foreign module here *)
+  Axiom Function_exchange_malloc : M.IsFunction "alloc::alloc::exchange_malloc" exchange_malloc.
+  
+  Parameter __rust_alloc_error_handler : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function___rust_alloc_error_handler :
+    M.IsFunction "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
   
   (*
   pub const fn handle_alloc_error(layout: Layout) -> ! {
@@ -1825,6 +1855,9 @@ Module alloc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_handle_alloc_error :
+    M.IsFunction "alloc::alloc::handle_alloc_error" handle_alloc_error.
+  
   Module handle_alloc_error.
     (*
         const fn ct_error(_: Layout) -> ! {
@@ -1865,6 +1898,8 @@ Module alloc.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_ct_error : M.IsFunction "alloc::alloc::handle_alloc_error::ct_error" ct_error.
+    
     (*
         fn rt_error(layout: Layout) -> ! {
             unsafe {
@@ -1892,6 +1927,8 @@ Module alloc.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_rt_error : M.IsFunction "alloc::alloc::handle_alloc_error::rt_error" rt_error.
   End handle_alloc_error.
   
   Module __alloc_error_handler.
@@ -2028,8 +2065,11 @@ Module alloc.
       | _, _ => M.impossible
       end.
     
+    Axiom Function___rdl_oom :
+      M.IsFunction "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
+    
     Module __rdl_oom.
-      (* Unhandled foreign module here *)
+      Parameter __rust_alloc_error_handler_should_panic : Value.t.
     End __rdl_oom.
   End __alloc_error_handler.
   

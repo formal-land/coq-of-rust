@@ -12,6 +12,9 @@ Definition some_number (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_some_number :
+  M.IsFunction "match_binding_destructure_enum_variants::some_number" some_number.
+
 (*
 fn main() {
     match some_number() {
@@ -141,3 +144,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.

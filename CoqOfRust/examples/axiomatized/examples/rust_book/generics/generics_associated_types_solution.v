@@ -44,6 +44,13 @@ End Impl_generics_associated_types_solution_Contains_for_generics_associated_typ
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_difference :
+  M.IsFunction "generics_associated_types_solution::difference" difference.
+
 Parameter get_a : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.

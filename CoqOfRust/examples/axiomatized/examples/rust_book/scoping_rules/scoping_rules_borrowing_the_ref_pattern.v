@@ -29,3 +29,5 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_borrowing_the_ref_pattern::main" main.

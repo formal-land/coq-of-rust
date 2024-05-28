@@ -35,4 +35,8 @@ End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associa
 
 Parameter difference : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_difference : M.IsFunction "generics_associated_types_problem::difference" difference.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_associated_types_problem::main" main.

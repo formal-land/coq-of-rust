@@ -3,6 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_multiply : M.IsFunction "scoping_rules_lifetimes_coercion::multiply" multiply.
+
 Parameter choose_first : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_choose_first :
+  M.IsFunction "scoping_rules_lifetimes_coercion::choose_first" choose_first.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_coercion::main" main.

@@ -3,10 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter print_one : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
+
 Parameter add_one : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
 
 Parameter print_multi : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print_multi :
+  M.IsFunction "scoping_rules_lifetimes_functions::print_multi" print_multi.
+
 Parameter pass_x : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.

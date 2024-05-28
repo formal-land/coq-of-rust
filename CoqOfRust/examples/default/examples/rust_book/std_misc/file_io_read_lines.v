@@ -71,6 +71,8 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_read_lines : M.IsFunction "file_io_read_lines::read_lines" read_lines.
+
 (*
 fn main() {
     // Stores the iterator of lines of the file in lines variable.
@@ -233,3 +235,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "file_io_read_lines::main" main.

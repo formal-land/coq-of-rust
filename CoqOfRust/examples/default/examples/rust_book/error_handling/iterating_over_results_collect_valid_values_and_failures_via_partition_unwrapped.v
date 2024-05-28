@@ -456,3 +456,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main :
+  M.IsFunction
+    "iterating_over_results_collect_valid_values_and_failures_via_partition_unwrapped::main"
+    main.

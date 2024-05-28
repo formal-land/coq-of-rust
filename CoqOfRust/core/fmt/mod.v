@@ -7568,6 +7568,8 @@ Module fmt.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_write : M.IsFunction "core::fmt::write" write.
+  
   (*
   unsafe fn run(fmt: &mut Formatter<'_>, arg: &rt::Placeholder, args: &[rt::Argument<'_>]) -> Result {
       fmt.fill = arg.fill;
@@ -7774,6 +7776,8 @@ Module fmt.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_run : M.IsFunction "core::fmt::run" run.
+  
   (*
   unsafe fn getcount(args: &[rt::Argument<'_>], cnt: &rt::Count) -> Option<usize> {
       match *cnt {
@@ -7891,6 +7895,8 @@ Module fmt.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_getcount : M.IsFunction "core::fmt::getcount" getcount.
   
   (* StructRecord
     {
@@ -10102,6 +10108,8 @@ Module fmt.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_pointer_fmt_inner : M.IsFunction "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
   
   Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_pointer_mut_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].

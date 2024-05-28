@@ -22,7 +22,7 @@ pub(crate) enum CoqType {
     },
     Tuple(Vec<Rc<CoqType>>),
     // TODO: add the type parameters for the traits
-    Dyn(Vec<Path>),
+    Dyn(Vec<Rc<Path>>),
     Associated,
     Infer,
 }
@@ -34,7 +34,7 @@ impl CoqType {
 
     pub(crate) fn path(segments: &[&str]) -> Rc<CoqType> {
         Rc::new(CoqType::Path {
-            path: Rc::new(Path::new(segments)),
+            path: Path::new(segments),
         })
     }
 

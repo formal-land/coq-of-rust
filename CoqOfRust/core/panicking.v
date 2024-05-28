@@ -81,8 +81,12 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_fmt : M.IsFunction "core::panicking::panic_fmt" panic_fmt.
+  
   Module panic_fmt.
-    (* Unhandled foreign module here *)
+    Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
+    
+    Axiom Function_panic_impl : M.IsFunction "core::panicking::panic_fmt::panic_impl" panic_impl.
   End panic_fmt.
   
   (*
@@ -150,6 +154,9 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_nounwind_fmt :
+    M.IsFunction "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
   
   Module panic_nounwind_fmt.
     (*
@@ -236,8 +243,13 @@ Module panicking.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_runtime : M.IsFunction "core::panicking::panic_nounwind_fmt::runtime" runtime.
+    
     Module runtime.
-      (* Unhandled foreign module here *)
+      Parameter panic_impl : (list Ty.t) -> (list Value.t) -> M.
+      
+      Axiom Function_panic_impl :
+        M.IsFunction "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
     End runtime.
     
     (*
@@ -258,6 +270,8 @@ Module panicking.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_comptime : M.IsFunction "core::panicking::panic_nounwind_fmt::comptime" comptime.
   End panic_nounwind_fmt.
   
   (*
@@ -288,6 +302,8 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
+  
   (*
   pub const fn panic_nounwind(expr: &'static str) -> ! {
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ false);
@@ -310,6 +326,8 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_nounwind : M.IsFunction "core::panicking::panic_nounwind" panic_nounwind.
   
   (*
   pub fn panic_nounwind_nobacktrace(expr: &'static str) -> ! {
@@ -334,6 +352,9 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_nounwind_nobacktrace :
+    M.IsFunction "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
+  
   (*
   pub const fn panic_str(expr: &str) -> ! {
       panic_display(&expr);
@@ -354,6 +375,8 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_str : M.IsFunction "core::panicking::panic_str" panic_str.
+  
   (*
   pub const fn panic_explicit() -> ! {
       panic_display(&"explicit panic");
@@ -372,6 +395,8 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_explicit : M.IsFunction "core::panicking::panic_explicit" panic_explicit.
   
   (*
   pub fn unreachable_display<T: fmt::Display>(x: &T) -> ! {
@@ -417,6 +442,9 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_unreachable_display :
+    M.IsFunction "core::panicking::unreachable_display" unreachable_display.
+  
   (*
   pub const fn panic_display<T: fmt::Display>(x: &T) -> ! {
       panic_fmt(format_args!("{}", *x));
@@ -456,6 +484,8 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_display : M.IsFunction "core::panicking::panic_display" panic_display.
   
   (*
   fn panic_bounds_check(index: usize, len: usize) -> ! {
@@ -536,6 +566,9 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_bounds_check :
+    M.IsFunction "core::panicking::panic_bounds_check" panic_bounds_check.
   
   (*
   fn panic_misaligned_pointer_dereference(required: usize, found: usize) -> ! {
@@ -671,6 +704,11 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_misaligned_pointer_dereference :
+    M.IsFunction
+      "core::panicking::panic_misaligned_pointer_dereference"
+      panic_misaligned_pointer_dereference.
+  
   (*
   fn panic_cannot_unwind() -> ! {
       // Keep the text in sync with `UnwindTerminateReason::as_str` in `rustc_middle`.
@@ -688,6 +726,9 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_panic_cannot_unwind :
+    M.IsFunction "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
+  
   (*
   fn panic_in_cleanup() -> ! {
       // Keep the text in sync with `UnwindTerminateReason::as_str` in `rustc_middle`.
@@ -704,6 +745,9 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_panic_in_cleanup :
+    M.IsFunction "core::panicking::panic_in_cleanup" panic_in_cleanup.
   
   (*
   pub const fn const_panic_fmt(fmt: fmt::Arguments<'_>) -> ! {
@@ -769,6 +813,8 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_const_panic_fmt : M.IsFunction "core::panicking::const_panic_fmt" const_panic_fmt.
   
   (*
   Enum AssertKind
@@ -875,6 +921,8 @@ Module panicking.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_assert_failed : M.IsFunction "core::panicking::assert_failed" assert_failed.
+  
   (*
   pub fn assert_matches_failed<T: fmt::Debug + ?Sized>(
       left: &T,
@@ -915,6 +963,9 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_assert_matches_failed :
+    M.IsFunction "core::panicking::assert_matches_failed" assert_matches_failed.
   
   Module assert_matches_failed.
     (* StructTuple
@@ -1168,4 +1219,7 @@ Module panicking.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_assert_failed_inner :
+    M.IsFunction "core::panicking::assert_failed_inner" assert_failed_inner.
 End panicking.

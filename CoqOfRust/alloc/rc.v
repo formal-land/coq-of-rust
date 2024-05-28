@@ -75,6 +75,9 @@ Module rc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_rcbox_layout_for_value_layout :
+    M.IsFunction "alloc::rc::rcbox_layout_for_value_layout" rcbox_layout_for_value_layout.
+  
   (* StructRecord
     {
       name := "Rc";
@@ -9654,6 +9657,8 @@ Module rc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_is_dangling : M.IsFunction "alloc::rc::is_dangling" is_dangling.
+  
   (* StructRecord
     {
       name := "WeakInner";
@@ -10504,6 +10509,8 @@ Module rc.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_data_offset : M.IsFunction "alloc::rc::data_offset" data_offset.
+  
   (*
   fn data_offset_align(align: usize) -> usize {
       let layout = Layout::new::<RcBox<()>>();
@@ -10547,6 +10554,8 @@ Module rc.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_data_offset_align : M.IsFunction "alloc::rc::data_offset_align" data_offset_align.
   
   (* StructRecord
     {

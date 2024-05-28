@@ -3144,6 +3144,9 @@ Module num.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_parse_decimal :
+        M.IsFunction "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
+      
       (*
       fn number_of_digits_decimal_left_shift(d: &Decimal, mut shift: usize) -> usize {
           #[rustfmt::skip]
@@ -3543,6 +3546,11 @@ Module num.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_number_of_digits_decimal_left_shift :
+        M.IsFunction
+          "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift"
+          number_of_digits_decimal_left_shift.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=

@@ -57,6 +57,8 @@ Definition print_one (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
+
 (*
 fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
@@ -75,6 +77,8 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
 
 (*
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
@@ -142,6 +146,9 @@ Definition print_multi (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_print_multi :
+  M.IsFunction "scoping_rules_lifetimes_functions::print_multi" print_multi.
+
 (*
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
     x
@@ -156,6 +163,8 @@ Definition pass_x (τ : list Ty.t) (α : list Value.t) : M :=
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| x |))) ] |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
 
 (*
 fn main() {
@@ -227,3 +236,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.

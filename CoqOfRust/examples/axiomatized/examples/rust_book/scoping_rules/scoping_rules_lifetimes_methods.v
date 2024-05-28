@@ -21,3 +21,5 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_methods::main" main.

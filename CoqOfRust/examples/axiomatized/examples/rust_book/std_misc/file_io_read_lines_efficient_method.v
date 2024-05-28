@@ -3,4 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter read_lines : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_read_lines :
+  M.IsFunction "file_io_read_lines_efficient_method::read_lines" read_lines.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.

@@ -3,10 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_combine_vecs_explicit_return_type :
+  M.IsFunction
+    "impl_trait_as_return_type::combine_vecs_explicit_return_type"
+    combine_vecs_explicit_return_type.
+
 Parameter combine_vecs : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
 
 Module combine_vecs.
   (* Error OpaqueTy *)
 End combine_vecs.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.

@@ -58,3 +58,5 @@ Definition with_impls (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_with_impls : M.IsFunction "impl_param::with_impls" with_impls.

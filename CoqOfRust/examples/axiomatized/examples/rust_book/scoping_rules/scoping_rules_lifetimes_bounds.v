@@ -25,6 +25,12 @@ End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bound
 
 Parameter print : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
+
 Parameter print_ref : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.

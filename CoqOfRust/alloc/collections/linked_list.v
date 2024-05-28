@@ -12552,6 +12552,9 @@ Module collections.
     Definition assert_covariance (τ : list Ty.t) (α : list Value.t) : M :=
       match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
     
+    Axiom Function_assert_covariance :
+      M.IsFunction "alloc::collections::linked_list::assert_covariance" assert_covariance.
+    
     Module assert_covariance.
       (*
           fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> {
@@ -12567,6 +12570,8 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_a : M.IsFunction "alloc::collections::linked_list::assert_covariance::a" a.
+      
       (*
           fn b<'i, 'a>(x: Iter<'i, &'static str>) -> Iter<'i, &'a str> {
               x
@@ -12581,6 +12586,8 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_b : M.IsFunction "alloc::collections::linked_list::assert_covariance::b" b.
+      
       (*
           fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> {
               x
@@ -12594,6 +12601,8 @@ Module collections.
             M.read (| x |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_c : M.IsFunction "alloc::collections::linked_list::assert_covariance::c" c.
     End assert_covariance.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_LinkedList_T_A.

@@ -3,6 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
+
 Module main.
   (* StructRecord
     {

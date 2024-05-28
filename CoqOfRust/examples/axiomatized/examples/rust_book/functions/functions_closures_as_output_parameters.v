@@ -3,11 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_fn : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_create_fn :
+  M.IsFunction "functions_closures_as_output_parameters::create_fn" create_fn.
+
 Module create_fn.
   (* Error OpaqueTy *)
 End create_fn.
 
 Parameter create_fnmut : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_create_fnmut :
+  M.IsFunction "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
 
 Module create_fnmut.
   (* Error OpaqueTy *)
@@ -15,8 +21,13 @@ End create_fnmut.
 
 Parameter create_fnonce : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_create_fnonce :
+  M.IsFunction "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
+
 Module create_fnonce.
   (* Error OpaqueTy *)
 End create_fnonce.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.

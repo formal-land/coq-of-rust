@@ -19,6 +19,8 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_empty : M.IsFunction "core::iter::sources::empty::empty" empty.
+      
       (* StructTuple
         {
           name := "Empty";

@@ -14,3 +14,5 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
       BinOp.Panic.add (| Integer.U32, M.read (| x |), Value.Integer 1 |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.

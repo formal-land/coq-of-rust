@@ -502,6 +502,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_insert_tail : M.IsFunction "core::slice::sort::insert_tail" insert_tail.
+    
     (*
     unsafe fn insert_head<T, F>(v: &mut [T], is_less: &mut F)
     where
@@ -946,6 +948,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_insert_head : M.IsFunction "core::slice::sort::insert_head" insert_head.
+    
     (*
     pub(super) fn insertion_sort_shift_left<T, F>(v: &mut [T], offset: usize, is_less: &mut F)
     where
@@ -1108,6 +1112,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_insertion_sort_shift_left :
+      M.IsFunction "core::slice::sort::insertion_sort_shift_left" insertion_sort_shift_left.
     
     (*
     fn insertion_sort_shift_right<T, F>(v: &mut [T], offset: usize, is_less: &mut F)
@@ -1297,6 +1304,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_insertion_sort_shift_right :
+      M.IsFunction "core::slice::sort::insertion_sort_shift_right" insertion_sort_shift_right.
     
     (*
     fn partial_insertion_sort<T, F>(v: &mut [T], is_less: &mut F) -> bool
@@ -1717,6 +1727,9 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_partial_insertion_sort :
+      M.IsFunction "core::slice::sort::partial_insertion_sort" partial_insertion_sort.
     
     Module partial_insertion_sort.
       Definition value_MAX_STEPS : Value.t :=
@@ -2307,6 +2320,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_heapsort : M.IsFunction "core::slice::sort::heapsort" heapsort.
     
     (*
     fn partition_in_blocks<T, F>(v: &mut [T], pivot: &T, is_less: &mut F) -> usize
@@ -4204,6 +4219,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_partition_in_blocks :
+      M.IsFunction "core::slice::sort::partition_in_blocks" partition_in_blocks.
+    
     Module partition_in_blocks.
       Definition value_BLOCK : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
       
@@ -4276,6 +4294,8 @@ Module slice.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_width : M.IsFunction "core::slice::sort::partition_in_blocks::width" width.
     End partition_in_blocks.
     
     (*
@@ -4662,6 +4682,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_partition : M.IsFunction "core::slice::sort::partition" partition.
     
     (*
     pub(super) fn partition_equal<T, F>(v: &mut [T], pivot: usize, is_less: &mut F) -> usize
@@ -5089,6 +5111,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_partition_equal :
+      M.IsFunction "core::slice::sort::partition_equal" partition_equal.
+    
     (*
     pub(super) fn break_patterns<T>(v: &mut [T]) {
         let len = v.len();
@@ -5440,6 +5465,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_break_patterns : M.IsFunction "core::slice::sort::break_patterns" break_patterns.
     
     (*
     pub(super) fn choose_pivot<T, F>(v: &mut [T], is_less: &mut F) -> (usize, bool)
@@ -6093,6 +6120,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_choose_pivot : M.IsFunction "core::slice::sort::choose_pivot" choose_pivot.
+    
     Module choose_pivot.
       Definition value_SHORTEST_MEDIAN_OF_MEDIANS : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.Integer 50 |))).
@@ -6743,6 +6772,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_recurse : M.IsFunction "core::slice::sort::recurse" recurse.
+    
     Module recurse.
       Definition value_MAX_INSERTION : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
@@ -6826,6 +6857,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_quicksort : M.IsFunction "core::slice::sort::quicksort" quicksort.
     
     (*
     unsafe fn merge<T, F>(v: &mut [T], mid: usize, buf: *mut T, is_less: &mut F)
@@ -7444,6 +7477,8 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_merge : M.IsFunction "core::slice::sort::merge" merge.
     
     Module merge.
       (* StructRecord
@@ -8529,6 +8564,8 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_merge_sort : M.IsFunction "core::slice::sort::merge_sort" merge_sort.
+    
     Module merge_sort.
       Definition value_MAX_INSERTION : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.Integer 20 |))).
@@ -8856,6 +8893,8 @@ Module slice.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_collapse : M.IsFunction "core::slice::sort::merge_sort::collapse" collapse.
       
       (* StructRecord
         {
@@ -10295,6 +10334,9 @@ Module slice.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_provide_sorted_batch :
+      M.IsFunction "core::slice::sort::provide_sorted_batch" provide_sorted_batch.
+    
     Module provide_sorted_batch.
       Definition value_MIN_INSERTION_RUN : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
@@ -10610,5 +10652,7 @@ Module slice.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_find_streak : M.IsFunction "core::slice::sort::find_streak" find_streak.
   End sort.
 End slice.

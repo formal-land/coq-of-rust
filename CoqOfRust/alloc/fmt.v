@@ -58,6 +58,8 @@ Module fmt.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
+  
   Module format.
     (*
         fn format_inner(args: Arguments<'_>) -> string::String {
@@ -124,5 +126,7 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.
   End format.
 End fmt.

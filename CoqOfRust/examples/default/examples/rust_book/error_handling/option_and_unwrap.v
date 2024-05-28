@@ -130,6 +130,8 @@ Definition give_adult (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_give_adult : M.IsFunction "option_and_unwrap::give_adult" give_adult.
+
 (*
 fn drink(drink: Option<&str>) {
     // `unwrap` returns a `panic` when it receives a `None`.
@@ -240,6 +242,8 @@ Definition drink (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_drink : M.IsFunction "option_and_unwrap::drink" drink.
+
 (*
 fn main() {
     let water = Some("water");
@@ -315,3 +319,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "option_and_unwrap::main" main.

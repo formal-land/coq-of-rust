@@ -7,4 +7,8 @@ Parameter value_THRESHOLD : Value.t.
 
 Parameter is_big : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_is_big : M.IsFunction "constants::is_big" is_big.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "constants::main" main.

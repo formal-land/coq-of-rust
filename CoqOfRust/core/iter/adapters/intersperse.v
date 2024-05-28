@@ -1060,6 +1060,11 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_intersperse_size_hint :
+        M.IsFunction
+          "core::iter::adapters::intersperse::intersperse_size_hint"
+          intersperse_size_hint.
+      
       (*
       fn intersperse_fold<I, B, F, G>(
           mut iter: I,
@@ -1258,6 +1263,9 @@ Module iter.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_intersperse_fold :
+        M.IsFunction "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
     End intersperse.
   End adapters.
 End iter.

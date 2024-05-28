@@ -86,6 +86,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
+
 Module main.
   (*
       fn sum_odd_numbers(up_to: u32) -> u32 {
@@ -220,4 +222,9 @@ Module main.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_sum_odd_numbers :
+    M.IsFunction
+      "diverging_functions_example_sum_odd_numbers::main::sum_odd_numbers"
+      sum_odd_numbers.
 End main.

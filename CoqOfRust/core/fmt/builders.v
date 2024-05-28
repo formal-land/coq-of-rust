@@ -701,6 +701,9 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_debug_struct_new :
+      M.IsFunction "core::fmt::builders::debug_struct_new" debug_struct_new.
+    
     Module Impl_core_fmt_builders_DebugStruct.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugStruct".
       
@@ -2256,6 +2259,9 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_debug_tuple_new :
+      M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
     
     Module Impl_core_fmt_builders_DebugTuple.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
@@ -3842,6 +3848,8 @@ Module fmt.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
+    
     Module Impl_core_fmt_builders_DebugSet.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
       
@@ -4177,6 +4185,9 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_debug_list_new :
+      M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
     
     Module Impl_core_fmt_builders_DebugList.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
@@ -4530,6 +4541,8 @@ Module fmt.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
     
     Module Impl_core_fmt_builders_DebugMap.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".

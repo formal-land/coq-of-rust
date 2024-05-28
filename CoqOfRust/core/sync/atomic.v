@@ -13832,6 +13832,9 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_strongest_failure_ordering :
+      M.IsFunction "core::sync::atomic::strongest_failure_ordering" strongest_failure_ordering.
+    
     (*
     unsafe fn atomic_store<T: Copy>(dst: *mut T, val: T, order: Ordering) {
         // SAFETY: the caller must uphold the safety contract for `atomic_store`.
@@ -13948,6 +13951,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
+    
     (*
     unsafe fn atomic_load<T: Copy>(dst: *const T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_load`.
@@ -14063,6 +14068,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
+    
     (*
     unsafe fn atomic_swap<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_swap`.
@@ -14133,6 +14140,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
     
     (*
     unsafe fn atomic_add<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -14205,6 +14214,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
+    
     (*
     unsafe fn atomic_sub<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_sub`.
@@ -14275,6 +14286,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
     
     (*
     unsafe fn atomic_compare_exchange<T: Copy>(
@@ -14617,6 +14630,9 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_compare_exchange :
+      M.IsFunction "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
+    
     (*
     unsafe fn atomic_compare_exchange_weak<T: Copy>(
         dst: *mut T,
@@ -14958,6 +14974,9 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_compare_exchange_weak :
+      M.IsFunction "core::sync::atomic::atomic_compare_exchange_weak" atomic_compare_exchange_weak.
+    
     (*
     unsafe fn atomic_and<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_and`
@@ -15028,6 +15047,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
     
     (*
     unsafe fn atomic_nand<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -15100,6 +15121,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
+    
     (*
     unsafe fn atomic_or<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_or`
@@ -15170,6 +15193,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
     
     (*
     unsafe fn atomic_xor<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -15242,6 +15267,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
+    
     (*
     unsafe fn atomic_max<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_max`
@@ -15312,6 +15339,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
     
     (*
     unsafe fn atomic_min<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -15384,6 +15413,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
+    
     (*
     unsafe fn atomic_umax<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_umax`
@@ -15455,6 +15486,8 @@ Module sync.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
+    
     (*
     unsafe fn atomic_umin<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
         // SAFETY: the caller must uphold the safety contract for `atomic_umin`
@@ -15525,6 +15558,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
     
     (*
     pub fn fence(order: Ordering) {
@@ -15616,6 +15651,8 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
     
     (*
     pub fn compiler_fence(order: Ordering) {
@@ -15720,6 +15757,9 @@ Module sync.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_compiler_fence :
+      M.IsFunction "core::sync::atomic::compiler_fence" compiler_fence.
     
     Module Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -15878,5 +15918,8 @@ Module sync.
         ltac:(M.monadic (M.call_closure (| M.get_function (| "core::hint::spin_loop", [] |), [] |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_spin_loop_hint :
+      M.IsFunction "core::sync::atomic::spin_loop_hint" spin_loop_hint.
   End atomic.
 End sync.

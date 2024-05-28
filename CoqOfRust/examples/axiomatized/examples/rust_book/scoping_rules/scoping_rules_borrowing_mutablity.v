@@ -35,6 +35,14 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_borrow_book :
+  M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+
 Parameter new_edition : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_new_edition :
+  M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.

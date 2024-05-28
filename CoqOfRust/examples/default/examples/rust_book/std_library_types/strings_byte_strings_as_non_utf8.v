@@ -351,3 +351,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "strings_byte_strings_as_non_utf8::main" main.

@@ -137,6 +137,8 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
+
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
     let mut f = File::create(path)?;
@@ -252,6 +254,8 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
+
 (*
 fn touch(path: &Path) -> io::Result<()> {
     match OpenOptions::new().create(true).write(true).open(path) {
@@ -318,6 +322,8 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
 
 (*
 fn main() {
@@ -1585,3 +1591,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "filesystem_operations::main" main.

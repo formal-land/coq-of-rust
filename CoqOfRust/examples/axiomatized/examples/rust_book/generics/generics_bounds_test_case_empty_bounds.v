@@ -52,6 +52,12 @@ End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_ca
 
 Parameter red : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
+
 Parameter blue : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
+
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.

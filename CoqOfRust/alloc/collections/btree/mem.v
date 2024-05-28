@@ -56,6 +56,8 @@ Module collections.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
+      
       (*
       pub fn replace<T, R>(v: &mut T, change: impl FnOnce(T) -> (T, R)) -> R {
           struct PanicGuard;
@@ -137,6 +139,8 @@ Module collections.
             |)))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
       
       Module replace.
         (* StructTuple

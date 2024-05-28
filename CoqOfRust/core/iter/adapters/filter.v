@@ -238,6 +238,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_filter_fold :
+        M.IsFunction "core::iter::adapters::filter::filter_fold" filter_fold.
+      
       Module filter_fold.
         (* Error OpaqueTy *)
       End filter_fold.
@@ -342,6 +345,9 @@ Module iter.
                   end))))
         | _, _ => M.impossible
         end.
+      
+      Axiom Function_filter_try_fold :
+        M.IsFunction "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
       
       Module filter_try_fold.
         (* Error OpaqueTy *)

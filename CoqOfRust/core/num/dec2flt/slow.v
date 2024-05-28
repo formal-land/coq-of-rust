@@ -972,6 +972,9 @@ Module num.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_parse_long_mantissa :
+        M.IsFunction "core::num::dec2flt::slow::parse_long_mantissa" parse_long_mantissa.
+      
       Module parse_long_mantissa.
         Definition value_MAX_SHIFT : Value.t :=
           M.run ltac:(M.monadic (M.alloc (| Value.Integer 60 |))).

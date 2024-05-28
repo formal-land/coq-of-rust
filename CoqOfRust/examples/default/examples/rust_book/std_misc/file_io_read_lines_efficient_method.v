@@ -133,6 +133,9 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _ => M.impossible
   end.
 
+Axiom Function_read_lines :
+  M.IsFunction "file_io_read_lines_efficient_method::read_lines" read_lines.
+
 (*
 fn main() {
     // File hosts must exist in current path before this produces output
@@ -310,3 +313,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.

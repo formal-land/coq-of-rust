@@ -3,10 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter function : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
+
 Module deeply.
   Module nested.
     Parameter function : (list Ty.t) -> (list Value.t) -> M.
+    
+    Axiom Function_function :
+      M.IsFunction "the_use_as_declaration::deeply::nested::function" function.
   End nested.
 End deeply.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.

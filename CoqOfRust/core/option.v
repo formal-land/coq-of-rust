@@ -2979,6 +2979,8 @@ Module option.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_expect_failed : M.IsFunction "core::option::expect_failed" expect_failed.
+  
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [ T ].
     

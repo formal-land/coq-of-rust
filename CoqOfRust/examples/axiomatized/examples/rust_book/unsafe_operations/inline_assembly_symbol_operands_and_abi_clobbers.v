@@ -3,8 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
 
+Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+
 Module main.
   Parameter foo : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_foo :
+    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+  
   Parameter call_foo : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_call_foo :
+    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
 End main.

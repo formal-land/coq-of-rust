@@ -106,6 +106,8 @@ Module iter.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_try_process : M.IsFunction "core::iter::adapters::try_process" try_process.
+    
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_GenericShunt_I_R.
       Definition Self (I R : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [ I; R ].

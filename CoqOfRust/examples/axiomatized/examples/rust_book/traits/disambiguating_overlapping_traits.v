@@ -41,3 +41,5 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "disambiguating_overlapping_traits::main" main.

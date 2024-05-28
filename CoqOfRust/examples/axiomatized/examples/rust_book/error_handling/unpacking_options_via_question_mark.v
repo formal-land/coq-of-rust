@@ -88,3 +88,5 @@ Module Impl_unpacking_options_via_question_mark_Person.
 End Impl_unpacking_options_via_question_mark_Person.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "unpacking_options_via_question_mark::main" main.

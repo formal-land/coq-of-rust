@@ -43,6 +43,9 @@ Module my_mod.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_private_function :
+    M.IsFunction "visibility::my_mod::private_function" private_function.
+  
   (*
       pub fn function() {
           println!("called `my_mod::function()`");
@@ -82,6 +85,8 @@ Module my_mod.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
   
   (*
       pub fn indirect_access() {
@@ -136,6 +141,9 @@ Module my_mod.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_indirect_access :
+    M.IsFunction "visibility::my_mod::indirect_access" indirect_access.
+  
   Module nested.
     (*
             pub fn function() {
@@ -177,6 +185,8 @@ Module my_mod.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
     
     (*
             fn private_function() {
@@ -222,6 +232,9 @@ Module my_mod.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_private_function :
+      M.IsFunction "visibility::my_mod::nested::private_function" private_function.
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -277,6 +290,11 @@ Module my_mod.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_public_function_in_my_mod :
+      M.IsFunction
+        "visibility::my_mod::nested::public_function_in_my_mod"
+        public_function_in_my_mod.
+    
     (*
             pub(self) fn public_function_in_nested() {
                 println!("called `my_mod::nested::public_function_in_nested()`");
@@ -323,6 +341,11 @@ Module my_mod.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_public_function_in_nested :
+      M.IsFunction
+        "visibility::my_mod::nested::public_function_in_nested"
+        public_function_in_nested.
+    
     (*
             pub(super) fn public_function_in_super_mod() {
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
@@ -368,6 +391,11 @@ Module my_mod.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_public_function_in_super_mod :
+      M.IsFunction
+        "visibility::my_mod::nested::public_function_in_super_mod"
+        public_function_in_super_mod.
   End nested.
   
   (*
@@ -455,6 +483,11 @@ Module my_mod.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_call_public_function_in_my_mod :
+    M.IsFunction
+      "visibility::my_mod::call_public_function_in_my_mod"
+      call_public_function_in_my_mod.
+  
   (*
       pub(crate) fn public_function_in_crate() {
           println!("called `my_mod::public_function_in_crate()`");
@@ -499,6 +532,9 @@ Module my_mod.
         |)))
     | _, _ => M.impossible
     end.
+  
+  Axiom Function_public_function_in_crate :
+    M.IsFunction "visibility::my_mod::public_function_in_crate" public_function_in_crate.
   
   Module private_nested.
     (*
@@ -546,6 +582,8 @@ Module my_mod.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
+    
     (*
             pub(crate) fn restricted_function() {
                 println!("called `my_mod::private_nested::restricted_function()`");
@@ -591,6 +629,9 @@ Module my_mod.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_restricted_function :
+      M.IsFunction "visibility::my_mod::private_nested::restricted_function" restricted_function.
   End private_nested.
 End my_mod.
 
@@ -629,6 +670,8 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_function : M.IsFunction "visibility::function" function.
 
 (*
 fn main() {
@@ -707,3 +750,5 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
       |)))
   | _, _ => M.impossible
   end.
+
+Axiom Function_main : M.IsFunction "visibility::main" main.

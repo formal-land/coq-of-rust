@@ -16,6 +16,8 @@ Module convert.
     | _, _ => M.impossible
     end.
   
+  Axiom Function_identity : M.IsFunction "core::convert::identity" identity.
+  
   (* Trait *)
   (* Empty module 'AsRef' *)
   

@@ -182,6 +182,9 @@ Module iter.
         | _, _ => M.impossible
         end.
       
+      Axiom Function_clone_try_fold :
+        M.IsFunction "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
+      
       Module clone_try_fold.
         (* Error OpaqueTy *)
       End clone_try_fold.

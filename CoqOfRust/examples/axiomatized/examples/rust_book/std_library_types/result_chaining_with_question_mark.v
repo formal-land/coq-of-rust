@@ -48,13 +48,25 @@ Module checked.
   
   Parameter div : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
+  
   Parameter sqrt : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
   
   Parameter ln : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
+  
   Parameter op_ : (list Ty.t) -> (list Value.t) -> M.
   
+  Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
+  
   Parameter op : (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
 End checked.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.

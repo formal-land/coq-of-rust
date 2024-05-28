@@ -71,3 +71,5 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 Parameter main : (list Ty.t) -> (list Value.t) -> M.
+
+Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.
