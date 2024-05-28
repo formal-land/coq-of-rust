@@ -41,32 +41,6 @@ Module State.
   End Valid.
 End State.
 
-Module IsTraitMethod.
-  Inductive t
-      (trait_name : string)
-      (self_ty : Ty.t)
-      (trait_tys : list Ty.t)
-      (method_name : string) :
-      (list Ty.t -> list Value.t -> M) -> Prop :=
-  | Explicit (instance : Instance.t) (method : list Ty.t -> list Value.t -> M) :
-    M.IsTraitInstance
-      trait_name
-      self_ty
-      trait_tys
-      instance ->
-    List.assoc instance method_name = Some (InstanceField.Method method) ->
-    t trait_name self_ty trait_tys method_name method
-  | Implicit (instance : Instance.t) (method : Ty.t -> list Ty.t -> list Value.t -> M) :
-    M.IsTraitInstance
-      trait_name
-      self_ty
-      trait_tys
-      instance ->
-    List.assoc instance method_name = None ->
-    M.IsProvidedMethod trait_name method_name method ->
-    t trait_name self_ty trait_tys method_name (method self_ty).
-End IsTraitMethod.
-
 (* Module IsRead.
   Inductive t `{State.Trait} (state : State) : Pointer.t Value.t -> Value.t -> Prop :=
   | Immediate (value : Value.t) :

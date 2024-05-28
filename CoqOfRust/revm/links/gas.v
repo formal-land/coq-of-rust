@@ -1,9 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.proofs.M.
-Require Import CoqOfRust.simulations.M.
+Require core.links.clone.
+Require Import revm.gas.
 
-Import links.M.Run.
+Import Run.
 
 Module Gas.
   (* pub struct Gas {
@@ -74,3 +74,37 @@ Module Gas.
     Qed.
   End SubPointer.
 End Gas.
+
+Module Impl_Clone.
+  Definition run_impl : clone.Clone.RunImpl Gas.t (Φ Gas.t).
+  Proof.
+    constructor.
+    { (* clone *)
+      eexists; split.
+      { eapply IsTraitMethod.Explicit.
+        { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
+        { reflexivity. }
+      }
+      { intros.
+        cbn.
+        eapply Run.CallPrimitiveStateAlloc with (A := Ref.t Gas.t). {
+          reflexivity.
+        }
+        intros.
+        cbn.
+        eapply Run.CallPrimitiveStateRead with (A := Ref.t Gas.t). {
+          reflexivity.
+        }
+        intros.
+        cbn.
+        eapply Run.CallPrimitiveStateRead with (A := Gas.t). {
+          reflexivity.
+        }
+        intros.
+        cbn.
+        eapply Run.Pure.
+        reflexivity.
+      }
+    }
+  Defined.
+End Impl_Clone.

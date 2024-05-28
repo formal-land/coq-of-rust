@@ -125,7 +125,7 @@ Module Pointer.
       (injection : Big_A -> A -> option Big_A).
     Arguments Make {_ _ _ _ _}.
 
-    Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
+    (* Definition get_sub {Value A Sub_A : Set} {to_value : A -> Value}
         (mutable : t Value to_value)
         (index : Index.t)
         (sub_projection : A -> option Sub_A)
@@ -152,7 +152,7 @@ Module Pointer.
             end
           | None => None
           end
-        ).
+        ). *)
   End Mutable.
 
   Inductive t (Value : Set) : Set :=
@@ -491,6 +491,32 @@ Parameter IsProvidedMethod :
     (method_name : string)
     (method : Ty.t -> list Ty.t -> list Value.t -> M),
   Prop.
+
+Module IsTraitMethod.
+  Inductive t
+      (trait_name : string)
+      (self_ty : Ty.t)
+      (trait_tys : list Ty.t)
+      (method_name : string) :
+      (list Ty.t -> list Value.t -> M) -> Prop :=
+  | Explicit (instance : Instance.t) (method : list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = Some (InstanceField.Method method) ->
+    t trait_name self_ty trait_tys method_name method
+  | Implicit (instance : Instance.t) (method : Ty.t -> list Ty.t -> list Value.t -> M) :
+    M.IsTraitInstance
+      trait_name
+      self_ty
+      trait_tys
+      instance ->
+    List.assoc instance method_name = None ->
+    M.IsProvidedMethod trait_name method_name method ->
+    t trait_name self_ty trait_tys method_name (method self_ty).
+End IsTraitMethod.
 
 Module Option.
   Definition map {A B : Set} (x : option A) (f : A -> B) : option B :=
