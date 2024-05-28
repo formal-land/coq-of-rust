@@ -1,14 +1,8 @@
 (* traits/traits.rs *)
-(* TODO: Move this file to a separate location from ink contracts *)
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.core.simulations.default.
-Require Import CoqOfRust.core.simulations.option.
-Require Import CoqOfRust.core.simulations.result.
 Require Import CoqOfRust.core.simulations.bool.
 Require Import CoqOfRust.simulations.M.
-
 Require Import CoqOfRust.proofs.M.
-
 Import simulations.M.Notations.
 Import simulations.bool.Notations.
 
@@ -149,45 +143,31 @@ Module Animal.
     talk (self: Self) : unit;
   }.
 
-  Record TraitHasRun (Self : Set)
+  Record InstanceWithRun (Self : Set)
     `{ToValue Self}
     `{ToTy Self}
-    `{traits.Animal.Trait Self} :
-    Prop := {
-      new_exists : exists new,
-        IsTraitMethod 
-        (* (trait_name : string) *)
-        "traits.Animal.Trait" 
-        (* (self_ty : Ty.t) *)
-        (Φ Self) 
-        (* (trait_tys : list Ty.t) *)
-        [ ] 
-        (* (method_name : string) *)
-        "new" 
-        (* (method : list Ty.t -> list Value.t -> M) *)
-        new
-        /\ 
-        Run.pure 
-          (* (e : M)  *)
-          (new [] []) (* NOTE: What should be the two list here for this function? *)
-          (* (result : Value.t + Exception.t)  *)
-          (inl (φ traits.Animal.new));
-
-      name_exists : exists name,
+    `{traits.Animal.Trait Self} : Set := {
+      new_exists : {new @ 
+        IsTraitMethod "traits.Animal.Trait" (Φ Self) [] "new" new
+        *
+        Run.pure (new [] []) (fun v => inl (φ v))
+      };
+      name_exists : {name @
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "name" name 
-        /\
-        Run.pure (name [] []) (inl (φ traits.Animal.name));
-
-      noise_exists : exists noise, 
+        *
+        Run.pure (name [] []) (fun v => inl (φ v))
+      };
+      noise_exists : {noise @
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "noise" noise 
-        /\
-        Run.pure (noise [] []) (inl (φ traits.Animal.noise));
-
-      talk_exists : exists talk,
+        *
+        Run.pure (noise [] []) (fun v => inl (φ v))
+      };
+      talk_exists : {talk @
         IsTraitMethod "traits.Animal.Trait" (Φ Self) [ ] "talk" talk 
-        /\
-        Run.pure (talk [] []) (inl (φ traits.Animal.talk));
-  }.
+        *
+        Run.pure (talk [] []) (fun v => inl (φ v))
+      };
+    }.
 End Animal.
 
 (*

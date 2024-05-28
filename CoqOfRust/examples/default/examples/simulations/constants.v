@@ -1,11 +1,6 @@
 (* custom_type/constants.v *)
 Require Import CoqOfRust.CoqOfRust.
-Require CoqOfRust.core.simulations.default.
-Require CoqOfRust.core.simulations.option.
-(* Require CoqOfRust.examples.default.examples.ink_contracts.simulations.lib. *)
 Require Import CoqOfRust.simulations.M.
-(* Require Import CoqOfRust.lib.simulations.lib. *)
-
 Import simulations.M.Notations.
 
 (*
