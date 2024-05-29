@@ -12,8 +12,8 @@ Definition elided_input (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -71,8 +71,8 @@ Definition annotated_input (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -169,23 +169,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 3 |) in
-        let _ :=
+        let~ x := M.alloc (| Value.Integer 3 |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_elision::elided_input", [] |),
               [ x ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_lifetimes_elision::annotated_input", [] |),
               [ x ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -234,8 +234,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

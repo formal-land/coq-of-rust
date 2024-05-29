@@ -132,7 +132,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -142,7 +142,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -265,7 +265,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -275,7 +275,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -445,7 +445,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -455,7 +455,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -475,7 +475,8 @@ Module ops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -653,7 +654,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -663,7 +664,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|

@@ -85,7 +85,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let sstore_clears_schedule :=
+                    let~ sstore_clears_schedule :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -116,27 +116,25 @@ Module gas.
                                   |) in
                                 M.alloc (|
                                   M.rust_cast
-                                    (BinOp.Panic.add (|
-                                      Integer.U64,
-                                      BinOp.Panic.sub (|
-                                        Integer.U64,
-                                        M.read (|
+                                    (BinOp.Wrap.add
+                                      Integer.U64
+                                      (BinOp.Wrap.sub
+                                        Integer.U64
+                                        (M.read (|
                                           M.get_constant (|
                                             "revm_interpreter::gas::constants::SSTORE_RESET"
                                           |)
-                                        |),
-                                        M.read (|
+                                        |))
+                                        (M.read (|
                                           M.get_constant (|
                                             "revm_interpreter::gas::constants::COLD_SLOAD_COST"
                                           |)
-                                        |)
-                                      |),
-                                      M.read (|
+                                        |)))
+                                      (M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
                                         |)
-                                      |)
-                                    |))
+                                      |)))
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -210,8 +208,8 @@ Module gas.
                                     sstore_clears_schedule));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let refund := M.alloc (| Value.Integer 0 |) in
-                                    let _ :=
+                                    (let~ refund := M.alloc (| Value.Integer 0 |) in
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -264,15 +262,14 @@ Module gas.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         let β := refund in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Panic.sub (|
-                                                            Integer.I64,
-                                                            M.read (| β |),
-                                                            M.read (| sstore_clears_schedule |)
-                                                          |)
+                                                          BinOp.Wrap.sub
+                                                            Integer.I64
+                                                            (M.read (| β |))
+                                                            (M.read (| sstore_clears_schedule |))
                                                         |) in
                                                       M.alloc (| Value.Tuple [] |)));
                                                   fun γ =>
@@ -306,17 +303,16 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let _ :=
+                                                              let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.I64,
-                                                                    M.read (| β |),
-                                                                    M.read (|
+                                                                  BinOp.Wrap.add
+                                                                    Integer.I64
+                                                                    (M.read (| β |))
+                                                                    (M.read (|
                                                                       sstore_clears_schedule
-                                                                    |)
-                                                                  |)
+                                                                    |))
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)));
                                                           fun γ =>
@@ -329,7 +325,7 @@ Module gas.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -386,19 +382,18 @@ Module gas.
                                                         M.alloc (|
                                                           Value.Tuple
                                                             [
-                                                              BinOp.Panic.sub (|
-                                                                Integer.U64,
-                                                                M.read (|
+                                                              BinOp.Wrap.sub
+                                                                Integer.U64
+                                                                (M.read (|
                                                                   M.get_constant (|
                                                                     "revm_interpreter::gas::constants::SSTORE_RESET"
                                                                   |)
-                                                                |),
-                                                                M.read (|
+                                                                |))
+                                                                (M.read (|
                                                                   M.get_constant (|
                                                                     "revm_interpreter::gas::constants::COLD_SLOAD_COST"
                                                                   |)
-                                                                |)
-                                                              |);
+                                                                |));
                                                               M.read (|
                                                                 M.get_constant (|
                                                                   "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
@@ -468,44 +463,40 @@ Module gas.
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
-                                                              let _ :=
+                                                              let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.I64,
-                                                                    M.read (| β |),
-                                                                    M.rust_cast
-                                                                      (BinOp.Panic.sub (|
-                                                                        Integer.U64,
-                                                                        M.read (|
+                                                                  BinOp.Wrap.add
+                                                                    Integer.I64
+                                                                    (M.read (| β |))
+                                                                    (M.rust_cast
+                                                                      (BinOp.Wrap.sub
+                                                                        Integer.U64
+                                                                        (M.read (|
                                                                           M.get_constant (|
                                                                             "revm_interpreter::gas::constants::SSTORE_SET"
                                                                           |)
-                                                                        |),
-                                                                        M.read (| gas_sload |)
-                                                                      |))
-                                                                  |)
+                                                                        |))
+                                                                        (M.read (| gas_sload |))))
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (let _ :=
+                                                              (let~ _ :=
                                                                 let β := refund in
                                                                 M.write (|
                                                                   β,
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.I64,
-                                                                    M.read (| β |),
-                                                                    M.rust_cast
-                                                                      (BinOp.Panic.sub (|
-                                                                        Integer.U64,
-                                                                        M.read (|
+                                                                  BinOp.Wrap.add
+                                                                    Integer.I64
+                                                                    (M.read (| β |))
+                                                                    (M.rust_cast
+                                                                      (BinOp.Wrap.sub
+                                                                        Integer.U64
+                                                                        (M.read (|
                                                                           gas_sstore_reset
-                                                                        |),
-                                                                        M.read (| gas_sload |)
-                                                                      |))
-                                                                  |)
+                                                                        |))
+                                                                        (M.read (| gas_sload |))))
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)))
                                                         ]
@@ -568,6 +559,9 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_sstore_refund :
+      M.IsFunction "revm_interpreter::gas::calc::sstore_refund" sstore_refund.
+    
     (*
     pub const fn create2_cost(len: u64) -> Option<u64> {
         CREATE.checked_add(tri!(cost_per_word(len, KECCAK256WORD)))
@@ -610,7 +604,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -625,6 +620,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_create2_cost :
+      M.IsFunction "revm_interpreter::gas::calc::create2_cost" create2_cost.
     
     (*
     const fn log2floor(value: U256) -> u64 {
@@ -657,12 +655,12 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let l := M.alloc (| Value.Integer 256 |) in
-                let i := M.alloc (| Value.Integer 3 |) in
-                let _ :=
+                let~ l := M.alloc (| Value.Integer 256 |) in
+                let~ i := M.alloc (| Value.Integer 3 |) in
+                let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -692,27 +690,23 @@ Module gas.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := l in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.U64,
-                                      M.read (| β |),
-                                      Value.Integer 64
-                                    |)
+                                    BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (Value.Integer 64)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let _ :=
+                                (let~ _ :=
                                   let β := l in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.sub (|
-                                      Integer.U64,
-                                      M.read (| β |),
-                                      M.rust_cast
+                                    BinOp.Wrap.sub
+                                      Integer.U64
+                                      (M.read (| β |))
+                                      (M.rust_cast
                                         (M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "u64",
@@ -734,8 +728,7 @@ Module gas.
                                               |)
                                             |)
                                           ]
-                                        |))
-                                    |)
+                                        |)))
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -763,11 +756,10 @@ Module gas.
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
-                                                BinOp.Panic.sub (|
-                                                  Integer.U64,
-                                                  M.read (| l |),
-                                                  Value.Integer 1
-                                                |)
+                                                BinOp.Wrap.sub
+                                                  Integer.U64
+                                                  (M.read (| l |))
+                                                  (Value.Integer 1)
                                               |)
                                             |)
                                           |)
@@ -776,7 +768,7 @@ Module gas.
                                 |)))
                           ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -796,11 +788,11 @@ Module gas.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.sub (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                   |) in
@@ -809,6 +801,8 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_log2floor : M.IsFunction "revm_interpreter::gas::calc::log2floor" log2floor.
     
     (*
     pub fn exp_cost(spec_id: SpecId, power: U256) -> Option<u64> {
@@ -869,7 +863,7 @@ Module gas.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let gas_byte :=
+                        (let~ gas_byte :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -915,7 +909,7 @@ Module gas.
                               ]
                             |)
                           |) in
-                        let gas :=
+                        let~ gas :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -980,21 +974,19 @@ Module gas.
                                                           [ Ty.path "u64" ]
                                                         |),
                                                         [
-                                                          BinOp.Panic.add (|
-                                                            Integer.U64,
-                                                            BinOp.Panic.div (|
-                                                              Integer.U64,
-                                                              M.call_closure (|
+                                                          BinOp.Wrap.add
+                                                            Integer.U64
+                                                            (BinOp.Wrap.div
+                                                              Integer.U64
+                                                              (M.call_closure (|
                                                                 M.get_function (|
                                                                   "revm_interpreter::gas::calc::log2floor",
                                                                   []
                                                                 |),
                                                                 [ M.read (| power |) ]
-                                                              |),
-                                                              Value.Integer 8
-                                                            |),
-                                                            Value.Integer 1
-                                                          |)
+                                                              |))
+                                                              (Value.Integer 8))
+                                                            (Value.Integer 1)
                                                         ]
                                                       |)
                                                     ]
@@ -1137,6 +1129,8 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_exp_cost : M.IsFunction "revm_interpreter::gas::calc::exp_cost" exp_cost.
+    
     (*
     pub const fn verylowcopy_cost(len: u64) -> Option<u64> {
         VERYLOW.checked_add(tri!(cost_per_word(len, COPY)))
@@ -1179,7 +1173,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1194,6 +1189,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_verylowcopy_cost :
+      M.IsFunction "revm_interpreter::gas::calc::verylowcopy_cost" verylowcopy_cost.
     
     (*
     pub const fn extcodecopy_cost(spec_id: SpecId, len: u64, is_cold: bool) -> Option<u64> {
@@ -1217,7 +1215,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let base_gas :=
+                let~ base_gas :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1319,7 +1317,8 @@ Module gas.
                                 v));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (|
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1338,6 +1337,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_extcodecopy_cost :
+      M.IsFunction "revm_interpreter::gas::calc::extcodecopy_cost" extcodecopy_cost.
     
     (*
     pub const fn log_cost(n: u8, len: u64) -> Option<u64> {
@@ -1396,7 +1398,9 @@ Module gas.
                                       v));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -1424,7 +1428,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1434,16 +1439,17 @@ Module gas.
                       ]
                     |)
                   |);
-                  BinOp.Panic.mul (|
-                    Integer.U64,
-                    M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |),
-                    M.rust_cast (M.read (| n |))
-                  |)
+                  BinOp.Wrap.mul
+                    Integer.U64
+                    (M.read (| M.get_constant (| "revm_interpreter::gas::constants::LOGTOPIC" |) |))
+                    (M.rust_cast (M.read (| n |)))
                 ]
               |)))
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_log_cost : M.IsFunction "revm_interpreter::gas::calc::log_cost" log_cost.
     
     (*
     pub const fn keccak256_cost(len: u64) -> Option<u64> {
@@ -1487,7 +1493,8 @@ Module gas.
                             v));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                            M.alloc (|
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
@@ -1502,6 +1509,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_keccak256_cost :
+      M.IsFunction "revm_interpreter::gas::calc::keccak256_cost" keccak256_cost.
     
     (*
     pub const fn cost_per_word(len: u64, multiple: u64) -> Option<u64> {
@@ -1526,6 +1536,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_cost_per_word :
+      M.IsFunction "revm_interpreter::gas::calc::cost_per_word" cost_per_word.
     
     (*
     pub const fn initcode_cost(len: u64) -> u64 {
@@ -1569,6 +1582,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_initcode_cost :
+      M.IsFunction "revm_interpreter::gas::calc::initcode_cost" initcode_cost.
     
     (*
     pub const fn sload_cost(spec_id: SpecId, is_cold: bool) -> u64 {
@@ -1705,6 +1721,8 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_sload_cost : M.IsFunction "revm_interpreter::gas::calc::sload_cost" sload_cost.
+    
     (*
     pub fn sstore_cost(
         spec_id: SpecId,
@@ -1753,7 +1771,7 @@ Module gas.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1822,7 +1840,7 @@ Module gas.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let gas_cost :=
+                        let~ gas_cost :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -1832,7 +1850,7 @@ Module gas.
                               [ M.read (| original |); M.read (| current |); M.read (| new |) ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -1844,19 +1862,18 @@ Module gas.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     let β := gas_cost in
                                     M.write (|
                                       β,
-                                      BinOp.Panic.add (|
-                                        Integer.U64,
-                                        M.read (| β |),
-                                        M.read (|
+                                      BinOp.Wrap.add
+                                        Integer.U64
+                                        (M.read (| β |))
+                                        (M.read (|
                                           M.get_constant (|
                                             "revm_interpreter::gas::constants::COLD_SLOAD_COST"
                                           |)
-                                        |)
-                                      |)
+                                        |))
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1934,6 +1951,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_sstore_cost :
+      M.IsFunction "revm_interpreter::gas::calc::sstore_cost" sstore_cost.
     
     (*
     fn istanbul_sstore_cost<const SLOAD_GAS: u64, const SSTORE_RESET_GAS: u64>(
@@ -2064,6 +2084,9 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_istanbul_sstore_cost :
+      M.IsFunction "revm_interpreter::gas::calc::istanbul_sstore_cost" istanbul_sstore_cost.
+    
     (*
     fn frontier_sstore_cost(current: U256, new: U256) -> u64 {
         if current == U256::ZERO && new != U256::ZERO {
@@ -2123,6 +2146,9 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_frontier_sstore_cost :
+      M.IsFunction "revm_interpreter::gas::calc::frontier_sstore_cost" frontier_sstore_cost.
+    
     (*
     pub const fn selfdestruct_cost(spec_id: SpecId, res: SelfDestructResult) -> u64 {
         // EIP-161: State trie clearing (invariant-preserving alternative)
@@ -2161,7 +2187,7 @@ Module gas.
           (let spec_id := M.alloc (| spec_id |) in
           let res := M.alloc (| res |) in
           M.read (|
-            let should_charge_topup :=
+            let~ should_charge_topup :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2222,7 +2248,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let selfdestruct_gas_topup :=
+            let~ selfdestruct_gas_topup :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2256,7 +2282,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let selfdestruct_gas :=
+            let~ selfdestruct_gas :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2287,15 +2313,14 @@ Module gas.
                   ]
                 |)
               |) in
-            let gas :=
+            let~ gas :=
               M.alloc (|
-                BinOp.Panic.add (|
-                  Integer.U64,
-                  M.read (| selfdestruct_gas |),
-                  M.read (| selfdestruct_gas_topup |)
-                |)
+                BinOp.Wrap.add
+                  Integer.U64
+                  (M.read (| selfdestruct_gas |))
+                  (M.read (| selfdestruct_gas_topup |))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2332,15 +2357,14 @@ Module gas.
                       let β := gas in
                       M.write (|
                         β,
-                        BinOp.Panic.add (|
-                          Integer.U64,
-                          M.read (| β |),
-                          M.read (|
+                        BinOp.Wrap.add
+                          Integer.U64
+                          (M.read (| β |))
+                          (M.read (|
                             M.get_constant (|
                               "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
                             |)
-                          |)
-                        |)
+                          |))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -2349,6 +2373,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_selfdestruct_cost :
+      M.IsFunction "revm_interpreter::gas::calc::selfdestruct_cost" selfdestruct_cost.
     
     (*
     pub const fn call_cost(
@@ -2397,7 +2424,7 @@ Module gas.
           let is_cold := M.alloc (| is_cold |) in
           let new_account_accounting := M.alloc (| new_account_accounting |) in
           M.read (|
-            let gas :=
+            let~ gas :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -2465,7 +2492,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2473,23 +2500,22 @@ Module gas.
                     ltac:(M.monadic
                       (let γ := M.use transfers_value in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := gas in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.U64,
-                            M.read (| β |),
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.U64
+                            (M.read (| β |))
+                            (M.read (|
                               M.get_constant (| "revm_interpreter::gas::constants::CALLVALUE" |)
-                            |)
-                          |)
+                            |))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2535,19 +2561,18 @@ Module gas.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := gas in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.U64,
-                                            M.read (| β |),
-                                            M.read (|
+                                          BinOp.Wrap.add
+                                            Integer.U64
+                                            (M.read (| β |))
+                                            (M.read (|
                                               M.get_constant (|
                                                 "revm_interpreter::gas::constants::NEWACCOUNT"
                                               |)
-                                            |)
-                                          |)
+                                            |))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -2555,19 +2580,18 @@ Module gas.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 let β := gas in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (|
-                                    Integer.U64,
-                                    M.read (| β |),
-                                    M.read (|
+                                  BinOp.Wrap.add
+                                    Integer.U64
+                                    (M.read (| β |))
+                                    (M.read (|
                                       M.get_constant (|
                                         "revm_interpreter::gas::constants::NEWACCOUNT"
                                       |)
-                                    |)
-                                  |)
+                                    |))
                                 |) in
                               M.alloc (| Value.Tuple [] |)))
                         ]
@@ -2579,6 +2603,8 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_call_cost : M.IsFunction "revm_interpreter::gas::calc::call_cost" call_cost.
     
     (*
     pub const fn warm_cold_cost(is_cold: bool) -> u64 {
@@ -2616,6 +2642,9 @@ Module gas.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_warm_cold_cost :
+      M.IsFunction "revm_interpreter::gas::calc::warm_cold_cost" warm_cold_cost.
+    
     (*
     pub const fn memory_gas_for_len(len: usize) -> u64 {
         memory_gas(crate::interpreter::num_words(len as u64))
@@ -2637,6 +2666,9 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memory_gas_for_len :
+      M.IsFunction "revm_interpreter::gas::calc::memory_gas_for_len" memory_gas_for_len.
     
     (*
     pub const fn memory_gas(num_words: u64) -> u64 {
@@ -2660,18 +2692,19 @@ Module gas.
                   M.read (| num_words |)
                 ]
               |);
-              BinOp.Panic.div (|
-                Integer.U64,
-                M.call_closure (|
+              BinOp.Wrap.div
+                Integer.U64
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "u64", "saturating_mul", [] |),
                   [ M.read (| num_words |); M.read (| num_words |) ]
-                |),
-                Value.Integer 512
-              |)
+                |))
+                (Value.Integer 512)
             ]
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_memory_gas : M.IsFunction "revm_interpreter::gas::calc::memory_gas" memory_gas.
     
     (*
     pub fn validate_initial_tx_gas(
@@ -2742,8 +2775,8 @@ Module gas.
           let access_list := M.alloc (| access_list |) in
           let initcodes := M.alloc (| initcodes |) in
           M.read (|
-            let initial_gas := M.alloc (| Value.Integer 0 |) in
-            let zero_data_len :=
+            let~ initial_gas := M.alloc (| Value.Integer 0 |) in
+            let~ zero_data_len :=
               M.alloc (|
                 M.rust_cast
                   (M.call_closure (|
@@ -2817,11 +2850,11 @@ Module gas.
                     ]
                   |))
               |) in
-            let non_zero_data_len :=
+            let~ non_zero_data_len :=
               M.alloc (|
-                BinOp.Panic.sub (|
-                  Integer.U64,
-                  M.rust_cast
+                BinOp.Wrap.sub
+                  Integer.U64
+                  (M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
@@ -2829,11 +2862,10 @@ Module gas.
                         []
                       |),
                       [ M.read (| input |) ]
-                    |)),
-                  M.read (| zero_data_len |)
-                |)
+                    |)))
+                  (M.read (| zero_data_len |))
               |) in
-            let _ :=
+            let~ _ :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
@@ -2857,7 +2889,7 @@ Module gas.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let _ :=
+                            (let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -2876,7 +2908,9 @@ Module gas.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (M.alloc (|
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -2888,7 +2922,7 @@ Module gas.
                                           0
                                         |) in
                                       let initcode := M.copy (| γ0_0 |) in
-                                      let zeros :=
+                                      let~ zeros :=
                                         M.alloc (|
                                           M.rust_cast
                                             (M.call_closure (|
@@ -3002,26 +3036,25 @@ Module gas.
                                               ]
                                             |))
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := zero_data_len in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.U64,
-                                            M.read (| β |),
-                                            M.read (| zeros |)
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.U64
+                                            (M.read (| β |))
+                                            (M.read (| zeros |))
                                         |) in
-                                      let _ :=
+                                      let~ _ :=
                                         let β := non_zero_data_len in
                                         M.write (|
                                           β,
-                                          BinOp.Panic.add (|
-                                            Integer.U64,
-                                            M.read (| β |),
-                                            BinOp.Panic.sub (|
-                                              Integer.U64,
-                                              M.rust_cast
+                                          BinOp.Wrap.add
+                                            Integer.U64
+                                            (M.read (| β |))
+                                            (BinOp.Wrap.sub
+                                              Integer.U64
+                                              (M.rust_cast
                                                 (M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.path "bytes::bytes::Bytes",
@@ -3040,10 +3073,8 @@ Module gas.
                                                       [ M.read (| initcode |) ]
                                                     |)
                                                   ]
-                                                |)),
-                                              M.read (| zeros |)
-                                            |)
-                                          |)
+                                                |)))
+                                              (M.read (| zeros |)))
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -3052,33 +3083,31 @@ Module gas.
                         |)))
                   ]
                 |)) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
-                BinOp.Panic.add (|
-                  Integer.U64,
-                  M.read (| β |),
-                  BinOp.Panic.mul (|
-                    Integer.U64,
-                    M.read (| zero_data_len |),
-                    M.read (|
+                BinOp.Wrap.add
+                  Integer.U64
+                  (M.read (| β |))
+                  (BinOp.Wrap.mul
+                    Integer.U64
+                    (M.read (| zero_data_len |))
+                    (M.read (|
                       M.get_constant (| "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA" |)
-                    |)
-                  |)
-                |)
+                    |)))
               |) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
-                BinOp.Panic.add (|
-                  Integer.U64,
-                  M.read (| β |),
-                  BinOp.Panic.mul (|
-                    Integer.U64,
-                    M.read (| non_zero_data_len |),
-                    M.read (|
+                BinOp.Wrap.add
+                  Integer.U64
+                  (M.read (| β |))
+                  (BinOp.Wrap.mul
+                    Integer.U64
+                    (M.read (| non_zero_data_len |))
+                    (M.read (|
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -3110,11 +3139,9 @@ Module gas.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 68 |)))
                         ]
                       |)
-                    |)
-                  |)
-                |)
+                    |)))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3138,7 +3165,7 @@ Module gas.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let accessed_slots :=
+                      let~ accessed_slots :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -3225,10 +3252,10 @@ Module gas.
                                                       let γ1_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let slots := M.alloc (| γ1_1 |) in
-                                                      BinOp.Panic.add (|
-                                                        Integer.U64,
-                                                        M.read (| slot_count |),
-                                                        M.rust_cast
+                                                      BinOp.Wrap.add
+                                                        Integer.U64
+                                                        (M.read (| slot_count |))
+                                                        (M.rust_cast
                                                           (M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
@@ -3241,8 +3268,7 @@ Module gas.
                                                               []
                                                             |),
                                                             [ M.read (| slots |) ]
-                                                          |))
-                                                      |)))
+                                                          |)))))
                                                 ]
                                               |)))
                                         ]
@@ -3252,16 +3278,16 @@ Module gas.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := initial_gas in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.U64,
-                            M.read (| β |),
-                            BinOp.Panic.mul (|
-                              Integer.U64,
-                              M.rust_cast
+                          BinOp.Wrap.add
+                            Integer.U64
+                            (M.read (| β |))
+                            (BinOp.Wrap.mul
+                              Integer.U64
+                              (M.rust_cast
                                 (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3282,45 +3308,41 @@ Module gas.
                                     []
                                   |),
                                   [ M.read (| access_list |) ]
-                                |)),
-                              M.read (|
+                                |)))
+                              (M.read (|
                                 M.get_constant (|
                                   "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
                                 |)
-                              |)
-                            |)
-                          |)
+                              |)))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := initial_gas in
                         M.write (|
                           β,
-                          BinOp.Panic.add (|
-                            Integer.U64,
-                            M.read (| β |),
-                            BinOp.Panic.mul (|
-                              Integer.U64,
-                              M.read (| accessed_slots |),
-                              M.read (|
+                          BinOp.Wrap.add
+                            Integer.U64
+                            (M.read (| β |))
+                            (BinOp.Wrap.mul
+                              Integer.U64
+                              (M.read (| accessed_slots |))
+                              (M.read (|
                                 M.get_constant (|
                                   "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
                                 |)
-                              |)
-                            |)
-                          |)
+                              |)))
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               let β := initial_gas in
               M.write (|
                 β,
-                BinOp.Panic.add (|
-                  Integer.U64,
-                  M.read (| β |),
-                  M.read (|
+                BinOp.Wrap.add
+                  Integer.U64
+                  (M.read (| β |))
+                  (M.read (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -3363,10 +3385,9 @@ Module gas.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 21000 |)))
                       ]
                     |)
-                  |)
-                |)
+                  |))
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3396,10 +3417,10 @@ Module gas.
                       let β := initial_gas in
                       M.write (|
                         β,
-                        BinOp.Panic.add (|
-                          Integer.U64,
-                          M.read (| β |),
-                          M.call_closure (|
+                        BinOp.Wrap.add
+                          Integer.U64
+                          (M.read (| β |))
+                          (M.call_closure (|
                             M.get_function (| "revm_interpreter::gas::calc::initcode_cost", [] |),
                             [
                               M.rust_cast
@@ -3412,8 +3433,7 @@ Module gas.
                                   [ M.read (| input |) ]
                                 |))
                             ]
-                          |)
-                        |)
+                          |))
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -3422,5 +3442,8 @@ Module gas.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_validate_initial_tx_gas :
+      M.IsFunction "revm_interpreter::gas::calc::validate_initial_tx_gas" validate_initial_tx_gas.
   End calc.
 End gas.

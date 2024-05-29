@@ -86,7 +86,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let b :=
+              let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -155,7 +155,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let b :=
+              let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -237,7 +237,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let b :=
+              let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -306,7 +306,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let b :=
+              let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|

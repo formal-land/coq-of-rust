@@ -33,8 +33,7 @@ Definition checked_division (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   Value.StructTuple
                     "core::option::Option::Some"
-                    [ BinOp.Panic.div (| Integer.I32, M.read (| dividend |), M.read (| divisor |) |)
-                    ]
+                    [ BinOp.Wrap.div Integer.I32 (M.read (| dividend |)) (M.read (| divisor |)) ]
                 |)))
           ]
         |)
@@ -72,7 +71,8 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -129,7 +129,7 @@ Definition try_division (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let quotient := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -225,28 +225,28 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
               [ Value.Integer 4; Value.Integer 2 ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "option::try_division", [] |),
               [ Value.Integer 1; Value.Integer 0 ]
             |)
           |) in
-        let none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let _equivalent_none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let optional_float :=
+        let~ none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ _equivalent_none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ optional_float :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -305,8 +305,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

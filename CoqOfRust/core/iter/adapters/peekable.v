@@ -168,7 +168,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let iter :=
+                let~ iter :=
                   M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -252,7 +252,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let iter :=
+                let~ iter :=
                   M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -388,7 +388,7 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let other := M.copy (| γ |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -439,7 +439,7 @@ Module iter.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -576,7 +576,8 @@ Module iter.
                         v));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -644,6 +645,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
+                        let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         M.alloc (| Value.Integer 0 |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -660,10 +662,10 @@ Module iter.
                             0
                           |) in
                         M.alloc (|
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            Value.Integer 1,
-                            M.call_closure (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (Value.Integer 1)
+                            (M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 I,
@@ -680,12 +682,12 @@ Module iter.
                                   |)
                                 |)
                               ]
-                            |)
-                          |)
+                            |))
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -757,6 +759,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
+                        let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -806,13 +809,14 @@ Module iter.
                                 "core::iter::adapters::peekable::Peekable",
                                 "iter"
                               |);
-                              BinOp.Panic.sub (| Integer.Usize, M.read (| n |), Value.Integer 1 |)
+                              BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (Value.Integer 1)
                             ]
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -856,7 +860,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let peek_opt :=
+                    let~ peek_opt :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -886,6 +890,8 @@ Module iter.
                                     "core::option::Option::Some",
                                     0
                                   |) in
+                                let _ :=
+                                  M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
@@ -907,7 +913,8 @@ Module iter.
                                 v));
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                           ]
                         |)
                       |) in
@@ -971,7 +978,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let peek_len :=
+                    let~ peek_len :=
                       M.copy (|
                         M.match_operator (|
                           M.SubPointer.get_struct_record_field (|
@@ -988,6 +995,8 @@ Module iter.
                                     "core::option::Option::Some",
                                     0
                                   |) in
+                                let _ :=
+                                  M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
@@ -1018,7 +1027,10 @@ Module iter.
                                     0
                                   |) in
                                 M.alloc (| Value.Integer 1 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| Value.Integer 0 |)))
                           ]
                         |)
                       |) in
@@ -1048,7 +1060,7 @@ Module iter.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let lo := M.copy (| γ0_0 |) in
                             let hi := M.copy (| γ0_1 |) in
-                            let lo :=
+                            let~ lo :=
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -1059,7 +1071,7 @@ Module iter.
                                   [ M.read (| lo |); M.read (| peek_len |) ]
                                 |)
                               |) in
-                            let hi :=
+                            let~ hi :=
                               M.copy (|
                                 M.match_operator (|
                                   hi,
@@ -1085,7 +1097,9 @@ Module iter.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           Value.StructTuple "core::option::Option::None" []
                                         |)))
                                   ]
@@ -1125,7 +1139,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -1155,6 +1169,8 @@ Module iter.
                                     "core::option::Option::Some",
                                     0
                                   |) in
+                                let _ :=
+                                  M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
@@ -1252,7 +1268,10 @@ Module iter.
                                         val))
                                   ]
                                 |)));
-                            fun γ => ltac:(M.monadic init)
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                init))
                           ]
                         |)
                       |) in
@@ -1305,7 +1324,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let acc :=
+                    let~ acc :=
                       M.copy (|
                         M.match_operator (|
                           M.SubPointer.get_struct_record_field (|
@@ -1322,6 +1341,8 @@ Module iter.
                                     "core::option::Option::Some",
                                     0
                                   |) in
+                                let _ :=
+                                  M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.read (| M.return_ (| M.read (| init |) |) |)
@@ -1354,7 +1375,10 @@ Module iter.
                                     [ fold; Value.Tuple [ M.read (| init |); M.read (| v |) ] ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic init)
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                init))
                           ]
                         |)
                       |) in
@@ -1524,10 +1548,12 @@ Module iter.
                             0
                           |) in
                         let γ0_0 := M.read (| γ0_0 |) in
+                        let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
@@ -1608,6 +1634,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
+                        let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -1698,7 +1725,7 @@ Module iter.
                                     0
                                   |) in
                                 let r := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
@@ -1729,7 +1756,8 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
@@ -1794,6 +1822,7 @@ Module iter.
                             "core::option::Option::Some",
                             0
                           |) in
+                        let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                         init));
                     fun γ =>
                       ltac:(M.monadic
@@ -1810,7 +1839,7 @@ Module iter.
                             0
                           |) in
                         let v := M.copy (| γ1_0 |) in
-                        let acc :=
+                        let~ acc :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -1847,7 +1876,8 @@ Module iter.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",

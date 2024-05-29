@@ -93,7 +93,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let data :=
+        let~ data :=
           M.copy (|
             Value.String
               "86967897737416471853297327050364959
@@ -105,7 +105,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
 69920216438980873548808413720956532
 16278424637452589860345374828574668"
           |) in
-        let children :=
+        let~ children :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -121,14 +121,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let chunked_data :=
+        let~ chunked_data :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (| Ty.path "str", "split_whitespace", [] |),
               [ M.read (| data |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.use
             (M.match_operator (|
               M.alloc (|
@@ -162,7 +162,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let _ :=
+                        (let~ _ :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
@@ -181,7 +181,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -194,8 +196,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                   let i := M.copy (| γ1_0 |) in
                                   let data_segment := M.copy (| γ1_1 |) in
-                                  let _ :=
-                                    let _ :=
+                                  let~ _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (| "std::io::stdio::_print", [] |),
@@ -251,7 +253,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -288,7 +290,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (M.read (|
-                                                                let result :=
+                                                                let~ result :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -403,8 +405,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let _ :=
-                                                                  let _ :=
+                                                                let~ _ :=
+                                                                  let~ _ :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         M.get_function (|
@@ -495,7 +497,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let final_result :=
+        let~ final_result :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -605,8 +607,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

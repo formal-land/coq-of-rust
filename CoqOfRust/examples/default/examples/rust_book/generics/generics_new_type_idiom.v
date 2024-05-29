@@ -31,17 +31,16 @@ Module Impl_generics_new_type_idiom_Years.
         Value.StructTuple
           "generics_new_type_idiom::Days"
           [
-            BinOp.Panic.mul (|
-              Integer.I64,
-              M.read (|
+            BinOp.Wrap.mul
+              Integer.I64
+              (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_new_type_idiom::Years",
                   0
                 |)
-              |),
-              Value.Integer 365
-            |)
+              |))
+              (Value.Integer 365)
           ]))
     | _, _ => M.impossible
     end.
@@ -65,17 +64,16 @@ Module Impl_generics_new_type_idiom_Days.
         Value.StructTuple
           "generics_new_type_idiom::Years"
           [
-            BinOp.Panic.div (|
-              Integer.I64,
-              M.read (|
+            BinOp.Wrap.div
+              Integer.I64
+              (M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
                   "generics_new_type_idiom::Days",
                   0
                 |)
-              |),
-              Value.Integer 365
-            |)
+              |))
+              (Value.Integer 365)
           ]))
     | _, _ => M.impossible
     end.
@@ -121,9 +119,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let age :=
+        let~ age :=
           M.alloc (| Value.StructTuple "generics_new_type_idiom::Years" [ Value.Integer 5 ] |) in
-        let age_days :=
+        let~ age_days :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -134,8 +132,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ age ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -182,8 +180,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

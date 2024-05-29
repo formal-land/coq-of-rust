@@ -227,24 +227,24 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 18 |) in
-        let y := M.alloc (| Value.Integer 15 |) in
-        let single :=
+        let~ x := M.alloc (| Value.Integer 18 |) in
+        let~ y := M.alloc (| Value.Integer 15 |) in
+        let~ single :=
           M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Borrowed" [ x ] |) in
-        let double :=
+        let~ double :=
           M.alloc (|
             Value.StructRecord
               "scoping_rules_lifetimes_structs::NamedBorrowed"
               [ ("x", x); ("y", y) ]
           |) in
-        let reference :=
+        let~ reference :=
           M.alloc (| Value.StructTuple "scoping_rules_lifetimes_structs::Either::Ref" [ x ] |) in
-        let number :=
+        let~ number :=
           M.alloc (|
             Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -283,8 +283,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -323,8 +323,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -363,8 +363,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

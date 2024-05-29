@@ -14,8 +14,8 @@ Definition destroy_box (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let c := M.alloc (| c |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -108,10 +108,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x := M.alloc (| Value.Integer 5 |) in
-        let y := M.copy (| x |) in
-        let _ :=
-          let _ :=
+        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ y := M.copy (| x |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -159,7 +159,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let a :=
+        let~ a :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -172,8 +172,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 5 ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -216,8 +216,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let b := M.copy (| a |) in
-        let _ :=
+        let~ b := M.copy (| a |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "scoping_rules_ownership_and_rules::destroy_box", [] |),

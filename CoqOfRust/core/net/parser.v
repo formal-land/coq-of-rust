@@ -749,7 +749,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let inner := M.alloc (| inner |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -757,7 +757,7 @@ Module net.
                     "state"
                   |)
                 |) in
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -773,7 +773,7 @@ Module net.
                     [ M.read (| inner |); Value.Tuple [ M.read (| self |) ] ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -793,7 +793,7 @@ Module net.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
@@ -831,7 +831,7 @@ Module net.
             let inner := M.alloc (| inner |) in
             let kind := M.alloc (| kind |) in
             M.read (|
-              let result :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1050,7 +1050,7 @@ Module net.
                                 let b := M.copy (| γ0_0 |) in
                                 let tail := M.copy (| γ0_1 |) in
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.write (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
@@ -1250,7 +1250,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -1268,7 +1268,7 @@ Module net.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
@@ -1446,14 +1446,14 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let result :=
+                                  let~ result :=
                                     M.copy (|
                                       M.get_constant (|
                                         "core::net::parser::ReadNumberHelper::ZERO"
                                       |)
                                     |) in
-                                  let digit_count := M.alloc (| Value.Integer 0 |) in
-                                  let has_leading_zero :=
+                                  let~ digit_count := M.alloc (| Value.Integer 0 |) in
+                                  let~ has_leading_zero :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_trait_method (|
@@ -1488,7 +1488,7 @@ Module net.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.loop (|
                                       ltac:(M.monadic
                                         (M.match_operator (|
@@ -1658,7 +1658,7 @@ Module net.
                                                     0
                                                   |) in
                                                 let digit := M.copy (| γ0_0 |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     result,
                                                     M.read (|
@@ -1741,7 +1741,7 @@ Module net.
                                                       |)
                                                     |)
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     result,
                                                     M.read (|
@@ -1824,15 +1824,14 @@ Module net.
                                                       |)
                                                     |)
                                                   |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   let β := digit_count in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Panic.add (|
-                                                      Integer.Usize,
-                                                      M.read (| β |),
-                                                      Value.Integer 1
-                                                    |)
+                                                    BinOp.Wrap.add
+                                                      Integer.Usize
+                                                      (M.read (| β |))
+                                                      (Value.Integer 1)
                                                   |) in
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -1890,7 +1889,7 @@ Module net.
                                                 (M.alloc (|
                                                   M.never_to_any (|
                                                     M.read (|
-                                                      let _ :=
+                                                      let~ _ :=
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
@@ -2029,8 +2028,8 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let groups := M.alloc (| repeat (Value.Integer 0) 4 |) in
-                                  let _ :=
+                                  let~ groups := M.alloc (| repeat (Value.Integer 0) 4 |) in
+                                  let~ _ :=
                                     M.use
                                       (M.match_operator (|
                                         M.alloc (|
@@ -2080,7 +2079,7 @@ Module net.
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
                                                 ltac:(M.monadic
-                                                  (let _ :=
+                                                  (let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
@@ -2105,7 +2104,12 @@ Module net.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (|
+                                                            (let _ :=
+                                                              M.is_struct_tuple (|
+                                                                γ,
+                                                                "core::option::Option::None"
+                                                              |) in
+                                                            M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (| M.break (||) |)
                                                               |)
@@ -2130,7 +2134,7 @@ Module net.
                                                               |) in
                                                             let i := M.copy (| γ1_0 |) in
                                                             let slot := M.copy (| γ1_1 |) in
-                                                            let _ :=
+                                                            let~ _ :=
                                                               M.write (|
                                                                 M.read (| slot |),
                                                                 M.read (|
@@ -2430,7 +2434,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let head := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                                  let~ head := M.alloc (| repeat (Value.Integer 0) 8 |) in
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
@@ -2449,7 +2453,7 @@ Module net.
                                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                           let head_size := M.copy (| γ0_0 |) in
                                           let head_ipv4 := M.copy (| γ0_1 |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -2498,7 +2502,7 @@ Module net.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -2525,7 +2529,7 @@ Module net.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -2602,7 +2606,7 @@ Module net.
                                                     val))
                                               ]
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
@@ -2679,18 +2683,16 @@ Module net.
                                                     val))
                                               ]
                                             |) in
-                                          let tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
-                                          let limit :=
+                                          let~ tail := M.alloc (| repeat (Value.Integer 0) 7 |) in
+                                          let~ limit :=
                                             M.alloc (|
-                                              BinOp.Panic.sub (|
-                                                Integer.Usize,
-                                                Value.Integer 8,
-                                                BinOp.Panic.add (|
-                                                  Integer.Usize,
-                                                  M.read (| head_size |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                              BinOp.Wrap.sub
+                                                Integer.Usize
+                                                (Value.Integer 8)
+                                                (BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| head_size |))
+                                                  (Value.Integer 1))
                                             |) in
                                           M.match_operator (|
                                             M.alloc (|
@@ -2732,7 +2734,7 @@ Module net.
                                                   let γ0_1 :=
                                                     M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let tail_size := M.copy (| γ0_0 |) in
-                                                  let _ :=
+                                                  let~ _ :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_associated_function (|
@@ -2764,11 +2766,10 @@ Module net.
                                                                 "core::ops::range::Range"
                                                                 [
                                                                   ("start",
-                                                                    BinOp.Panic.sub (|
-                                                                      Integer.Usize,
-                                                                      Value.Integer 8,
-                                                                      M.read (| tail_size |)
-                                                                    |));
+                                                                    BinOp.Wrap.sub
+                                                                      Integer.Usize
+                                                                      (Value.Integer 8)
+                                                                      (M.read (| tail_size |)));
                                                                   ("end_", Value.Integer 8)
                                                                 ]
                                                             ]
@@ -2968,7 +2969,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -3105,7 +3106,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -3246,7 +3247,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let ip :=
+                                  let~ ip :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -3323,7 +3324,7 @@ Module net.
                                         ]
                                       |)
                                     |) in
-                                  let port :=
+                                  let~ port :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -3473,7 +3474,7 @@ Module net.
                               ltac:(M.monadic
                                 (let p := M.copy (| γ |) in
                                 M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -3547,7 +3548,7 @@ Module net.
                                             val))
                                       ]
                                     |) in
-                                  let ip :=
+                                  let~ ip :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -3624,7 +3625,7 @@ Module net.
                                         ]
                                       |)
                                     |) in
-                                  let scope_id :=
+                                  let~ scope_id :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -3647,7 +3648,7 @@ Module net.
                                         ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
@@ -3721,7 +3722,7 @@ Module net.
                                             val))
                                       ]
                                     |) in
-                                  let port :=
+                                  let~ port :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
@@ -4686,26 +4687,35 @@ Module net.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                           M.alloc (| M.read (| Value.String "Ip" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                           M.alloc (| M.read (| Value.String "Ipv4" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                           M.alloc (| M.read (| Value.String "Ipv6" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                           M.alloc (| M.read (| Value.String "Socket" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                           M.alloc (| M.read (| Value.String "SocketV4" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                           M.alloc (| M.read (| Value.String "SocketV6" |) |)))
                     ]
                   |)
@@ -4739,26 +4749,32 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ip" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::Socket" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                       M.alloc (| Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] |)))
                 ]
               |)
@@ -4796,7 +4812,7 @@ Module net.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -4806,7 +4822,7 @@ Module net.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -5112,26 +5128,32 @@ Module net.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
+                      M.alloc (| M.read (| Value.String "invalid IP address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv4 address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv6 address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
+                      (let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
+                      M.alloc (| M.read (| Value.String "invalid socket address syntax" |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
+                      M.alloc (|
                         M.read (| Value.String "invalid IPv4 socket address syntax" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
-                        M.read (| Value.String "invalid IPv6 socket address syntax" |)
-                      |)))
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
+                      M.alloc (| M.read (| Value.String "invalid IPv6 socket address syntax" |) |)))
                 ]
               |)
             |)))

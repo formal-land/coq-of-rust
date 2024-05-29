@@ -57,7 +57,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -211,7 +211,7 @@ Module iter.
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a := M.alloc (| γ1_0 |) in
                         let b := M.alloc (| γ1_1 |) in
-                        let iter :=
+                        let~ iter :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -243,7 +243,7 @@ Module iter.
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let lower_bound := M.copy (| γ0_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -261,7 +261,7 @@ Module iter.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -274,7 +274,7 @@ Module iter.
                                                 [ M.read (| a |); M.read (| lower_bound |) ]
                                               |)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_trait_method (|
@@ -291,7 +291,7 @@ Module iter.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -334,7 +334,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -350,7 +350,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -389,7 +389,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let additional := M.alloc (| additional |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -405,7 +405,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|

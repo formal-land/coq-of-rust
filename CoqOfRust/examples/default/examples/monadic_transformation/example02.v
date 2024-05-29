@@ -28,7 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Integer 1 |),
             [
@@ -39,7 +39,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -51,7 +51,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 1 |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [

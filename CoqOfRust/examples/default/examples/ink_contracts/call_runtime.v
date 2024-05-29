@@ -317,7 +317,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
             [
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (|
+                  (let _ :=
+                    M.is_struct_tuple (| γ, "call_runtime::EnvError::CallRuntimeFailed" |) in
+                  M.alloc (|
                     Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" []
                   |)));
               fun γ =>

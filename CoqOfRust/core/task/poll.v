@@ -72,6 +72,7 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
@@ -130,6 +131,7 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -220,7 +222,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -230,7 +232,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -311,7 +313,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -321,7 +323,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -341,7 +343,8 @@ Module task.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.match_operator (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -406,7 +409,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -416,7 +419,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -502,7 +505,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -512,7 +515,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -612,7 +615,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
             |)))
@@ -772,7 +776,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
             |)))
@@ -863,7 +868,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
             |)))
@@ -992,6 +998,7 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
@@ -999,7 +1006,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
             |)))
@@ -1117,6 +1125,7 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
@@ -1124,7 +1133,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |)))
                 ]
               |)
             |)))
@@ -1262,7 +1272,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]
@@ -1529,6 +1540,7 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
@@ -1540,7 +1552,8 @@ Module task.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                      M.alloc (|
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           [ Value.StructTuple "core::task::poll::Poll::Pending" [] ]

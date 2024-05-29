@@ -307,7 +307,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
@@ -321,7 +321,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
@@ -485,23 +485,22 @@ Module gas.
       | [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Panic.sub (|
-            Integer.U64,
-            M.read (|
+          BinOp.Wrap.sub
+            Integer.U64
+            (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "limit"
               |)
-            |),
-            M.read (|
+            |))
+            (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_interpreter::gas::Gas",
                 "remaining"
               |)
-            |)
-          |)))
+            |))))
       | _, _ => M.impossible
       end.
     
@@ -560,7 +559,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let returned := M.alloc (| returned |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -569,7 +568,7 @@ Module gas.
                 |) in
               M.write (|
                 β,
-                BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| returned |) |)
+                BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| returned |))
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -589,7 +588,7 @@ Module gas.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -617,17 +616,14 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               let β :=
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::gas::Gas",
                   "refunded"
                 |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.I64, M.read (| β |), M.read (| refund |) |)
-              |) in
+              M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| refund |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _ => M.impossible
@@ -649,7 +645,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let is_london := M.alloc (| is_london |) in
           M.read (|
-            let max_refund_quotient :=
+            let~ max_refund_quotient :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -664,7 +660,7 @@ Module gas.
                   ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -684,18 +680,17 @@ Module gas.
                           |),
                           [ M.read (| self |) ]
                         |));
-                      BinOp.Panic.div (|
-                        Integer.U64,
-                        M.call_closure (|
+                      BinOp.Wrap.div
+                        Integer.U64
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::gas::Gas",
                             "spent",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.read (| max_refund_quotient |)
-                      |)
+                        |))
+                        (M.read (| max_refund_quotient |))
                     ]
                   |))
               |) in
@@ -719,7 +714,7 @@ Module gas.
           (let self := M.alloc (| self |) in
           let refund := M.alloc (| refund |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -775,8 +770,8 @@ Module gas.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let remaining := M.copy (| γ0_0 |) in
                     let overflow := M.copy (| γ0_1 |) in
-                    let success := M.alloc (| UnOp.Pure.not (M.read (| overflow |)) |) in
-                    let _ :=
+                    let~ success := M.alloc (| UnOp.Pure.not (M.read (| overflow |)) |) in
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -788,7 +783,7 @@ Module gas.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),

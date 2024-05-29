@@ -33,16 +33,16 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let logical := M.alloc (| Value.Bool true |) in
-        let a_float := M.copy (| UnsupportedLiteral |) in
-        let an_integer := M.alloc (| Value.Integer 5 |) in
-        let default_float := M.copy (| UnsupportedLiteral |) in
-        let default_integer := M.alloc (| Value.Integer 7 |) in
-        let inferred_type := M.alloc (| Value.Integer 12 |) in
-        let _ := M.write (| inferred_type, Value.Integer 4294967296 |) in
-        let mutable := M.alloc (| Value.Integer 12 |) in
-        let _ := M.write (| mutable, Value.Integer 21 |) in
-        let mutable := M.alloc (| Value.Bool true |) in
+        let~ logical := M.alloc (| Value.Bool true |) in
+        let~ a_float := M.copy (| UnsupportedLiteral |) in
+        let~ an_integer := M.alloc (| Value.Integer 5 |) in
+        let~ default_float := M.copy (| UnsupportedLiteral |) in
+        let~ default_integer := M.alloc (| Value.Integer 7 |) in
+        let~ inferred_type := M.alloc (| Value.Integer 12 |) in
+        let~ _ := M.write (| inferred_type, Value.Integer 4294967296 |) in
+        let~ mutable := M.alloc (| Value.Integer 12 |) in
+        let~ _ := M.write (| mutable, Value.Integer 21 |) in
+        let~ mutable := M.alloc (| Value.Bool true |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _ => M.impossible

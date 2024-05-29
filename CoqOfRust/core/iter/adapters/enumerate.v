@@ -169,7 +169,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -248,7 +248,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let i :=
+                    let~ i :=
                       M.copy (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -256,7 +256,7 @@ Module iter.
                           "count"
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       let β :=
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
@@ -265,7 +265,7 @@ Module iter.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -325,7 +325,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -405,28 +405,27 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let i :=
+                    let~ i :=
                       M.alloc (|
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.read (|
+                        BinOp.Wrap.add
+                          Integer.Usize
+                          (M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::enumerate::Enumerate",
                               "count"
                             |)
-                          |),
-                          M.read (| n |)
-                        |)
+                          |))
+                          (M.read (| n |))
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.write (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |),
-                        BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -615,7 +614,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.read (|
-                let remaining :=
+                let~ remaining :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -635,7 +634,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let advanced :=
+                let~ advanced :=
                   M.copy (|
                     M.match_operator (|
                       remaining,
@@ -659,23 +658,22 @@ Module iter.
                               |) in
                             let rem := M.copy (| γ0_0 |) in
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| n |),
-                                M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| n |))
+                                (M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "core::num::nonzero::NonZeroUsize",
                                     "get",
                                     []
                                   |),
                                   [ M.read (| rem |) ]
-                                |)
-                              |)
+                                |))
                             |)))
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -684,7 +682,7 @@ Module iter.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| advanced |) |)
+                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| advanced |))
                   |) in
                 remaining
               |)))
@@ -710,7 +708,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.read (|
-                let value :=
+                let~ value :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [ I ] |),
@@ -727,17 +725,16 @@ Module iter.
                 M.alloc (|
                   Value.Tuple
                     [
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.read (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::iter::adapters::enumerate::Enumerate",
                             "count"
                           |)
-                        |),
-                        M.read (| idx |)
-                      |);
+                        |))
+                        (M.read (| idx |));
                       M.read (| value |)
                     ]
                 |)
@@ -787,7 +784,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -866,7 +863,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let len :=
+                    let~ len :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -891,17 +888,16 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |),
-                                M.read (| len |)
-                              |);
+                                |))
+                                (M.read (| len |));
                               M.read (| a |)
                             ]
                         ]
@@ -930,7 +926,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let a :=
+                    let~ a :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -1010,7 +1006,7 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let len :=
+                    let~ len :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -1035,17 +1031,16 @@ Module iter.
                         [
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                M.read (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::enumerate::Enumerate",
                                     "count"
                                   |)
-                                |),
-                                M.read (| len |)
-                              |);
+                                |))
+                                (M.read (| len |));
                               M.read (| a |)
                             ]
                         ]
@@ -1087,18 +1082,18 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let count :=
+                let~ count :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |),
-                      M.call_closure (|
+                      |))
+                      (M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1113,8 +1108,7 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1173,18 +1167,18 @@ Module iter.
               let init := M.alloc (| init |) in
               let fold := M.alloc (| fold |) in
               M.read (|
-                let count :=
+                let~ count :=
                   M.alloc (|
-                    BinOp.Panic.add (|
-                      Integer.Usize,
-                      M.read (|
+                    BinOp.Wrap.add
+                      Integer.Usize
+                      (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
                           "core::iter::adapters::enumerate::Enumerate",
                           "count"
                         |)
-                      |),
-                      M.call_closure (|
+                      |))
+                      (M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::exact_size::ExactSizeIterator",
                           I,
@@ -1199,8 +1193,7 @@ Module iter.
                             "iter"
                           |)
                         ]
-                      |)
-                    |)
+                      |))
                   |) in
                 M.alloc (|
                   M.call_closure (|

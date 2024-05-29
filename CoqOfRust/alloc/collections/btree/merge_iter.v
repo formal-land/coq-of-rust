@@ -440,9 +440,9 @@ Module collections.
               (let self := M.alloc (| self |) in
               let cmp := M.alloc (| cmp |) in
               M.read (|
-                let a_next := M.copy (| Value.DeclaredButUndefined |) in
-                let b_next := M.copy (| Value.DeclaredButUndefined |) in
-                let _ :=
+                let~ a_next := M.copy (| Value.DeclaredButUndefined |) in
+                let~ b_next := M.copy (| Value.DeclaredButUndefined |) in
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -482,12 +482,12 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               a_next,
                               Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               M.call_closure (|
@@ -523,12 +523,12 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               a_next,
                               M.call_closure (|
@@ -551,7 +551,8 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let _ :=
+                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          let~ _ :=
                             M.write (|
                               a_next,
                               M.call_closure (|
@@ -571,7 +572,7 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.write (|
                               b_next,
                               M.call_closure (|
@@ -594,7 +595,7 @@ Module collections.
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -641,7 +642,9 @@ Module collections.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.write (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                                  M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
@@ -682,7 +685,9 @@ Module collections.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (M.write (|
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                                  M.write (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::btree::merge_iter::MergeIterInner",
@@ -721,7 +726,11 @@ Module collections.
                                       ]
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                                  M.alloc (| Value.Tuple [] |)))
                             ]
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -779,10 +788,10 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                Value.Integer 1,
-                                M.call_closure (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (Value.Integer 1)
+                                (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -797,8 +806,7 @@ Module collections.
                                       "a"
                                     |)
                                   ]
-                                |)
-                              |);
+                                |));
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
@@ -850,10 +858,10 @@ Module collections.
                                   |)
                                 ]
                               |);
-                              BinOp.Panic.add (|
-                                Integer.Usize,
-                                Value.Integer 1,
-                                M.call_closure (|
+                              BinOp.Wrap.add
+                                Integer.Usize
+                                (Value.Integer 1)
+                                (M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -868,8 +876,7 @@ Module collections.
                                       "b"
                                     |)
                                   ]
-                                |)
-                              |)
+                                |))
                             ]
                         |)));
                     fun γ =>

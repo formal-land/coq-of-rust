@@ -104,7 +104,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let fp_zero :=
+                  let~ fp_zero :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -115,7 +115,7 @@ Module num.
                         [ Value.Integer 0 ]
                       |)
                     |) in
-                  let fp_inf :=
+                  let~ fp_inf :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -132,7 +132,7 @@ Module num.
                         ]
                       |)
                     |) in
-                  let fp_error :=
+                  let~ fp_error :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -143,7 +143,7 @@ Module num.
                         [ Value.Integer (-1) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -204,16 +204,16 @@ Module num.
                             |)))
                       ]
                     |) in
-                  let lz :=
+                  let~ lz :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (| Ty.path "u64", "leading_zeros", [] |),
                         [ M.read (| w |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     let β := w in
-                    M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| lz |) |) |) in
+                    M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| lz |)) |) in
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
@@ -224,15 +224,14 @@ Module num.
                         [
                           M.read (| q |);
                           M.read (| w |);
-                          BinOp.Panic.add (|
-                            Integer.Usize,
-                            M.read (|
+                          BinOp.Wrap.add
+                            Integer.Usize
+                            (M.read (|
                               M.get_constant (|
                                 "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                               |)
-                            |),
-                            Value.Integer 3
-                          |)
+                            |))
+                            (Value.Integer 3)
                         ]
                       |)
                     |),
@@ -243,7 +242,7 @@ Module num.
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let lo := M.copy (| γ0_0 |) in
                           let hi := M.copy (| γ0_1 |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -261,7 +260,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let inside_safe_exponent :=
+                                    let~ inside_safe_exponent :=
                                       M.alloc (|
                                         LogicalOp.and (|
                                           BinOp.Pure.ge (M.read (| q |)) (Value.Integer (-27)),
@@ -295,58 +294,51 @@ Module num.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let upperbit :=
+                          let~ upperbit :=
                             M.alloc (|
-                              M.rust_cast (BinOp.Panic.shr (| M.read (| hi |), Value.Integer 63 |))
+                              M.rust_cast (BinOp.Wrap.shr (M.read (| hi |)) (Value.Integer 63))
                             |) in
-                          let mantissa :=
+                          let~ mantissa :=
                             M.alloc (|
-                              BinOp.Panic.shr (|
-                                M.read (| hi |),
-                                BinOp.Panic.sub (|
-                                  Integer.I32,
-                                  BinOp.Panic.sub (|
-                                    Integer.I32,
-                                    BinOp.Panic.add (|
-                                      Integer.I32,
-                                      M.read (| upperbit |),
-                                      Value.Integer 64
-                                    |),
-                                    M.rust_cast
+                              BinOp.Wrap.shr
+                                (M.read (| hi |))
+                                (BinOp.Wrap.sub
+                                  Integer.I32
+                                  (BinOp.Wrap.sub
+                                    Integer.I32
+                                    (BinOp.Wrap.add
+                                      Integer.I32
+                                      (M.read (| upperbit |))
+                                      (Value.Integer 64))
+                                    (M.rust_cast
                                       (M.read (|
                                         M.get_constant (|
                                           "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                         |)
-                                      |))
-                                  |),
-                                  Value.Integer 3
-                                |)
-                              |)
+                                      |))))
+                                  (Value.Integer 3))
                             |) in
-                          let power2 :=
+                          let~ power2 :=
                             M.alloc (|
-                              BinOp.Panic.sub (|
-                                Integer.I32,
-                                BinOp.Panic.sub (|
-                                  Integer.I32,
-                                  BinOp.Panic.add (|
-                                    Integer.I32,
-                                    M.call_closure (|
+                              BinOp.Wrap.sub
+                                Integer.I32
+                                (BinOp.Wrap.sub
+                                  Integer.I32
+                                  (BinOp.Wrap.add
+                                    Integer.I32
+                                    (M.call_closure (|
                                       M.get_function (| "core::num::dec2flt::lemire::power", [] |),
                                       [ M.rust_cast (M.read (| q |)) ]
-                                    |),
-                                    M.read (| upperbit |)
-                                  |),
-                                  M.rust_cast (M.read (| lz |))
-                                |),
-                                M.read (|
+                                    |))
+                                    (M.read (| upperbit |)))
+                                  (M.rust_cast (M.read (| lz |))))
+                                (M.read (|
                                   M.get_constant (|
                                     "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
                                   |)
-                                |)
-                              |)
+                                |))
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -365,7 +357,7 @@ Module num.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -375,14 +367,13 @@ Module num.
                                                       M.use
                                                         (M.alloc (|
                                                           BinOp.Pure.ge
-                                                            (BinOp.Panic.add (|
-                                                              Integer.I32,
-                                                              UnOp.Panic.neg (|
+                                                            (BinOp.Wrap.add
+                                                              Integer.I32
+                                                              (UnOp.Panic.neg (|
                                                                 Integer.I32,
                                                                 M.read (| power2 |)
-                                                              |),
-                                                              Value.Integer 1
-                                                            |))
+                                                              |))
+                                                              (Value.Integer 1))
                                                             (Value.Integer 64)
                                                         |)) in
                                                     let _ :=
@@ -401,54 +392,50 @@ Module num.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := mantissa in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.shr (|
-                                                M.read (| β |),
-                                                BinOp.Panic.add (|
-                                                  Integer.I32,
-                                                  UnOp.Panic.neg (|
+                                              BinOp.Wrap.shr
+                                                (M.read (| β |))
+                                                (BinOp.Wrap.add
+                                                  Integer.I32
+                                                  (UnOp.Panic.neg (|
                                                     Integer.I32,
                                                     M.read (| power2 |)
-                                                  |),
-                                                  Value.Integer 1
-                                                |)
-                                              |)
+                                                  |))
+                                                  (Value.Integer 1))
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := mantissa in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.U64,
-                                                M.read (| β |),
-                                                BinOp.Pure.bit_and
+                                              BinOp.Wrap.add
+                                                Integer.U64
+                                                (M.read (| β |))
+                                                (BinOp.Pure.bit_and
                                                   (M.read (| mantissa |))
-                                                  (Value.Integer 1)
-                                              |)
+                                                  (Value.Integer 1))
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             let β := mantissa in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.shr (| M.read (| β |), Value.Integer 1 |)
+                                              BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               power2,
                                               M.rust_cast
                                                 (BinOp.Pure.ge
                                                   (M.read (| mantissa |))
-                                                  (BinOp.Panic.shl (|
-                                                    Value.Integer 1,
-                                                    M.read (|
+                                                  (BinOp.Wrap.shl
+                                                    (Value.Integer 1)
+                                                    (M.read (|
                                                       M.get_constant (|
                                                         "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                                       |)
-                                                    |)
-                                                  |)))
+                                                    |))))
                                             |) in
                                           M.return_ (|
                                             Value.StructRecord
@@ -464,7 +451,7 @@ Module num.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -507,27 +494,23 @@ Module num.
                                             |),
                                             ltac:(M.monadic
                                               (BinOp.Pure.eq
-                                                (BinOp.Panic.shl (|
-                                                  M.read (| mantissa |),
-                                                  BinOp.Panic.sub (|
-                                                    Integer.I32,
-                                                    BinOp.Panic.sub (|
-                                                      Integer.I32,
-                                                      BinOp.Panic.add (|
-                                                        Integer.I32,
-                                                        M.read (| upperbit |),
-                                                        Value.Integer 64
-                                                      |),
-                                                      M.rust_cast
+                                                (BinOp.Wrap.shl
+                                                  (M.read (| mantissa |))
+                                                  (BinOp.Wrap.sub
+                                                    Integer.I32
+                                                    (BinOp.Wrap.sub
+                                                      Integer.I32
+                                                      (BinOp.Wrap.add
+                                                        Integer.I32
+                                                        (M.read (| upperbit |))
+                                                        (Value.Integer 64))
+                                                      (M.rust_cast
                                                         (M.read (|
                                                           M.get_constant (|
                                                             "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                                           |)
-                                                        |))
-                                                    |),
-                                                    Value.Integer 3
-                                                  |)
-                                                |))
+                                                        |))))
+                                                    (Value.Integer 3)))
                                                 (M.read (| hi |))))
                                           |)
                                         |)) in
@@ -536,7 +519,7 @@ Module num.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       let β := mantissa in
                                       M.write (|
                                         β,
@@ -548,23 +531,19 @@ Module num.
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := mantissa in
                             M.write (|
                               β,
-                              BinOp.Panic.add (|
-                                Integer.U64,
-                                M.read (| β |),
-                                BinOp.Pure.bit_and (M.read (| mantissa |)) (Value.Integer 1)
-                              |)
+                              BinOp.Wrap.add
+                                Integer.U64
+                                (M.read (| β |))
+                                (BinOp.Pure.bit_and (M.read (| mantissa |)) (Value.Integer 1))
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := mantissa in
-                            M.write (|
-                              β,
-                              BinOp.Panic.shr (| M.read (| β |), Value.Integer 1 |)
-                            |) in
-                          let _ :=
+                            M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (Value.Integer 1) |) in
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -575,63 +554,59 @@ Module num.
                                         (M.alloc (|
                                           BinOp.Pure.ge
                                             (M.read (| mantissa |))
-                                            (BinOp.Panic.shl (|
-                                              Value.Integer 2,
-                                              M.read (|
+                                            (BinOp.Wrap.shl
+                                              (Value.Integer 2)
+                                              (M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                                 |)
-                                              |)
-                                            |))
+                                              |)))
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         mantissa,
-                                        BinOp.Panic.shl (|
-                                          Value.Integer 1,
-                                          M.read (|
+                                        BinOp.Wrap.shl
+                                          (Value.Integer 1)
+                                          (M.read (|
                                             M.get_constant (|
                                               "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                             |)
-                                          |)
-                                        |)
+                                          |))
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       let β := power2 in
                                       M.write (|
                                         β,
-                                        BinOp.Panic.add (|
-                                          Integer.I32,
-                                          M.read (| β |),
-                                          Value.Integer 1
-                                        |)
+                                        BinOp.Wrap.add
+                                          Integer.I32
+                                          (M.read (| β |))
+                                          (Value.Integer 1)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let _ :=
+                          let~ _ :=
                             let β := mantissa in
                             M.write (|
                               β,
                               BinOp.Pure.bit_and
                                 (M.read (| β |))
                                 (UnOp.Pure.not
-                                  (BinOp.Panic.shl (|
-                                    Value.Integer 1,
-                                    M.read (|
+                                  (BinOp.Wrap.shl
+                                    (Value.Integer 1)
+                                    (M.read (|
                                       M.get_constant (|
                                         "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                       |)
-                                    |)
-                                  |)))
+                                    |))))
                             |) in
-                          let _ :=
+                          let~ _ :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -686,20 +661,18 @@ Module num.
         | [], [ q ] =>
           ltac:(M.monadic
             (let q := M.alloc (| q |) in
-            BinOp.Panic.add (|
-              Integer.I32,
-              BinOp.Panic.shr (|
-                M.call_closure (|
+            BinOp.Wrap.add
+              Integer.I32
+              (BinOp.Wrap.shr
+                (M.call_closure (|
                   M.get_associated_function (| Ty.path "i32", "wrapping_mul", [] |),
                   [
                     M.read (| q |);
-                    BinOp.Panic.add (| Integer.I32, Value.Integer 152170, Value.Integer 65536 |)
+                    BinOp.Wrap.add Integer.I32 (Value.Integer 152170) (Value.Integer 65536)
                   ]
-                |),
-                Value.Integer 16
-              |),
-              Value.Integer 63
-            |)))
+                |))
+                (Value.Integer 16))
+              (Value.Integer 63)))
         | _, _ => M.impossible
         end.
       
@@ -718,19 +691,18 @@ Module num.
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.read (|
-              let r :=
+              let~ r :=
                 M.alloc (|
-                  BinOp.Panic.mul (|
-                    Integer.U128,
-                    M.rust_cast (M.read (| a |)),
-                    M.rust_cast (M.read (| b |))
-                  |)
+                  BinOp.Wrap.mul
+                    Integer.U128
+                    (M.rust_cast (M.read (| a |)))
+                    (M.rust_cast (M.read (| b |)))
                 |) in
               M.alloc (|
                 Value.Tuple
                   [
                     M.rust_cast (M.read (| r |));
-                    M.rust_cast (BinOp.Panic.shr (| M.read (| r |), Value.Integer 64 |))
+                    M.rust_cast (BinOp.Wrap.shr (M.read (| r |)) (Value.Integer 64))
                   ]
               |)
             |)))
@@ -784,7 +756,7 @@ Module num.
             let w := M.alloc (| w |) in
             let precision := M.alloc (| precision |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -793,7 +765,7 @@ Module num.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -837,7 +809,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -846,7 +818,7 @@ Module num.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -890,7 +862,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -899,7 +871,7 @@ Module num.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -937,7 +909,7 @@ Module num.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let mask :=
+              let~ mask :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -952,26 +924,24 @@ Module num.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
-                            BinOp.Panic.shr (|
-                              Value.Integer 18446744073709551615,
-                              M.read (| precision |)
-                            |)
+                            BinOp.Wrap.shr
+                              (Value.Integer 18446744073709551615)
+                              (M.read (| precision |))
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 18446744073709551615 |)))
                     ]
                   |)
                 |) in
-              let index :=
+              let~ index :=
                 M.alloc (|
                   M.rust_cast
-                    (BinOp.Panic.sub (|
-                      Integer.I64,
-                      M.read (| q |),
-                      M.rust_cast
+                    (BinOp.Wrap.sub
+                      Integer.I64
+                      (M.read (| q |))
+                      (M.rust_cast
                         (M.read (|
                           M.get_constant (| "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE" |)
-                        |))
-                    |))
+                        |))))
                 |) in
               M.match_operator (|
                 M.SubPointer.get_array_field (|
@@ -1002,7 +972,7 @@ Module num.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let first_lo := M.copy (| γ0_0 |) in
                               let first_hi := M.copy (| γ0_1 |) in
-                              let _ :=
+                              let~ _ :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -1040,7 +1010,7 @@ Module num.
                                                 let γ0_1 :=
                                                   M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                 let second_hi := M.copy (| γ0_1 |) in
-                                                let _ :=
+                                                let~ _ :=
                                                   M.write (|
                                                     first_lo,
                                                     M.call_closure (|
@@ -1072,15 +1042,14 @@ Module num.
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
-                                                        let _ :=
+                                                        let~ _ :=
                                                           let β := first_hi in
                                                           M.write (|
                                                             β,
-                                                            BinOp.Panic.add (|
-                                                              Integer.U64,
-                                                              M.read (| β |),
-                                                              Value.Integer 1
-                                                            |)
+                                                            BinOp.Wrap.add
+                                                              Integer.U64
+                                                              (M.read (| β |))
+                                                              (Value.Integer 1)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)));
                                                     fun γ =>

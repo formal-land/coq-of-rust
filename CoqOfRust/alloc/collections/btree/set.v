@@ -292,7 +292,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1756,6 +1756,11 @@ Module collections.
                                                                   γ,
                                                                   1
                                                                 |) in
+                                                              let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ0_0,
+                                                                  "core::cmp::Ordering::Greater"
+                                                                |) in
                                                               Value.Tuple []));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -1768,6 +1773,11 @@ Module collections.
                                                                 M.SubPointer.get_tuple_field (|
                                                                   γ,
                                                                   1
+                                                                |) in
+                                                              let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ0_1,
+                                                                  "core::cmp::Ordering::Less"
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
@@ -1802,7 +1812,12 @@ Module collections.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let self_iter :=
+                                                      let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ0_0,
+                                                          "core::cmp::Ordering::Equal"
+                                                        |) in
+                                                      let~ self_iter :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             M.get_associated_function (|
@@ -1816,7 +1831,7 @@ Module collections.
                                                             [ M.read (| self |) ]
                                                           |)
                                                         |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             M.get_trait_method (|
@@ -1843,7 +1858,12 @@ Module collections.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let self_iter :=
+                                                      let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ0_1,
+                                                          "core::cmp::Ordering::Equal"
+                                                        |) in
+                                                      let~ self_iter :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             M.get_associated_function (|
@@ -1857,7 +1877,7 @@ Module collections.
                                                             [ M.read (| self |) ]
                                                           |)
                                                         |) in
-                                                      let _ :=
+                                                      let~ _ :=
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             M.get_trait_method (|
@@ -1894,9 +1914,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| self |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1906,13 +1926,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2320,6 +2339,11 @@ Module collections.
                                                                   γ,
                                                                   1
                                                                 |) in
+                                                              let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ0_0,
+                                                                  "core::cmp::Ordering::Greater"
+                                                                |) in
                                                               Value.Tuple []));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -2332,6 +2356,11 @@ Module collections.
                                                                 M.SubPointer.get_tuple_field (|
                                                                   γ,
                                                                   1
+                                                                |) in
+                                                              let _ :=
+                                                                M.is_struct_tuple (|
+                                                                  γ0_1,
+                                                                  "core::cmp::Ordering::Less"
                                                                 |) in
                                                               Value.Tuple []))
                                                         ],
@@ -2358,6 +2387,11 @@ Module collections.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ0_0,
+                                                          "core::cmp::Ordering::Equal"
+                                                        |) in
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::IntersectionInner::Answer"
@@ -2373,6 +2407,11 @@ Module collections.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let _ :=
+                                                        M.is_struct_tuple (|
+                                                          γ0_1,
+                                                          "core::cmp::Ordering::Equal"
+                                                        |) in
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "alloc::collections::btree::set::IntersectionInner::Answer"
@@ -2398,9 +2437,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| self |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2410,13 +2449,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2458,9 +2496,9 @@ Module collections.
                                                               |),
                                                               [ M.read (| other |) ]
                                                             |))
-                                                            (BinOp.Panic.div (|
-                                                              Integer.Usize,
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.div
+                                                              Integer.Usize
+                                                              (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2470,13 +2508,12 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
-                                                              |),
-                                                              M.read (|
+                                                              |))
+                                                              (M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)
-                                                            |))
+                                                              |)))
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2849,7 +2886,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -3026,7 +3063,7 @@ Module collections.
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let other_min := M.copy (| γ0_0 |) in
                                     let other_max := M.copy (| γ0_1 |) in
-                                    let self_iter :=
+                                    let~ self_iter :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
@@ -3039,7 +3076,7 @@ Module collections.
                                           [ M.read (| self |) ]
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -3056,7 +3093,12 @@ Module collections.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Less"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| Value.Bool false |) |)
                                                 |)
@@ -3064,6 +3106,11 @@ Module collections.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Equal"
+                                                |) in
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -3080,10 +3127,17 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Greater"
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -3100,7 +3154,12 @@ Module collections.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Greater"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| Value.Bool false |) |)
                                                 |)
@@ -3108,6 +3167,11 @@ Module collections.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Equal"
+                                                |) in
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -3124,10 +3188,17 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Less"
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -3150,9 +3221,9 @@ Module collections.
                                                         |),
                                                         [ self_iter ]
                                                       |))
-                                                      (BinOp.Panic.div (|
-                                                        Integer.Usize,
-                                                        M.call_closure (|
+                                                      (BinOp.Wrap.div
+                                                        Integer.Usize
+                                                        (M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -3162,13 +3233,12 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| other |) ]
-                                                        |),
-                                                        M.read (|
+                                                        |))
+                                                        (M.read (|
                                                           M.get_constant (|
                                                             "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                           |)
-                                                        |)
-                                                      |))
+                                                        |)))
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -3198,7 +3268,7 @@ Module collections.
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
                                                           ltac:(M.monadic
-                                                            (let _ :=
+                                                            (let~ _ :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
@@ -3218,7 +3288,12 @@ Module collections.
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
-                                                                      (M.alloc (|
+                                                                      (let _ :=
+                                                                        M.is_struct_tuple (|
+                                                                          γ,
+                                                                          "core::option::Option::None"
+                                                                        |) in
+                                                                      M.alloc (|
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -3294,7 +3369,7 @@ Module collections.
                                                 |))));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let other_iter :=
+                                              (let~ other_iter :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
@@ -3308,7 +3383,7 @@ Module collections.
                                                     [ M.read (| other |) ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -3324,7 +3399,7 @@ Module collections.
                                                     [ other_iter ]
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -3340,7 +3415,7 @@ Module collections.
                                                     [ other_iter ]
                                                   |)
                                                 |) in
-                                              let self_next :=
+                                              let~ self_next :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -3453,7 +3528,12 @@ Module collections.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::cmp::Ordering::Less"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (|
                                                                         M.return_ (|
@@ -3464,7 +3544,12 @@ Module collections.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.write (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::cmp::Ordering::Equal"
+                                                                    |) in
+                                                                  M.write (|
                                                                     self_next,
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
@@ -3482,7 +3567,12 @@ Module collections.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::cmp::Ordering::Greater"
+                                                                    |) in
+                                                                  M.alloc (| Value.Tuple [] |)))
                                                             ]
                                                           |)));
                                                       fun γ =>
@@ -3490,7 +3580,7 @@ Module collections.
                                                           (M.alloc (|
                                                             M.never_to_any (|
                                                               M.read (|
-                                                                let _ :=
+                                                                let~ _ :=
                                                                   M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
@@ -4090,7 +4180,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -4179,7 +4269,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -4435,7 +4525,7 @@ Module collections.
               (let iter := M.alloc (| iter |) in
               let alloc := M.alloc (| alloc |) in
               M.read (|
-                let iter :=
+                let~ iter :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -4486,7 +4576,7 @@ Module collections.
                       ]
                     |)
                   |) in
-                let map :=
+                let~ map :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -4551,7 +4641,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let inputs :=
+                    let~ inputs :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -4579,7 +4669,7 @@ Module collections.
                           ]
                         |)
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -4625,7 +4715,7 @@ Module collections.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4722,7 +4812,7 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let _ :=
+                    let~ _ :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -4763,7 +4853,7 @@ Module collections.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let _ :=
+                    let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -4774,7 +4864,7 @@ Module collections.
                           [ (* Unsize *) M.pointer_coercion arr ]
                         |)
                       |) in
-                    let iter :=
+                    let~ iter :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_trait_method (|
@@ -4835,7 +4925,7 @@ Module collections.
                           ]
                         |)
                       |) in
-                    let map :=
+                    let~ map :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -5164,7 +5254,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let pred :=
+                let~ pred :=
                   M.alloc (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
@@ -5172,7 +5262,7 @@ Module collections.
                       "pred"
                     |)
                   |) in
-                let mapped_pred :=
+                let~ mapped_pred :=
                   M.alloc (|
                     M.closure
                       (fun γ =>
@@ -5370,7 +5460,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -5403,7 +5493,7 @@ Module collections.
                                       ltac:(M.monadic
                                         (let elem := M.copy (| γ |) in
                                         M.read (|
-                                          let _ :=
+                                          let~ _ :=
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
@@ -5444,7 +5534,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let elem := M.alloc (| elem |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
@@ -5490,7 +5580,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
               M.read (|
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -5555,7 +5645,7 @@ Module collections.
                       (let γ := M.read (| γ |) in
                       let elem := M.copy (| γ |) in
                       M.read (|
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
@@ -7431,7 +7521,7 @@ Module collections.
                               |) in
                             let self_iter := M.alloc (| γ1_0 |) in
                             let other_iter := M.alloc (| γ1_1 |) in
-                            let self_next :=
+                            let~ self_next :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -7593,7 +7683,12 @@ Module collections.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Less"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -7607,6 +7702,11 @@ Module collections.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Equal"
+                                                |) in
+                                              let~ _ :=
                                                 M.write (|
                                                   self_next,
                                                   M.read (|
@@ -7696,7 +7796,7 @@ Module collections.
                                                     |)
                                                   |)
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -7721,6 +7821,11 @@ Module collections.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Greater"
+                                                |) in
+                                              let~ _ :=
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_trait_method (|
@@ -7770,7 +7875,7 @@ Module collections.
                                 M.read (|
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let self_next :=
+                                      (let~ self_next :=
                                         M.copy (|
                                           M.match_operator (|
                                             M.alloc (|
@@ -8394,11 +8499,10 @@ Module collections.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| a_len |),
-                                    M.read (| b_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| a_len |))
+                                    (M.read (| b_len |))
                                 ]
                             ]
                         |)))
@@ -8682,7 +8786,7 @@ Module collections.
                               |) in
                             let a := M.alloc (| γ1_0 |) in
                             let b := M.alloc (| γ1_1 |) in
-                            let a_next :=
+                            let~ a_next :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -8759,7 +8863,7 @@ Module collections.
                                   ]
                                 |)
                               |) in
-                            let b_next :=
+                            let~ b_next :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -8857,7 +8961,12 @@ Module collections.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.write (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Less"
+                                                |) in
+                                              M.write (|
                                                 a_next,
                                                 M.read (|
                                                   M.match_operator (|
@@ -8948,7 +9057,12 @@ Module collections.
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.write (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Greater"
+                                                |) in
+                                              M.write (|
                                                 b_next,
                                                 M.read (|
                                                   M.match_operator (|
@@ -9039,7 +9153,12 @@ Module collections.
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::cmp::Ordering::Equal"
+                                                |) in
+                                              M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -9078,7 +9197,7 @@ Module collections.
                                 M.read (|
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let small_next :=
+                                      (let~ small_next :=
                                         M.copy (|
                                           M.match_operator (|
                                             M.alloc (|
@@ -9357,6 +9476,7 @@ Module collections.
                             "alloc::collections::btree::set::IntersectionInner::Answer",
                             0
                           |) in
+                        let _ := M.is_struct_tuple (| γ1_0, "core::option::Option::None" |) in
                         M.alloc (|
                           Value.Tuple
                             [
@@ -9621,11 +9741,10 @@ Module collections.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
-                                  BinOp.Panic.add (|
-                                    Integer.Usize,
-                                    M.read (| a_len |),
-                                    M.read (| b_len |)
-                                  |)
+                                  BinOp.Wrap.add
+                                    Integer.Usize
+                                    (M.read (| a_len |))
+                                    (M.read (| b_len |))
                                 ]
                             ]
                         |)))

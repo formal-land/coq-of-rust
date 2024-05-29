@@ -22,14 +22,14 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
+          let~ _ :=
             let β :=
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "scoping_rules_lifetimes_methods::Owner",
                 0
               |) in
-            M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |) |) in
+            M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _ => M.impossible
@@ -48,8 +48,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let _ :=
-            let _ :=
+          let~ _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -113,11 +113,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let owner :=
+        let~ owner :=
           M.alloc (|
             Value.StructTuple "scoping_rules_lifetimes_methods::Owner" [ Value.Integer 18 ]
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -128,7 +128,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ owner ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|

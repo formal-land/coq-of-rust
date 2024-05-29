@@ -13,8 +13,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let slice := M.alloc (| slice |) in
       M.read (|
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -58,8 +58,8 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -170,15 +170,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let xs :=
+        let~ xs :=
           M.alloc (|
             Value.Array
               [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
               ]
           |) in
-        let ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
-        let _ :=
-          let _ :=
+        let~ ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -222,8 +222,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -267,8 +267,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -318,8 +318,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -368,8 +368,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -390,15 +390,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "arrays_and_slices::analyze_slice", [] |),
               [ (* Unsize *) M.pointer_coercion xs ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -420,7 +420,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "arrays_and_slices::analyze_slice", [] |),
@@ -443,8 +443,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let empty_array := M.alloc (| Value.Array [] |) in
-        let _ :=
+        let~ empty_array := M.alloc (| Value.Array [] |) in
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple [ M.alloc (| empty_array |); M.alloc (| M.alloc (| Value.Array [] |) |) ]
@@ -487,7 +487,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -520,7 +520,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -581,7 +581,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
@@ -631,18 +631,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     [
                       ("start", Value.Integer 0);
                       ("end_",
-                        BinOp.Panic.add (|
-                          Integer.Usize,
-                          M.call_closure (|
+                        BinOp.Wrap.add
+                          Integer.Usize
+                          (M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
                               "len",
                               []
                             |),
                             [ (* Unsize *) M.pointer_coercion xs ]
-                          |),
-                          Value.Integer 1
-                        |))
+                          |))
+                          (Value.Integer 1))
                     ]
                 ]
               |)
@@ -653,7 +652,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let _ :=
+                      (let~ _ :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
@@ -670,7 +669,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 :=
@@ -701,7 +701,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                             0
                                           |) in
                                         let xval := M.copy (| γ0_0 |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_function (| "std::io::stdio::_print", [] |),
@@ -760,6 +760,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_function (| "std::io::stdio::_print", [] |),

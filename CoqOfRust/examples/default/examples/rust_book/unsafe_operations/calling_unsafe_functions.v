@@ -20,7 +20,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let some_vector :=
+        let~ some_vector :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -54,7 +54,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let pointer :=
+        let~ pointer :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -67,7 +67,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ some_vector ]
             |)
           |) in
-        let length :=
+        let~ length :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -80,14 +80,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ some_vector ]
             |)
           |) in
-        let my_slice :=
+        let~ my_slice :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::slice::raw::from_raw_parts", [ Ty.path "u32" ] |),
               [ M.read (| pointer |); M.read (| length |) ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -145,7 +145,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let kind :=
+                                let~ kind :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in

@@ -79,18 +79,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let x :=
+        let~ x :=
           M.alloc (|
             Value.StructRecord
               "generics_implementation::Val"
               [ ("val", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let y :=
+        let~ y :=
           M.alloc (|
             Value.StructRecord "generics_implementation::GenVal" [ ("gen_val", Value.Integer 3) ]
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

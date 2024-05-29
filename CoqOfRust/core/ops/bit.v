@@ -1403,7 +1403,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1433,7 +1433,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1463,7 +1463,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1493,7 +1493,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1523,7 +1523,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1553,7 +1553,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1583,7 +1583,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1613,7 +1613,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1643,7 +1643,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1673,7 +1673,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1703,7 +1703,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1733,7 +1733,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1763,7 +1763,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1793,7 +1793,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1823,7 +1823,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1853,7 +1853,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1883,7 +1883,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1913,7 +1913,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1943,7 +1943,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1973,7 +1973,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2003,7 +2003,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2033,7 +2033,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2063,7 +2063,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2093,7 +2093,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2123,7 +2123,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2153,7 +2153,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2183,7 +2183,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2213,7 +2213,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2243,7 +2243,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2273,7 +2273,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2303,7 +2303,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2333,7 +2333,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2363,7 +2363,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2393,7 +2393,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2423,7 +2423,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2453,7 +2453,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2483,7 +2483,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2513,7 +2513,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2543,7 +2543,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2573,7 +2573,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2603,7 +2603,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2633,7 +2633,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2663,7 +2663,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2693,7 +2693,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2723,7 +2723,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2753,7 +2753,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2783,7 +2783,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2813,7 +2813,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2843,7 +2843,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2873,7 +2873,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2903,7 +2903,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2933,7 +2933,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2963,7 +2963,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2993,7 +2993,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3023,7 +3023,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3053,7 +3053,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3083,7 +3083,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3113,7 +3113,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3143,7 +3143,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3173,7 +3173,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3203,7 +3203,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3233,7 +3233,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3263,7 +3263,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3293,7 +3293,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3323,7 +3323,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3353,7 +3353,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3383,7 +3383,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3413,7 +3413,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3443,7 +3443,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3473,7 +3473,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3503,7 +3503,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3533,7 +3533,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3563,7 +3563,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3593,7 +3593,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3623,7 +3623,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3653,7 +3653,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3683,7 +3683,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3713,7 +3713,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3743,7 +3743,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3773,7 +3773,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3803,7 +3803,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3833,7 +3833,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3863,7 +3863,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3893,7 +3893,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3923,7 +3923,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3953,7 +3953,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -3983,7 +3983,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4013,7 +4013,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4043,7 +4043,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4073,7 +4073,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4103,7 +4103,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4133,7 +4133,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4163,7 +4163,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4193,7 +4193,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4223,7 +4223,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4253,7 +4253,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4283,7 +4283,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4313,7 +4313,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4343,7 +4343,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4373,7 +4373,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4403,7 +4403,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4433,7 +4433,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4463,7 +4463,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4493,7 +4493,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4523,7 +4523,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4553,7 +4553,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4583,7 +4583,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4613,7 +4613,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4643,7 +4643,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4673,7 +4673,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4703,7 +4703,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4733,7 +4733,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4763,7 +4763,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4793,7 +4793,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4823,7 +4823,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4853,7 +4853,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4883,7 +4883,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4913,7 +4913,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4943,7 +4943,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -4973,7 +4973,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5003,7 +5003,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5033,7 +5033,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5063,7 +5063,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5093,7 +5093,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5123,7 +5123,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5153,7 +5153,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5183,7 +5183,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5213,7 +5213,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5243,7 +5243,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5273,7 +5273,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5303,7 +5303,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5333,7 +5333,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5363,7 +5363,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5393,7 +5393,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5423,7 +5423,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5453,7 +5453,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5483,7 +5483,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5513,7 +5513,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5543,7 +5543,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5573,7 +5573,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5603,7 +5603,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5633,7 +5633,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5663,7 +5663,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5693,7 +5693,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shl (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shl (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5726,7 +5726,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5756,7 +5756,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5786,7 +5786,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5816,7 +5816,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5846,7 +5846,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5876,7 +5876,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5906,7 +5906,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5936,7 +5936,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5966,7 +5966,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -5996,7 +5996,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6026,7 +6026,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6056,7 +6056,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6086,7 +6086,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6116,7 +6116,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6146,7 +6146,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6176,7 +6176,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6206,7 +6206,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6236,7 +6236,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6266,7 +6266,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6296,7 +6296,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6326,7 +6326,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6356,7 +6356,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6386,7 +6386,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6416,7 +6416,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6446,7 +6446,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6476,7 +6476,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6506,7 +6506,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6536,7 +6536,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6566,7 +6566,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6596,7 +6596,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6626,7 +6626,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6656,7 +6656,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6686,7 +6686,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6716,7 +6716,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6746,7 +6746,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6776,7 +6776,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6806,7 +6806,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6836,7 +6836,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6866,7 +6866,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6896,7 +6896,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6926,7 +6926,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6956,7 +6956,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -6986,7 +6986,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7016,7 +7016,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7046,7 +7046,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7076,7 +7076,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7106,7 +7106,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7136,7 +7136,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7166,7 +7166,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7196,7 +7196,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7226,7 +7226,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7256,7 +7256,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7286,7 +7286,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7316,7 +7316,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7346,7 +7346,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7376,7 +7376,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7406,7 +7406,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7436,7 +7436,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7466,7 +7466,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7496,7 +7496,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7526,7 +7526,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7556,7 +7556,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7586,7 +7586,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7616,7 +7616,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7646,7 +7646,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7676,7 +7676,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7706,7 +7706,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7736,7 +7736,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7766,7 +7766,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7796,7 +7796,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7826,7 +7826,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7856,7 +7856,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7886,7 +7886,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7916,7 +7916,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7946,7 +7946,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -7976,7 +7976,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8006,7 +8006,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8036,7 +8036,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8066,7 +8066,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8096,7 +8096,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8126,7 +8126,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8156,7 +8156,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8186,7 +8186,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8216,7 +8216,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8246,7 +8246,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8276,7 +8276,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8306,7 +8306,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8336,7 +8336,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8366,7 +8366,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8396,7 +8396,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8426,7 +8426,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8456,7 +8456,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8486,7 +8486,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8516,7 +8516,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8546,7 +8546,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8576,7 +8576,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8606,7 +8606,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8636,7 +8636,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8666,7 +8666,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8696,7 +8696,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8726,7 +8726,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8756,7 +8756,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8786,7 +8786,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8816,7 +8816,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8846,7 +8846,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8876,7 +8876,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8906,7 +8906,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8936,7 +8936,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8966,7 +8966,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -8996,7 +8996,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9026,7 +9026,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9056,7 +9056,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9086,7 +9086,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9116,7 +9116,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9146,7 +9146,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9176,7 +9176,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9206,7 +9206,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9236,7 +9236,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9266,7 +9266,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9296,7 +9296,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9326,7 +9326,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9356,7 +9356,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9386,7 +9386,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9416,7 +9416,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9446,7 +9446,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9476,7 +9476,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9506,7 +9506,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9536,7 +9536,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9566,7 +9566,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9596,7 +9596,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9626,7 +9626,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9656,7 +9656,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9686,7 +9686,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9716,7 +9716,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9746,7 +9746,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9776,7 +9776,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9806,7 +9806,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9836,7 +9836,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9866,7 +9866,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9896,7 +9896,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9926,7 +9926,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9956,7 +9956,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -9986,7 +9986,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -10016,7 +10016,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.shr (| M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.shr (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -11032,7 +11032,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11061,7 +11061,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11090,7 +11090,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11119,7 +11119,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11148,7 +11148,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11177,7 +11177,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11206,7 +11206,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11235,7 +11235,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11264,7 +11264,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11293,7 +11293,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11322,7 +11322,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11351,7 +11351,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11380,7 +11380,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11409,7 +11409,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11438,7 +11438,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11467,7 +11467,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11496,7 +11496,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11525,7 +11525,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11554,7 +11554,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11583,7 +11583,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11612,7 +11612,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11641,7 +11641,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11670,7 +11670,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11699,7 +11699,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11728,7 +11728,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11757,7 +11757,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11786,7 +11786,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11815,7 +11815,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11844,7 +11844,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11873,7 +11873,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11902,7 +11902,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11931,7 +11931,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11960,7 +11960,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -11989,7 +11989,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12018,7 +12018,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12047,7 +12047,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12076,7 +12076,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12105,7 +12105,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12134,7 +12134,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12163,7 +12163,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12192,7 +12192,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12221,7 +12221,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12250,7 +12250,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12279,7 +12279,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12308,7 +12308,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12337,7 +12337,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12366,7 +12366,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12395,7 +12395,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12424,7 +12424,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12453,7 +12453,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12482,7 +12482,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12511,7 +12511,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12540,7 +12540,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12569,7 +12569,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12598,7 +12598,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12627,7 +12627,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12656,7 +12656,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12685,7 +12685,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12714,7 +12714,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12743,7 +12743,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12772,7 +12772,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12801,7 +12801,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12830,7 +12830,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12859,7 +12859,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12888,7 +12888,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12917,7 +12917,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12946,7 +12946,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -12975,7 +12975,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13004,7 +13004,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13033,7 +13033,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13062,7 +13062,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13091,7 +13091,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13120,7 +13120,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13149,7 +13149,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13178,7 +13178,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13207,7 +13207,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13236,7 +13236,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13265,7 +13265,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13294,7 +13294,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13323,7 +13323,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13352,7 +13352,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13381,7 +13381,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13410,7 +13410,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13439,7 +13439,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13468,7 +13468,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13497,7 +13497,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13526,7 +13526,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13555,7 +13555,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13584,7 +13584,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13613,7 +13613,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13642,7 +13642,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13671,7 +13671,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13700,7 +13700,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13729,7 +13729,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13758,7 +13758,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13787,7 +13787,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13816,7 +13816,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13845,7 +13845,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13874,7 +13874,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13903,7 +13903,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13932,7 +13932,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13961,7 +13961,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -13990,7 +13990,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14019,7 +14019,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14048,7 +14048,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14077,7 +14077,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14106,7 +14106,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14135,7 +14135,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14164,7 +14164,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14193,7 +14193,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14222,7 +14222,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14251,7 +14251,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14280,7 +14280,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14309,7 +14309,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14338,7 +14338,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14367,7 +14367,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14396,7 +14396,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14425,7 +14425,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14454,7 +14454,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14483,7 +14483,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14512,7 +14512,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14541,7 +14541,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14570,7 +14570,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14599,7 +14599,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14628,7 +14628,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14657,7 +14657,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14686,7 +14686,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14715,7 +14715,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14744,7 +14744,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14773,7 +14773,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14802,7 +14802,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14831,7 +14831,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14860,7 +14860,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14889,7 +14889,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14918,7 +14918,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14947,7 +14947,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -14976,7 +14976,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15005,7 +15005,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15034,7 +15034,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15063,7 +15063,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15092,7 +15092,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15121,7 +15121,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15150,7 +15150,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15179,7 +15179,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shl (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shl (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15211,7 +15211,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15240,7 +15240,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15269,7 +15269,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15298,7 +15298,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15327,7 +15327,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15356,7 +15356,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15385,7 +15385,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15414,7 +15414,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15443,7 +15443,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15472,7 +15472,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15501,7 +15501,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15530,7 +15530,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15559,7 +15559,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15588,7 +15588,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15617,7 +15617,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15646,7 +15646,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15675,7 +15675,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15704,7 +15704,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15733,7 +15733,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15762,7 +15762,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15791,7 +15791,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15820,7 +15820,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15849,7 +15849,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15878,7 +15878,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15907,7 +15907,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15936,7 +15936,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15965,7 +15965,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -15994,7 +15994,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16023,7 +16023,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16052,7 +16052,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16081,7 +16081,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16110,7 +16110,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16139,7 +16139,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16168,7 +16168,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16197,7 +16197,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16226,7 +16226,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16255,7 +16255,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16284,7 +16284,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16313,7 +16313,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16342,7 +16342,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16371,7 +16371,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16400,7 +16400,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16429,7 +16429,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16458,7 +16458,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16487,7 +16487,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16516,7 +16516,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16545,7 +16545,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16574,7 +16574,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16603,7 +16603,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16632,7 +16632,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16661,7 +16661,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16690,7 +16690,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16719,7 +16719,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16748,7 +16748,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16777,7 +16777,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16806,7 +16806,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16835,7 +16835,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16864,7 +16864,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16893,7 +16893,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16922,7 +16922,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16951,7 +16951,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -16980,7 +16980,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17009,7 +17009,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17038,7 +17038,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17067,7 +17067,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17096,7 +17096,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17125,7 +17125,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17154,7 +17154,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17183,7 +17183,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17212,7 +17212,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17241,7 +17241,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17270,7 +17270,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17299,7 +17299,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17328,7 +17328,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17357,7 +17357,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17386,7 +17386,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17415,7 +17415,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17444,7 +17444,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17473,7 +17473,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17502,7 +17502,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17531,7 +17531,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17560,7 +17560,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17589,7 +17589,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17618,7 +17618,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17647,7 +17647,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17676,7 +17676,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17705,7 +17705,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17734,7 +17734,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17763,7 +17763,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17792,7 +17792,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17821,7 +17821,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17850,7 +17850,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17879,7 +17879,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17908,7 +17908,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17937,7 +17937,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17966,7 +17966,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -17995,7 +17995,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18024,7 +18024,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18053,7 +18053,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18082,7 +18082,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18111,7 +18111,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18140,7 +18140,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18169,7 +18169,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18198,7 +18198,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18227,7 +18227,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18256,7 +18256,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18285,7 +18285,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18314,7 +18314,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18343,7 +18343,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18372,7 +18372,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18401,7 +18401,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18430,7 +18430,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18459,7 +18459,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18488,7 +18488,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18517,7 +18517,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18546,7 +18546,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18575,7 +18575,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18604,7 +18604,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18633,7 +18633,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18662,7 +18662,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18691,7 +18691,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18720,7 +18720,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18749,7 +18749,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18778,7 +18778,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18807,7 +18807,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18836,7 +18836,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18865,7 +18865,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18894,7 +18894,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18923,7 +18923,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18952,7 +18952,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -18981,7 +18981,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19010,7 +19010,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19039,7 +19039,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19068,7 +19068,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19097,7 +19097,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19126,7 +19126,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19155,7 +19155,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19184,7 +19184,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19213,7 +19213,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19242,7 +19242,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19271,7 +19271,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19300,7 +19300,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19329,7 +19329,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -19358,7 +19358,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.shr (| M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.shr (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.

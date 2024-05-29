@@ -12,7 +12,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let layout := M.alloc (| layout |) in
             M.read (|
-              let size :=
+              let~ size :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -23,7 +23,7 @@ Module alloc.
                     [ layout ]
                   |)
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -36,7 +36,7 @@ Module alloc.
                     [ M.read (| self |); M.read (| layout |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -57,7 +57,7 @@ Module alloc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -87,7 +87,7 @@ Module alloc.
             let layout := M.alloc (| layout |) in
             let new_size := M.alloc (| new_size |) in
             M.read (|
-              let new_layout :=
+              let~ new_layout :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -108,7 +108,7 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let new_ptr :=
+              let~ new_ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -121,7 +121,7 @@ Module alloc.
                     [ M.read (| self |); M.read (| new_layout |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -142,7 +142,7 @@ Module alloc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_function (|
@@ -169,7 +169,7 @@ Module alloc.
                               ]
                             |)
                           |) in
-                        let _ :=
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|

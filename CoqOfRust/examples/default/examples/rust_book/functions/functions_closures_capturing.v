@@ -74,7 +74,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let color :=
+        let~ color :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -87,7 +87,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| Value.String "green" |) ]
             |)
           |) in
-        let print :=
+        let~ print :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -100,7 +100,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "std::io::stdio::_print", [] |),
@@ -149,7 +149,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -162,8 +162,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ print; Value.Tuple [] ]
             |)
           |) in
-        let _reborrow := M.alloc (| color |) in
-        let _ :=
+        let~ _reborrow := M.alloc (| color |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -176,9 +176,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ print; Value.Tuple [] ]
             |)
           |) in
-        let _color_moved := M.copy (| color |) in
-        let count := M.alloc (| Value.Integer 0 |) in
-        let inc :=
+        let~ _color_moved := M.copy (| color |) in
+        let~ count := M.alloc (| Value.Integer 0 |) in
+        let~ inc :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -191,14 +191,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
+                              let~ _ :=
                                 let β := count in
                                 M.write (|
                                   β,
-                                  BinOp.Panic.add (| Integer.I32, M.read (| β |), Value.Integer 1 |)
+                                  BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1)
                                 |) in
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -248,7 +248,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -261,7 +261,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ inc; Value.Tuple [] ]
             |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|
@@ -274,8 +274,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ inc; Value.Tuple [] ]
             |)
           |) in
-        let _count_reborrowed := M.alloc (| count |) in
-        let movable :=
+        let~ _count_reborrowed := M.alloc (| count |) in
+        let~ movable :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -288,7 +288,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 3 ]
             |)
           |) in
-        let consume :=
+        let~ consume :=
           M.alloc (|
             M.closure
               (fun γ =>
@@ -301,8 +301,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (M.read (|
-                              let _ :=
-                                let _ :=
+                              let~ _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -352,7 +352,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |) in
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (|
@@ -373,7 +373,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   | _ => M.impossible (||)
                   end))
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (|

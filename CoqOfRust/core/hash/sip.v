@@ -420,7 +420,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let names :=
+              let~ names :=
                 M.alloc (|
                   M.alloc (|
                     Value.Array
@@ -435,7 +435,7 @@ Module hash.
                       ]
                   |)
                 |) in
-              let values :=
+              let~ values :=
                 M.alloc (|
                   (* Unsize *)
                   M.pointer_coercion
@@ -674,7 +674,7 @@ Module hash.
           let start := M.alloc (| start |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -682,7 +682,7 @@ Module hash.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -714,9 +714,9 @@ Module hash.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let i := M.alloc (| Value.Integer 0 |) in
-            let out := M.alloc (| Value.Integer 0 |) in
-            let _ :=
+            let~ i := M.alloc (| Value.Integer 0 |) in
+            let~ out := M.alloc (| Value.Integer 0 |) in
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -726,16 +726,16 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 3 |))
+                              (BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 3))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.write (|
                           out,
                           M.rust_cast
                             (M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -747,7 +747,7 @@ Module hash.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let _ :=
+                                        let~ _ :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -758,21 +758,19 @@ Module hash.
                                                       (M.alloc (|
                                                         UnOp.Pure.not
                                                           (BinOp.Pure.le
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| start |),
-                                                                M.read (| i |)
-                                                              |),
-                                                              M.call_closure (|
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| start |))
+                                                                (M.read (| i |)))
+                                                              (M.call_closure (|
                                                                 M.get_function (|
                                                                   "core::mem::size_of",
                                                                   [ Ty.path "u32" ]
                                                                 |),
                                                                 []
-                                                              |)
-                                                            |))
+                                                              |)))
                                                             (M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
@@ -813,8 +811,8 @@ Module hash.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
-                              let _ :=
+                              let~ data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
+                              let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (|
@@ -837,11 +835,10 @@ Module hash.
                                             |),
                                             [ M.read (| buf |) ]
                                           |);
-                                          BinOp.Panic.add (|
-                                            Integer.Usize,
-                                            M.read (| start |),
-                                            M.read (| i |)
-                                          |)
+                                          BinOp.Wrap.add
+                                            Integer.Usize
+                                            (M.read (| start |))
+                                            (M.read (| i |))
                                         ]
                                       |);
                                       M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
@@ -863,17 +860,17 @@ Module hash.
                               |)
                             |))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 4 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 4)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -883,20 +880,20 @@ Module hash.
                         M.use
                           (M.alloc (|
                             BinOp.Pure.lt
-                              (BinOp.Panic.add (| Integer.Usize, M.read (| i |), Value.Integer 1 |))
+                              (BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1))
                               (M.read (| len |))
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := out in
                         M.write (|
                           β,
                           BinOp.Pure.bit_or
                             (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
+                            (BinOp.Wrap.shl
+                              (M.rust_cast
                                 (M.read (|
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -908,7 +905,7 @@ Module hash.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
@@ -919,21 +916,19 @@ Module hash.
                                                           (M.alloc (|
                                                             UnOp.Pure.not
                                                               (BinOp.Pure.le
-                                                                (BinOp.Panic.add (|
-                                                                  Integer.Usize,
-                                                                  BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| start |),
-                                                                    M.read (| i |)
-                                                                  |),
-                                                                  M.call_closure (|
+                                                                (BinOp.Wrap.add
+                                                                  Integer.Usize
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| start |))
+                                                                    (M.read (| i |)))
+                                                                  (M.call_closure (|
                                                                     M.get_function (|
                                                                       "core::mem::size_of",
                                                                       [ Ty.path "u16" ]
                                                                     |),
                                                                     []
-                                                                  |)
-                                                                |))
+                                                                  |)))
                                                                 (M.call_closure (|
                                                                   M.get_associated_function (|
                                                                     Ty.apply
@@ -974,8 +969,8 @@ Module hash.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
-                                  let _ :=
+                                  let~ data := M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (|
@@ -998,11 +993,10 @@ Module hash.
                                                 |),
                                                 [ M.read (| buf |) ]
                                               |);
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| start |),
-                                                M.read (| i |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| start |))
+                                                (M.read (| i |))
                                             ]
                                           |);
                                           M.rust_cast (M.read (| M.use (M.alloc (| data |)) |));
@@ -1022,19 +1016,18 @@ Module hash.
                                       [ M.read (| data |) ]
                                     |)
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
-                            |))
+                                |)))
+                              (BinOp.Wrap.mul Integer.Usize (M.read (| i |)) (Value.Integer 8)))
                         |) in
                       let β := i in
                       M.write (|
                         β,
-                        BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 2 |)
+                        BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 2)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1043,14 +1036,14 @@ Module hash.
                       (let γ :=
                         M.use (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (M.read (| len |)) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         let β := out in
                         M.write (|
                           β,
                           BinOp.Pure.bit_or
                             (M.read (| β |))
-                            (BinOp.Panic.shl (|
-                              M.rust_cast
+                            (BinOp.Wrap.shl
+                              (M.rust_cast
                                 (M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
@@ -1060,28 +1053,26 @@ Module hash.
                                     |),
                                     [
                                       M.read (| buf |);
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        M.read (| start |),
-                                        M.read (| i |)
-                                      |)
+                                      BinOp.Wrap.add
+                                        Integer.Usize
+                                        (M.read (| start |))
+                                        (M.read (| i |))
                                     ]
                                   |)
-                                |)),
-                              BinOp.Panic.mul (| Integer.Usize, M.read (| i |), Value.Integer 8 |)
-                            |))
+                                |)))
+                              (BinOp.Wrap.mul Integer.Usize (M.read (| i |)) (Value.Integer 8)))
                         |) in
-                      let _ :=
+                      let~ _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Panic.add (| Integer.Usize, M.read (| β |), Value.Integer 1 |)
+                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1089,7 +1080,7 @@ Module hash.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1274,7 +1265,7 @@ Module hash.
             (let key0 := M.alloc (| key0 |) in
             let key1 := M.alloc (| key1 |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   Value.StructRecord
                     "core::hash::sip::Hasher"
@@ -1296,7 +1287,7 @@ Module hash.
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -1333,7 +1324,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1342,7 +1333,7 @@ Module hash.
                   |),
                   Value.Integer 0
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -1363,7 +1354,7 @@ Module hash.
                     |))
                     (Value.Integer 8317987319222330741)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -1384,7 +1375,7 @@ Module hash.
                     |))
                     (Value.Integer 7237128888997146477)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -1405,7 +1396,7 @@ Module hash.
                     |))
                     (Value.Integer 7816392313619706465)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.SubPointer.get_struct_record_field (|
@@ -1426,7 +1417,7 @@ Module hash.
                     |))
                     (Value.Integer 8387220255154660723)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -1497,7 +1488,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1624,7 +1615,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -1755,7 +1746,7 @@ Module hash.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let length :=
+                  let~ length :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1766,7 +1757,7 @@ Module hash.
                         [ M.read (| msg |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     let β :=
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1775,10 +1766,10 @@ Module hash.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| length |) |)
+                      BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| length |))
                     |) in
-                  let needed := M.alloc (| Value.Integer 0 |) in
-                  let _ :=
+                  let~ needed := M.alloc (| Value.Integer 0 |) in
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1799,22 +1790,21 @@ Module hash.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let _ :=
+                            let~ _ :=
                               M.write (|
                                 needed,
-                                BinOp.Panic.sub (|
-                                  Integer.Usize,
-                                  Value.Integer 8,
-                                  M.read (|
+                                BinOp.Wrap.sub
+                                  Integer.Usize
+                                  (Value.Integer 8)
+                                  (M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "core::hash::sip::Hasher",
                                       "ntail"
                                     |)
-                                  |)
-                                |)
+                                  |))
                               |) in
-                            let _ :=
+                            let~ _ :=
                               let β :=
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
@@ -1825,8 +1815,8 @@ Module hash.
                                 β,
                                 BinOp.Pure.bit_or
                                   (M.read (| β |))
-                                  (BinOp.Panic.shl (|
-                                    M.call_closure (|
+                                  (BinOp.Wrap.shl
+                                    (M.call_closure (|
                                       M.get_function (| "core::hash::sip::u8to64_le", [] |),
                                       [
                                         M.read (| msg |);
@@ -1839,19 +1829,17 @@ Module hash.
                                           [ M.read (| length |); M.read (| needed |) ]
                                         |)
                                       ]
-                                    |),
-                                    BinOp.Panic.mul (|
-                                      Integer.Usize,
-                                      Value.Integer 8,
-                                      M.read (|
+                                    |))
+                                    (BinOp.Wrap.mul
+                                      Integer.Usize
+                                      (Value.Integer 8)
+                                      (M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::hash::sip::Hasher",
                                           "ntail"
                                         |)
-                                      |)
-                                    |)
-                                  |))
+                                      |))))
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1871,7 +1859,7 @@ Module hash.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let _ :=
+                                          let~ _ :=
                                             let β :=
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
@@ -1880,11 +1868,10 @@ Module hash.
                                               |) in
                                             M.write (|
                                               β,
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| β |),
-                                                M.read (| length |)
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| β |))
+                                                (M.read (| length |))
                                             |) in
                                           M.return_ (| Value.Tuple [] |)
                                         |)
@@ -1892,7 +1879,7 @@ Module hash.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let _ :=
+                                    (let~ _ :=
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
@@ -1915,7 +1902,7 @@ Module hash.
                                             |)
                                           |))
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
@@ -1934,7 +1921,7 @@ Module hash.
                                           ]
                                         |)
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       let β :=
                                         M.SubPointer.get_struct_record_field (|
                                           M.SubPointer.get_struct_record_field (|
@@ -1957,7 +1944,7 @@ Module hash.
                                             |)
                                           |))
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.write (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
@@ -1972,14 +1959,14 @@ Module hash.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let len :=
+                  let~ len :=
                     M.alloc (|
-                      BinOp.Panic.sub (| Integer.Usize, M.read (| length |), M.read (| needed |) |)
+                      BinOp.Wrap.sub Integer.Usize (M.read (| length |)) (M.read (| needed |))
                     |) in
-                  let left :=
+                  let~ left :=
                     M.alloc (| BinOp.Pure.bit_and (M.read (| len |)) (Value.Integer 7) |) in
-                  let i := M.copy (| needed |) in
-                  let _ :=
+                  let~ i := M.copy (| needed |) in
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1992,20 +1979,19 @@ Module hash.
                                     (M.alloc (|
                                       BinOp.Pure.lt
                                         (M.read (| i |))
-                                        (BinOp.Panic.sub (|
-                                          Integer.Usize,
-                                          M.read (| len |),
-                                          M.read (| left |)
-                                        |))
+                                        (BinOp.Wrap.sub
+                                          Integer.Usize
+                                          (M.read (| len |))
+                                          (M.read (| left |)))
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let mi :=
+                                let~ mi :=
                                   M.copy (|
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -2017,7 +2003,7 @@ Module hash.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let _ :=
+                                              let~ _ :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -2028,17 +2014,16 @@ Module hash.
                                                             (M.alloc (|
                                                               UnOp.Pure.not
                                                                 (BinOp.Pure.le
-                                                                  (BinOp.Panic.add (|
-                                                                    Integer.Usize,
-                                                                    M.read (| i |),
-                                                                    M.call_closure (|
+                                                                  (BinOp.Wrap.add
+                                                                    Integer.Usize
+                                                                    (M.read (| i |))
+                                                                    (M.call_closure (|
                                                                       M.get_function (|
                                                                         "core::mem::size_of",
                                                                         [ Ty.path "u64" ]
                                                                       |),
                                                                       []
-                                                                    |)
-                                                                  |))
+                                                                    |)))
                                                                   (M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
@@ -2080,9 +2065,9 @@ Module hash.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let data :=
+                                    let~ data :=
                                       M.copy (| M.use (M.alloc (| Value.Integer 0 |)) |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_function (|
@@ -2126,7 +2111,7 @@ Module hash.
                                       |)
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
@@ -2141,7 +2126,7 @@ Module hash.
                                     β,
                                     BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| mi |))
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_trait_method (|
@@ -2160,7 +2145,7 @@ Module hash.
                                       ]
                                     |)
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β :=
                                     M.SubPointer.get_struct_record_field (|
                                       M.SubPointer.get_struct_record_field (|
@@ -2175,15 +2160,11 @@ Module hash.
                                     β,
                                     BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| mi |))
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      Value.Integer 8
-                                    |)
+                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 8)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
@@ -2191,7 +2172,7 @@ Module hash.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2202,7 +2183,7 @@ Module hash.
                           ]
                         |)))
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2214,7 +2195,7 @@ Module hash.
                         [ M.read (| msg |); M.read (| i |); M.read (| left |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.write (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2245,7 +2226,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -2264,7 +2245,7 @@ Module hash.
                     ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -2305,7 +2286,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -2313,11 +2294,11 @@ Module hash.
                     "state"
                   |)
                 |) in
-              let b :=
+              let~ b :=
                 M.alloc (|
                   BinOp.Pure.bit_or
-                    (BinOp.Panic.shl (|
-                      BinOp.Pure.bit_and
+                    (BinOp.Wrap.shl
+                      (BinOp.Pure.bit_and
                         (M.rust_cast
                           (M.read (|
                             M.SubPointer.get_struct_record_field (|
@@ -2326,9 +2307,8 @@ Module hash.
                               "length"
                             |)
                           |)))
-                        (Value.Integer 255),
-                      Value.Integer 56
-                    |))
+                        (Value.Integer 255))
+                      (Value.Integer 56))
                     (M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -2337,7 +2317,7 @@ Module hash.
                       |)
                     |))
                 |) in
-              let _ :=
+              let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
                     state,
@@ -2345,14 +2325,14 @@ Module hash.
                     "v3"
                   |) in
                 M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], "c_rounds", [] |),
                     [ state ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
                     state,
@@ -2360,7 +2340,7 @@ Module hash.
                     "v0"
                   |) in
                 M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
-              let _ :=
+              let~ _ :=
                 let β :=
                   M.SubPointer.get_struct_record_field (|
                     state,
@@ -2368,7 +2348,7 @@ Module hash.
                     "v2"
                   |) in
                 M.write (| β, BinOp.Pure.bit_xor (M.read (| β |)) (Value.Integer 255) |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], "d_rounds", [] |),
@@ -2637,8 +2617,8 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2665,7 +2645,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2686,7 +2666,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2705,7 +2685,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2726,7 +2706,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2753,7 +2733,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2774,7 +2754,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2793,7 +2773,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2820,7 +2800,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2841,7 +2821,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2860,7 +2840,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2887,7 +2867,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2908,7 +2888,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2927,7 +2907,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2967,8 +2947,8 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -2995,7 +2975,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3016,7 +2996,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3035,7 +3015,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3056,7 +3036,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3083,7 +3063,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3104,7 +3084,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3123,7 +3103,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3150,7 +3130,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3171,7 +3151,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3190,7 +3170,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3217,7 +3197,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3238,7 +3218,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3257,7 +3237,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3279,8 +3259,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3307,7 +3287,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3328,7 +3308,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3347,7 +3327,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3368,7 +3348,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3395,7 +3375,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3416,7 +3396,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3435,7 +3415,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3462,7 +3442,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3483,7 +3463,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3502,7 +3482,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3529,7 +3509,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3550,7 +3530,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3569,7 +3549,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3591,8 +3571,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3619,7 +3599,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3640,7 +3620,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3659,7 +3639,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3680,7 +3660,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3707,7 +3687,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3728,7 +3708,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3747,7 +3727,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3774,7 +3754,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3795,7 +3775,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3814,7 +3794,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3841,7 +3821,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3862,7 +3842,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -3881,7 +3861,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4004,8 +3984,8 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4032,7 +4012,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4053,7 +4033,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4072,7 +4052,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4093,7 +4073,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4120,7 +4100,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4141,7 +4121,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4160,7 +4140,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4187,7 +4167,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4208,7 +4188,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4227,7 +4207,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4254,7 +4234,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4275,7 +4255,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4294,7 +4274,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4316,8 +4296,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4344,7 +4324,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4365,7 +4345,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4384,7 +4364,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4405,7 +4385,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4432,7 +4412,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4453,7 +4433,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4472,7 +4452,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4499,7 +4479,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4520,7 +4500,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4539,7 +4519,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4566,7 +4546,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4587,7 +4567,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4606,7 +4586,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4647,8 +4627,8 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4675,7 +4655,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4696,7 +4676,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4715,7 +4695,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4736,7 +4716,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4763,7 +4743,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4784,7 +4764,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4803,7 +4783,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4830,7 +4810,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4851,7 +4831,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4870,7 +4850,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4897,7 +4877,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4918,7 +4898,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4937,7 +4917,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4959,8 +4939,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -4987,7 +4967,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5008,7 +4988,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5027,7 +5007,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5048,7 +5028,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5075,7 +5055,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5096,7 +5076,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5115,7 +5095,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5142,7 +5122,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5163,7 +5143,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5182,7 +5162,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5209,7 +5189,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5230,7 +5210,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5249,7 +5229,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5271,8 +5251,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5299,7 +5279,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5320,7 +5300,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5339,7 +5319,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5360,7 +5340,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5387,7 +5367,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5408,7 +5388,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5427,7 +5407,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5454,7 +5434,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5475,7 +5455,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5494,7 +5474,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5521,7 +5501,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5542,7 +5522,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5561,7 +5541,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5583,8 +5563,8 @@ Module hash.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let _ :=
-                let _ :=
+              let~ _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5611,7 +5591,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5632,7 +5612,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5651,7 +5631,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5672,7 +5652,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5699,7 +5679,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5720,7 +5700,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5739,7 +5719,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5766,7 +5746,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5787,7 +5767,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5806,7 +5786,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5833,7 +5813,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5854,7 +5834,7 @@ Module hash.
                       ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   let β :=
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),
@@ -5873,7 +5853,7 @@ Module hash.
                         |)
                       |))
                   |) in
-                let _ :=
+                let~ _ :=
                   M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| state |),

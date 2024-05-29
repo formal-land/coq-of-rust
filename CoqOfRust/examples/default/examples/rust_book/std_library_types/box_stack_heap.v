@@ -206,11 +206,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let point :=
+        let~ point :=
           M.alloc (|
             M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |)
           |) in
-        let rectangle :=
+        let~ rectangle :=
           M.alloc (|
             Value.StructRecord
               "box_stack_heap::Rectangle"
@@ -224,7 +224,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     ])
               ]
           |) in
-        let boxed_rectangle :=
+        let~ boxed_rectangle :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -251,7 +251,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let boxed_point :=
+        let~ boxed_point :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -264,7 +264,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.call_closure (| M.get_function (| "box_stack_heap::origin", [] |), [] |) ]
             |)
           |) in
-        let box_in_a_box :=
+        let~ box_in_a_box :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
@@ -282,8 +282,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.call_closure (| M.get_function (| "box_stack_heap::boxed_origin", [] |), [] |) ]
             |)
           |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -332,8 +332,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -382,8 +382,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -439,8 +439,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -496,8 +496,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let _ :=
-          let _ :=
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),
@@ -558,9 +558,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let unboxed_point := M.copy (| M.read (| boxed_point |) |) in
-        let _ :=
-          let _ :=
+        let~ unboxed_point := M.copy (| M.read (| boxed_point |) |) in
+        let~ _ :=
+          let~ _ :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "std::io::stdio::_print", [] |),

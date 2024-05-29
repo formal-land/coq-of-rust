@@ -251,7 +251,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -324,7 +324,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -411,22 +411,20 @@ Module alloc.
         | [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
-            BinOp.Panic.sub (|
-              Integer.Usize,
-              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
-              BinOp.Panic.sub (|
-                Integer.Usize,
-                M.call_closure (|
+            BinOp.Wrap.sub
+              Integer.Usize
+              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+              (BinOp.Wrap.sub
+                Integer.Usize
+                (M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
                     []
                   |),
                   [ M.read (| align |) ]
-                |),
-                Value.Integer 1
-              |)
-            |)))
+                |))
+                (Value.Integer 1))))
         | _, _ => M.impossible
         end.
       
@@ -452,7 +450,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -857,7 +855,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let len :=
+              let~ len :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -868,7 +866,7 @@ Module alloc.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let len_rounded_up :=
+              let~ len_rounded_up :=
                 M.alloc (|
                   BinOp.Pure.bit_and
                     (M.call_closure (|
@@ -919,7 +917,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let pad :=
+              let~ pad :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -940,20 +938,19 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let new_size :=
+              let~ new_size :=
                 M.alloc (|
-                  BinOp.Panic.add (|
-                    Integer.Usize,
-                    M.call_closure (|
+                  BinOp.Wrap.add
+                    Integer.Usize
+                    (M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |),
-                    M.read (| pad |)
-                  |)
+                    |))
+                    (M.read (| pad |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1005,19 +1002,19 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let padded_size :=
+                  let~ padded_size :=
                     M.alloc (|
-                      BinOp.Panic.add (|
-                        Integer.Usize,
-                        M.call_closure (|
+                      BinOp.Wrap.add
+                        Integer.Usize
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "size",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |),
-                        M.call_closure (|
+                        |))
+                        (M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "padding_needed_for",
@@ -1034,10 +1031,9 @@ Module alloc.
                               [ M.read (| self |) ]
                             |)
                           ]
-                        |)
-                      |)
+                        |))
                     |) in
-                  let alloc_size :=
+                  let~ alloc_size :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1130,7 +1126,7 @@ Module alloc.
                         ]
                       |)
                     |) in
-                  let layout :=
+                  let~ layout :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1259,7 +1255,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let new_align :=
+                  let~ new_align :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -1284,7 +1280,7 @@ Module alloc.
                         ]
                       |)
                     |) in
-                  let pad :=
+                  let~ pad :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1305,7 +1301,7 @@ Module alloc.
                         ]
                       |)
                     |) in
-                  let offset :=
+                  let~ offset :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1408,7 +1404,7 @@ Module alloc.
                         ]
                       |)
                     |) in
-                  let new_size :=
+                  let~ new_size :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1511,7 +1507,7 @@ Module alloc.
                         ]
                       |)
                     |) in
-                  let layout :=
+                  let~ layout :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1625,7 +1621,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let size :=
+                  let~ size :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1767,7 +1763,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let new_size :=
+                  let~ new_size :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|

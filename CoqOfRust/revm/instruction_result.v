@@ -235,138 +235,308 @@ Module instruction_result.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::Continue"
+                          |) in
                         M.alloc (| M.read (| Value.String "Continue" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::Stop"
+                          |) in
                         M.alloc (| M.read (| Value.String "Stop" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::Return"
+                          |) in
                         M.alloc (| M.read (| Value.String "Return" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                          |) in
                         M.alloc (| M.read (| Value.String "SelfDestruct" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                          |) in
                         M.alloc (| M.read (| Value.String "ReturnContract" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::Revert"
+                          |) in
                         M.alloc (| M.read (| Value.String "Revert" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                          |) in
                         M.alloc (| M.read (| Value.String "CallTooDeep" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                          |) in
                         M.alloc (| M.read (| Value.String "OutOfFunds" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                          |) in
                         M.alloc (| M.read (| Value.String "CallOrCreate" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                          |) in
                         M.alloc (| M.read (| Value.String "OutOfGas" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                          |) in
                         M.alloc (| M.read (| Value.String "MemoryOOG" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
+                          |) in
                         M.alloc (| M.read (| Value.String "MemoryLimitOOG" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
+                          |) in
                         M.alloc (| M.read (| Value.String "PrecompileOOG" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                          |) in
                         M.alloc (| M.read (| Value.String "InvalidOperandOOG" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
+                          |) in
                         M.alloc (| M.read (| Value.String "OpcodeNotFound" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+                          |) in
                         M.alloc (| M.read (| Value.String "CallNotAllowedInsideStatic" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+                          |) in
                         M.alloc (| M.read (| Value.String "StateChangeDuringStaticCall" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
+                          |) in
                         M.alloc (| M.read (| Value.String "InvalidFEOpcode" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
+                          |) in
                         M.alloc (| M.read (| Value.String "InvalidJump" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                          |) in
                         M.alloc (| M.read (| Value.String "NotActivated" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                          |) in
                         M.alloc (| M.read (| Value.String "StackUnderflow" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                          |) in
                         M.alloc (| M.read (| Value.String "StackOverflow" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
+                          |) in
                         M.alloc (| M.read (| Value.String "OutOfOffset" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                          |) in
                         M.alloc (| M.read (| Value.String "CreateCollision" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                          |) in
                         M.alloc (| M.read (| Value.String "OverflowPayment" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
+                          |) in
                         M.alloc (| M.read (| Value.String "PrecompileError" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
+                          |) in
                         M.alloc (| M.read (| Value.String "NonceOverflow" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
+                          |) in
                         M.alloc (| M.read (| Value.String "CreateContractSizeLimit" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+                          |) in
                         M.alloc (| M.read (| Value.String "CreateContractStartingWithEF" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
+                          |) in
                         M.alloc (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                          |) in
                         M.alloc (| M.read (| Value.String "FatalExternalError" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
+                          |) in
                         M.alloc (| M.read (| Value.String "ReturnContractInNotInitEOF" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
+                          |) in
                         M.alloc (| M.read (| Value.String "EOFOpcodeDisabledInLegacy" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                          |) in
                         M.alloc (| M.read (| Value.String "EOFFunctionStackOverflow" |) |)))
                   ]
                 |)
@@ -428,7 +598,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -438,7 +608,7 @@ Module instruction_result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -505,7 +675,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -556,21 +726,30 @@ Module instruction_result.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (| γ, "revm_primitives::result::SuccessReason::Return" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Return"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (| γ, "revm_primitives::result::SuccessReason::Stop" |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Stop"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::SuccessReason::SelfDestruct"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                         []
@@ -648,35 +827,60 @@ Module instruction_result.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_primitives::result::OutOfGasError::Basic"
+                              |) in
+                            M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                 []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_primitives::result::OutOfGasError::InvalidOperand"
+                              |) in
+                            M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                 []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_primitives::result::OutOfGasError::Memory"
+                              |) in
+                            M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                                 []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_primitives::result::OutOfGasError::MemoryLimit"
+                              |) in
+                            M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                                 []
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_primitives::result::OutOfGasError::Precompile"
+                              |) in
+                            M.alloc (|
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                                 []
@@ -685,126 +889,216 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::OpcodeNotFound"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::InvalidFEOpcode"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::InvalidJump"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::NotActivated"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::StackOverflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::StackUnderflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::OutOfOffset"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CreateCollision"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::PrecompileError"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::NonceOverflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CreateContractSizeLimit"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CreateContractStartingWithEF"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CreateInitCodeSizeLimit"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::OverflowPayment"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::StateChangeDuringStaticCall"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CallNotAllowedInsideStatic"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::OutOfFunds"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_primitives::result::HaltReason::CallTooDeep"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                         []
@@ -845,11 +1139,46 @@ Module instruction_result.
                     (M.find_or_pattern (|
                       γ,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::Continue"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::Stop"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::Return"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                              |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -887,9 +1216,30 @@ Module instruction_result.
                     (M.find_or_pattern (|
                       γ,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::Revert"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                              |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -927,31 +1277,206 @@ Module instruction_result.
                     (M.find_or_pattern (|
                       γ,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                              |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -1052,6 +1577,11 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1089,6 +1619,11 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1102,6 +1637,11 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalContinue"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1115,6 +1655,11 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::InternalCallOrCreate"
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1205,7 +1750,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1215,7 +1760,7 @@ Module instruction_result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let __arg1_tag :=
+            let~ __arg1_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1371,7 +1916,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let __self_tag :=
+            let~ __self_tag :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1381,7 +1926,7 @@ Module instruction_result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
@@ -1538,7 +2083,14 @@ Module instruction_result.
             M.match_operator (|
               self,
               [
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
+                      |) in
+                    M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
@@ -1691,28 +2243,48 @@ Module instruction_result.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::Continue"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::InternalContinue"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::Stop"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         [ Value.StructTuple "revm_primitives::result::SuccessReason::Stop" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::Return"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         [ Value.StructTuple "revm_primitives::result::SuccessReason::Return" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         [
@@ -1723,35 +2295,60 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::Revert"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::InternalCallOrCreate"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::CallTooDeep" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::OutOfFunds" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1762,7 +2359,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1777,7 +2379,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1789,7 +2396,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1804,7 +2416,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1822,8 +2439,22 @@ Module instruction_result.
                     (M.find_or_pattern (|
                       γ,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
+                              |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -1844,7 +2475,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1855,7 +2491,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1866,7 +2507,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1877,21 +2523,36 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::InvalidJump" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::NotActivated"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::NotActivated" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::StackUnderflow" []
@@ -1899,7 +2560,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::StackOverflow" []
@@ -1907,14 +2573,24 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::OutOfOffset" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1925,7 +2601,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1936,7 +2617,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1947,7 +2633,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::NonceOverflow" []
@@ -1958,8 +2649,22 @@ Module instruction_result.
                     (M.find_or_pattern (|
                       γ,
                       [
-                        fun γ => ltac:(M.monadic (Value.Tuple []));
-                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (|
+                                γ,
+                                "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+                              |) in
+                            Value.Tuple []))
                       ],
                       M.closure
                         (fun γ =>
@@ -1980,7 +2685,12 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
@@ -1991,14 +2701,24 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [ Value.StructTuple "revm_primitives::result::HaltReason::OpcodeNotFound" []
@@ -2006,14 +2726,24 @@ Module instruction_result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::EOFFunctionStackOverflow"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
+                      |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),

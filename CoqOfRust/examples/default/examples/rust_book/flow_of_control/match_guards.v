@@ -41,7 +41,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let temperature :=
+        let~ temperature :=
           M.alloc (|
             Value.StructTuple "match_guards::Temperature::Celsius" [ Value.Integer 35 ]
           |) in
@@ -59,7 +59,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let t := M.copy (| γ0_0 |) in
                 let γ := M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer 30) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -111,7 +111,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let t := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -165,7 +165,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 let t := M.copy (| γ0_0 |) in
                 let γ := M.alloc (| BinOp.Pure.gt (M.read (| t |)) (Value.Integer 86) |) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -217,7 +217,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let t := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),

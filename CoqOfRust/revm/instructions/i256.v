@@ -81,14 +81,29 @@ Module instructions.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Minus"
+                            |) in
                           M.alloc (| M.read (| Value.String "Minus" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Zero"
+                            |) in
                           M.alloc (| M.read (| Value.String "Zero" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "revm_interpreter::instructions::i256::Sign::Plus"
+                            |) in
                           M.alloc (| M.read (| Value.String "Plus" |) |)))
                     ]
                   |)
@@ -128,7 +143,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -138,7 +153,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -205,7 +220,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -215,7 +230,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -260,7 +275,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -270,7 +285,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -309,7 +324,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -404,11 +419,10 @@ Module instructions.
                             M.get_associated_function (| Ty.path "ruint::Uint", "bit", [] |),
                             [
                               M.read (| val |);
-                              BinOp.Panic.sub (|
-                                Integer.Usize,
-                                M.read (| M.get_constant (| "ruint::BITS'1" |) |),
-                                Value.Integer 1
-                              |)
+                              BinOp.Wrap.sub
+                                Integer.Usize
+                                (M.read (| M.get_constant (| "ruint::BITS'1" |) |))
+                                (Value.Integer 1)
                             ]
                           |)
                         |)) in
@@ -444,6 +458,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i256_sign :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_sign" i256_sign.
+    
     (*
     pub fn i256_sign_compl(val: &mut U256) -> Sign {
         let sign = i256_sign(val);
@@ -459,14 +476,14 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let sign :=
+            let~ sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
                   [ M.read (| val |) ]
                 |)
               |) in
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -494,7 +511,7 @@ Module instructions.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (|
@@ -513,6 +530,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i256_sign_compl :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
+    
     (*
     fn u256_remove_sign(val: &mut U256) {
         // SAFETY: U256 does not have any padding bytes
@@ -527,7 +547,7 @@ Module instructions.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               let β :=
                 M.SubPointer.get_array_field (|
                   M.call_closure (|
@@ -549,6 +569,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_u256_remove_sign :
+      M.IsFunction "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
+    
     (*
     pub fn two_compl_mut(op: &mut U256) {
         *op = two_compl( *op);
@@ -560,7 +583,7 @@ Module instructions.
         ltac:(M.monadic
           (let op := M.alloc (| op |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.write (|
                 M.read (| op |),
                 M.call_closure (|
@@ -572,6 +595,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_two_compl_mut :
+      M.IsFunction "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
     
     (*
     pub fn two_compl(op: U256) -> U256 {
@@ -589,6 +615,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_two_compl :
+      M.IsFunction "revm_interpreter::instructions::i256::two_compl" two_compl.
     
     (*
     pub fn i256_cmp(first: &U256, second: &U256) -> Ordering {
@@ -609,14 +638,14 @@ Module instructions.
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
           M.read (|
-            let first_sign :=
+            let~ first_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
                   [ M.read (| first |) ]
                 |)
               |) in
-            let second_sign :=
+            let~ second_sign :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "revm_interpreter::instructions::i256::i256_sign", [] |),
@@ -639,7 +668,8 @@ Module instructions.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::Ord",
@@ -660,6 +690,9 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i256_cmp :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
     
     (*
     pub fn i256_div(mut first: U256, mut second: U256) -> U256 {
@@ -699,7 +732,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let second_sign :=
+                let~ second_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -709,7 +742,7 @@ Module instructions.
                       [ second ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -748,7 +781,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let first_sign :=
+                let~ first_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -758,7 +791,7 @@ Module instructions.
                       [ first ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -834,7 +867,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let d :=
+                let~ d :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -847,7 +880,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -962,6 +995,9 @@ Module instructions.
       | _, _ => M.impossible
       end.
     
+    Axiom Function_i256_div :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_div" i256_div.
+    
     (*
     pub fn i256_mod(mut first: U256, mut second: U256) -> U256 {
         let first_sign = i256_sign_compl(&mut first);
@@ -995,7 +1031,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let first_sign :=
+                let~ first_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1005,7 +1041,7 @@ Module instructions.
                       [ first ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1044,7 +1080,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let second_sign :=
+                let~ second_sign :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1054,7 +1090,7 @@ Module instructions.
                       [ second ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1093,7 +1129,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let r :=
+                let~ r :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_trait_method (|
@@ -1106,7 +1142,7 @@ Module instructions.
                       [ M.read (| first |); M.read (| second |) ]
                     |)
                   |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -1160,5 +1196,8 @@ Module instructions.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_i256_mod :
+      M.IsFunction "revm_interpreter::instructions::i256::i256_mod" i256_mod.
   End i256.
 End instructions.

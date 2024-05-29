@@ -142,7 +142,8 @@ Module cell.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
+                      M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -204,7 +205,7 @@ Module cell.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -259,6 +260,7 @@ Module cell.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -334,7 +336,7 @@ Module cell.
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -373,7 +375,7 @@ Module cell.
                           0
                         |) in
                       let f := M.copy (| γ0_0 |) in
-                      let data :=
+                      let~ data :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
@@ -386,7 +388,7 @@ Module cell.
                             [ M.read (| f |); Value.Tuple [] ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -419,7 +421,7 @@ Module cell.
                             ]
                           |)
                         |) in
-                      let state :=
+                      let~ state :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -483,7 +485,7 @@ Module cell.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let state :=
+              let~ state :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -633,7 +635,7 @@ Module cell.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let d :=
+              let~ d :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -644,7 +646,7 @@ Module cell.
                     [ M.read (| f |); M.read (| Value.String "LazyCell" |) ]
                   |)
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
@@ -678,7 +680,8 @@ Module cell.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (M.alloc (|
+                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::builders::DebugTuple",

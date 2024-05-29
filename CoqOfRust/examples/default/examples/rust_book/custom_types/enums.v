@@ -62,7 +62,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
           [
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -96,7 +97,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let _ :=
+                (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -125,7 +127,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
                 let c := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -173,7 +175,7 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
                 let s := M.copy (| γ0_0 |) in
-                let _ :=
+                let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "std::io::stdio::_print", [] |),
@@ -224,8 +226,8 @@ Definition inspect (τ : list Ty.t) (α : list Value.t) : M :=
                   M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
                 let x := M.copy (| γ0_0 |) in
                 let y := M.copy (| γ0_1 |) in
-                let _ :=
-                  let _ :=
+                let~ _ :=
+                  let~ _ :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -307,9 +309,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let pressed :=
+        let~ pressed :=
           M.alloc (| Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] |) in
-        let pasted :=
+        let~ pasted :=
           M.alloc (|
             Value.StructTuple
               "enums::WebEvent::Paste"
@@ -326,31 +328,31 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               ]
           |) in
-        let click :=
+        let~ click :=
           M.alloc (|
             Value.StructRecord
               "enums::WebEvent::Click"
               [ ("x", Value.Integer 20); ("y", Value.Integer 80) ]
           |) in
-        let load := M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
-        let unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
-        let _ :=
+        let~ load := M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
+        let~ unload := M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| pressed |) ] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| pasted |) ] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| click |) ] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| load |) ] |)
           |) in
-        let _ :=
+        let~ _ :=
           M.alloc (|
             M.call_closure (| M.get_function (| "enums::inspect", [] |), [ M.read (| unload |) ] |)
           |) in

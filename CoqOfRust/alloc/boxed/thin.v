@@ -55,14 +55,14 @@ Module boxed.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
-              let meta :=
+              let~ meta :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
                     [ value ]
                   |)
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -214,14 +214,14 @@ Module boxed.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
-              let meta :=
+              let~ meta :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::metadata", [ Dyn ] |),
                     [ M.read (| M.use (M.alloc (| (* Unsize *) M.pointer_coercion value |)) |) ]
                   |)
                 |) in
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -356,7 +356,7 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let value :=
+              let~ value :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -367,7 +367,7 @@ Module boxed.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let metadata :=
+              let~ metadata :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -378,7 +378,7 @@ Module boxed.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let pointer :=
+              let~ pointer :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::from_raw_parts", [ T ] |),
@@ -418,7 +418,7 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let value :=
+              let~ value :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -429,7 +429,7 @@ Module boxed.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let metadata :=
+              let~ metadata :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -440,7 +440,7 @@ Module boxed.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let pointer :=
+              let~ pointer :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T ] |),
@@ -480,7 +480,7 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let value :=
+              let~ value :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -493,8 +493,8 @@ Module boxed.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let value := M.copy (| M.use (M.alloc (| M.read (| value |) |)) |) in
-              let _ :=
+              let~ value := M.copy (| M.use (M.alloc (| M.read (| value |) |)) |) in
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -564,7 +564,7 @@ Module boxed.
             (let header := M.alloc (| header |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let ptr :=
+              let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -649,7 +649,7 @@ Module boxed.
             (let header := M.alloc (| header |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let value_layout :=
+              let~ value_layout :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -684,7 +684,7 @@ Module boxed.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let layout := M.copy (| γ1_0 |) in
                       let value_offset := M.copy (| γ1_1 |) in
-                      let ptr :=
+                      let~ ptr :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -710,7 +710,7 @@ Module boxed.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -722,7 +722,7 @@ Module boxed.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let _ :=
+                                            let~ _ :=
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
@@ -793,14 +793,14 @@ Module boxed.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let ptr :=
+                                  (let~ ptr :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "alloc::alloc::alloc", [] |),
                                         [ M.read (| layout |) ]
                                       |)
                                     |) in
-                                  let _ :=
+                                  let~ _ :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -837,7 +837,7 @@ Module boxed.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let ptr :=
+                                  let~ ptr :=
                                     M.alloc (|
                                       M.rust_cast
                                         (M.call_closure (|
@@ -864,13 +864,13 @@ Module boxed.
                             ]
                           |)
                         |) in
-                      let result :=
+                      let~ result :=
                         M.alloc (|
                           Value.StructTuple
                             "alloc::boxed::thin::WithHeader"
                             [ M.read (| ptr |); Value.StructTuple "core::marker::PhantomData" [] ]
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::ptr::write", [ H ] |),
@@ -887,7 +887,7 @@ Module boxed.
                             ]
                           |)
                         |) in
-                      let _ :=
+                      let~ _ :=
                         M.alloc (|
                           M.call_closure (|
                             M.get_function (| "core::ptr::write", [ T ] |),
@@ -974,7 +974,7 @@ Module boxed.
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
             M.read (|
-              let _guard :=
+              let~ _guard :=
                 M.alloc (|
                   Value.StructRecord
                     "alloc::boxed::thin::drop::DropGuard"
@@ -999,7 +999,7 @@ Module boxed.
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
                 |) in
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::ptr::drop_in_place", [ T ] |),
@@ -1036,7 +1036,7 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let hp :=
+              let~ hp :=
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
@@ -1073,7 +1073,7 @@ Module boxed.
                       ]
                     |))
                 |) in
-              let _ :=
+              let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1082,7 +1082,7 @@ Module boxed.
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let _ :=
+                        let~ _ :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [

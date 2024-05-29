@@ -18,7 +18,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let file :=
+            let~ file :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -198,7 +198,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let _ :=
+                              (let~ _ :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -221,7 +221,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (M.alloc (|
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -246,8 +248,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                     0
                                                   |) in
                                                 let ip := M.copy (| γ0_0 |) in
-                                                let _ :=
-                                                  let _ :=
+                                                let~ _ :=
+                                                  let~ _ :=
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         M.get_function (|

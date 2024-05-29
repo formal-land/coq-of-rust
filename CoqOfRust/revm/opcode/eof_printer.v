@@ -66,7 +66,7 @@ Module opcode.
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
-            let i := M.alloc (| Value.Integer 0 |) in
+            let~ i := M.alloc (| Value.Integer 0 |) in
             M.loop (|
               ltac:(M.monadic
                 (M.match_operator (|
@@ -90,9 +90,9 @@ Module opcode.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let op :=
+                        let~ op :=
                           M.copy (| M.SubPointer.get_array_field (| M.read (| code |), i |) |) in
-                        let opcode :=
+                        let~ opcode :=
                           M.alloc (|
                             M.SubPointer.get_array_field (|
                               M.get_constant (|
@@ -114,7 +114,7 @@ Module opcode.
                                     0
                                   |) in
                                 let opcode := M.alloc (| γ1_0 |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -149,10 +149,10 @@ Module opcode.
                                                     M.use
                                                       (M.alloc (|
                                                         BinOp.Pure.ge
-                                                          (BinOp.Panic.add (|
-                                                            Integer.Usize,
-                                                            M.read (| i |),
-                                                            M.rust_cast
+                                                          (BinOp.Wrap.add
+                                                            Integer.Usize
+                                                            (M.read (| i |))
+                                                            (M.rust_cast
                                                               (M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.path
@@ -161,8 +161,7 @@ Module opcode.
                                                                   []
                                                                 |),
                                                                 [ M.read (| opcode |) ]
-                                                              |))
-                                                          |))
+                                                              |))))
                                                           (M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
@@ -182,8 +181,8 @@ Module opcode.
                                                   M.alloc (|
                                                     M.never_to_any (|
                                                       M.read (|
-                                                        let _ :=
-                                                          let _ :=
+                                                        let~ _ :=
+                                                          let~ _ :=
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 M.get_function (|
@@ -228,8 +227,8 @@ Module opcode.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
-                                  let _ :=
+                                let~ _ :=
+                                  let~ _ :=
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "std::io::stdio::_print", [] |),
@@ -280,7 +279,7 @@ Module opcode.
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |) in
-                                let _ :=
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -306,8 +305,8 @@ Module opcode.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let _ :=
-                                            let _ :=
+                                          let~ _ :=
+                                            let~ _ :=
                                               M.alloc (|
                                                 M.call_closure (|
                                                   M.get_function (| "std::io::stdio::_print", [] |),
@@ -378,26 +377,24 @@ Module opcode.
                                                                                 "core::ops::range::Range"
                                                                                 [
                                                                                   ("start",
-                                                                                    BinOp.Panic.add (|
-                                                                                      Integer.Usize,
-                                                                                      M.read (|
+                                                                                    BinOp.Wrap.add
+                                                                                      Integer.Usize
+                                                                                      (M.read (|
                                                                                         i
-                                                                                      |),
-                                                                                      Value.Integer
-                                                                                        1
-                                                                                    |));
+                                                                                      |))
+                                                                                      (Value.Integer
+                                                                                        1));
                                                                                   ("end_",
-                                                                                    BinOp.Panic.add (|
-                                                                                      Integer.Usize,
-                                                                                      BinOp.Panic.add (|
-                                                                                        Integer.Usize,
-                                                                                        M.read (|
+                                                                                    BinOp.Wrap.add
+                                                                                      Integer.Usize
+                                                                                      (BinOp.Wrap.add
+                                                                                        Integer.Usize
+                                                                                        (M.read (|
                                                                                           i
-                                                                                        |),
-                                                                                        Value.Integer
-                                                                                          1
-                                                                                      |),
-                                                                                      M.rust_cast
+                                                                                        |))
+                                                                                        (Value.Integer
+                                                                                          1))
+                                                                                      (M.rust_cast
                                                                                         (M.call_closure (|
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
@@ -410,8 +407,7 @@ Module opcode.
                                                                                               opcode
                                                                                             |)
                                                                                           ]
-                                                                                        |))
-                                                                                    |))
+                                                                                        |))))
                                                                                 ]
                                                                             ]
                                                                           |)
@@ -432,8 +428,9 @@ Module opcode.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let rjumpv_additional_immediates := M.alloc (| Value.Integer 0 |) in
-                                let _ :=
+                                let~ rjumpv_additional_immediates :=
+                                  M.alloc (| Value.Integer 0 |) in
+                                let~ _ :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -455,40 +452,37 @@ Module opcode.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let max_index :=
+                                          let~ max_index :=
                                             M.alloc (|
                                               M.rust_cast
                                                 (M.read (|
                                                   M.SubPointer.get_array_field (|
                                                     M.read (| code |),
                                                     M.alloc (|
-                                                      BinOp.Panic.add (|
-                                                        Integer.Usize,
-                                                        M.read (| i |),
-                                                        Value.Integer 1
-                                                      |)
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| i |))
+                                                        (Value.Integer 1)
                                                     |)
                                                   |)
                                                 |))
                                             |) in
-                                          let len :=
+                                          let~ len :=
                                             M.alloc (|
-                                              BinOp.Panic.add (|
-                                                Integer.Usize,
-                                                M.read (| max_index |),
-                                                Value.Integer 1
-                                              |)
+                                              BinOp.Wrap.add
+                                                Integer.Usize
+                                                (M.read (| max_index |))
+                                                (Value.Integer 1)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.write (|
                                               rjumpv_additional_immediates,
-                                              BinOp.Panic.mul (|
-                                                Integer.Usize,
-                                                M.read (| len |),
-                                                Value.Integer 2
-                                              |)
+                                              BinOp.Wrap.mul
+                                                Integer.Usize
+                                                (M.read (| len |))
+                                                (Value.Integer 2)
                                             |) in
-                                          let _ :=
+                                          let~ _ :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -498,17 +492,15 @@ Module opcode.
                                                       M.use
                                                         (M.alloc (|
                                                           BinOp.Pure.ge
-                                                            (BinOp.Panic.add (|
-                                                              Integer.Usize,
-                                                              BinOp.Panic.add (|
-                                                                Integer.Usize,
-                                                                M.read (| i |),
-                                                                Value.Integer 1
-                                                              |),
-                                                              M.read (|
+                                                            (BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (BinOp.Wrap.add
+                                                                Integer.Usize
+                                                                (M.read (| i |))
+                                                                (Value.Integer 1))
+                                                              (M.read (|
                                                                 rjumpv_additional_immediates
-                                                              |)
-                                                            |))
+                                                              |)))
                                                             (M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
@@ -528,8 +520,8 @@ Module opcode.
                                                     M.alloc (|
                                                       M.never_to_any (|
                                                         M.read (|
-                                                          let _ :=
-                                                            let _ :=
+                                                          let~ _ :=
+                                                            let~ _ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_function (|
@@ -600,7 +592,7 @@ Module opcode.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let _ :=
+                                                        (let~ _ :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
@@ -620,7 +612,12 @@ Module opcode.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (|
+                                                                  (let _ :=
+                                                                    M.is_struct_tuple (|
+                                                                      γ,
+                                                                      "core::option::Option::None"
+                                                                    |) in
+                                                                  M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -635,7 +632,7 @@ Module opcode.
                                                                     |) in
                                                                   let vtablei :=
                                                                     M.copy (| γ0_0 |) in
-                                                                  let offset :=
+                                                                  let~ offset :=
                                                                     M.alloc (|
                                                                       M.rust_cast
                                                                         (M.call_closure (|
@@ -669,28 +666,27 @@ Module opcode.
                                                                                     |)
                                                                                   ]
                                                                                 |);
-                                                                                BinOp.Panic.add (|
-                                                                                  Integer.Usize,
-                                                                                  BinOp.Panic.add (|
-                                                                                    Integer.Usize,
-                                                                                    M.read (| i |),
-                                                                                    Value.Integer 2
-                                                                                  |),
-                                                                                  BinOp.Panic.mul (|
-                                                                                    Integer.Usize,
-                                                                                    Value.Integer 2,
-                                                                                    M.read (|
+                                                                                BinOp.Wrap.add
+                                                                                  Integer.Usize
+                                                                                  (BinOp.Wrap.add
+                                                                                    Integer.Usize
+                                                                                    (M.read (| i |))
+                                                                                    (Value.Integer
+                                                                                      2))
+                                                                                  (BinOp.Wrap.mul
+                                                                                    Integer.Usize
+                                                                                    (Value.Integer
+                                                                                      2)
+                                                                                    (M.read (|
                                                                                       vtablei
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
+                                                                                    |)))
                                                                               ]
                                                                             |)
                                                                           ]
                                                                         |))
                                                                     |) in
-                                                                  let _ :=
-                                                                    let _ :=
+                                                                  let~ _ :=
+                                                                    let~ _ :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           M.get_function (|
@@ -922,19 +918,19 @@ Module opcode.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let _ :=
+                                let~ _ :=
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Panic.add (|
-                                      Integer.Usize,
-                                      M.read (| β |),
-                                      BinOp.Panic.add (|
-                                        Integer.Usize,
-                                        BinOp.Panic.add (|
-                                          Integer.Usize,
-                                          Value.Integer 1,
-                                          M.rust_cast
+                                    BinOp.Wrap.add
+                                      Integer.Usize
+                                      (M.read (| β |))
+                                      (BinOp.Wrap.add
+                                        Integer.Usize
+                                        (BinOp.Wrap.add
+                                          Integer.Usize
+                                          (Value.Integer 1)
+                                          (M.rust_cast
                                             (M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "revm_interpreter::opcode::OpCodeInfo",
@@ -942,11 +938,8 @@ Module opcode.
                                                 []
                                               |),
                                               [ M.read (| opcode |) ]
-                                            |))
-                                        |),
-                                        M.read (| rjumpv_additional_immediates |)
-                                      |)
-                                    |)
+                                            |))))
+                                        (M.read (| rjumpv_additional_immediates |)))
                                   |) in
                                 M.alloc (| Value.Tuple [] |)))
                           ]
@@ -956,7 +949,7 @@ Module opcode.
                         (M.alloc (|
                           M.never_to_any (|
                             M.read (|
-                              let _ :=
+                              let~ _ :=
                                 M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                               M.alloc (| Value.Tuple [] |)
                             |)
@@ -968,5 +961,8 @@ Module opcode.
           |)))
       | _, _ => M.impossible
       end.
+    
+    Axiom Function_print_eof_code :
+      M.IsFunction "revm_interpreter::opcode::eof_printer::print_eof_code" print_eof_code.
   End eof_printer.
 End opcode.

@@ -623,10 +623,20 @@ Module char.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::char::convert::CharErrorKind::EmptyString"
+                            |) in
                           M.alloc (| M.read (| Value.String "EmptyString" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (|
+                              γ,
+                              "core::char::convert::CharErrorKind::TooManyChars"
+                            |) in
                           M.alloc (| M.read (| Value.String "TooManyChars" |) |)))
                     ]
                   |)
@@ -666,7 +676,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -676,7 +686,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -758,12 +768,22 @@ Module char.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::char::convert::CharErrorKind::EmptyString"
+                        |) in
+                      M.alloc (|
                         M.read (| Value.String "cannot parse char from empty string" |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| M.read (| Value.String "too many characters in string" |) |)))
+                      (let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::char::convert::CharErrorKind::TooManyChars"
+                        |) in
+                      M.alloc (| M.read (| Value.String "too many characters in string" |) |)))
                 ]
               |)
             |)))
@@ -842,7 +862,7 @@ Module char.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
-              let chars :=
+              let~ chars :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "str", "chars", [] |),
@@ -880,6 +900,7 @@ Module char.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -905,6 +926,7 @@ Module char.
                           0
                         |) in
                       let c := M.copy (| γ1_0 |) in
+                      let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ M.read (| c |) ]
                       |)));
@@ -984,11 +1006,10 @@ Module char.
                                 Value.Integer 2048
                               ]
                             |))
-                            (BinOp.Panic.sub (|
-                              Integer.U32,
-                              Value.Integer 1114112,
-                              Value.Integer 2048
-                            |))
+                            (BinOp.Wrap.sub
+                              Integer.U32
+                              (Value.Integer 1114112)
+                              (Value.Integer 2048))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1284,7 +1305,7 @@ Module char.
           (let num := M.alloc (| num |) in
           let radix := M.alloc (| radix |) in
           M.read (|
-            let _ :=
+            let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1334,7 +1355,7 @@ Module char.
                     (let γ :=
                       M.use (M.alloc (| BinOp.Pure.lt (M.read (| num |)) (M.read (| radix |)) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
+                    let~ num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1352,11 +1373,10 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Panic.add (|
-                                      Integer.U8,
-                                      M.read (| UnsupportedLiteral |),
-                                      M.read (| num |)
-                                    |))
+                                    (BinOp.Wrap.add
+                                      Integer.U8
+                                      (M.read (| UnsupportedLiteral |))
+                                      (M.read (| num |)))
                                 ]
                             |)));
                         fun γ =>
@@ -1366,15 +1386,13 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Panic.sub (|
-                                      Integer.U8,
-                                      BinOp.Panic.add (|
-                                        Integer.U8,
-                                        M.read (| UnsupportedLiteral |),
-                                        M.read (| num |)
-                                      |),
-                                      Value.Integer 10
-                                    |))
+                                    (BinOp.Wrap.sub
+                                      Integer.U8
+                                      (BinOp.Wrap.add
+                                        Integer.U8
+                                        (M.read (| UnsupportedLiteral |))
+                                        (M.read (| num |)))
+                                      (Value.Integer 10))
                                 ]
                             |)))
                       ]

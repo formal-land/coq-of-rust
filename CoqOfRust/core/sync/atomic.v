@@ -205,22 +205,32 @@ Module sync.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                           M.alloc (| M.read (| Value.String "Relaxed" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                           M.alloc (| M.read (| Value.String "Release" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                           M.alloc (| M.read (| Value.String "Acquire" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                           M.alloc (| M.read (| Value.String "AcqRel" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
+                          let _ :=
+                            M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                           M.alloc (| M.read (| Value.String "SeqCst" |) |)))
                     ]
                   |)
@@ -293,7 +303,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -303,7 +313,7 @@ Module sync.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let __arg1_tag :=
+              let~ __arg1_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -337,7 +347,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let __self_tag :=
+              let~ __self_tag :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -608,7 +618,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
@@ -867,7 +877,7 @@ Module sync.
                       (let γ :=
                         M.use (M.get_constant (| "core::sync::atomic::EMULATE_ATOMIC_BOOL" |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let order :=
+                      let~ order :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -878,6 +888,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::SeqCst"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
                                   |)));
@@ -885,6 +900,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::SeqCst"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
                                   |)));
@@ -892,6 +912,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::AcqRel"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
                                   |)));
@@ -899,6 +924,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::AcqRel"
+                                    |) in
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
@@ -932,6 +962,16 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::Release"
+                                    |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::Acquire"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::AcqRel" []
                                   |)));
@@ -939,6 +979,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::Acquire"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
                                   |)));
@@ -946,6 +991,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::Acquire"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
                                   |)));
@@ -953,6 +1003,16 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::Release"
+                                    |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::Relaxed"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Release" []
                                   |)));
@@ -960,6 +1020,11 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::Release"
+                                    |) in
                                   M.alloc (|
                                     M.never_to_any (|
                                       M.call_closure (|
@@ -993,13 +1058,23 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_0,
+                                      "core::sync::atomic::Ordering::Relaxed"
+                                    |) in
+                                  let _ :=
+                                    M.is_struct_tuple (|
+                                      γ0_1,
+                                      "core::sync::atomic::Ordering::Relaxed"
+                                    |) in
                                   M.alloc (|
                                     Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                                   |)))
                             ]
                           |)
                         |) in
-                      let old :=
+                      let~ old :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1170,7 +1245,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1552,7 +1627,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -1563,7 +1638,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -1640,7 +1715,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -1933,7 +2008,7 @@ Module sync.
             let ptr := M.alloc (| ptr |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2230,7 +2305,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -2241,7 +2316,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2318,7 +2393,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -3162,7 +3237,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i8" ] |),
@@ -3667,7 +3742,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3678,7 +3753,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -3755,7 +3830,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -4260,7 +4335,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u8" ] |),
@@ -4765,7 +4840,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -4776,7 +4851,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -4853,7 +4928,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -5358,7 +5433,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i16" ] |),
@@ -5863,7 +5938,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -5874,7 +5949,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5951,7 +6026,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -6456,7 +6531,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u16" ] |),
@@ -6961,7 +7036,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -6972,7 +7047,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -7049,7 +7124,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -7554,7 +7629,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i32" ] |),
@@ -8059,7 +8134,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -8070,7 +8145,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -8147,7 +8222,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -8652,7 +8727,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u32" ] |),
@@ -9157,7 +9232,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -9168,7 +9243,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -9245,7 +9320,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -9750,7 +9825,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "i64" ] |),
@@ -10255,7 +10330,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -10266,7 +10341,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -10343,7 +10418,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -10848,7 +10923,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "u64" ] |),
@@ -11353,7 +11428,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -11364,7 +11439,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -11441,7 +11516,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -11946,7 +12021,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "isize" ] |),
@@ -12454,7 +12529,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -12465,7 +12540,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -12542,7 +12617,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -13047,7 +13122,7 @@ Module sync.
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::sync::atomic::atomic_store", [ Ty.path "usize" ] |),
@@ -13555,7 +13630,7 @@ Module sync.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let prev :=
+                  let~ prev :=
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -13566,7 +13641,7 @@ Module sync.
                         [ M.read (| self |); M.read (| fetch_order |) ]
                       |)
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -13643,7 +13718,7 @@ Module sync.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let _ :=
+                                      let~ _ :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -13813,19 +13888,24 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)));
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)))
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (| Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] |)))
               ]
             |)
           |)))
@@ -13862,7 +13942,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_store_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -13870,7 +13951,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_store_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -13878,7 +13960,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_store_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -13886,7 +13969,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -13916,7 +14000,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -13979,7 +14064,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_load_relaxed", [ T ] |),
                         [ M.read (| dst |) ]
@@ -13987,7 +14073,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_load_acquire", [ T ] |),
                         [ M.read (| dst |) ]
@@ -13995,7 +14082,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_load_seqcst", [ T ] |),
                         [ M.read (| dst |) ]
@@ -14003,7 +14091,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -14033,7 +14122,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -14097,7 +14187,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xchg_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14105,7 +14196,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xchg_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14113,7 +14205,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xchg_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14121,7 +14214,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xchg_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14129,7 +14223,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xchg_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14170,7 +14265,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xadd_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14178,7 +14274,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xadd_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14186,7 +14283,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xadd_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14194,7 +14292,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xadd_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14202,7 +14301,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xadd_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14243,7 +14343,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xsub_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14251,7 +14352,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xsub_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14259,7 +14361,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xsub_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14267,7 +14370,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xsub_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14275,7 +14379,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xsub_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -14340,6 +14445,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14353,6 +14462,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14366,6 +14479,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14379,6 +14496,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14392,6 +14513,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14405,6 +14530,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14418,6 +14547,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14431,6 +14564,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14444,6 +14581,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14457,6 +14598,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14470,6 +14615,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14483,6 +14632,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14496,6 +14649,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14509,6 +14666,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14522,6 +14683,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14535,6 +14700,8 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::AcqRel" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14568,6 +14735,8 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Release" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14684,6 +14853,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14697,6 +14870,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14710,6 +14887,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Relaxed" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14723,6 +14904,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14736,6 +14921,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14749,6 +14938,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Acquire" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14762,6 +14955,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14775,6 +14972,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14788,6 +14989,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::Release" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14801,6 +15006,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14814,6 +15023,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14827,6 +15040,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::AcqRel" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14840,6 +15057,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14853,6 +15074,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14866,6 +15091,10 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_0, "core::sync::atomic::Ordering::SeqCst" |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
@@ -14879,6 +15108,8 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::AcqRel" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -14912,6 +15143,8 @@ Module sync.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Release" |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -15004,7 +15237,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_and_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15012,7 +15246,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_and_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15020,7 +15255,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_and_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15028,7 +15264,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_and_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15036,7 +15273,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_and_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15077,7 +15315,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_nand_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15085,7 +15324,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_nand_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15093,7 +15333,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_nand_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15101,7 +15342,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_nand_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15109,7 +15351,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_nand_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15150,7 +15393,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_or_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15158,7 +15402,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_or_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15166,7 +15411,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_or_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15174,7 +15420,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_or_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15182,7 +15429,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_or_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15223,7 +15471,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xor_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15231,7 +15480,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xor_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15239,7 +15489,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xor_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15247,7 +15498,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xor_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15255,7 +15507,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_xor_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15296,7 +15549,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_max_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15304,7 +15558,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_max_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15312,7 +15567,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_max_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15320,7 +15576,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_max_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15328,7 +15585,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_max_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15369,7 +15627,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_min_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15377,7 +15636,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_min_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15385,7 +15645,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_min_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15393,7 +15654,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_min_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15401,7 +15663,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_min_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15442,7 +15705,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umax_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15450,7 +15714,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umax_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15458,7 +15723,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umax_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15466,7 +15732,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umax_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15474,7 +15741,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umax_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15515,7 +15783,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umin_relaxed", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15523,7 +15792,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umin_acquire", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15531,7 +15801,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umin_release", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15539,7 +15810,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umin_acqrel", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15547,7 +15819,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_umin_seqcst", [ T ] |),
                         [ M.read (| dst |); M.read (| val |) ]
@@ -15586,7 +15859,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_fence_acquire", [] |),
                         []
@@ -15594,7 +15868,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_fence_release", [] |),
                         []
@@ -15602,7 +15877,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_fence_acqrel", [] |),
                         []
@@ -15610,7 +15886,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::atomic_fence_seqcst", [] |),
                         []
@@ -15618,7 +15895,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -15679,7 +15957,8 @@ Module sync.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_acquire",
@@ -15690,7 +15969,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_release",
@@ -15701,7 +15981,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_acqrel",
@@ -15712,7 +15993,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
+                    M.alloc (|
                       M.call_closure (|
                         M.get_function (|
                           "core::intrinsics::atomic_singlethreadfence_seqcst",
@@ -15723,7 +16005,8 @@ Module sync.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
+                    M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
                           M.get_function (| "core::panicking::panic_fmt", [] |),

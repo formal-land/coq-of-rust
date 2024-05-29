@@ -150,7 +150,7 @@ Module panic.
             (let self := M.alloc (| self |) in
             let info := M.alloc (| info |) in
             M.read (|
-              let _ :=
+              let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
@@ -318,7 +318,7 @@ Module panic.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -392,7 +392,7 @@ Module panic.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -477,7 +477,7 @@ Module panic.
                             val))
                       ]
                     |) in
-                  let _ :=
+                  let~ _ :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -496,7 +496,7 @@ Module panic.
                                 0
                               |) in
                             let message := M.copy (| γ0_0 |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -571,7 +571,7 @@ Module panic.
                                       val))
                                 ]
                               |) in
-                            let _ :=
+                            let~ _ :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
@@ -680,7 +680,7 @@ Module panic.
                                         0
                                       |) in
                                     let payload := M.copy (| γ0_0 |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
@@ -761,7 +761,7 @@ Module panic.
                                               val))
                                         ]
                                       |) in
-                                    let _ :=
+                                    let~ _ :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|

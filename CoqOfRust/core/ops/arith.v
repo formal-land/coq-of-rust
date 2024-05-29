@@ -19,7 +19,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -45,7 +45,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.U8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.U8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -71,7 +71,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.U16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.U16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -97,7 +97,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.U32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.U32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -123,7 +123,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.U64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.U64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -149,7 +149,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.U128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.U128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -175,7 +175,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.Isize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.Isize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -201,7 +201,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.I8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.I8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -227,7 +227,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.I16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.I16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -253,7 +253,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.I32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.I32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -279,7 +279,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.I64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.I64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -305,7 +305,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.I128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.I128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -331,7 +331,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -357,7 +357,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.add (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.add Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -386,7 +386,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -412,7 +412,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.U8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.U8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -438,7 +438,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.U16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.U16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -464,7 +464,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.U32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.U32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -490,7 +490,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.U64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.U64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -516,7 +516,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.U128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.U128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -542,7 +542,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.Isize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.Isize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -568,7 +568,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.I8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.I8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -594,7 +594,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.I16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.I16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -620,7 +620,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.I32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.I32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -646,7 +646,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.I64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.I64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -672,7 +672,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.I128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.I128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -698,7 +698,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -724,7 +724,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.sub (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.sub Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -753,7 +753,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -779,7 +779,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.U8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.U8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -805,7 +805,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.U16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.U16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -831,7 +831,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.U32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.U32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -857,7 +857,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.U64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.U64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -883,7 +883,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.U128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.U128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -909,7 +909,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.Isize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.Isize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -935,7 +935,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.I8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.I8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -961,7 +961,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.I16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.I16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -987,7 +987,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.I32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.I32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1013,7 +1013,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.I64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.I64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1039,7 +1039,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.I128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.I128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1065,7 +1065,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1091,7 +1091,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.mul (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.mul Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1120,7 +1120,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1146,7 +1146,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.U8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.U8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1172,7 +1172,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.U16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.U16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1198,7 +1198,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.U32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.U32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1224,7 +1224,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.U64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.U64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1250,7 +1250,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.U128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.U128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1276,7 +1276,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.Isize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.Isize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1302,7 +1302,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.I8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.I8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1328,7 +1328,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.I16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.I16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1354,7 +1354,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.I32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.I32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1380,7 +1380,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.I64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.I64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1406,7 +1406,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.I128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.I128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1432,7 +1432,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1458,7 +1458,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.div (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.div Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1487,7 +1487,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1513,7 +1513,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.U8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.U8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1539,7 +1539,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.U16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.U16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1565,7 +1565,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.U32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.U32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1591,7 +1591,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.U64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.U64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1617,7 +1617,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.U128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.U128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1643,7 +1643,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.Isize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.Isize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1669,7 +1669,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.I8, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.I8 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1695,7 +1695,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.I16, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.I16 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1721,7 +1721,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.I32, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.I32 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1747,7 +1747,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.I64, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.I64 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1773,7 +1773,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.I128, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.I128 (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1799,7 +1799,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -1825,7 +1825,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Panic.rem (| Integer.Usize, M.read (| self |), M.read (| other |) |)))
+            BinOp.Wrap.rem Integer.Usize (M.read (| self |)) (M.read (| other |))))
         | _, _ => M.impossible
         end.
       
@@ -2056,10 +2056,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2084,7 +2081,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.U8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2109,7 +2106,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.U16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2134,7 +2131,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.U32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2159,7 +2156,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.U64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2184,10 +2181,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.U128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2212,10 +2206,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Isize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2240,7 +2231,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.I8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2265,7 +2256,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.I16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2290,7 +2281,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.I32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2315,7 +2306,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.add (| Integer.I64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.add Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2340,10 +2331,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.I128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2368,10 +2356,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2396,10 +2381,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.add (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2427,10 +2409,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2455,7 +2434,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.U8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2480,7 +2459,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.U16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2505,7 +2484,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.U32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2530,7 +2509,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.U64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2555,10 +2534,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.U128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2583,10 +2559,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.Isize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2611,7 +2584,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.I8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2636,7 +2609,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.I16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2661,7 +2634,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.I32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2686,7 +2659,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.sub (| Integer.I64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.sub Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2711,10 +2684,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.I128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2739,10 +2709,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2767,10 +2734,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.sub (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2798,10 +2762,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2826,7 +2787,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.U8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2851,7 +2812,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.U16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2876,7 +2837,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.U32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2901,7 +2862,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.U64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2926,10 +2887,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.U128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2954,10 +2912,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.Isize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -2982,7 +2937,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.I8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3007,7 +2962,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.I16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3032,7 +2987,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.I32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3057,7 +3012,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.mul (| Integer.I64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.mul Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3082,10 +3037,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.I128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3110,10 +3062,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3138,10 +3087,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.mul (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.mul Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3169,10 +3115,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3197,7 +3140,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.U8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3222,7 +3165,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.U16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3247,7 +3190,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.U32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3272,7 +3215,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.U64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3297,10 +3240,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.U128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3325,10 +3265,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.Isize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3353,7 +3290,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.I8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3378,7 +3315,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.I16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3403,7 +3340,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.I32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3428,7 +3365,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.div (| Integer.I64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.div Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3453,10 +3390,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.I128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3481,10 +3415,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3509,10 +3440,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.div (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.div Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3540,10 +3468,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3568,7 +3493,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.U8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3593,7 +3518,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.U16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.U16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3618,7 +3543,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.U32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.U32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3643,7 +3568,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.U64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.U64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3668,10 +3593,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.U128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.U128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3696,10 +3618,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.Isize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.Isize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3724,7 +3643,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.I8, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.I8 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3749,7 +3668,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.I16, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.I16 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3774,7 +3693,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.I32, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.I32 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3799,7 +3718,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (| β, BinOp.Panic.rem (| Integer.I64, M.read (| β |), M.read (| other |) |) |)
+              M.write (| β, BinOp.Wrap.rem Integer.I64 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3824,10 +3743,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.I128, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.I128 (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3852,10 +3768,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
@@ -3880,10 +3793,7 @@ Module ops.
             let other := M.alloc (| other |) in
             M.read (|
               let β := M.read (| self |) in
-              M.write (|
-                β,
-                BinOp.Panic.rem (| Integer.Usize, M.read (| β |), M.read (| other |) |)
-              |)
+              M.write (| β, BinOp.Wrap.rem Integer.Usize (M.read (| β |)) (M.read (| other |)) |)
             |)))
         | _, _ => M.impossible
         end.
